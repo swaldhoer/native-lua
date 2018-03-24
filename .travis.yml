@@ -15,13 +15,15 @@ script:
   - pushd lua
   - cd lua-$LUA_VERSION
   - echo "$PWD"
-  - make linux install
+  - make linux
   - |
     if [[ $? -ne 0 ]] ; then
       exit $?
     fi
-  - echo "Successfully build and installed lua-$LUA_VERSION"
+  - echo "Successfully build lua-$LUA_VERSION"
+  - sudo make install
+  - echo "Successfully installed lua-$LUA_VERSION"
   - which lua
-  - echo "Starting tests"
   - popd
   - cd lua-$LUA_VERSION-tests
+  - echo "Starting tests"
