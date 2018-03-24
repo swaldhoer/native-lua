@@ -12,8 +12,8 @@ matrix:
       sudo: required
 
 script:
-  - pushd lua
-  - cd lua-$LUA_VERSION
+  - cd lua
+  - pushd lua-$LUA_VERSION
   - echo "$PWD"
   - make linux
   - echo "Successfully build lua-$LUA_VERSION"
@@ -22,7 +22,6 @@ script:
   - which lua
   - popd
   - TESTS=lua-$LUA_VERSION-tests
-  - echo $TESTS
   - cd $TESTS
   - echo "Starting tests"
   - lua all.lua
