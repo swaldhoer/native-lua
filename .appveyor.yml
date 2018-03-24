@@ -1,0 +1,10 @@
+version: 5.3.4.{build}
+
+image: Visual Studio 2017
+
+skip_commits:
+  files:
+    - .travis.yml
+
+init:
+  - git config --global core.autocrlf input

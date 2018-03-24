@@ -1,0 +1,27 @@
+env:
+  global:
+    - LUA_VERSION=5.3.4
+
+compiler:
+  - gcc
+
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+      sudo: required
+
+script:
+  - pushd lua
+  - cd lua-$LUA_VERSION
+  - echo "$PWD"
+  - make linux install
+  - |
+    if [[ $? -ne 0 ]] ; then
+      exit $?
+    fi
+  - echo "Successfully build and installed lua-$LUA_VERSION"
+  - which lua
+  - echo "Starting tests"
+  - popd
+  - cd lua-$LUA_VERSION-tests
