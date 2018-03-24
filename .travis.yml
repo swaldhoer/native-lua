@@ -22,6 +22,7 @@ script:
   - which lua
   - popd
   - TESTS=lua-$LUA_VERSION-tests
+  - echo $TESTS
   - cd $TESTS
   - echo "Starting tests"
   - lua all.lua
