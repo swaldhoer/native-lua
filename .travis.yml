@@ -24,4 +24,4 @@ script:
   - TESTS=lua-$LUA_VERSION-tests
   - cd $TESTS
   - echo "Starting tests"
-  - lua all.lua
+  - sudo lua all.lua
