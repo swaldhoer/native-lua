@@ -21,5 +21,7 @@ script:
   - echo "Successfully installed lua-$LUA_VERSION"
   - which lua
   - popd
-  - cd lua-$LUA_VERSION-tests
+  - TESTS=lua-$LUA_VERSION-tests
+  - cd $TESTS
   - echo "Starting tests"
+  - lua all.lua
