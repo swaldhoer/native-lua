@@ -24,6 +24,9 @@ script:
   - popd
   - TESTS=lua-$LUA_VERSION-tests
   - cd $TESTS
+  - cd libs
+  - mkdir P1
+  - cd ..
   - echo "Starting tests"
   - sudo lua all.lua
   - echo "Done testing"
