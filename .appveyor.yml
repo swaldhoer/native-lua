@@ -6,6 +6,10 @@ skip_commits:
   files:
     - .travis.yml
 
+branches:
+  except:
+  - linux
+
 environment:
   LUA_VERSION: "5.3.4"
 
