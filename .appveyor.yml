@@ -31,6 +31,8 @@ before_test:
   - ps: Push-Location -Path lua
   - ps: Set-Location -Path x64
   - ps: Set-Location -Path Debug
+  - ps: Get-Location
+  - dir
   - ps: lua.exe -v
   - ps: Set-Location ..
   - ps: Set-Location -Path Release
