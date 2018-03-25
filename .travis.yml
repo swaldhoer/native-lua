@@ -20,8 +20,10 @@ script:
   - sudo make install
   - echo "Successfully installed lua-$LUA_VERSION"
   - which lua
+  - lua -v
   - popd
   - TESTS=lua-$LUA_VERSION-tests
   - cd $TESTS
   - echo "Starting tests"
   - sudo lua all.lua
+  - echo "Done testing"
