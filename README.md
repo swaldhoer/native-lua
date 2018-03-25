@@ -4,7 +4,7 @@
 # The Why & The Goal Of This Project
 
 Lua is  multi-paradigm programming language. Lua is cross-platform as it is
-written in ANSI C. Lua is licensed under MIT license
+written in ANSI C. Lua is licensed under [MIT license]
 (https://www.lua.org/manual/5.3/readme.html#license).
 For information on `Lua` see [Lua.org](https://www.lua.org/)
 
@@ -40,3 +40,10 @@ project official website as fast as possible.
 ### Added Files By This Project
 
 - All other files in this repository are added by the `native-lua`-project.
+
+## Links
+
+### [Building Lua](doc/build.md)
+### [Installing Lua](doc/install.md)
+### [Testing Lua](doc/test.md)
+### [CI](doc/ci.md)
