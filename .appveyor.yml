@@ -7,7 +7,7 @@ skip_commits:
     - .travis.yml
 
 environment:
-  LUA_VERSION:5.3.4
+  LUA_VERSION: 5.3.4
 
 init:
   - git config --global core.autocrlf input
