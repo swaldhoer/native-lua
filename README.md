@@ -4,14 +4,12 @@
 # The Why & The Goal Of This Project
 
 Lua is  multi-paradigm programming language. Lua is cross-platform as it is
-written in ANSI C. Lua is licensed under [MIT license]
-(https://www.lua.org/manual/5.3/readme.html#license).
-For information on `Lua` see [Lua.org](https://www.lua.org/)
+written in ANSI C. Lua is licensed under [MIT license][1].
+For information on `Lua` see [Lua.org][2]
 
 Lua requires `make` to be installed to build the binaries,
 therefore building for e.g., Linux or other POSIX systems where `make` is
-natively available is easy, see
-[here](https://www.lua.org/manual/5.3/readme.html).
+natively available is easy, see [here][3].
 
 Building Lua for Windows under Windows with native tools is nice
 for Windows users and developers, but `make` is not available. Therefore this
@@ -29,10 +27,10 @@ The following files are taken from the `Lua project` (modification in
 - all files in the `lua` directory
 
   - subdirectory `lua-x.x.x` includes the sources to the specific version as
-    downloaded from [Lua.org](https://www.lua.org/)
+    downloaded from [Lua.org][2]
 
   - subdirectory `lua-x.x.x-tests` includes the tests to the specific version
-    of lua as downloaded from [Lua.org](https://www.lua.org/).
+    of lua as downloaded from [Lua.org][2]
 
 The versions of sources and tests are tried to be kept in sync with the lua
 project official website as fast as possible.
@@ -47,3 +45,7 @@ project official website as fast as possible.
 ### [Installing Lua](doc/install.md)
 ### [Testing Lua](doc/test.md)
 ### [CI](doc/ci.md)
+
+[1]: https://www.lua.org/manual/5.3/readme.html#license
+[2]: https://www.lua.org/
+[3]: https://www.lua.org/manual/5.3/readme.html
