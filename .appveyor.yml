@@ -6,5 +6,29 @@ skip_commits:
   files:
     - .travis.yml
 
+environment:
+  LUA_VERSION:5.3.4
+
 init:
   - git config --global core.autocrlf input
+
+build_script:
+  - cd lua
+  - pushd lua-$env:LUA_VERSION
+  - ps: pwd
+  # - msbuild TODO
+  - ps: Write-Host"Successfully build lua-$env:LUA_VERSION"
+  # install script TODO
+  - ps: Write-Host "Successfully installed lua-$env:LUA_VERSION"
+  - ps: Get-Command lua
+  - lua -v
+  - popd
+  - $env:TESTS="lua-$env:LUA_VERSION-tests"
+  - cd $env:TESTS
+  - cd libs
+  - mkdir P1
+  - cd ..
+  - ps: Write-Host "Starting tests"
+  #- sudo lua all.lua TODO
+  - ps: Write-Host "Done testing"
+  - exit 1
