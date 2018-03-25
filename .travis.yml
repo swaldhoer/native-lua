@@ -5,6 +5,10 @@ env:
 compiler:
   - gcc
 
+branches:
+  except:
+  - msbuild
+
 matrix:
   include:
     - os: linux
