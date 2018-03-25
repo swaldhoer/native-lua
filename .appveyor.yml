@@ -17,7 +17,7 @@ build_script:
   - ps: Push-Location -Path lua-$env:LUA_VERSION
   - ps: Get-Location
   # - msbuild TODO
-  - ps: Write-Host"Successfully build lua-$env:LUA_VERSION"
+  - ps: Write-Host "Successfully build lua-$env:LUA_VERSION"
   # install script TODO
   - ps: Write-Host "Successfully installed lua-$env:LUA_VERSION"
   - ps: Get-Command lua
