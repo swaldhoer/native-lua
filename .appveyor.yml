@@ -41,17 +41,17 @@ before_test:
   - ps: ls
   - ps: .\lua.exe -v
   - ps: Pop-Location
-  - ps: Push-Location -Path LUA_X64_DEBUG_BINDIR
+  - ps: Push-Location -Path $env:LUA_X64_DEBUG_BINDIR
   - ps: Get-Location
   - ps: ls
   - ps: .\lua.exe -v
   - ps: Pop-Location
-  - ps: Push-Location -Path LUA_X86_DEBUG_BINDIR
+  - ps: Push-Location -Path $env:LUA_X86_DEBUG_BINDIR
   - ps: Get-Location
   - ps: ls
   - ps: .\lua.exe -v
   - ps: Pop-Location ..
-  - ps: Push-Location -Path Release
+  - ps: Push-Location -Path $env:LUA_X86_RELEASE_BINDIR
   - ps: Get-Location
   - ps: ls
   - ps: .\lua.exe -v
