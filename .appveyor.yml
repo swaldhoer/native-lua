@@ -13,6 +13,10 @@ branches:
 environment:
   LUA_VERSION: "5.3.4"
   BUILD_DIR: "build"
+  LUA_X64_DEBUG_BINDIR: ".\lua\x64\Debug\"
+  LUA_X64_RELEASE_BINDIR: ".\lua\x64\Release\"
+  LUA_X86_DEBUG_BINDIR: ".\lua\x86\Debug\"
+  LUA_X86_RELEASE_BINDIR: ".\lua\x86\Release\"
 
 init:
   - git config --global core.autocrlf input
@@ -32,36 +36,30 @@ build_script:
 
 before_test:
   - ps: Push-Location -Path $env:BUILD_DIR
-  - ps: Push-Location -Path lua
-  - ps: Set-Location -Path x64
-  - ps: Set-Location -Path Debug
+  - ps: Push-Location -Path $env:LUA_X64_RELEASE_BINDIR
   - ps: Get-Location
-  - cmd: dir
-  - cmd: lua.exe -v # has to be run on cmd, and not Powershell, when building on
-                    # dont know why
-  - ps: Set-Location ..
-  - ps: Set-Location -Path Release
-  - cmd: dir
-  - cmd: lua.exe -v # has to be run on cmd, and not Powershell, when building on
-                    # dont know why
+  - ps: ls
+  - ps: .\lua.exe -v
   - ps: Pop-Location
+  - ps: Push-Location -Path LUA_X64_DEBUG_BINDIR
   - ps: Get-Location
+  - ps: ls
+  - ps: .\lua.exe -v
   - ps: Pop-Location
+  - ps: Push-Location -Path LUA_X86_DEBUG_BINDIR
   - ps: Get-Location
-  - ps: Set-Location -Path x86
-  - ps: Set-Location -Path Debug
-  - cmd: dir
-  - cmd: lua.exe -v # has to be run on cmd, and not Powershell, when building on
-                    # dont know why
-  - ps: Set-Location ..
-  - ps: Set-Location -Path Release
-  - cmd: dir
-  - cmd: lua.exe -v # has to be run on cmd, and not Powershell, when building on
-                    # dont know why
+  - ps: ls
+  - ps: .\lua.exe -v
+  - ps: Pop-Location ..
+  - ps: Push-Location -Path Release
+  - ps: Get-Location
+  - ps: ls
+  - ps: .\lua.exe -v
   - ps: Pop-Location
   - ps: Pop-Location
-  - ps: Get-Location
   - ps: Write-Host "Simple interpreter version echoing test done..."
+  - ps: Get-Location
+  - ps: Write-Host "section 'before_test' done"
 
 test_script:
   # install script TODO
