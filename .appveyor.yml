@@ -50,7 +50,7 @@ before_test:
   - ps: Get-Location
   - ps: ls
   - ps: .\lua.exe -v
-  - ps: Pop-Location ..
+  - ps: Pop-Location
   - ps: Push-Location -Path $env:LUA_X86_RELEASE_BINDIR
   - ps: Get-Location
   - ps: ls
