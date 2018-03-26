@@ -45,6 +45,9 @@ before_test:
   - cmd: lua.exe -v # has to be run on cmd, and not Powershell, when building on
                     # dont know why
   - ps: Pop-Location
+  - ps: Get-Location
+  - ps: Pop-Location
+  - ps: Get-Location
   - ps: Set-Location -Path x86
   - ps: Set-Location -Path Debug
   - cmd: dir
@@ -55,6 +58,7 @@ before_test:
   - cmd: dir
   - cmd: lua.exe -v # has to be run on cmd, and not Powershell, when building on
                     # dont know why
+  - ps: Pop-Location
   - ps: Pop-Location
   - ps: Get-Location
   - ps: Write-Host "Simple interpreter version echoing test done..."
