@@ -13,10 +13,10 @@ branches:
 environment:
   LUA_VERSION: "5.3.4"
   BUILD_DIR: "build"
-  LUA_X64_DEBUG_BINDIR: ".\lua\x64\Debug\"
-  LUA_X64_RELEASE_BINDIR: ".\lua\x64\Release\"
-  LUA_X86_DEBUG_BINDIR: ".\lua\x86\Debug\"
-  LUA_X86_RELEASE_BINDIR: ".\lua\x86\Release\"
+  LUA_X64_DEBUG_BINDIR: ".\\lua\\x64\\Debug\\"
+  LUA_X64_RELEASE_BINDIR: ".\\lua\\x64\\Release\\"
+  LUA_X86_DEBUG_BINDIR: ".\\lua\\x86\\Debug\\"
+  LUA_X86_RELEASE_BINDIR: ".\\lua\\x86\\Release\\"
 
 init:
   - git config --global core.autocrlf input
