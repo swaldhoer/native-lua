@@ -66,7 +66,7 @@ test_script:
   - ps: Write-Host "Successfully installed lua-$env:LUA_VERSION"
   # - ps: Get-Command lua
   # - lua -v
-  - ps: $env:TESTS="lua-$env:LUA_VERSION-tests"
+  - ps: $env:TESTS="lua\\lua-$env:LUA_VERSION-tests"
   - ps: Get-Location
   - ps: Set-Location -Path $env:TESTS
   - ps: Push-Location -Path libs
