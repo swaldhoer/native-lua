@@ -71,7 +71,8 @@ test_script:
   - ps: Set-Location -Path $env:TESTS
   - ps: Push-Location -Path libs
   - ps: New-Item -ItemType directory -Path P1
-  - ps: Pop-Location -Path ..
+  - ps: Pop-Location
+  - ps: Get-Location
   - ps: Write-Host "Starting tests"
   - cmd: ..\..\build\lua\x64\Release\lua.exe all.lua # dummy test for now
   - ps: Write-Host "Done testing"
