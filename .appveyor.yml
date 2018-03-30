@@ -78,7 +78,7 @@ test_script:
   - ps: Write-Host "Starting tests"
   - ps: Copy-Item "..\..\build\lua\x64\Release\lua.exe" -Destination "."
   - ps: Copy-Item "..\..\build\lua\x64\Release\dliblua.dll" -Destination "."
-  - ps: Write-Host 'Runnig simple test: -e"_U=true"'
+  - ps: Write-Host 'Runnig simple test -e"_U=true"'
   - ps: .\lua.exe -e"_U=true" all_win.lua
   - ps: Write-Host 'Simple test successful'
   - ps: Write-Host "Running full tests"
