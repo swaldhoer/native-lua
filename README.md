@@ -37,13 +37,26 @@ project official website as fast as possible.
 
 ### Added Files By This Project
 
-- All other files in this repository are added by the `native-lua`-project.
+All other files in this repository are added by the `native-lua`-project,
+except the following:
+
+- `lua-x.x.x-tests/all_win.lua`: Basically the same file as `all.lua` from
+  `lua-x.x.x-tests`, but as some tests do not work on windows, `all_win.lua`
+  calls a test file with the suffix `_win.lua`, e.g., `main.lua` becomes
+  `main_win.lua`. The changes made to the original file are indicated by
+  `-- Added by 'native-lua' project,
+  see https://github.com/swaldhoer/native-lua`.
+- `lua-x.x.x-tests/main_win.lua`: made test script work in `cmd`. The changes
+  made to the original file are indicated by `-- Changed to cmd`.
 
 ## Links
 
 ### [Building Lua](doc/build.md)
+
 ### [Installing Lua](doc/install.md)
+
 ### [Testing Lua](doc/test.md)
+
 ### [CI](doc/ci.md)
 
 [1]: https://www.lua.org/manual/5.3/readme.html#license
