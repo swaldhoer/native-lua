@@ -9,6 +9,8 @@ skip_commits:
 branches:
   except:
   - linux
+  - /.lin./
+  - /.travis./
 
 environment:
   LUA_VERSION: "5.3.4"
