@@ -9,6 +9,8 @@ skip_commits:
 branches:
   except:
   - linux
+  - /.lin./
+  - /.travis./
 
 environment:
   LUA_VERSION: "5.3.4"
@@ -76,5 +78,9 @@ test_script:
   - ps: Write-Host "Starting tests"
   - ps: Copy-Item "..\..\build\lua\x64\Release\lua.exe" -Destination "."
   - ps: Copy-Item "..\..\build\lua\x64\Release\dliblua.dll" -Destination "."
-  - cmd: lua.exe all_win.lua # dummy test for now
+  - ps: Write-Host 'Runnig simple test: -e"_U=true"'
+  - ps: .\lua.exe -e"_U=true" all_win.lua
+  - ps: Write-Host 'Simple test successful'
+  - ps: Write-Host "Running full tests"
+  - ps: .\lua.exe all_win.lua
   - ps: Write-Host "Done testing"
