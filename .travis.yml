@@ -45,6 +45,7 @@ script:
   - sed -i "s/CFLAGS= -O2 -Wall -Wextra/CFLAGS= -O2 -Wall -Wextra -DLUA_USER_H=ltests.h/" ./src/Makefile
   - sed -i "s/ltests.h/'ltests.h'/" ./src/Makefile
   - sed -i 's/ltests.h/"ltests.h"/' ./src/Makefile
+  - sed -i 's/CC= gcc -std=gnu99/CC= gcc -g -std=gnu99/' ./src/Makefile
   - make linux
   - sudo make install
   - popd
