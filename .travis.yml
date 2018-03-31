@@ -43,6 +43,7 @@ script:
   - make clean
   - cp ../$TESTS/ltests/* ./src
   - sed -i "s/CFLAGS= -O2 -Wall -Wextra/CFLAGS= -O2 -Wall -Wextra -DLUA_USER_H=ltests.h/" ./src/Makefile
+  - sed -i "s/ltests.h/'ltests.h'/" ./src/Makefile
   - sed -i 's/ltests.h/"ltests.h"/' ./src/Makefile
   - make linux
   - sudo make install
