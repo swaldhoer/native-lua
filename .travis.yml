@@ -36,6 +36,17 @@ script:
   - echo "Starting tests"
   - echo "Runnig simple test -e\"_U=true\""
   - sudo lua -e"_U=true" all.lua
-  - echo "Running full tests"
+  - echo "Running full tests without testC"
   - sudo lua all.lua
+  - cd ..
+  - pushd lua-$LUA_VERSION
+  - make clean
+  - cp ../$TESTS/ltests/* ./src
+  - sed -i 's/CFLAGS= -O2 -Wall -Wextra/CFLAGS= -O2 -Wall -Wextra -DLUA_USER_H=\'"ltests.h"\'' ./src/Makefile
+  - make linux
+  - sudo make install
+  - popd
+  - cd $TESTS
+  - sudo lua all.lua
+  - cd ..
   - echo "Done testing"
