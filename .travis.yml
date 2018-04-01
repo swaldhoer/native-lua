@@ -8,6 +8,7 @@ compiler:
 branches:
   except:
   - msbuild
+  - /.win./
 
 matrix:
   include:
@@ -30,7 +31,25 @@ script:
   - cd $TESTS
   - cd libs
   - mkdir P1
+  - make
   - cd ..
   - echo "Starting tests"
+  - echo "Runnig simple test -e\"_U=true\""
+  - sudo lua -e"_U=true" all.lua
+  - echo "Running full tests without testC"
   - sudo lua all.lua
+  - cd ..
+  - pushd lua-$LUA_VERSION
+  - make clean
+  - cp ../$TESTS/ltests/* ./src
+  - pushd $TRAVIS_BUILD_DIR
+  - git apply ci/travis/Makefile-ltests.patch
+  - popd
+  - while read line; do echo "$line"; done < ./src/Makefile
+  - make linux
+  - sudo make install
+  - popd
+  - cd $TESTS
+  - sudo lua all.lua
+  - cd ..
   - echo "Done testing"
