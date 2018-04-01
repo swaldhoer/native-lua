@@ -14,27 +14,67 @@ branches:
 
 environment:
   LUA_VERSION: "5.3.4"
+  BUILD_DIR: "build"
+  LUA_X64_DEBUG_BINDIR: ".\\lua\\x64\\Debug\\"
+  LUA_X64_RELEASE_BINDIR: ".\\lua\\x64\\Release\\"
+  LUA_X86_DEBUG_BINDIR: ".\\lua\\x86\\Debug\\"
+  LUA_X86_RELEASE_BINDIR: ".\\lua\\x86\\Release\\"
 
 init:
   - git config --global core.autocrlf input
 
 build_script:
-  - ps: Set-Location -Path lua
-  - ps: Push-Location -Path lua-$env:LUA_VERSION
+  - ps: Push-Location -Path msbuild
   - ps: Get-Location
-  # - msbuild TODO
+  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+  - msbuild /property:Platform=x64 /property:Configuration=Debug /verbosity:normal
+  - msbuild /property:Platform=x64 /property:Configuration=Release /verbosity:normal
+  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat"
+  - msbuild /property:Platform=x86 /property:Configuration=Debug /verbosity:normal
+  - msbuild /property:Platform=x86 /property:Configuration=Release /verbosity:normal
   - ps: Write-Host "Successfully build lua-$env:LUA_VERSION"
+  - ps: Pop-Location
+  - ps: Get-Location
+
+before_test:
+  - ps: Push-Location -Path $env:BUILD_DIR
+  - ps: Push-Location -Path $env:LUA_X64_RELEASE_BINDIR
+  - ps: Get-Location
+  - ps: ls
+  - ps: .\lua.exe -v
+  - ps: Pop-Location
+  - ps: Push-Location -Path $env:LUA_X64_DEBUG_BINDIR
+  - ps: Get-Location
+  - ps: ls
+  - ps: .\lua.exe -v
+  - ps: Pop-Location
+  - ps: Push-Location -Path $env:LUA_X86_DEBUG_BINDIR
+  - ps: Get-Location
+  - ps: ls
+  - ps: .\lua.exe -v
+  - ps: Pop-Location
+  - ps: Push-Location -Path $env:LUA_X86_RELEASE_BINDIR
+  - ps: Get-Location
+  - ps: ls
+  - ps: .\lua.exe -v
+  - ps: Pop-Location
+  - ps: Pop-Location
+  - ps: Write-Host "Simple interpreter version echoing test done..."
+  - ps: Get-Location
+  - ps: Write-Host "section 'before_test' done"
+
+test_script:
   # install script TODO
   - ps: Write-Host "Successfully installed lua-$env:LUA_VERSION"
-  - ps: Get-Command lua
-  - lua -v
-  - ps: Pop-Location
-  - $env:TESTS="lua-$env:LUA_VERSION-tests"
+  # - ps: Get-Command lua
+  # - lua -v
+  - ps: $env:TESTS="lua\\lua-$env:LUA_VERSION-tests"
+  - ps: Get-Location
   - ps: Set-Location -Path $env:TESTS
-  - ps: Set-Location -Path libs
+  - ps: Push-Location -Path libs
   - ps: New-Item -ItemType directory -Path P1
-  - ps: Set-Location -Path ..
+  - ps: Pop-Location
+  - ps: Get-Location
   - ps: Write-Host "Starting tests"
-  #- sudo lua all.lua TODO
+  - cmd: ..\..\build\lua\x64\Release\lua.exe all.lua # dummy test for now
   - ps: Write-Host "Done testing"
-  - ps: exit 1
