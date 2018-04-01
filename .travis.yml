@@ -45,9 +45,9 @@ script:
   - sed -i "s/CFLAGS= -O2 -Wall -Wextra/CFLAGS= -O2 -Wall -Wextra -DLUA_USER_H=ltests.h/" ./src/Makefile
   - sed -i "s/ltests.h/'ltests.h'/" ./src/Makefile
   - sed -i 's/ltests.h/"ltests.h"/' ./src/Makefile
+  - sed -i 's/lua.o: lua.c lprefix.h lua.h luaconf.h lauxlib.h lualib.h/lua.o: lua.c lprefix.h lua.h luaconf.h lauxlib.h lualib.h ltests.h/' ./src/Makefile
   - sed -i 's/CC= gcc -std=gnu99/CC= gcc -g -std=gnu99/' ./src/Makefile
-  - sed -i 's/ lua.c lprefix.h lua.h luaconf.h lauxlib.h lualib.h/ lua.c lprefix.h lua.h luaconf.h lauxlib.h lualib.h ltests.h/' ./src/Makefile
-  - sed -i 's/CC= gcc -std=gnu99/CC= gcc -g -std=gnu99/' ./src/Makefile
+  - while read line; do echo "$line"; done < ./src/Makefile
   #- echo "ltest.o: limits.h setjmp.h stdio.h stdlib.h string.h lua.h lapi.h lauxlib.h lcode.h lctype.h ldebug.h ldo.h lfunc.h lmem.h lopcodes.h lstate.h lstring.h ltable.h lualib.h" >> ./src/Makefile
   - make linux
   - sudo make install
