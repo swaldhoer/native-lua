@@ -26,9 +26,9 @@ index d71c75c..78ee932 100644
  ltable.o: ltable.c lprefix.h lua.h luaconf.h ldebug.h lstate.h lobject.h \
   llimits.h ltm.h lzio.h lmem.h ldo.h lgc.h lstring.h ltable.h lvm.h
  ltablib.o: ltablib.c lprefix.h lua.h luaconf.h lauxlib.h lualib.h
-+ltests.o: ltests.c limits.h setjmp.h stdio.h stdlib.h string.h lua.h lapi.h \
++ltests.o: ltests.c lua.h lapi.h lprefix.h luaconf.h llimits.h lobject.h ltm.h \
 + lauxlib.h lcode.h lctype.h ldebug.h ldo.h lfunc.h lmem.h lopcodes.h lstate.h \
-+ lstring.h ltable.h lualib.h
++ lstring.h ltable.h lualib.h lzio.h llex.h lparser.h lgc.h
  ltm.o: ltm.c lprefix.h lua.h luaconf.h ldebug.h lstate.h lobject.h \
   llimits.h ltm.h lzio.h lmem.h ldo.h lstring.h lgc.h ltable.h lvm.h
 -lua.o: lua.c lprefix.h lua.h luaconf.h lauxlib.h lualib.h
