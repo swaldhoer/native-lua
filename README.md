@@ -21,10 +21,9 @@ project provides a `msbuild` project for building the binaries.
 
 ### Content Directly Taken From The Lua Project
 
-The following files are taken from the `Lua project` (modification in
-**bold**):
+The following files are taken from the `Lua project`:
 
-- all files in the `lua` directory
+- all files in the `lua` directory, (except the ones ending with `_win.lua`)
 
   - subdirectory `lua-x.x.x` includes the sources to the specific version as
     downloaded from [Lua.org][2]
