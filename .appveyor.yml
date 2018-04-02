@@ -28,36 +28,36 @@ build_script:
   - ps: Get-Location
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
   - msbuild /property:Platform=x64 /property:Configuration=Debug /verbosity:normal
-  - msbuild /property:Platform=x64 /property:Configuration=Release /verbosity:normal
-  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat"
-  - msbuild /property:Platform=x86 /property:Configuration=Debug /verbosity:normal
-  - msbuild /property:Platform=x86 /property:Configuration=Release /verbosity:normal
-  - ps: Write-Host "Successfully build lua-$env:LUA_VERSION"
+  #- msbuild /property:Platform=x64 /property:Configuration=Release /verbosity:normal
+  #- call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat"
+  #- msbuild /property:Platform=x86 /property:Configuration=Debug /verbosity:normal
+  #- msbuild /property:Platform=x86 /property:Configuration=Release /verbosity:normal
+  #- ps: Write-Host "Successfully build lua-$env:LUA_VERSION"
   - ps: Pop-Location
   - ps: Get-Location
 
 before_test:
   - ps: Push-Location -Path $env:BUILD_DIR
-  - ps: Push-Location -Path $env:LUA_X64_RELEASE_BINDIR
-  - ps: Get-Location
-  - ps: ls
-  - ps: .\lua.exe -v
-  - ps: Pop-Location
+  #- ps: Push-Location -Path $env:LUA_X64_RELEASE_BINDIR
+  #- ps: Get-Location
+  #- ps: ls
+  #- ps: .\lua.exe -v
+  #- ps: Pop-Location
   - ps: Push-Location -Path $env:LUA_X64_DEBUG_BINDIR
   - ps: Get-Location
   - ps: ls
   - ps: .\lua.exe -v
   - ps: Pop-Location
-  - ps: Push-Location -Path $env:LUA_X86_DEBUG_BINDIR
-  - ps: Get-Location
-  - ps: ls
-  - ps: .\lua.exe -v
-  - ps: Pop-Location
-  - ps: Push-Location -Path $env:LUA_X86_RELEASE_BINDIR
-  - ps: Get-Location
-  - ps: ls
-  - ps: .\lua.exe -v
-  - ps: Pop-Location
+  #- ps: Push-Location -Path $env:LUA_X86_DEBUG_BINDIR
+  #- ps: Get-Location
+  #- ps: ls
+  #- ps: .\lua.exe -v
+  #- ps: Pop-Location
+  #- ps: Push-Location -Path $env:LUA_X86_RELEASE_BINDIR
+  #- ps: Get-Location
+  #- ps: ls
+  #- ps: .\lua.exe -v
+  #- ps: Pop-Location
   - ps: Pop-Location
   - ps: Write-Host "Simple interpreter version echoing test done..."
   - ps: Get-Location
@@ -76,11 +76,12 @@ test_script:
   - ps: Pop-Location
   - ps: Get-Location
   - ps: Write-Host "Starting tests"
-  - ps: Copy-Item "..\..\build\lua\x64\Release\lua.exe" -Destination "."
-  - ps: Copy-Item "..\..\build\lua\x64\Release\dliblua.dll" -Destination "."
+  - ps: Copy-Item "..\..\build\lua\x64\Debug\lua.exe" -Destination "."
+  - ps: Copy-Item "..\..\build\lua\x64\Debug\dliblua.dll" -Destination "."
   - ps: Write-Host 'Runnig simple test -e"_U=true"'
   - ps: .\lua.exe -e"_U=true" all_win.lua
   - ps: Write-Host 'Simple test successful'
   - ps: Write-Host "Running full tests"
-  - ps: .\lua.exe all_win.lua
+  - ps: Push-Location -Path $env:APPVEYOR_BUILD_FOLDER 
+  - ps: .\ci\appveyor\single-script-test.ps1
   - ps: Write-Host "Done testing"
