@@ -41,15 +41,18 @@ script:
   - cd ..
   - pushd lua-$LUA_VERSION
   - make clean
+  - sudo make uninstall
   - cp ../$TESTS/ltests/* ./src
   - pushd $TRAVIS_BUILD_DIR
   - git apply ci/travis/Makefile-ltests.patch
   - popd
   - while read line; do echo "$line"; done < ./src/Makefile
   - make linux
+  - echo "Successfully build lua-$LUA_VERSION with testC"
   - sudo make install
   - popd
   - cd $TESTS
+  - echo "Running full tests with testC"
   - sudo lua all.lua
   - cd ..
   - echo "Done testing"
