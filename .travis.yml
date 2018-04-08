@@ -52,6 +52,8 @@ script:
   - sudo make install
   - popd
   - cd $TESTS
+  - echo "Runnig simple test -e\"_U=true\" with testC"
+  - sudo lua -e"_U=true" all.lua
   - echo "Running full tests with testC"
   - sudo lua all.lua
   - cd ..
