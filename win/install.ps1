@@ -81,4 +81,9 @@ Write-Host "Setting environment variables"
 [Environment]::SetEnvironmentVariable("Path", $env:Path + ";C:\Lua\bin", `
     [EnvironmentVariableTarget]::User)
 
+Write-Host "LUA_DIR:    $env:LUA_DIR"
+Write-Host "LUA_CPATH:  $env:LUA_CPATH"
+Write-Host "LUA_PATH:   $env:LUA_PATH"
+Write-Host "PATH:       $env:Path"
+
 Write-Host "Successfully installed Lua $R`n"
