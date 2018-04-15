@@ -65,8 +65,8 @@ before_test:
 
 test_script:
   - ps: .\win\install.ps1
-  - ps: Get-Command lua
-  - ps: .\lua -v
+  - ps: Get-Command lua.exe
+  - ps: .\lua.exe -v
   - ps: Write-Host "Successfully installed lua-$env:LUA_VERSION"
   - ps: $env:TESTS="lua\\lua-$env:LUA_VERSION-tests"
   - ps: Get-Location
