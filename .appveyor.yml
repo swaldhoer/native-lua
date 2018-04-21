@@ -65,6 +65,7 @@ before_test:
 
 test_script:
   - ps: .\win\install.ps1
+  - ps: Get-Content -Path C:\Lua\luaprofile.ps1
   - ps: . C:\Lua\luaprofile.ps1
   #- ps: Get-Command lua.exe
   - ps: Write-Host $env:Path
