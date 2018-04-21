@@ -88,27 +88,27 @@ if (-not (Test-Path env:$LUA_DIR)) {
 }
 
 $LUA_CPATH = "LUA_CPATH"
+$LUA_CPATH_CONTENT = "?.dll;%LUA_DIR%\?.dll"
 if (-not (Test-Path env:$LUA_CPATH)) {
     Write-Host "Add `$LUA_CPATH to `$env"
     [System.Environment]::SetEnvironmentVariable($LUA_CPATH, `
-        "?.dll;%LUA_DIR%\?.dll", [System.EnvironmentVariableTarget]::User)
+        $LUA_CPATH_CONTENT, [System.EnvironmentVariableTarget]::User)
     [System.Environment]::SetEnvironmentVariable($LUA_CPATH, `
-        "?.dll;%LUA_DIR%\?.dll", [System.EnvironmentVariableTarget]::Process)
+        $LUA_CPATH_CONTENT, [System.EnvironmentVariableTarget]::Process)
 } else {
     Write-Host "'$LUA_CPATH' already in `$env"
 }
 
 $LUA_PATH = "LUA_PATH"
+$LUA_PATH_CONTENT = "?.lua;%LUA_DIR%\lua\?.lua"
 if (-not (Test-Path env:$LUA_PATH)) {
     Write-Host "Add `$LUA_PATH to `$env"
     [System.Environment]::SetEnvironmentVariable("LUA_PATH", `
-        "?.lua;%LUA_DIR%\lua\?.lua", `
-        [System.EnvironmentVariableTarget]::User)
+        $LUA_PATH_CONTENT, [System.EnvironmentVariableTarget]::User)
     [System.Environment]::SetEnvironmentVariable("LUA_PATH", `
-        "?.lua;%LUA_DIR%\lua\?.lua", `
-        [System.EnvironmentVariableTarget]::Process)
+        $LUA_PATH_CONTENT, [System.EnvironmentVariableTarget]::Process)
 } else {
-    Write-Host "'$LUA_CPATH' already in `$env"
+    Write-Host "'$LUA_PATH' already in `$env"
 }
 
 if ($env:Path -like "*$INSTALL_BIN*") {
@@ -141,9 +141,8 @@ if ($env:Path -like "*$INSTALL_BIN*") {
 
 Write-Host "Successfully installed Lua $R`n"
 $LUA_VARS = "# helper script for dot-sourceing
-`$env:LUA_DIR = $LUA_DIR
-`$env:LUA_CPATH = $LUA_CPATH
-`$env:LUA_PATH = $LUA_PATH
-`$env:PATH = $env:PATH;$INSTALL_BIN
-"
+`$env:LUA_DIR = ""$INSTALL_BIN""
+`$env:LUA_CPATH = ""$LUA_CPATH_CONTENT""
+`$env:LUA_PATH = ""$LUA_PATH_CONTENT""
+`$env:Path = `$env:Path;$INSTALL_BIN"
 Out-File -FilePath $INSTALL_TOP\luaprofile.ps1 -InputObject $LUA_VARS -Encoding ASCII -Width 79
