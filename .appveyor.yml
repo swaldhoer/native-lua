@@ -69,7 +69,7 @@ test_script:
   - ps: . C:\Lua\luaprofile.ps1
   #- ps: Get-Command lua.exe
   - ps: Write-Host $env:Path
-  - ps: .\lua.exe -v
+  - ps: lua.exe -v
   - ps: lua.exe -v
   - ps: Write-Host "Successfully installed lua-$env:LUA_VERSION"
   - ps: $env:TESTS="lua\\lua-$env:LUA_VERSION-tests"

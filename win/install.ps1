@@ -120,15 +120,8 @@ if ($env:Path -like "*$INSTALL_BIN*") {
     } else {
         $sep = ";"
     }
-    $NEW_PATH = $env:Path + "$sep" + "$INSTALL_BIN;"
-    [Environment]::SetEnvironmentVariable("Path", "", `
-        [EnvironmentVariableTarget]::Process)
-    [Environment]::SetEnvironmentVariable("Path", $NEW_PATH, `
-        [EnvironmentVariableTarget]::Process)
-    [Environment]::SetEnvironmentVariable("Path", "", `
-        [EnvironmentVariableTarget]::User)
-    [Environment]::SetEnvironmentVariable("Path", $NEW_PATH, `
-        [EnvironmentVariableTarget]::User)
+    $Old_Path=(Get-ItemProperty -Path 'Registry::HKEY_CURRENT_USER\Environment' -Name Path).Path
+    Set-ItemProperty -Path 'Registry::HKEY_CURRENT_USER\Environment' -Name PATH -Value ($Old_Path += ';C:\Lua\bin') -Verbose -PassThru|fl | Out-Null
 }
 Write-Host "Done setting environment variables...`n"
 
@@ -146,3 +139,5 @@ $LUA_VARS = "# helper script for dot-sourcing
 `$env:LUA_PATH = ""$LUA_PATH_CONTENT""
 `$env:Path += "";$INSTALL_BIN"""
 Out-File -FilePath $INSTALL_TOP\luaprofile.ps1 -InputObject $LUA_VARS -Encoding ASCII -Width 79
+
+Write-Host "Run `n    . $INSTALL_TOP\luaprofile.ps1`n to use Lua in this session."
