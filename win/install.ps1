@@ -140,9 +140,9 @@ if ($env:Path -like "*$INSTALL_BIN*") {
 }
 
 Write-Host "Successfully installed Lua $R`n"
-$LUA_VARS = "# helper script for dot-sourceing
+$LUA_VARS = "# helper script for dot-sourcing
 `$env:LUA_DIR = ""$INSTALL_BIN""
 `$env:LUA_CPATH = ""$LUA_CPATH_CONTENT""
 `$env:LUA_PATH = ""$LUA_PATH_CONTENT""
-`$env:Path = `$env:Path;$INSTALL_BIN"
+`$env:Path += "";$INSTALL_BIN"""
 Out-File -FilePath $INSTALL_TOP\luaprofile.ps1 -InputObject $LUA_VARS -Encoding ASCII -Width 79
