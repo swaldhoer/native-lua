@@ -65,11 +65,11 @@ before_test:
 
 test_script:
   - ps: .\win\install.ps1
+  # We need to source as the install script does not effect the current
+  # PowerShell session
   - ps: Get-Content -Path C:\Lua\luaprofile.ps1
   - ps: . C:\Lua\luaprofile.ps1
-  #- ps: Get-Command lua.exe
   - ps: Write-Host $env:Path
-  - ps: lua.exe -v
   - ps: lua.exe -v
   - ps: Write-Host "Successfully installed lua-$env:LUA_VERSION"
   - ps: $env:TESTS="lua\\lua-$env:LUA_VERSION-tests"
@@ -81,10 +81,11 @@ test_script:
   - ps: Get-Location
   - ps: Write-Host "Starting tests"
   - ps: Write-Host 'Runnig simple test -e"_U=true"'
+  # we run the tests in cmd instead of PowerShell, since PowerShell on AppVeyor
+  # thinks there is an error, but in fact if testing locally there is none.
   - cmd: lua.exe -e"_U=true" all_win.lua
-  - ps: lua.exe -e"_U=true" all_win.lua
   - ps: Write-Host 'Simple test successful'
   - ps: Write-Host "Running full tests"
-  - ps: Push-Location -Path $env:APPVEYOR_BUILD_FOLDER 
+  - ps: Push-Location -Path $env:APPVEYOR_BUILD_FOLDER
   - ps: .\ci\appveyor\single-script-test.ps1
   - ps: Write-Host "Done testing"
