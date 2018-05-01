@@ -140,4 +140,4 @@ $LUA_VARS = "# helper script for dot-sourcing
 `$env:Path += "";$INSTALL_BIN"""
 Out-File -FilePath $INSTALL_TOP\luaprofile.ps1 -InputObject $LUA_VARS -Encoding ASCII -Width 79
 
-Write-Host "Run `n    . $INSTALL_TOP\luaprofile.ps1`n to use Lua in this session."
+Write-Host "Run `n    . $INSTALL_TOP\luaprofile.ps1`nto use Lua in this session."
