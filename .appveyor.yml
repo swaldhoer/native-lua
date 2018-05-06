@@ -64,7 +64,7 @@ before_test:
   - ps: Write-Host "section 'before_test' done"
 
 test_script:
-  - ps: .\win\install.ps1
+  - ps: .\win\Makefile.ps1 install
   # We need to source as the install script does not effect the current
   # PowerShell session
   - ps: Get-Content -Path C:\Lua\luaprofile.ps1
