@@ -1,7 +1,7 @@
+# The Why & The Goal Of This Project
+
 [![Build status](https://ci.appveyor.com/api/projects/status/1gtcdi6wslxx3d6u/branch/master?svg=true)](https://ci.appveyor.com/project/swaldhoer/native-lua/branch/master)
 [![Build Status](https://travis-ci.org/swaldhoer/native-lua.svg?branch=master)](https://travis-ci.org/swaldhoer/native-lua)
-
-# The Why & The Goal Of This Project
 
 Lua is  multi-paradigm programming language. Lua is cross-platform as it is
 written in ANSI C. Lua is licensed under [MIT license][1].
@@ -11,11 +11,10 @@ Lua requires `make` to be installed to build the binaries,
 therefore building for e.g., Linux or other POSIX systems where `make` is
 natively available is easy, see [here][3].
 
-Building Lua for Windows under Windows with native tools is nice
-for Windows users and developers, but `make` is not available. Therefore this
-project provides a `msbuild` project for building the binaries.
-
-
+Building Lua for Windows under Windows with native tools (therefore not building
+with `MinGW` or `Cygwin`) is nice for Windows users and developers, but `make`
+is not available. Therefore this project provides a `msbuild` project for
+building the binaries.
 
 ## Contents Of This Repository
 
