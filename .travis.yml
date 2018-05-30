@@ -30,13 +30,17 @@ script:
   - which lua
   - lua -v
   - popd
+  - pushd $TRAVIS_BUILD_DIR
   - linux/generate-test-directories.sh
+  - popd
   - cd ..
+  # We successfully build and installed, now lets get to testing
   - echo "Starting tests"
   - echo "Runnig simple test -e\"_U=true\""
   - sudo lua -e"_U=true" all.lua
   - echo "Running full tests without testC"
   - sudo lua all.lua
+  # After testing went good, we need to prepare for a clean build
   - cd ..
   - pushd lua-$LUA_VERSION
   - make clean
