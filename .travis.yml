@@ -30,7 +30,7 @@ script:
   - which lua
   - lua -v
   - popd
-  - generate-test-directories.sh
+  - linux/generate-test-directories.sh
   - cd ..
   - echo "Starting tests"
   - echo "Runnig simple test -e\"_U=true\""
