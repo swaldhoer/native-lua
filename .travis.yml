@@ -20,7 +20,7 @@ script:
   # Build lua WITHOUT ltests and install it and run tests with -e"_U=true" and
   # without.
   # After testing this, we clean and uninstall
-  - cd lua
+  - pushd lua
   - pushd lua-$LUA_VERSION
   - echo "$PWD"
   - make linux
@@ -31,18 +31,20 @@ script:
   - lua -v
   - popd
   - pushd $TRAVIS_BUILD_DIR
-  - linux/generate-test-directories.sh
+  - sudo linux/generate-test-directories.sh
   - popd
-  - cd ..
+  - popd
+  - pwd
   # We successfully build and installed, now lets get to testing
+  - pushd lua/lua-$LUA_VERSION-tests
   - echo "Starting tests"
   - echo "Runnig simple test -e\"_U=true\""
   - sudo lua -e"_U=true" all.lua
   - echo "Running full tests without testC"
   - sudo lua all.lua
+  - popd
   # After testing went good, we need to prepare for a clean build
-  - cd ..
-  - pushd lua-$LUA_VERSION
+  - pushd lua/lua-$LUA_VERSION
   - make clean
   - sudo make uninstall
   # Now we set the build up to compile with ltests, therefore we first copy the
