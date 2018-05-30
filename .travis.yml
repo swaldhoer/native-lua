@@ -17,6 +17,9 @@ matrix:
       sudo: required
 
 script:
+  # Build lua WITHOUT ltests and install it and run tests with -e"_U=true" and
+  # without.
+  # After testing this, we clean and uninstall
   - cd lua
   - pushd lua-$LUA_VERSION
   - echo "$PWD"
@@ -27,11 +30,7 @@ script:
   - which lua
   - lua -v
   - popd
-  - TESTS=lua-$LUA_VERSION-tests
-  - cd $TESTS
-  - cd libs
-  - mkdir P1
-  - make
+  - generate-test-directories.sh
   - cd ..
   - echo "Starting tests"
   - echo "Runnig simple test -e\"_U=true\""
@@ -42,9 +41,11 @@ script:
   - pushd lua-$LUA_VERSION
   - make clean
   - sudo make uninstall
-  - cp ../$TESTS/ltests/* ./src
+  # Now we set the build up to compile with ltests, therefore we first copy the
+  # sources and then we patch the Makefile
+  - linux/ltests-update-sources.sh
   - pushd $TRAVIS_BUILD_DIR
-  - git apply ci/travis/Makefile-ltests.patch
+  - git apply linux/ltests-Makefile.patch
   - popd
   - while read line; do echo "$line"; done < ./src/Makefile
   - make linux
