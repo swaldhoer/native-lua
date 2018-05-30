@@ -31,7 +31,7 @@ script:
   - lua -v
   - popd
   - pushd $TRAVIS_BUILD_DIR
-  - sudo linux/generate-test-directories.sh
+  - pwd & sudo linux/generate-test-directories.sh
   - popd
   - popd
   - pwd
