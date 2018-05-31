@@ -7,3 +7,4 @@ TESTS=lua/lua-$LUA_VER-tests
 cd $TESTS
 cd libs
 mkdir P1
+make
