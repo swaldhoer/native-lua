@@ -8,8 +8,8 @@ index d71c75c..78ee932 100644
  
 -CC= gcc -std=gnu99
 -CFLAGS= -O2 -Wall -Wextra -DLUA_COMPAT_5_2 $(SYSCFLAGS) $(MYCFLAGS)
-++CC= gcc -std=gnu99 -g
-++CFLAGS= -O2 -Wall -Wextra -DLUA_USER_H='"ltests.h"' -DLUA_COMPAT_5_2 $(SYSCFLAGS) $(MYCFLAGS)
++CC= gcc -std=gnu99 -g
++CFLAGS= -O2 -Wall -Wextra -DLUA_USER_H='"ltests.h"' -DLUA_COMPAT_5_2 $(SYSCFLAGS) $(MYCFLAGS)
  LDFLAGS= $(SYSLDFLAGS) $(MYLDFLAGS)
  LIBS= -lm $(SYSLIBS) $(MYLIBS)
  
