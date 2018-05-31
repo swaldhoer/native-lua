@@ -1,9 +1,9 @@
 env:
   global:
     - LUA_VERSION=5.3.4
-    - SRC_DIR= lua/lua-$LUA_VERSION
-    - TEST_DIR= lua/lua-$LUA_VERSION-tests
-    - SCRIPTS_DIR= linux
+    - SRC_DIR=lua/lua-$LUA_VERSION
+    - TEST_DIR=lua/lua-$LUA_VERSION-tests
+    - SCRIPTS_DIR=linux
 
 compiler:
   - gcc
