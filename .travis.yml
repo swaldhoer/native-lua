@@ -1,6 +1,9 @@
 env:
   global:
     - LUA_VERSION=5.3.4
+    - SRC_DIR= lua/lua-$LUA_VERSION
+    - TEST_DIR= lua/lua-$LUA_VERSION-tests
+    - SCRIPTS_DIR= linux
 
 compiler:
   - gcc
@@ -20,9 +23,7 @@ script:
   # Build lua WITHOUT ltests and install it and run tests with -e"_U=true" and
   # without.
   # After testing this, we clean and uninstall
-  - pushd lua
-  - pushd lua-$LUA_VERSION
-  - echo "$PWD"
+  - pushd $SRC_DIR
   - make linux
   - echo "Successfully build lua-$LUA_VERSION"
   - sudo make install
@@ -30,14 +31,9 @@ script:
   - which lua
   - lua -v
   - popd
-  - pushd $TRAVIS_BUILD_DIR
-  - ls -la linux/
-  - pwd & linux/generate-test-directories.sh
-  - popd
-  - popd
-  - pwd
   # We successfully build and installed, now lets get to testing
-  - pushd lua/lua-$LUA_VERSION-tests
+  - bash linux/generate-test-directories.sh
+  - pushd $TEST_DIR
   - echo "Starting tests"
   - echo "Runnig simple test -e\"_U=true\""
   - sudo lua -e"_U=true" all.lua
@@ -45,24 +41,23 @@ script:
   - sudo lua all.lua
   - popd
   # After testing went good, we need to prepare for a clean build
-  - pushd lua/lua-$LUA_VERSION
+  - pushd $SRC_DIR
   - make clean
   - sudo make uninstall
+  - popd
   # Now we set the build up to compile with ltests, therefore we first copy the
   # sources and then we patch the Makefile
-  - linux/ltests-update-sources.sh
-  - pushd $TRAVIS_BUILD_DIR
+  - bash linux/ltests-update-sources.sh
   - git apply linux/ltests-Makefile.patch
-  - popd
-  - while read line; do echo "$line"; done < ./src/Makefile
+  - while read line; do echo "$line"; done < ./$SRC_DIR/src/Makefile
+  - pushd $SRC_DIR
   - make linux
   - echo "Successfully build lua-$LUA_VERSION with testC"
   - sudo make install
   - popd
-  - cd $TESTS
+  - pushd $TEST_DIR
   - echo "Runnig simple test -e\"_U=true\" with testC"
   - sudo lua -e"_U=true" all.lua
   - echo "Running full tests with testC"
   - sudo lua all.lua
-  - cd ..
   - echo "Done testing"
