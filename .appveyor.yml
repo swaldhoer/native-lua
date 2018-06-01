@@ -80,6 +80,7 @@ test_script:
   - ps: Write-Host "Running full tests"
   #- cmd: lua.exe all_win.lua
   - ps: Write-Host "Done testing"
+  - ps: Pop-Location
   # Now we set the build up to compile with ltests, therefore we first copy the
   # sources and then we patch the msbuild files
   - ps: powershell .\$env:SCRIPTS_DIR\ltests-update-sources.ps1
