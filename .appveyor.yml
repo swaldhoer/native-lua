@@ -56,9 +56,12 @@ before_test:
   - ps: Pop-Location
   - ps: Write-Host "Simple interpreter version echoing test done..."
   - ps: Get-Location
-  - ps: Write-Host "section 'before_test' done"
+  - ps: Write-Host "section ""before_test"" done"
 
 test_script:
+  # We run the tests in cmd instead of PowerShell, since PowerShell on AppVeyor
+  # thinks there is an error, but in fact if testing locally there is none,
+  # either running the tests on cmd or PowerShell
   - ps: powershell .\$env:SCRIPTS_DIR\Makefile.ps1 install
   # We need to source as the install script does not effect the current
   # PowerShell session
@@ -70,20 +73,18 @@ test_script:
   # We successfully build and installed, now lets get to testing
   - ps: powershell .\$env:SCRIPTS_DIR\generate-test-directories.ps1
   - ps: Push-Location -Path $env:TEST_DIR
-  - ps: pwd
-  - ps: Write-Host "Starting tests"
-  - ps: Write-Host 'Runnig simple test -e"_U=true"'
-  # We run the tests in cmd instead of PowerShell, since PowerShell on AppVeyor
-  # thinks there is an error, but in fact if testing locally there is none.
+  - ps: Write-Host "Starting tests without testC"
+  - ps: Write-Host "Runnig simple test without testC and -e""_U=true"""
   - cmd: lua.exe -e"_U=true" all_win.lua
-  - ps: Write-Host "Simple test successful"
+  - ps: Write-Host "Simple test without testC successful"
   - ps: Write-Host "Running full tests without testC"
   #- cmd: lua.exe all_win.lua
-  - ps: Write-Host "Normal test successful"
-  - ps: Write-Host "Done testing"
+  - ps: Write-Host "Normal test without testC successful"
+  - ps: Write-Host "Done testing without testC"
   - ps: Pop-Location
   # After testing went good, we need to prepare for a clean build
-  - ps: echo 1
+  - ps: Remove-Item -Recurse -Force $env:BUILD_DIR
+  - ps: powershell .\$env:SCRIPTS_DIR\Makefile.ps1 uninstall
   # Now we set the build up to compile with ltests, therefore we first copy the
   # sources and then we patch the msbuild files
   - ps: powershell .\$env:SCRIPTS_DIR\ltests-update-sources.ps1
@@ -92,8 +93,17 @@ test_script:
   - ps: Push-Location -Path $env:APPVEYOR_BUILD_FOLDER
   - ps: Push-Location -Path msbuild
   - msbuild /property:Platform=x64 /property:Configuration=Debug /verbosity:normal
+  # - ps: powershell .\$env:SCRIPTS_DIR\Makefile.ps1 install TODO script needs to accept config
   - ps: Pop-Location
   - ps: Pop-Location
-  - ps: Push-Location -Path build\$env:LUA_X64_DEBUG_BINDIR
-  - ps: .\lua.exe -v
+  # We successfully build with testC and installed it, now lets get to testing
+  - ps: Push-Location -Path $env:TEST_DIR
+  - ps: Write-Host "Starting tests without testC"
+  - ps: Write-Host "Runnig simple test without testC and -e""_U=true"""
+  - cmd: lua.exe -e"_U=true" all_win.lua
+  - ps: Write-Host "Simple test without testC successful"
+  - ps: Write-Host "Running full tests without testC"
+  #- cmd: lua.exe all_win.lua
+  - ps: Write-Host "Normal test without testC successful"
+  - ps: Write-Host "Done testing without testC"
   - ps: Pop-Location

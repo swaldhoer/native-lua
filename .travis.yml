@@ -21,27 +21,34 @@ matrix:
 
 script:
   # Build lua WITHOUT ltests and install it and run tests with -e"_U=true" and
-  # without.
-  # After testing this, we clean and uninstall
+  # without. After testing this, we clean and uninstall lua without ltests.
+  # After that we copy the ltest sources to the src directory and patch the 
+  # Makefile to compile with ltest. We again install lua and run tests
+  # -e"_U=true" and without. The build and test matrix is therefore:
+  # Build-Test matrix:
+  #  compiled WITHOUT   ltests  interpreter run WITH    argument    -e"_U=true" (-> simple test)
+  #  compiled WITHOUT   ltests  interpreter run WITHOUT argument                (-> full test)
+  #  compiled WITH      ltests  interpreter run WITH    argument    -e"_U=true" (-> simple test)
+  #  compiled WITH      ltests  interpreter run WITHOUT argument                (-> full test)
   - pushd $SRC_DIR
   - make linux
-  - echo "Successfully build lua-$LUA_VERSION"
+  - echo "Successfully build lua-$LUA_VERSION without testC"
   - sudo make install
-  - echo "Successfully installed lua-$LUA_VERSION"
+  - echo "Successfully installed lua-$LUA_VERSION without testC"
   - which lua
   - lua -v
   - popd
-  # We successfully build and installed, now lets get to testing
+  # We successfully build without testC and installed it, now lets get to testing
   - bash $SCRIPTS_DIR/generate-test-directories.sh
   - pushd $TEST_DIR
-  - echo "Starting tests"
-  - echo "Runnig simple test -e\"_U=true\""
+  - echo "Starting tests without testC"
+  - echo "Runnig simple test without testC and -e\"_U=true\""
   - sudo lua -e"_U=true" all.lua
-  - echo "Simple test successful"
-  - echo "Running full tests without testC"
+  - echo "Simple test without testC successful"
+  - echo "Running full test without testC"
   - sudo lua all.lua
-  - echo "Normal test successful"
-  - echo "Done testing"
+  - echo "Normal test without testC successful"
+  - echo "Done testing without testC"
   - popd
   # After testing went good, we need to prepare for a clean build
   - pushd $SRC_DIR
@@ -57,9 +64,14 @@ script:
   - echo "Successfully build lua-$LUA_VERSION with testC"
   - sudo make install
   - popd
+  # We successfully build with testC and installed it, now lets get to testing
   - pushd $TEST_DIR
-  - echo "Runnig simple test -e\"_U=true\" with testC"
+  - echo "Runnig simple test with testC and -e\"_U=true\""
   - sudo lua -e"_U=true" all.lua
-  - echo "Running full tests with testC"
+  - echo "Simple test with testC successful"
+  - echo "Running full test with testC"
   - sudo lua all.lua
+  - echo "Normal test with testC successful"
+  - echo "Done testing with testC"
   - echo "Done testing"
+  - echo "All tests were successful"
