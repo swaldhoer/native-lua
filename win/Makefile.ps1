@@ -49,19 +49,36 @@ https://github.com/swaldhoer/native-lua
 
 #>
 
-function validate_arguments {
+function validate_arguments_and_options ($c) {
+    $valid_all = $valid_cmds + $valid_opts
     $err_bit = 0
-    foreach ($a in $args) {
-        if ($valid_cmds -notcontains $a) {
+    foreach ($a in $c) {
+        if ($valid_all -notcontains $a) {
             Write-Host "'$a' is not a valid command"
             $err_bit++
+        } else {
+            if ($a -clike "x86" -or $a -clike "x64" ) {
+                $Platform = $a
+            }
+            if ($a -clike "Debug" -or $a -clike "Release" ) {
+                $Configuration = $a
+            } elseif ($a -clike "debug" -or $a -clike "release" ) {
+                $err_bit++
+                $first_upper = $a[0].ToString().ToUpper()
+                $x = $first_upper + $a.substring(1)
+                Write-Host "Your wrote ""$a"", did you mean ""$x""?" `
+                    -ForegroundColor Yellow
+            }
         }
     }
+
     if ($err_bit -gt 0) {
         Write-Host "Exiting script since argument errors..." `
             -ForegroundColor Red
         exit
     }
+
+    return $Platform, $Configuration
 }
 
 function _test {
@@ -190,7 +207,7 @@ function _install {
 
 function _uninstall {
     Write-Host "Uninstalling Lua $R ($Platform-$Configuration)`n"
-    
+
     Write-Host "Removing files..."
     if (Test-Path -PathType Any $INSTALL_TOP) {
         Remove-Item -Recurse -Force $INSTALL_TOP
@@ -298,8 +315,8 @@ $BUILD_CMD = """C:\Program Files (x86)\Microsoft Visual Studio\2017\" `
 $BUILD_CMD_s = $BUILD_CMD + " > nul 2>&1"
 
 $valid_cmds = "clean", "test", "build", "install", "uninstall", "echo", "pc"
-validate_arguments
-
+$valid_opts = "x64", "x86", "Debug", "Release"
+$args_ws = $args
 
 if ($ENV:PROCESSOR_ARCHITECTURE -eq "AMD64") {
     $Platform = "x64"
@@ -307,6 +324,9 @@ if ($ENV:PROCESSOR_ARCHITECTURE -eq "AMD64") {
     $Platform = "x86"
 }
 $Configuration="Release"
+$conf_vars = validate_arguments_and_options $args
+$Platform = $conf_vars[0]
+$Configuration = $conf_vars[1]
 
 $TOP_DIR = Resolve-Path $PSScriptRoot\..
 $BUILD_DIR = "$TOP_DIR\build"
