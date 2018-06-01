@@ -78,7 +78,6 @@ test_script:
   - cmd: lua.exe -e"_U=true" all_win.lua
   - ps: Write-Host 'Simple test successful'
   - ps: Write-Host "Running full tests"
-  - ps: Push-Location -Path $env:APPVEYOR_BUILD_FOLDER
   - cmd: lua.exe all_win.lua
   - ps: Write-Host "Done testing"
   # Now we set the build up to compile with ltests, therefore we first copy the
