@@ -16,25 +16,27 @@ environment:
   LUA_VERSION: "5.3.4"
   SRC_DIR: "lua\\lua-5.3.4"
   TEST_DIR: "lua\\lua-5.3.4-tests"
+  debug_var: "test-$env:LUA_VERSION"
   SCRIPTS_DIR: "win"
   BUILD_DIR: "build"
   LUA_X64_DEBUG_BINDIR: ".\\lua\\x64\\Debug\\"
   LUA_X64_RELEASE_BINDIR: ".\\lua\\x64\\Release\\"
-  LUA_X86_DEBUG_BINDIR: ".\\lua\\x86\\Debug\\"
-  LUA_X86_RELEASE_BINDIR: ".\\lua\\x86\\Release\\"
+  #LUA_X86_DEBUG_BINDIR: ".\\lua\\x86\\Debug\\"
+  #LUA_X86_RELEASE_BINDIR: ".\\lua\\x86\\Release\\"
 
 init:
   - git config --global core.autocrlf input
 
 build_script:
+  - ps: Write-Host $env:debug_var
   - ps: Push-Location -Path msbuild
   - ps: Get-Location
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
   - msbuild /property:Platform=x64 /property:Configuration=Debug /verbosity:normal
   - msbuild /property:Platform=x64 /property:Configuration=Release /verbosity:normal
-  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat"
-  - msbuild /property:Platform=x86 /property:Configuration=Debug /verbosity:normal
-  - msbuild /property:Platform=x86 /property:Configuration=Release /verbosity:normal
+  #- call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat"
+  #- msbuild /property:Platform=x86 /property:Configuration=Debug /verbosity:normal
+  #- msbuild /property:Platform=x86 /property:Configuration=Release /verbosity:normal
   - ps: Write-Host "Successfully build lua-$env:LUA_VERSION"
   - ps: Pop-Location
   - ps: Get-Location
@@ -47,12 +49,12 @@ before_test:
   - ps: Push-Location -Path $env:LUA_X64_DEBUG_BINDIR
   - ps: .\lua.exe -v
   - ps: Pop-Location
-  - ps: Push-Location -Path $env:LUA_X86_DEBUG_BINDIR
-  - ps: .\lua.exe -v
-  - ps: Pop-Location
-  - ps: Push-Location -Path $env:LUA_X86_RELEASE_BINDIR
-  - ps: .\lua.exe -v
-  - ps: Pop-Location
+  #- ps: Push-Location -Path $env:LUA_X86_DEBUG_BINDIR
+  #- ps: .\lua.exe -v
+  #- ps: Pop-Location
+  #- ps: Push-Location -Path $env:LUA_X86_RELEASE_BINDIR
+  #- ps: .\lua.exe -v
+  #- ps: Pop-Location
   - ps: Pop-Location
   - ps: Write-Host "Simple interpreter version echoing test done..."
   - ps: Get-Location
