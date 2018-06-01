@@ -93,9 +93,9 @@ test_script:
   - ps: Push-Location -Path $env:APPVEYOR_BUILD_FOLDER
   - ps: Push-Location -Path msbuild
   - msbuild /property:Platform=x64 /property:Configuration=Debug /verbosity:normal
+  - ps: Pop-Location
+  - ps: Pop-Location
   - ps: powershell .\$env:SCRIPTS_DIR\Makefile.ps1 install Debug
-  - ps: Pop-Location
-  - ps: Pop-Location
   # We successfully build with testC and installed it, now lets get to testing
   - ps: Push-Location -Path $env:TEST_DIR
   - ps: Write-Host "Starting tests without testC"
