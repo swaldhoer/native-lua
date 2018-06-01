@@ -14,6 +14,9 @@ branches:
 
 environment:
   LUA_VERSION: "5.3.4"
+  SRC_DIR: "lua\\lua-$LUA_VERSION"
+  TEST_DIR: "lua\\lua-$LUA_VERSION-tests"
+  SCRIPTS_DIR: "win"
   BUILD_DIR: "build"
   LUA_X64_DEBUG_BINDIR: ".\\lua\\x64\\Debug\\"
   LUA_X64_RELEASE_BINDIR: ".\\lua\\x64\\Release\\"
@@ -64,7 +67,7 @@ before_test:
   - ps: Write-Host "section 'before_test' done"
 
 test_script:
-  - ps: .\win\Makefile.ps1 install
+  - ps: .\$env:SCRIPTS_DIR\Makefile.ps1 install
   # We need to source as the install script does not effect the current
   # PowerShell session
   - ps: Get-Content -Path C:\Lua\luaprofile.ps1
@@ -72,20 +75,19 @@ test_script:
   - ps: Write-Host $env:Path
   - ps: lua.exe -v
   - ps: Write-Host "Successfully installed lua-$env:LUA_VERSION"
-  - ps: $env:TESTS="lua\\lua-$env:LUA_VERSION-tests"
-  - ps: Get-Location
-  - ps: Set-Location -Path $env:TESTS
-  - ps: Push-Location -Path libs
-  - ps: New-Item -ItemType directory -Path P1
-  - ps: Pop-Location
-  - ps: Get-Location
+  # We successfully build and installed, now lets get to testing
+  - ps: .\$env:SCRIPTS_DIR\generate-test-directories.ps1
   - ps: Write-Host "Starting tests"
   - ps: Write-Host 'Runnig simple test -e"_U=true"'
-  # we run the tests in cmd instead of PowerShell, since PowerShell on AppVeyor
+  # We run the tests in cmd instead of PowerShell, since PowerShell on AppVeyor
   # thinks there is an error, but in fact if testing locally there is none.
   - cmd: lua.exe -e"_U=true" all_win.lua
   - ps: Write-Host 'Simple test successful'
   - ps: Write-Host "Running full tests"
   - ps: Push-Location -Path $env:APPVEYOR_BUILD_FOLDER
-  - ps: .\ci\appveyor\single-script-test.ps1
+  - ps: .\$env:SCRIPTS_DIR\single-script-test.ps1
   - ps: Write-Host "Done testing"
+  # Now we set the build up to compile with ltests, therefore we first copy the
+  # sources and then we patch the msbuild files
+  - ps: .\$env:SCRIPTS_DIR\ltests-update-sources.ps1
+  # - ps: git apply .\$env:SCRIPTS_DIR\ltests-vcxproj.patch

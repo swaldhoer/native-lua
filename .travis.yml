@@ -32,7 +32,7 @@ script:
   - lua -v
   - popd
   # We successfully build and installed, now lets get to testing
-  - bash linux/generate-test-directories.sh
+  - bash $SCRIPTS_DIR/generate-test-directories.sh
   - pushd $TEST_DIR
   - echo "Starting tests"
   - echo "Runnig simple test -e\"_U=true\""
@@ -47,9 +47,8 @@ script:
   - popd
   # Now we set the build up to compile with ltests, therefore we first copy the
   # sources and then we patch the Makefile
-  - bash linux/ltests-update-sources.sh
-  - git apply linux/ltests-Makefile.patch
-  - while read line; do echo "$line"; done < ./$SRC_DIR/src/Makefile
+  - bash $SCRIPTS_DIR/ltests-update-sources.sh
+  - git apply $SCRIPTS_DIR/ltests-Makefile.patch
   - pushd $SRC_DIR
   - make linux
   - echo "Successfully build lua-$LUA_VERSION with testC"
