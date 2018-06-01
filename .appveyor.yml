@@ -78,7 +78,7 @@ test_script:
   - cmd: lua.exe -e"_U=true" all_win.lua
   - ps: Write-Host "Simple test without testC successful"
   - ps: Write-Host "Running full tests without testC"
-  #- cmd: lua.exe all_win.lua
+  - cmd: lua.exe all_win.lua
   - ps: Write-Host "Normal test without testC successful"
   - ps: Write-Host "Done testing without testC"
   - ps: Pop-Location
@@ -103,7 +103,7 @@ test_script:
   - cmd: lua.exe -e"_U=true" all_win.lua
   - ps: Write-Host "Simple test without testC successful"
   - ps: Write-Host "Running full tests without testC"
-  #- cmd: lua.exe all_win.lua
+  - cmd: lua.exe all_win.lua
   - ps: Write-Host "Normal test without testC successful"
   - ps: Write-Host "Done testing without testC"
   - ps: Pop-Location
