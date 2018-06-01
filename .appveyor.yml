@@ -76,7 +76,7 @@ test_script:
   - ps: lua.exe -v
   - ps: Write-Host "Successfully installed lua-$env:LUA_VERSION"
   # We successfully build and installed, now lets get to testing
-  - ps: .\$env:SCRIPTS_DIR\generate-test-directories.ps1
+  - ps: powershell .\$env:SCRIPTS_DIR\generate-test-directories.ps1
   - ps: Write-Host "Starting tests"
   - ps: Write-Host 'Runnig simple test -e"_U=true"'
   # We run the tests in cmd instead of PowerShell, since PowerShell on AppVeyor
@@ -85,9 +85,9 @@ test_script:
   - ps: Write-Host 'Simple test successful'
   - ps: Write-Host "Running full tests"
   - ps: Push-Location -Path $env:APPVEYOR_BUILD_FOLDER
-  - ps: .\$env:SCRIPTS_DIR\single-script-test.ps1
+  - ps: powershell .\$env:SCRIPTS_DIR\single-script-test.ps1
   - ps: Write-Host "Done testing"
   # Now we set the build up to compile with ltests, therefore we first copy the
   # sources and then we patch the msbuild files
-  - ps: .\$env:SCRIPTS_DIR\ltests-update-sources.ps1
+  - ps: powershell .\$env:SCRIPTS_DIR\ltests-update-sources.ps1
   # - ps: git apply .\$env:SCRIPTS_DIR\ltests-vcxproj.patch
