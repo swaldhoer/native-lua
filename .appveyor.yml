@@ -79,7 +79,7 @@ test_script:
   - ps: Write-Host 'Simple test successful'
   - ps: Write-Host "Running full tests"
   - ps: Push-Location -Path $env:APPVEYOR_BUILD_FOLDER
-  - ps: powershell .\$env:SCRIPTS_DIR\single-script-test.ps1
+  - cmd: lua.exe all_win.lua
   - ps: Write-Host "Done testing"
   # Now we set the build up to compile with ltests, therefore we first copy the
   # sources and then we patch the msbuild files

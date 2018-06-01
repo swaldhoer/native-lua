@@ -35,7 +35,7 @@ $test_files = `
 Foreach ($i in $test_files) {
     $cur_test_file = $test_dir + $i
     Write-Host "Testing: $cur_test_file"
-    PowerShell.exe 'cmd.exe /c "lua $cur_test_file"'
+    PowerShell.exe "lua $cur_test_file"
     if ($? -ne "True") {
         exit
     }
