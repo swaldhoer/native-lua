@@ -6,3 +6,5 @@
 *.dll
 build
 libs
+lua/lua-5.3.4/src/ltests.c
+lua/lua-5.3.4/src/ltests.h

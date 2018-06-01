@@ -1,0 +1,262 @@
+diff --git a/msbuild/dliblua/dliblua.vcxproj b/msbuild/dliblua/dliblua.vcxproj
+index f90f277..e5d50da 100644
+--- a/msbuild/dliblua/dliblua.vcxproj
++++ b/msbuild/dliblua/dliblua.vcxproj
+@@ -37,6 +37,7 @@
+     <ClInclude Include="..\..\lua\lua-5.3.4\src\lstate.h" />
+     <ClInclude Include="..\..\lua\lua-5.3.4\src\lstring.h" />
+     <ClInclude Include="..\..\lua\lua-5.3.4\src\ltable.h" />
++    <ClInclude Include="..\..\lua\lua-5.3.4\src\ltests.h" />
+     <ClInclude Include="..\..\lua\lua-5.3.4\src\ltm.h" />
+     <ClInclude Include="..\..\lua\lua-5.3.4\src\luaconf.h" />
+     <ClInclude Include="..\..\lua\lua-5.3.4\src\lualib.h" />
+@@ -325,6 +326,7 @@
+       <DisableLanguageExtensions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</DisableLanguageExtensions>
+       <DisableLanguageExtensions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</DisableLanguageExtensions>
+     </ClCompile>
++    <ClCompile Include="..\..\lua\lua-5.3.4\src\ltests.c" />
+     <ClCompile Include="..\..\lua\lua-5.3.4\src\ltm.c">
+       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+       <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+@@ -454,7 +456,7 @@
+       <WarningLevel>Level3</WarningLevel>
+       <Optimization>Disabled</Optimization>
+       <SDLCheck>true</SDLCheck>
+-      <PreprocessorDefinitions>LUA_BUILD_AS_DLL;DLIBLUA_EXPORTS;_WINDOWS;_USRDLL;_WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <PreprocessorDefinitions>LUA_USER_H="ltests.h";LUA_BUILD_AS_DLL;DLIBLUA_EXPORTS;_WINDOWS;_USRDLL;_WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+       <ConformanceMode>true</ConformanceMode>
+     </ClCompile>
+     <Link>
+@@ -468,7 +470,7 @@
+       <WarningLevel>Level3</WarningLevel>
+       <Optimization>Disabled</Optimization>
+       <SDLCheck>true</SDLCheck>
+-      <PreprocessorDefinitions>LUA_BUILD_AS_DLL;DLIBLUA_EXPORTS;_WINDOWS;_USRDLL;_WIN32;_DEBUG;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <PreprocessorDefinitions>LUA_USER_H="ltests.h";LUA_BUILD_AS_DLL;DLIBLUA_EXPORTS;_WINDOWS;_USRDLL;_WIN32;_DEBUG;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+       <ConformanceMode>true</ConformanceMode>
+     </ClCompile>
+     <Link>
+@@ -484,7 +486,7 @@
+       <FunctionLevelLinking>true</FunctionLevelLinking>
+       <IntrinsicFunctions>true</IntrinsicFunctions>
+       <SDLCheck>true</SDLCheck>
+-      <PreprocessorDefinitions>LUA_BUILD_AS_DLL;DLIBLUA_EXPORTS;_WINDOWS;_USRDLL;_WIN32;NDEBUG;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <PreprocessorDefinitions>LUA_USER_H="ltests.h";LUA_BUILD_AS_DLL;DLIBLUA_EXPORTS;_WINDOWS;_USRDLL;_WIN32;NDEBUG;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+       <ConformanceMode>true</ConformanceMode>
+     </ClCompile>
+     <Link>
+@@ -502,7 +504,7 @@
+       <FunctionLevelLinking>true</FunctionLevelLinking>
+       <IntrinsicFunctions>true</IntrinsicFunctions>
+       <SDLCheck>true</SDLCheck>
+-      <PreprocessorDefinitions>LUA_BUILD_AS_DLL;DLIBLUA_EXPORTS;_WINDOWS;_USRDLL;_WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <PreprocessorDefinitions>LUA_USER_H="ltests.h";LUA_BUILD_AS_DLL;DLIBLUA_EXPORTS;_WINDOWS;_USRDLL;_WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+       <ConformanceMode>true</ConformanceMode>
+     </ClCompile>
+     <Link>
+diff --git a/msbuild/dliblua/dliblua.vcxproj.filters b/msbuild/dliblua/dliblua.vcxproj.filters
+index e90d90e..f3558f1 100644
+--- a/msbuild/dliblua/dliblua.vcxproj.filters
++++ b/msbuild/dliblua/dliblua.vcxproj.filters
+@@ -87,6 +87,9 @@
+     <ClInclude Include="..\..\lua\lua-5.3.4\src\lzio.h">
+       <Filter>Header Files</Filter>
+     </ClInclude>
++    <ClInclude Include="..\..\lua\lua-5.3.4\src\ltests.h">
++      <Filter>Header Files</Filter>
++    </ClInclude>
+   </ItemGroup>
+   <ItemGroup>
+     <ClCompile Include="..\..\lua\lua-5.3.4\src\lauxlib.c">
+@@ -188,5 +191,8 @@
+     <ClCompile Include="..\..\lua\lua-5.3.4\src\lzio.c">
+       <Filter>Source Files</Filter>
+     </ClCompile>
++    <ClCompile Include="..\..\lua\lua-5.3.4\src\ltests.c">
++      <Filter>Source Files</Filter>
++    </ClCompile>
+   </ItemGroup>
+ </Project>
+\ No newline at end of file
+diff --git a/msbuild/lua/lua.vcxproj b/msbuild/lua/lua.vcxproj
+index 9c17ffa..737f71f 100644
+--- a/msbuild/lua/lua.vcxproj
++++ b/msbuild/lua/lua.vcxproj
+@@ -84,7 +84,7 @@
+       <WarningLevel>Level3</WarningLevel>
+       <Optimization>Disabled</Optimization>
+       <SDLCheck>true</SDLCheck>
+-      <PreprocessorDefinitions>LUA_BUILD_AS_DLL;_WIN32;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <PreprocessorDefinitions>LUA_USER_H="ltests.h";LUA_BUILD_AS_DLL;_WIN32;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+       <ConformanceMode>true</ConformanceMode>
+     </ClCompile>
+     <Link>
+@@ -104,7 +104,7 @@
+       <WarningLevel>Level3</WarningLevel>
+       <Optimization>Disabled</Optimization>
+       <SDLCheck>true</SDLCheck>
+-      <PreprocessorDefinitions>LUA_BUILD_AS_DLL;_WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <PreprocessorDefinitions>LUA_USER_H="ltests.h";LUA_BUILD_AS_DLL;_WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+       <ConformanceMode>true</ConformanceMode>
+     </ClCompile>
+     <Link>
+@@ -126,7 +126,7 @@
+       <FunctionLevelLinking>true</FunctionLevelLinking>
+       <IntrinsicFunctions>true</IntrinsicFunctions>
+       <SDLCheck>true</SDLCheck>
+-      <PreprocessorDefinitions>LUA_BUILD_AS_DLL;_WIN32;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <PreprocessorDefinitions>LUA_USER_H="ltests.h";LUA_BUILD_AS_DLL;_WIN32;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+       <ConformanceMode>true</ConformanceMode>
+     </ClCompile>
+     <Link>
+@@ -150,7 +150,7 @@
+       <FunctionLevelLinking>true</FunctionLevelLinking>
+       <IntrinsicFunctions>true</IntrinsicFunctions>
+       <SDLCheck>true</SDLCheck>
+-      <PreprocessorDefinitions>LUA_BUILD_AS_DLL;_WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <PreprocessorDefinitions>LUA_USER_H="ltests.h";LUA_BUILD_AS_DLL;_WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+       <ConformanceMode>true</ConformanceMode>
+     </ClCompile>
+     <Link>
+@@ -169,6 +169,7 @@
+   <ItemGroup>
+     <ClInclude Include="..\..\lua\lua-5.3.4\src\lauxlib.h" />
+     <ClInclude Include="..\..\lua\lua-5.3.4\src\lprefix.h" />
++    <ClInclude Include="..\..\lua\lua-5.3.4\src\ltests.h" />
+     <ClInclude Include="..\..\lua\lua-5.3.4\src\lua.h" />
+     <ClInclude Include="..\..\lua\lua-5.3.4\src\luaconf.h" />
+     <ClInclude Include="..\..\lua\lua-5.3.4\src\lualib.h" />
+diff --git a/msbuild/lua/lua.vcxproj.filters b/msbuild/lua/lua.vcxproj.filters
+index d30c5fa..84fd87c 100644
+--- a/msbuild/lua/lua.vcxproj.filters
++++ b/msbuild/lua/lua.vcxproj.filters
+@@ -30,6 +30,9 @@
+     <ClInclude Include="..\..\lua\lua-5.3.4\src\lualib.h">
+       <Filter>Header Files</Filter>
+     </ClInclude>
++    <ClInclude Include="..\..\lua\lua-5.3.4\src\ltests.h">
++      <Filter>Header Files</Filter>
++    </ClInclude>
+   </ItemGroup>
+   <ItemGroup>
+     <ClCompile Include="..\..\lua\lua-5.3.4\src\lua.c">
+diff --git a/msbuild/luac/luac.vcxproj b/msbuild/luac/luac.vcxproj
+index d445a16..4c99c05 100644
+--- a/msbuild/luac/luac.vcxproj
++++ b/msbuild/luac/luac.vcxproj
+@@ -128,7 +128,7 @@
+       <WarningLevel>Level3</WarningLevel>
+       <Optimization>Disabled</Optimization>
+       <SDLCheck>true</SDLCheck>
+-      <PreprocessorDefinitions>_WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <PreprocessorDefinitions>LUA_USER_H="ltests.h";_WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+       <ConformanceMode>true</ConformanceMode>
+     </ClCompile>
+     <Link>
+@@ -142,7 +142,7 @@
+       <WarningLevel>Level3</WarningLevel>
+       <Optimization>Disabled</Optimization>
+       <SDLCheck>true</SDLCheck>
+-      <PreprocessorDefinitions>_WIN32;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <PreprocessorDefinitions>LUA_USER_H="ltests.h";_WIN32;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+       <ConformanceMode>true</ConformanceMode>
+     </ClCompile>
+     <Link>
+@@ -158,7 +158,7 @@
+       <FunctionLevelLinking>true</FunctionLevelLinking>
+       <IntrinsicFunctions>true</IntrinsicFunctions>
+       <SDLCheck>true</SDLCheck>
+-      <PreprocessorDefinitions>_WIN32;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <PreprocessorDefinitions>LUA_USER_H="ltests.h";_WIN32;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+       <ConformanceMode>true</ConformanceMode>
+     </ClCompile>
+     <Link>
+@@ -176,7 +176,7 @@
+       <FunctionLevelLinking>true</FunctionLevelLinking>
+       <IntrinsicFunctions>true</IntrinsicFunctions>
+       <SDLCheck>true</SDLCheck>
+-      <PreprocessorDefinitions>_WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <PreprocessorDefinitions>LUA_USER_H="ltests.h";_WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+       <ConformanceMode>true</ConformanceMode>
+     </ClCompile>
+     <Link>
+diff --git a/msbuild/sliblua/sliblua.vcxproj b/msbuild/sliblua/sliblua.vcxproj
+index 75e6418..6604057 100644
+--- a/msbuild/sliblua/sliblua.vcxproj
++++ b/msbuild/sliblua/sliblua.vcxproj
+@@ -96,7 +96,7 @@
+       <WarningLevel>Level3</WarningLevel>
+       <Optimization>Disabled</Optimization>
+       <SDLCheck>true</SDLCheck>
+-      <PreprocessorDefinitions>_WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <PreprocessorDefinitions>LUA_USER_H="ltests.h";_WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+       <ConformanceMode>true</ConformanceMode>
+     </ClCompile>
+     <Link>
+@@ -110,7 +110,7 @@
+       <WarningLevel>Level3</WarningLevel>
+       <Optimization>Disabled</Optimization>
+       <SDLCheck>true</SDLCheck>
+-      <PreprocessorDefinitions>_WIN32;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <PreprocessorDefinitions>LUA_USER_H="ltests.h";_WIN32;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+       <ConformanceMode>true</ConformanceMode>
+     </ClCompile>
+     <Link>
+@@ -126,7 +126,7 @@
+       <FunctionLevelLinking>true</FunctionLevelLinking>
+       <IntrinsicFunctions>true</IntrinsicFunctions>
+       <SDLCheck>true</SDLCheck>
+-      <PreprocessorDefinitions>_WIN32;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <PreprocessorDefinitions>LUA_USER_H="ltests.h";_WIN32;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+       <ConformanceMode>true</ConformanceMode>
+     </ClCompile>
+     <Link>
+@@ -144,7 +144,7 @@
+       <FunctionLevelLinking>true</FunctionLevelLinking>
+       <IntrinsicFunctions>true</IntrinsicFunctions>
+       <SDLCheck>true</SDLCheck>
+-      <PreprocessorDefinitions>_WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
++      <PreprocessorDefinitions>LUA_USER_H="ltests.h";_WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+       <ConformanceMode>true</ConformanceMode>
+     </ClCompile>
+     <Link>
+@@ -173,6 +173,7 @@
+     <ClInclude Include="..\..\lua\lua-5.3.4\src\lstate.h" />
+     <ClInclude Include="..\..\lua\lua-5.3.4\src\lstring.h" />
+     <ClInclude Include="..\..\lua\lua-5.3.4\src\ltable.h" />
++    <ClInclude Include="..\..\lua\lua-5.3.4\src\ltests.h" />
+     <ClInclude Include="..\..\lua\lua-5.3.4\src\ltm.h" />
+     <ClInclude Include="..\..\lua\lua-5.3.4\src\lua.h" />
+     <ClInclude Include="..\..\lua\lua-5.3.4\src\luaconf.h" />
+@@ -574,6 +575,7 @@
+       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
+       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
+     </ClCompile>
++    <ClCompile Include="..\..\lua\lua-5.3.4\src\ltests.c" />
+     <ClCompile Include="..\..\lua\lua-5.3.4\src\ltm.c">
+       <DisableLanguageExtensions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</DisableLanguageExtensions>
+       <DisableLanguageExtensions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</DisableLanguageExtensions>
+diff --git a/msbuild/sliblua/sliblua.vcxproj.filters b/msbuild/sliblua/sliblua.vcxproj.filters
+index 7a045c4..2e7813d 100644
+--- a/msbuild/sliblua/sliblua.vcxproj.filters
++++ b/msbuild/sliblua/sliblua.vcxproj.filters
+@@ -90,6 +90,9 @@
+     <ClInclude Include="..\..\lua\lua-5.3.4\src\lmem.h">
+       <Filter>Header Files</Filter>
+     </ClInclude>
++    <ClInclude Include="..\..\lua\lua-5.3.4\src\ltests.h">
++      <Filter>Header Files</Filter>
++    </ClInclude>
+   </ItemGroup>
+   <ItemGroup>
+     <ClCompile Include="..\..\lua\lua-5.3.4\src\loadlib.c">
+@@ -194,5 +197,8 @@
+     <ClCompile Include="..\..\lua\lua-5.3.4\src\lfunc.c">
+       <Filter>Source Files</Filter>
+     </ClCompile>
++    <ClCompile Include="..\..\lua\lua-5.3.4\src\ltests.c">
++      <Filter>Source Files</Filter>
++    </ClCompile>
+   </ItemGroup>
+ </Project>
+\ No newline at end of file
