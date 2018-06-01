@@ -16,7 +16,6 @@ environment:
   LUA_VERSION: "5.3.4"
   SRC_DIR: "lua\\lua-5.3.4"
   TEST_DIR: "lua\\lua-5.3.4-tests"
-  debug_var: "test-$env:LUA_VERSION"
   SCRIPTS_DIR: "win"
   BUILD_DIR: "build"
   LUA_X64_DEBUG_BINDIR: ".\\lua\\x64\\Debug\\"
@@ -28,7 +27,6 @@ init:
   - git config --global core.autocrlf input
 
 build_script:
-  - ps: Write-Host $env:debug_var
   - ps: Push-Location -Path msbuild
   - ps: Get-Location
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
