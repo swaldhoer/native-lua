@@ -76,11 +76,14 @@ test_script:
   # We run the tests in cmd instead of PowerShell, since PowerShell on AppVeyor
   # thinks there is an error, but in fact if testing locally there is none.
   - cmd: lua.exe -e"_U=true" all_win.lua
-  - ps: Write-Host 'Simple test successful'
-  - ps: Write-Host "Running full tests"
+  - ps: Write-Host "Simple test successful"
+  - ps: Write-Host "Running full tests without testC"
   #- cmd: lua.exe all_win.lua
+  - ps: Write-Host "Normal test successful"
   - ps: Write-Host "Done testing"
   - ps: Pop-Location
+  # After testing went good, we need to prepare for a clean build
+  - ps: echo 1
   # Now we set the build up to compile with ltests, therefore we first copy the
   # sources and then we patch the msbuild files
   - ps: powershell .\$env:SCRIPTS_DIR\ltests-update-sources.ps1
@@ -91,6 +94,6 @@ test_script:
   - msbuild /property:Platform=x64 /property:Configuration=Debug /verbosity:normal
   - ps: Pop-Location
   - ps: Pop-Location
-  - ps: Push-Location -Path $env:LUA_X64_DEBUG_BINDIR
+  - ps: Push-Location -Path build\$env:LUA_X64_DEBUG_BINDIR
   - ps: .\lua.exe -v
   - ps: Pop-Location

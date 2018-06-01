@@ -37,8 +37,11 @@ script:
   - echo "Starting tests"
   - echo "Runnig simple test -e\"_U=true\""
   - sudo lua -e"_U=true" all.lua
+  - echo "Simple test successful"
   - echo "Running full tests without testC"
   - sudo lua all.lua
+  - echo "Normal test successful"
+  - echo "Done testing"
   - popd
   # After testing went good, we need to prepare for a clean build
   - pushd $SRC_DIR
