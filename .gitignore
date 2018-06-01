@@ -1,5 +1,6 @@
 *.vs
 *.vscode
+*.user
 *.dist
 *.exe
 *.dll
