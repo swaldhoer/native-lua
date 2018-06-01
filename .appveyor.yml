@@ -32,9 +32,9 @@ build_script:
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
   - msbuild /property:Platform=x64 /property:Configuration=Debug /verbosity:normal
   - msbuild /property:Platform=x64 /property:Configuration=Release /verbosity:normal
-  #- call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat"
-  #- msbuild /property:Platform=x86 /property:Configuration=Debug /verbosity:normal
-  #- msbuild /property:Platform=x86 /property:Configuration=Release /verbosity:normal
+  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat"
+  - msbuild /property:Platform=x86 /property:Configuration=Debug /verbosity:normal
+  - msbuild /property:Platform=x86 /property:Configuration=Release /verbosity:normal
   - ps: Write-Host "Successfully build lua-$env:LUA_VERSION"
   - ps: Pop-Location
   - ps: Get-Location
@@ -47,12 +47,12 @@ before_test:
   - ps: Push-Location -Path $env:LUA_X64_DEBUG_BINDIR
   - ps: .\lua.exe -v
   - ps: Pop-Location
-  #- ps: Push-Location -Path $env:LUA_X86_DEBUG_BINDIR
-  #- ps: .\lua.exe -v
-  #- ps: Pop-Location
-  #- ps: Push-Location -Path $env:LUA_X86_RELEASE_BINDIR
-  #- ps: .\lua.exe -v
-  #- ps: Pop-Location
+  - ps: Push-Location -Path $env:LUA_X86_DEBUG_BINDIR
+  - ps: .\lua.exe -v
+  - ps: Pop-Location
+  - ps: Push-Location -Path $env:LUA_X86_RELEASE_BINDIR
+  - ps: .\lua.exe -v
+  - ps: Pop-Location
   - ps: Pop-Location
   - ps: Write-Host "Simple interpreter version echoing test done..."
   - ps: Get-Location
