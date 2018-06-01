@@ -15,7 +15,7 @@ branches:
 environment:
   LUA_VERSION: "5.3.4"
   SRC_DIR: "lua\\lua-5.3.4"
-  TEST_DIR: "lua\\lua-5.3.4"
+  TEST_DIR: "lua\\lua-5.3.4-tests"
   SCRIPTS_DIR: "win"
   BUILD_DIR: "build"
   LUA_X64_DEBUG_BINDIR: ".\\lua\\x64\\Debug\\"
@@ -42,23 +42,15 @@ build_script:
 before_test:
   - ps: Push-Location -Path $env:BUILD_DIR
   - ps: Push-Location -Path $env:LUA_X64_RELEASE_BINDIR
-  - ps: Get-Location
-  - ps: ls
   - ps: .\lua.exe -v
   - ps: Pop-Location
   - ps: Push-Location -Path $env:LUA_X64_DEBUG_BINDIR
-  - ps: Get-Location
-  - ps: ls
   - ps: .\lua.exe -v
   - ps: Pop-Location
   - ps: Push-Location -Path $env:LUA_X86_DEBUG_BINDIR
-  - ps: Get-Location
-  - ps: ls
   - ps: .\lua.exe -v
   - ps: Pop-Location
   - ps: Push-Location -Path $env:LUA_X86_RELEASE_BINDIR
-  - ps: Get-Location
-  - ps: ls
   - ps: .\lua.exe -v
   - ps: Pop-Location
   - ps: Pop-Location
