@@ -77,6 +77,7 @@ test_script:
   - ps: Write-Host "Successfully installed lua-$env:LUA_VERSION"
   # We successfully build and installed, now lets get to testing
   - ps: powershell .\$env:SCRIPTS_DIR\generate-test-directories.ps1
+  - ps: Push-Location $env:TEST_DIR
   - ps: Write-Host "Starting tests"
   - ps: Write-Host 'Runnig simple test -e"_U=true"'
   # We run the tests in cmd instead of PowerShell, since PowerShell on AppVeyor
