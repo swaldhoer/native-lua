@@ -142,7 +142,7 @@ RUN('set LUA_INIT=@%s&& lua %s > %s', prog, prog, out) -- Changed to cmd
 checkout("10\n11\n")
 
 -- test errors in LUA_INIT
-NoRun('LUA_INIT:1: msg', 'set LUA_INIT=error(\'msg\')&& lua') -- Changed to cmd
+NoRun('LUA_INIT:1: msg', 'set LUA_INIT=error(\'msg\') && lua') -- Changed to cmd
 
 -- test option '-E'
 local defaultpath, defaultCpath
@@ -182,7 +182,7 @@ convert(";;a;;;bc")
 -- test -l over multiple libraries
 prepfile("print(1); a=2; return {x=15}")
 prepfile(("print(a); print(_G['%s'].x)"):format(prog), otherprog)
-RUN('set LUA_PATH=?;;&& lua -l %s -l%s -lstring -l io %s > %s', prog, otherprog, otherprog, out) -- Changed to cmd
+RUN('set LUA_PATH=?;; && lua -l %s -l%s -lstring -l io %s > %s', prog, otherprog, otherprog, out) -- Changed to cmd
 checkout("1\n2\n15\n2\n15\n")
 
 -- test 'arg' table
@@ -190,19 +190,21 @@ local a = "" -- Changed to cmd
 a = [[
   assert(#arg == 3 and arg[1] == 'a' and
          arg[2] == 'b' and arg[3] == 'c')
-  assert(arg[-1] == '--' and arg[-2]=='' and arg[-3] == "-e" and arg[-4] == '%s')
+  assert(arg[-1] == '--' and arg[-2] == "-e " and arg[-3] == '%s')
   assert(arg[4] == nil and arg[-5] == nil)
   local a, b, c = ...
   assert(... == 'a' and a == 'a' and b == 'b' and c == 'c')
 ]] -- Changed to cmd
-a = string.format(a, progname)
+tmp_progname = progname  -- Changed to cmd
+tmp_progname = tmp_progname:gsub('\\', "\\\\") -- Changed to cmd
+a = string.format(a, tmp_progname) -- Changed to cmd
 prepfile(a)
-RUN('cmd /nologo /c \"lua -e "" -- %s a b c\"', prog)   -- -e "" runs an empty command -- Changed to cmd
+RUN('cmd /nologo /c \"lua \"-e \" -- %s a b c\"', prog)   -- -e "" runs an empty command -- Changed to cmd
 
 -- test 'arg' availability in libraries
 prepfile"assert(arg)"
 prepfile("assert(arg)", otherprog)
-RUN('set LUA_PATH=?;;&& lua -l%s - < %s', prog, otherprog) -- Changed to cmd
+RUN('set LUA_PATH=?;; && lua -l%s - < %s', prog, otherprog) -- Changed to cmd
 
 -- test messing up the 'arg' table
 RUN('echo print(...) | lua -e "arg[1] = 100" - > %s', out) -- Changed to cmd
