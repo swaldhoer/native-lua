@@ -1,0 +1,34 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+root = true
+
+[{.*,*.md,*.rst}]
+charset = utf-8
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[msbuild/**]
+charset = utf-8-bom
+end_of_line = crlf
+[msbuild/**.vcxproj*]
+indent_style = space
+indent_size = 2
+[msbuild/**.sln]
+indent_style = tab
+
+[*.py]
+charset = utf-8
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.yml]
+charset = utf-8
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[Makefile]
+indent_style = tab
