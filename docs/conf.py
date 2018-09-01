@@ -4,7 +4,6 @@
 import os
 import sys
 import sphinx_rtd_theme
-import timezone
 
 sys.path.insert(0, os.path.abspath('.'))
 
@@ -28,7 +27,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 project = 'native-lua'
-copyright = '2018-{}, Stefan Waldhoer'.format(timezone.now().year)
+copyright = '2018-2018, Stefan Waldhoer'
 author = 'Stefan Waldhoer'
 
 version = '0.0.1'
