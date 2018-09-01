@@ -1,5 +1,0 @@
-# Installing Lua
-
-## Linux
-
-## Windows
