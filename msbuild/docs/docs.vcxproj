@@ -121,6 +121,14 @@ popd</NMakeCleanCommandLine>
   <ItemDefinitionGroup>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="..\..\docs\build.rst" />
+    <None Include="..\..\docs\ci.rst" />
+    <None Include="..\..\docs\conf.py" />
+    <None Include="..\..\docs\general.rst" />
+    <None Include="..\..\docs\index.rst" />
+    <None Include="..\..\docs\install.rst" />
+    <None Include="..\..\docs\make.bat" />
+    <None Include="..\..\docs\make.sh" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

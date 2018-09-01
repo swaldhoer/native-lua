@@ -14,4 +14,30 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\docs\build.rst">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="..\..\docs\ci.rst">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="..\..\docs\conf.py">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="..\..\docs\general.rst">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="..\..\docs\index.rst">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="..\..\docs\install.rst">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="..\..\docs\make.bat">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="..\..\docs\make.sh">
+      <Filter>Source Files</Filter>
+    </None>
+  </ItemGroup>
 </Project>

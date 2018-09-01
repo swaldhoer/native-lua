@@ -27,20 +27,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dliblua", "dliblua\dliblua.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sliblua", "sliblua\sliblua.vcxproj", "{7E946F56-37A1-4325-A586-5889BBD7C731}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{31F50707-7D8F-4D63-B2D3-2F71E13AA9CE}"
-	ProjectSection(SolutionItems) = preProject
-		..\docs\build.rst = ..\docs\build.rst
-		..\docs\ci.rst = ..\docs\ci.rst
-		..\docs\conf.py = ..\docs\conf.py
-		..\docs\general.rst = ..\docs\general.rst
-		..\docs\index.rst = ..\docs\index.rst
-		..\docs\install.rst = ..\docs\install.rst
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_static", "_static", "{7A41BC07-0D2F-436A-A469-1FCDC68B97F8}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_templates", "_templates", "{E0BBC67D-9314-49F0-A190-A9F5FA488BC7}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "docs", "docs\docs.vcxproj", "{F56E8133-B02D-41C8-88A1-0C661EA45CB9}"
 EndProject
 Global
@@ -94,11 +80,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{31F50707-7D8F-4D63-B2D3-2F71E13AA9CE} = {5889B5AB-5AA8-45F9-B803-EA3749149EEE}
-		{7A41BC07-0D2F-436A-A469-1FCDC68B97F8} = {31F50707-7D8F-4D63-B2D3-2F71E13AA9CE}
-		{E0BBC67D-9314-49F0-A190-A9F5FA488BC7} = {31F50707-7D8F-4D63-B2D3-2F71E13AA9CE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {41D8BAA0-1E99-4DD8-9BB8-D3521D06DE31}
