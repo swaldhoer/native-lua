@@ -27,6 +27,10 @@ environment:
 init:
   - git config --global core.autocrlf input
 
+install:
+  - "SET PATH=C:\\Miniconda36-x64;C:\\Miniconda36-x64\\Scripts;%PATH%"
+  - "C:\\Miniconda36-x64\\Scripts\\activate && conda install sphinx sphinx_rtd_theme && deactivate"
+
 build_script:
   - ps: Push-Location -Path msbuild
   - ps: Get-Location
