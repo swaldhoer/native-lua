@@ -29,7 +29,7 @@ init:
 
 install:
   - "SET PATH=C:\\Miniconda36-x64;C:\\Miniconda36-x64\\Scripts;%PATH%"
-  - "C:\\Miniconda36-x64\\Scripts\\activate && conda install sphinx sphinx_rtd_theme && deactivate"
+  - "C:\\Miniconda36-x64\\Scripts\\activate && conda install -y sphinx sphinx_rtd_theme && deactivate"
 
 build_script:
   - ps: Push-Location -Path msbuild
