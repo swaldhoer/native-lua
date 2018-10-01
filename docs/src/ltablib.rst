@@ -1,3 +1,5 @@
+.. _LTABLIB:
+
 LTABLIB
 =======
 

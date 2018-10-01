@@ -1,3 +1,5 @@
+.. _LUFT8LIB:
+
 LUTF8LIB
 ========
 

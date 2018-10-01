@@ -1,3 +1,5 @@
+.. _LUNDUMP:
+
 LUNDUMP
 =======
 
@@ -6,6 +8,8 @@ lundump.h
 
 .. literalinclude:: ./../../lua/lua-5.3.4/src/lundump.h
    :language: c
+
+-----
 
 lundump.c
 ---------

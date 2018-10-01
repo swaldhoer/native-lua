@@ -1,3 +1,5 @@
+.. _LOSLIB:
+
 LOSLIB
 ======
 

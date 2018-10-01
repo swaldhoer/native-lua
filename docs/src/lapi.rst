@@ -1,3 +1,5 @@
+.. _LAPI:
+
 LAPI
 ====
 
@@ -10,6 +12,7 @@ lapi.h
 -----
 
 lapi.c
+------
 
 .. literalinclude:: ./../../lua/lua-5.3.4/src/lapi.c
    :language: c

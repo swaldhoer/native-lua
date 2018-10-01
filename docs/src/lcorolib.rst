@@ -1,3 +1,5 @@
+.. _LCOROLIB:
+
 LCOROLIB
 ========
 

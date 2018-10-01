@@ -1,3 +1,5 @@
+.. _LTM:
+
 LTM
 ===
 
@@ -7,6 +9,7 @@ ltm.h
 .. literalinclude:: ./../../lua/lua-5.3.4/src/ltm.h
    :language: c
 
+-----
 
 ltm.c
 -----

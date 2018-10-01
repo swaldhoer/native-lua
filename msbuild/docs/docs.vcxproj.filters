@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Source Files\src">
+      <UniqueIdentifier>{fb0be4d4-db3d-4dad-b6b2-8b020466537f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\docs\build.rst">
@@ -38,6 +41,126 @@
     </None>
     <None Include="..\..\docs\make.sh">
       <Filter>Source Files</Filter>
+    </None>
+    <None Include="..\..\docs\sources.rst">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="..\..\docs\src\lapi.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\lauxlib.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\lbaselib.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\lbitlib.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\lcode.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\lcorolib.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\lctype.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\ldblib.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\ldebug.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\ldo.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\ldump.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\lfunc.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\lgc.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\linit.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\liolib.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\llex.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\llimits.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\lmathlib.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\lmem.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\loadlib.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\lobject.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\lopcodes.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\loslib.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\lparser.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\lprefix.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\lstate.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\lstring.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\lstrlib.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\ltable.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\ltablib.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\ltm.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\lua.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\luac.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\luaconf.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\lualib.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\lundump.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\lutf8lib.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\lvm.rst">
+      <Filter>Source Files\src</Filter>
+    </None>
+    <None Include="..\..\docs\src\lzio.rst">
+      <Filter>Source Files\src</Filter>
     </None>
   </ItemGroup>
 </Project>
