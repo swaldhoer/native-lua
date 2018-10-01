@@ -4,18 +4,18 @@
 [![Build Status](https://travis-ci.org/swaldhoer/native-lua.svg?branch=master)](https://travis-ci.org/swaldhoer/native-lua)
 [![Documentation Status](https://readthedocs.org/projects/native-lua/badge/?version=latest)](https://native-lua.readthedocs.io/en/latest/?badge=latest)
 
-Lua is  multi-paradigm programming language. Lua is cross-platform as it is
+`Lua` is multi-paradigm programming language. `Lua` is cross-platform as it is
 written in ANSI C. Lua is licensed under [MIT license][1].
 For information on `Lua` see [Lua.org][2]
 
-Lua requires `make` to be installed to build the binaries,
-therefore building for e.g., Linux or other POSIX systems where `make` is
-natively available is easy, see [here][3].
+`Lua` requires `gcc` and `make` to be installed to build the `Lua` binaries,
+therefore building for e.g., Linux or other POSIX systems where `gcc` and `make`
+are natively available is easy, see [here][3].
 
-Building Lua for Windows under Windows with native tools (therefore not building
-with `MinGW` or `Cygwin`) is nice for Windows users and developers, but `make`
-is not available. Therefore this project provides a `msbuild` project for
-building the binaries.
+Building `Lua` for Windows under Windows with native tools (therefore **not**
+building with `gcc` from `MinGW` or `Cygwin`, but the Visual Studio tools) is
+nice for Windows users and developers. Therefore this project provides a
+`msbuild` solution for building the binaries.
 
 ## Contents Of This Repository
 
@@ -45,7 +45,7 @@ except the following:
   `main_win.lua`. The changes made to the original file are indicated by
   `-- Added by 'native-lua' project,
   see https://github.com/swaldhoer/native-lua`.
-- `lua-x.x.x-tests/main_win.lua`: made test script work in `cmd`. The changes
+- `lua-x.x.x-tests/main_win.lua`: Made test script work in `cmd`. The changes
   made to the original file are indicated by `-- Changed to cmd`.
 
 ## Links
