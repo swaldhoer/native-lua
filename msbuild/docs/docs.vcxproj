@@ -169,6 +169,8 @@ popd</NMakeCleanCommandLine>
     <None Include="..\..\docs\src\lutf8lib.rst" />
     <None Include="..\..\docs\src\lvm.rst" />
     <None Include="..\..\docs\src\lzio.rst" />
+    <None Include="..\..\docs\_static\.dummy" />
+    <None Include="..\..\docs\_templates\.dummy" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
