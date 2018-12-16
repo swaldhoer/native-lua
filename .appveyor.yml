@@ -24,10 +24,7 @@ install:
   - cmd: C:\Miniconda37-x64\Scripts\activate
   - cmd: conda install pylint flake8 vs2017_win-64 -c anaconda -y -q
   - cmd: python --version
-  - sh: ls /bin/python*
-  - sh: ls /usr/bin/python*
-  - sh: ls /usr/bin/env/python*
-  - sh: ls /usr/local/bin/python*
+  - sh: sudo apt-get install python3.7
   - sh: python --version
   - sh: python3.7 --version
 
