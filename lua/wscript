@@ -41,31 +41,35 @@ def build(bld):
         os.path.join(basepath_src, 'loadlib.c'),
         os.path.join(basepath_src, 'linit.c')])
 
-    if bld.env.DEST_OS == 'win32':
-        # if on Windows we need to set LUA_BUILD_AS_DLL for msvc and gcc
-        # for all other OS we do not need to create shared library
-        bld.shlib(source=sources,
-                  target='lua',
-                  defines='LUA_BUILD_AS_DLL',
-                  name='shared-lua-library'
-                  )
-    else:
-        bld.shlib(source=sources,
-                  target='lua',
-                  name='shared-lua-library'
-                  )
-
-    bld.program(source=os.path.join(basepath_src, 'lua.c'),
-                target='lua',
-                use='shared-lua-library',
-                linkflags='',
-                ldflags=''
-                )
-
+    # For Unix-like operating system we build a static library for the
+    # lua interpreter and the lua compiler.
+    # For Windows we build static library only for the lua compiler. For the
+    # lua interpreter we build a DLL.
     bld.stlib(source=sources,
               target='lua',
               name='static-lua-library'
               )
+
+    if bld.env.DEST_OS == 'win32':
+        # On Windows we need to define LUA_BUILD_AS_DLL
+        bld.shlib(source=sources,
+                  target='luadll',
+                  defines='LUA_BUILD_AS_DLL',
+                  name='shared-lua-library'
+                  )
+        bld.program(source=os.path.join(basepath_src, 'lua.c'),
+                    target='lua',
+                    use='shared-lua-library',
+                    linkflags='',
+                    ldflags=''
+                    )
+    else:
+        bld.program(source=os.path.join(basepath_src, 'lua.c'),
+                    target='lua',
+                    use='static-lua-library',
+                    linkflags='',
+                    ldflags=''
+                    )
     bld.program(source=os.path.join(basepath_src, 'luac.c'),
                 target='luac',
                 use='static-lua-library',

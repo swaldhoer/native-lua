@@ -69,7 +69,7 @@ def configure(conf):
     else:
         pass
 
-    Logs.info(f'--> CLFAGS: {" ".join(conf.env.CFLAGS)}')
+    Logs.info(f'--> CFLAGS: {" ".join(conf.env.CFLAGS)}')
     Logs.info(f'--> LDFLAGS: {" ".join(conf.env.LDFLAGS)}')
     Logs.info(f'--> LINKFLAGS: {" ".join(conf.env.LINKFLAGS)}')
 
