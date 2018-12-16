@@ -54,6 +54,3 @@ build_script:
   - sh: python waf install
   - sh: python waf uninstall
   - sh: python waf distclean
-
-build: off
-
