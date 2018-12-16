@@ -15,7 +15,7 @@ install:
           $env:path = ($env:path -split ";").Where({!($_ -like "*$i*")}) -join ";"
         }
       }
-  - cmd: set PATH=C:\msys64\bin;%PATH%
+  - cmd: set PATH=C:\msys64\usr\bin;%PATH%
   - cmd: where gcc
   - ps: |
       if ($isWindows) {
@@ -27,6 +27,8 @@ install:
   - cmd: deactivate
   - cmd: C:\Miniconda37-x64\Scripts\activate & python --version && deactivate
   - sh: ls /usr/bin/python*
+  - sh: ls /usr/bin/env python*
+  - sh: ls /usr/local/bin/python*
   - sh: python --version
   - sh: python3.7 --version
 
