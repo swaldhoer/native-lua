@@ -16,11 +16,17 @@ install:
         }
       }
   - cmd: set PATH=C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev0\bin;%PATH%
-  - ps: Write-Host "New `$env:Path"
-  - ps: Write-Host "($env:Path).Replace(';',"`n")"
+  - ps: |
+      if ($isWindows) {
+        Write-Host "New `$env:Path"
+        Write-Host "($env:Path).Replace(';',"`n")"
+        }
   - cmd: C:\Miniconda37-x64\Scripts\activate
   - cmd: conda install pylint flake8 vs2017_win-64 -c anaconda -y -q
   - cmd: deactivate
+  - cmd: C:\Miniconda37-x64\Scripts\activate & python --version && deactivate
+  - sh: python --version
+  - sh: python3.7 --version
 
 before_build:
   # ensure that only well formated wscripts are checked in
@@ -49,8 +55,8 @@ build_script:
   - cmd: python waf distclean
   - cmd: deactivate
   # Linux gcc
-  - sh: python3 waf configure
-  - sh: python3 waf build
-  - sh: python3 waf install
-  - sh: python3 waf uninstall
-  - sh: python3 waf distclean
+  - sh: python3.7 waf configure
+  - sh: python3.7 waf build
+  - sh: python3.7 waf install
+  - sh: python3.7 waf uninstall
+  - sh: python3.7 waf distclean
