@@ -16,17 +16,17 @@ install:
         }
       }
   - cmd: set PATH=C:\msys64\usr\bin;%PATH%
-  - cmd: where gcc
   - ps: |
       if ($isWindows) {
-        Write-Host "New `$env:Path"
-        Write-Host "($env:Path).Replace(';',"`n")"
+        Write-Host New `$env:Path
+        Write-Host ($env:Path).Replace(';',"`n")
         }
   - cmd: C:\Miniconda37-x64\Scripts\activate
   - cmd: conda install pylint flake8 vs2017_win-64 -c anaconda -y -q
   - cmd: python --version
+  - sh: ls /bin/python*
   - sh: ls /usr/bin/python*
-  - sh: ls /usr/bin/env python*
+  - sh: ls /usr/bin/env/python*
   - sh: ls /usr/local/bin/python*
   - sh: python --version
   - sh: python3.7 --version
