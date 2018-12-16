@@ -1,0 +1,8 @@
+[flake8]
+ignore = D203
+exclude =
+    .git,
+    __pycache__,
+    build,
+    waf*-*.*.*-*,
+    docs/*
