@@ -15,7 +15,8 @@ install:
           $env:path = ($env:path -split ";").Where({!($_ -like "*$i*")}) -join ";"
         }
       }
-  - cmd: set PATH=C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev0\bin;%PATH%
+  - cmd: set PATH=C:\msys64\bin;%PATH%
+  - cmd: where gcc
   - ps: |
       if ($isWindows) {
         Write-Host "New `$env:Path"
@@ -25,6 +26,7 @@ install:
   - cmd: conda install pylint flake8 vs2017_win-64 -c anaconda -y -q
   - cmd: deactivate
   - cmd: C:\Miniconda37-x64\Scripts\activate & python --version && deactivate
+  - sh: ls /usr/bin/python*
   - sh: python --version
   - sh: python3.7 --version
 
