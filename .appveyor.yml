@@ -26,6 +26,7 @@ install:
 before_build:
   # ensure that only well formated wscripts are checked in
   - cmd: C:\Miniconda37-x64\Scripts\activate
+  - cmd: python waf --help
   - cmd: flake8
   - cmd: pylint wscript
   - cmd: pylint lua\wscript
