@@ -11,14 +11,13 @@ install:
   - ps: |
       if ($isWindows) {
         $rmpath = "Docker", "SQL", "Mercurial", "Subversion", "Maven", "CMake", "nodejs", "nunit", "nuget", "java", "xunit", "go", "python", "Amazon", "ruby", "perl", "Azur", "Webdriver", "Coverity", "Octopus", "erl9", "LLVM", "dotnet", "iojs", "curl", "Yarn", "chocolatey", "npm"
-        Write-Host "Original `$env:Path"
-        Write-Host ($env:Path).Replace(';',"`n")
         foreach ($i in $rmpath) {
           $env:path = ($env:path -split ";").Where({!($_ -like "*$i*")}) -join ";"
         }
-        Write-Host "New `$env:Path"
-        Write-Host ($env:Path).Replace(';',"`n")
       }
+  - cmd: set PATH=C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev0\bin;%PATH%
+  - ps: Write-Host "New `$env:Path"
+  - ps: Write-Host "($env:Path).Replace(';',"`n")"
   - cmd: C:\Miniconda37-x64\Scripts\activate
   - cmd: conda install pylint flake8 vs2017_win-64 -c anaconda -y -q
   - cmd: deactivate
@@ -35,7 +34,7 @@ before_build:
 build_script:
   # Windows gcc
   - cmd: C:\Miniconda37-x64\Scripts\activate
-  - cmd: python waf configure --check-c-compiler=gcc build install
+  - cmd: python waf configure --check-c-compiler=gcc
   - cmd: python waf build
   - cmd: python waf install
   - cmd: python waf uninstall
@@ -50,8 +49,8 @@ build_script:
   - cmd: python waf distclean
   - cmd: deactivate
   # Linux gcc
-  - sh: python waf configure
-  - sh: python waf build
-  - sh: python waf install
-  - sh: python waf uninstall
-  - sh: python waf distclean
+  - sh: python3 waf configure
+  - sh: python3 waf build
+  - sh: python3 waf install
+  - sh: python3 waf uninstall
+  - sh: python3 waf distclean
