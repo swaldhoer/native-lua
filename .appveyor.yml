@@ -24,8 +24,7 @@ install:
         }
   - cmd: C:\Miniconda37-x64\Scripts\activate
   - cmd: conda install pylint flake8 vs2017_win-64 -c anaconda -y -q
-  - cmd: deactivate
-  - cmd: C:\Miniconda37-x64\Scripts\activate & python --version && deactivate
+  - cmd: python --version
   - sh: ls /usr/bin/python*
   - sh: ls /usr/bin/env python*
   - sh: ls /usr/local/bin/python*
@@ -34,24 +33,19 @@ install:
 
 before_build:
   # ensure that only well formated wscripts are checked in
-  - cmd: C:\Miniconda37-x64\Scripts\activate
   - cmd: python waf --help
   - cmd: flake8
   - cmd: pylint wscript
   - cmd: pylint lua\wscript
-  - cmd: deactivate
 
 build_script:
   # Windows gcc
-  - cmd: C:\Miniconda37-x64\Scripts\activate
   - cmd: python waf configure --check-c-compiler=gcc
   - cmd: python waf build
   - cmd: python waf install
   - cmd: python waf uninstall
   - cmd: python waf distclean
-  - cmd: deactivate
   # Windows x64 msvc
-  - cmd: C:\Miniconda37-x64\Scripts\activate
   - cmd: python waf configure
   - cmd: python waf build
   - cmd: python waf install
