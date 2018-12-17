@@ -25,10 +25,8 @@ install:
   - cmd: conda install pylint flake8 vs2017_win-64 -c anaconda -y -q
   - cmd: python --version
   - sh: whereis python
-  - sh: sudo apt-get install python3.7
-  - sh: whereis python
-  - sh: python --version
-  - sh: python3.7 --version
+  - sh: PATH=/opt/az/bin:$PATH
+  - sh: python3.6 --version
 
 before_build:
   # ensure that only well formated wscripts are checked in
@@ -52,8 +50,8 @@ build_script:
   - cmd: python waf distclean
   - cmd: deactivate
   # Linux gcc
-  - sh: python3.7 waf configure
-  - sh: python3.7 waf build
-  - sh: python3.7 waf install
-  - sh: python3.7 waf uninstall
-  - sh: python3.7 waf distclean
+  - sh: python3.6 waf configure
+  - sh: python3.6 waf build
+  - sh: python3.6 waf install
+  - sh: python3.6 waf uninstall
+  - sh: python3.6 waf distclean
