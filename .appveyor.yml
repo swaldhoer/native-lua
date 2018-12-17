@@ -4,10 +4,13 @@ image:
   - Visual Studio 2017
   - Ubuntu
 
+stack: python 3.7.0
+
 init:
   - git config --global core.autocrlf input
 
 install:
+  - python --version
   - ps: |
       if ($isWindows) {
         $rmpath = "Docker", "SQL", "Mercurial", "Subversion", "Maven", "CMake", "nodejs", "nunit", "nuget", "java", "xunit", "go", "python", "Amazon", "ruby", "perl", "Azur", "Webdriver", "Coverity", "Octopus", "erl9", "LLVM", "dotnet", "iojs", "curl", "Yarn", "chocolatey", "npm"
@@ -24,9 +27,9 @@ install:
   - cmd: C:\Miniconda37-x64\Scripts\activate
   - cmd: conda install pylint flake8 vs2017_win-64 -c anaconda -y -q
   - cmd: python --version
-  - sh: whereis python
-  - sh: PATH=/opt/az/bin:$PATH
-  - sh: python3.6 --version
+  #- sh: whereis python
+  #- sh: PATH=/opt/az/bin:$PATH
+  #- sh: python3.6 --version
 
 before_build:
   # ensure that only well formated wscripts are checked in
@@ -50,8 +53,8 @@ build_script:
   - cmd: python waf distclean
   - cmd: deactivate
   # Linux gcc
-  - sh: python3.6 waf configure
-  - sh: python3.6 waf build
-  - sh: sudo python3.6 waf install
-  - sh: sudo python3.6 waf uninstall
-  - sh: python3.6 waf distclean
+  - sh: python waf configure
+  - sh: python waf build
+  - sh: sudo python waf install
+  - sh: sudo python waf uninstall
+  - sh: python waf distclean
