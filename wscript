@@ -51,12 +51,12 @@ def configure(conf):
     conf.load('gnu_dirs')
     conf.env.MAN1DIR = Utils.subst_vars(conf.options.MAN1DIR, conf.env)
     conf.load('compiler_c')
-    Logs.info(f'--> Using {conf.env.CC_NAME} on {conf.env.DEST_OS}')
 
     # set compiler specific, os independent CFLAGS
     # All CFLAGS specified are overwritten, as we decide how to compile
     if conf.env.CC_NAME == 'gcc':
         conf.env.CFLAGS = ['-std=gnu99', '-O2', '-Wall', '-Wextra']
+        conf.check(lib='m', cflags='-Wall', uselib_store='M')
     if conf.env.CC_NAME == 'msvc':
         conf.env.CFLAGS = ['/nologo', '/std:c++14', '/O2', '/Wall']
 
@@ -65,10 +65,11 @@ def configure(conf):
         if conf.env.CC_NAME == 'msvc':
             pass
         if conf.env.CC_NAME == 'gcc':
-            conf.check_cc(lib='m', cflags='-Wall', uselib_store='M')
+            pass
     else:
         pass
 
+    Logs.info(f'--> Using {conf.env.CC_NAME} on {conf.env.DEST_OS}')
     Logs.info(f'--> CFLAGS: {" ".join(conf.env.CFLAGS)}')
     Logs.info(f'--> LDFLAGS: {" ".join(conf.env.LDFLAGS)}')
     Logs.info(f'--> LINKFLAGS: {" ".join(conf.env.LINKFLAGS)}')

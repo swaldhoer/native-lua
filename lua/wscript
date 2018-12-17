@@ -50,6 +50,7 @@ def build(bld):
               name='static-lua-library'
               )
 
+    additional_use = []
     if bld.env.DEST_OS == 'win32':
         # On Windows we need to define LUA_BUILD_AS_DLL
         bld.shlib(source=sources,
@@ -64,15 +65,16 @@ def build(bld):
                     ldflags=''
                     )
     else:
+        additional_use = ['M']
         bld.program(source=os.path.join(basepath_src, 'lua.c'),
                     target='lua',
-                    use='static-lua-library',
+                    use=['static-lua-library']+additional_use,
                     linkflags='',
                     ldflags=''
                     )
     bld.program(source=os.path.join(basepath_src, 'luac.c'),
                 target='luac',
-                use='static-lua-library',
+                use=['static-lua-library']+additional_use,
                 )
 
     bld.install_files('${HTMLDIR}', ['lua-5.3.4/doc/contents.html',
