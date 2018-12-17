@@ -52,6 +52,6 @@ build_script:
   # Linux gcc
   - sh: python3.6 waf configure
   - sh: python3.6 waf build
-  - sh: python3.6 waf install
-  - sh: python3.6 waf uninstall
+  - sh: sudo python3.6 waf install
+  - sh: sudo python3.6 waf uninstall
   - sh: python3.6 waf distclean
