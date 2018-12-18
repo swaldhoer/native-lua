@@ -55,6 +55,6 @@ build_script:
   # Linux gcc
   - sh: python waf configure
   - sh: python waf build
-  - sh: sudo bash -c 'source venv3.7.0/bin/activate && python waf install'
-  - sh: sudo bash -c 'source venv3.7.0/bin/activate && python waf uninstall'
+  - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf install'
+  - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf uninstall'
   - sh: python waf distclean
