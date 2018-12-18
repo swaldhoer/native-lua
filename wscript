@@ -23,7 +23,9 @@ for x in c_compiler:
 
 # fix prefix on Windows
 if Utils.unversioned_sys_platform() == 'win32':
-    os.environ['PREFIX'] = os.environ.get('USERPROFILE')
+    os.environ['PREFIX'] = os.path.join(os.environ.get('LOCALAPPDATA'),
+                                        'Programs',
+                                        'lua')
 
 
 def options(opt):

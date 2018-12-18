@@ -77,6 +77,8 @@ def build(bld):
                 use=['static-lua-library']+additional_use,
                 )
 
+    if bld.env.DEST_OS == 'win32':
+        bld.install_files('${BINDIR}', ['luadll.dll'])
     bld.install_files('${HTMLDIR}', ['lua-5.3.4/doc/contents.html',
                                      'lua-5.3.4/doc/index.css',
                                      'lua-5.3.4/doc/logo.gif',
