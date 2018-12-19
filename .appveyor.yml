@@ -27,7 +27,7 @@ install:
   - cmd: C:\Miniconda37-x64\Scripts\activate
   - cmd: conda install pylint flake8 vs2017_win-64 -c anaconda -y -q
   - cmd: python --version
-  - sh: sudo apt-get install clang
+  - sh: sudo apt-get --assume-yes install clang
 
 before_build:
   # ensure that only well formated wscripts are checked in
