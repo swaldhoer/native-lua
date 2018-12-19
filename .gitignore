@@ -11,3 +11,4 @@ waf3-*
 .waf3-*
 *.a
 *.o
+*.patch

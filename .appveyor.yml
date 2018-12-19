@@ -43,20 +43,21 @@ build_script:
   - cmd: python waf build_msvc
   - cmd: python waf install_msvc
   - cmd: python waf uninstall_msvc
-  - cmd: python waf distclean
+  - cmd: python waf clean_msvc
   # msvc ]
   # gcc [
   - cmd: python waf build_gcc
   - cmd: python waf install_gcc
   - cmd: python waf uninstall_gcc
-  - cmd: python waf distclean
+  - cmd: python waf clean_gcc
   # gcc ]
   # clang [
   - cmd: python waf build_clang
   - cmd: python waf install_clang
   - cmd: python waf uninstall_clang
-  - cmd: python waf distclean
+  - cmd: python waf clean_clang
   # clang ]
+  - cmd: python waf distclean
   - cmd: deactivate
   # Windows ]
   # Linux [
@@ -65,12 +66,13 @@ build_script:
   - sh: python waf build_gcc
   - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf install_gcc'
   - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf uninstall_gcc'
-  - sh: python waf distclean
+  - sh: python waf clean_gcc
   # gcc ]
   # clang [
   - sh: python waf build_clang
   - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf install_clang'
   - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf uninstall_clang'
-  - sh: python waf distclean
+  - sh: python waf clean_clang
   # clang ]
+  - sh: python waf distclean
   # Linux ]

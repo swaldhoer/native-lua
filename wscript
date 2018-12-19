@@ -62,52 +62,64 @@ return 0;
 }
 '''
     check_os = Utils.unversioned_sys_platform()
-    print(check_os)
     dummy = c_compiler[check_os]
+    DEFINES_GLOB = ['LUA_COMPAT_5_2']  # pylint: disable=C0103
     if check_os == 'win32':
+        DEFINES_WIN32 = []  # pylint: disable=C0103
         # msvc
+        DEFINES_MSVC = ['_WIN32']  # pylint: disable=C0103
         conf.setenv('msvc')
         c_compiler[check_os] = ['msvc']
         conf.load('compiler_c')
         conf.env.CFLAGS = ['/nologo', '/std:c++14', '/O2', '/Wall']
-        conf.env.DEFINES = ['LUA_COMPAT_5_2', '_WIN32']
+        conf.env.DEFINES = DEFINES_GLOB + DEFINES_WIN32 + DEFINES_MSVC
         conf.check_cc(fragment=min_c, execute=True)
         # gcc
+        DEFINES_GCC = []  # pylint: disable=C0103
         conf.setenv('gcc')
         c_compiler[check_os] = ['gcc']
         conf.load('compiler_c')
         conf.env.CFLAGS = ['-std=gnu99', '-O2', '-Wall', '-Wextra']
-        conf.env.DEFINES = ['LUA_COMPAT_5_2']
+        conf.env.DEFINES = DEFINES_GLOB + DEFINES_WIN32 + DEFINES_GCC
         conf.check_cc(fragment=min_c, execute=True)
         conf.check(lib='m', cflags='-Wall', uselib_store='M')
         # clang
+        DEFINES_CLANG = []  # pylint: disable=C0103
         conf.setenv('clang')
         c_compiler[check_os] = ['clang']
         conf.load('compiler_c')
         conf.env.CFLAGS = ['-std=c99', '-O2', '-Wall', '-Wextra']
-        conf.env.DEFINES = ['LUA_COMPAT_5_2']
+        conf.env.DEFINES = DEFINES_GLOB + DEFINES_WIN32 + DEFINES_CLANG
         conf.check_cc(fragment=min_c, execute=True)
+        dummy = ['msvc', 'gcc', 'clang']
     elif check_os == 'cygwin':
         conf.fatal('TODO')
     elif check_os == 'linux':
-        print(1)
+        DEFINES_LINUX = ['LUA_USE_LINUX']  # pylint: disable=C0103
         # gcc
+        DEFINES_GCC = []  # pylint: disable=C0103
         conf.setenv('gcc')
         c_compiler[check_os] = ['gcc']
         conf.load('compiler_c')
         conf.env.CFLAGS = ['-std=gnu99', '-O2', '-Wall', '-Wextra']
-        conf.env.DEFINES = ['LUA_COMPAT_5_2']
+        conf.env.DEFINES = DEFINES_GLOB + DEFINES_LINUX + DEFINES_GCC
         conf.check_cc(fragment=min_c, execute=True)
         conf.check(lib='m', cflags='-Wall', uselib_store='M')
+        conf.check(lib='dl', cflags='-Wall', uselib_store='DL')
+        conf.check(lib='readline', cflags='-Wall', uselib_store='READLINE')
         # clang
+        DEFINES_CLANG = []  # pylint: disable=C0103
         conf.setenv('clang')
         c_compiler[check_os] = ['clang']
         conf.load('compiler_c')
         conf.env.CFLAGS = ['-std=c99', '-O2', '-Wall', '-Wextra']
-        conf.env.DEFINES = ['LUA_COMPAT_5_2']
+        conf.env.DEFINES = DEFINES_GLOB + DEFINES_LINUX + DEFINES_CLANG
         conf.check_cc(fragment=min_c, execute=True)
         conf.check(lib='m', cflags='-Wall', uselib_store='M')
-    # reset to all supported compilers
+        conf.check(lib='dl', cflags='-Wall', uselib_store='DL')
+        conf.check(lib='readline', cflags='-Wall', uselib_store='READLINE')
+        dummy = ['gcc', 'clang']
+    # reset to all supported and configured compilers
     c_compiler[check_os] = dummy
     Logs.pprint(
         'NORMAL',

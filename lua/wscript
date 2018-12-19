@@ -66,8 +66,8 @@ def build(bld):
                     linkflags='',
                     ldflags=''
                     )
-    else:
-        additional_use = ['M']
+    elif bld.env.DEST_OS == 'linux':
+        additional_use = ['M', 'DL', 'READLINE']
         bld.program(source=os.path.join(basepath_src, 'lua.c'),
                     target='lua',
                     use=['static-lua-library']+additional_use,
@@ -76,9 +76,7 @@ def build(bld):
                     )
     bld.program(source=os.path.join(basepath_src, 'luac.c'),
                 target='luac',
-                use=['static-lua-library']+additional_use,
-                ldflags=[],
-                linkflags=[] # remove
+                use=['static-lua-library']+additional_use
                 )
 
     if bld.is_install:
