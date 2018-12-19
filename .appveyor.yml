@@ -41,20 +41,20 @@ build_script:
   - cmd: python waf configure
   # msvc [
   - cmd: python waf build_msvc
-  - cmd: python waf install
-  - cmd: python waf uninstall
+  - cmd: python waf install_msvc
+  - cmd: python waf uninstall_msvc
   - cmd: python waf distclean
   # msvc ]
   # gcc [
   - cmd: python waf build_gcc
-  - cmd: python waf install
-  - cmd: python waf uninstall
+  - cmd: python waf install_gcc
+  - cmd: python waf uninstall_gcc
   - cmd: python waf distclean
   # gcc ]
   # clang [
   - cmd: python waf build_clang
-  - cmd: python waf install
-  - cmd: python waf uninstall
+  - cmd: python waf install_clang
+  - cmd: python waf uninstall_clang
   - cmd: python waf distclean
   # clang ]
   - cmd: deactivate
@@ -63,14 +63,14 @@ build_script:
   - sh: python waf configure
   # gcc [
   - sh: python waf build_gcc
-  - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf install'
-  - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf uninstall'
+  - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf install_gcc'
+  - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf uninstall_gcc'
   - sh: python waf distclean
   # gcc ]
   # clang [
   - sh: python waf build_clang
-  - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf install'
-  - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf uninstall'
+  - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf install_clang'
+  - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf uninstall_clang'
   - sh: python waf distclean
   # clang ]
   # Linux ]

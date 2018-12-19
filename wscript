@@ -9,6 +9,7 @@ from waflib import Logs, Utils, Options
 from waflib.Logs import colors_lst
 from waflib.Tools.compiler_c import c_compiler
 from waflib.Build import BuildContext, CleanContext, ListContext, StepContext
+from waflib.Build import InstallContext, UninstallContext
 
 VERSION = '0.0.1'
 APPNAME = 'lua'
@@ -16,7 +17,8 @@ top = '.'  # pylint: disable=C0103
 out = 'build'  # pylint: disable=C0103
 
 for x in c_compiler[Utils.unversioned_sys_platform()]:
-    for y in (BuildContext, CleanContext, ListContext, StepContext):
+    for y in (BuildContext, CleanContext, ListContext, StepContext,
+              InstallContext, UninstallContext):
         name = y.__name__.replace('Context', '').lower()
         class Tmp(y):
             cmd = name + '_' + x
