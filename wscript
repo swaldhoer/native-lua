@@ -103,6 +103,7 @@ return 0;
         conf.load('compiler_c')
         conf.env.CFLAGS = ['-std=gnu99', '-O2', '-Wall', '-Wextra']
         conf.env.DEFINES = DEFINES_GLOB + DEFINES_LINUX + DEFINES_GCC
+        conf.env.LINKFLAGS = ['-Wl,-export-dynamic']
         conf.check_cc(fragment=min_c, execute=True)
         conf.check(lib='m', cflags='-Wall', uselib_store='M')
         conf.check(lib='dl', cflags='-Wall', uselib_store='DL')
@@ -114,6 +115,7 @@ return 0;
         conf.load('compiler_c')
         conf.env.CFLAGS = ['-std=c99', '-O2', '-Wall', '-Wextra']
         conf.env.DEFINES = DEFINES_GLOB + DEFINES_LINUX + DEFINES_CLANG
+        conf.env.LINKFLAGS = ['-Wl,-export-dynamic']
         conf.check_cc(fragment=min_c, execute=True)
         conf.check(lib='m', cflags='-Wall', uselib_store='M')
         conf.check(lib='dl', cflags='-Wall', uselib_store='DL')
