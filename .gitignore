@@ -8,5 +8,6 @@
 build
 .lock-waf_*
 waf3-*
+.waf3-*
 *.a
 *.o

@@ -3,6 +3,8 @@
 
 import os
 
+from waflib import Logs
+
 
 def build(bld):
     basepath_src = os.path.join('lua-5.3.4', 'src')
@@ -75,10 +77,18 @@ def build(bld):
     bld.program(source=os.path.join(basepath_src, 'luac.c'),
                 target='luac',
                 use=['static-lua-library']+additional_use,
+                ldflags=[],
+                linkflags=[] # remove
                 )
+
+    if bld.is_install:
+        Logs.info(f'--> {bld.env.DEST_OS} [{bld.env.CC_NAME}]')
 
     if bld.env.DEST_OS == 'win32':
         bld.install_files('${BINDIR}', ['luadll.dll'])
+        if bld.env.CC_NAME == 'gcc':
+            bld.install_files('${BINDIR}', ['luadll.dll.a'])
+            bld.install_files('${EXEC_PREFIX}/lib', ['liblua.a'])
     bld.install_files('${HTMLDIR}', ['lua-5.3.4/doc/contents.html',
                                      'lua-5.3.4/doc/index.css',
                                      'lua-5.3.4/doc/logo.gif',
@@ -94,3 +104,8 @@ def build(bld):
                                         'lua-5.3.4/src/lualib.h',
                                         'lua-5.3.4/src/lauxlib.h',
                                         'lua-5.3.4/src/lua.hpp'])
+
+def test(bld):
+    bld.test_files = bld.path.ant_glob('**/*.lua', excl=['**/all*.lua'])
+    for test_file in bld.test_files:
+        print(test_file)

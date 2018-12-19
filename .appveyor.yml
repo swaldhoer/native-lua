@@ -39,22 +39,40 @@ before_build:
   - cmd: pylint lua\wscript
 
 build_script:
-  # Windows gcc
-  - cmd: python waf configure --check-c-compiler=gcc
-  - cmd: python waf build
-  - cmd: python waf install
-  - cmd: python waf uninstall
-  - cmd: python waf distclean
-  # Windows x64 msvc
+  # Windows [
   - cmd: python waf configure
-  - cmd: python waf build
+  # msvc [
+  - cmd: python waf build_msvc
   - cmd: python waf install
   - cmd: python waf uninstall
   - cmd: python waf distclean
+  # msvc ]
+  # gcc [
+  - cmd: python waf build_gcc
+  - cmd: python waf install
+  - cmd: python waf uninstall
+  - cmd: python waf distclean
+  # gcc ]
+  # clang [
+  - cmd: python waf build_clang
+  - cmd: python waf install
+  - cmd: python waf uninstall
+  - cmd: python waf distclean
+  # clang ]
   - cmd: deactivate
-  # Linux gcc
+  # Windows ]
+  # Linux [
   - sh: python waf configure
-  - sh: python waf build
+  # gcc [
+  - sh: python waf build_gcc
   - sh: sudo bash -c 'source venv3.7.0/bin/activate && python waf install'
   - sh: sudo bash -c 'source venv3.7.0/bin/activate && python waf uninstall'
   - sh: python waf distclean
+  # gcc ]
+  # clang [
+  - sh: python waf build_clang
+  - sh: sudo bash -c 'source venv3.7.0/bin/activate && python waf install'
+  - sh: sudo bash -c 'source venv3.7.0/bin/activate && python waf uninstall'
+  - sh: python waf distclean
+  # clang ]
+  # Linux ]
