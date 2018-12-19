@@ -13,7 +13,7 @@ install:
   - python --version
   - ps: |
       if ($isWindows) {
-        $rmpath = "Docker", "SQL", "Mercurial", "Subversion", "Maven", "CMake", "nodejs", "nunit", "nuget", "java", "xunit", "go", "python", "Amazon", "ruby", "perl", "Azur", "Webdriver", "Coverity", "Octopus", "erl9", "LLVM", "dotnet", "iojs", "curl", "Yarn", "chocolatey", "npm"
+        $rmpath = "Docker", "SQL", "Mercurial", "Subversion", "Maven", "CMake", "nodejs", "nunit", "nuget", "java", "xunit", "go", "python", "Amazon", "ruby", "perl", "Azur", "Webdriver", "Coverity", "Octopus", "erl9", "dotnet", "iojs", "curl", "Yarn", "chocolatey", "npm"
         foreach ($i in $rmpath) {
           $env:path = ($env:path -split ";").Where({!($_ -like "*$i*")}) -join ";"
         }
