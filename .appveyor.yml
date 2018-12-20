@@ -38,7 +38,7 @@ before_build:
 
 build_script:
   # Windows [
-  - cmd: python waf configure
+  - cmd: python waf configure --run-tests
   # msvc [
   - cmd: python waf build_msvc
   - cmd: python waf install_msvc
@@ -61,7 +61,7 @@ build_script:
   - cmd: deactivate
   # Windows ]
   # Linux [
-  - sh: python waf configure
+  - sh: python waf configure --run-tests
   # gcc [
   - sh: python waf build_gcc
   - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf install_gcc'

@@ -16,6 +16,9 @@ APPNAME = 'lua'
 top = '.'  # pylint: disable=C0103
 out = 'build'  # pylint: disable=C0103
 
+C_G = colors_lst["GREEN"]
+C_N = colors_lst["NORMAL"]
+
 for x in c_compiler[Utils.unversioned_sys_platform()]:
     for y in (BuildContext, CleanContext, ListContext, StepContext,
               InstallContext, UninstallContext):
@@ -49,7 +52,8 @@ def options(opt):
                       dest='MAN1DIR')
     opt.add_option('--confcache', dest='confcache', default=0,
                    action='count', help='Use a configuration cache')
-
+    opt.add_option('--run-tests', dest='run_tests', default=False,
+                   action='store_true', help='Run tests after build')
 
 def configure(conf):
     # configure gnudirs the same on all platforms (Unix-like or not)
@@ -74,6 +78,7 @@ return 0;
         conf.env.CFLAGS = ['/nologo', '/std:c++14', '/O2', '/Wall']
         conf.env.DEFINES = DEFINES_GLOB + DEFINES_WIN32 + DEFINES_MSVC
         conf.check_cc(fragment=min_c, execute=True)
+        conf.env.run_tests = conf.options.run_tests
         # gcc
         DEFINES_GCC = []  # pylint: disable=C0103
         conf.setenv('gcc')
@@ -83,6 +88,7 @@ return 0;
         conf.env.DEFINES = DEFINES_GLOB + DEFINES_WIN32 + DEFINES_GCC
         conf.check_cc(fragment=min_c, execute=True)
         conf.check(lib='m', cflags='-Wall', uselib_store='M')
+        conf.env.run_tests = conf.options.run_tests
         # clang
         DEFINES_CLANG = []  # pylint: disable=C0103
         conf.setenv('clang')
@@ -91,6 +97,7 @@ return 0;
         conf.env.CFLAGS = ['-std=c99', '-O2', '-Wall', '-Wextra']
         conf.env.DEFINES = DEFINES_GLOB + DEFINES_WIN32 + DEFINES_CLANG
         conf.check_cc(fragment=min_c, execute=True)
+        conf.env.run_tests = conf.options.run_tests
         dummy = ['msvc', 'gcc', 'clang']
     elif check_os == 'cygwin':
         conf.fatal('TODO')
@@ -108,6 +115,7 @@ return 0;
         conf.check(lib='m', cflags='-Wall', uselib_store='M')
         conf.check(lib='dl', cflags='-Wall', uselib_store='DL')
         conf.check(lib='readline', cflags='-Wall', uselib_store='READLINE')
+        conf.env.run_tests = conf.options.run_tests
         # clang
         DEFINES_CLANG = []  # pylint: disable=C0103
         conf.setenv('clang')
@@ -120,6 +128,7 @@ return 0;
         conf.check(lib='m', cflags='-Wall', uselib_store='M')
         conf.check(lib='dl', cflags='-Wall', uselib_store='DL')
         conf.check(lib='readline', cflags='-Wall', uselib_store='READLINE')
+        conf.env.run_tests = conf.options.run_tests
         dummy = ['gcc', 'clang']
     # reset to all supported and configured compilers
     c_compiler[check_os] = dummy
@@ -128,12 +137,12 @@ return 0;
         f'\nThe following compilers are configured: {c_compiler[check_os]}')
     for tmp_cc in c_compiler[check_os]:
         conf.setenv(tmp_cc)
-        Logs.pprint('NORMAL', f'--> Using {colors_lst["GREEN"]}{conf.env.CC_NAME}{colors_lst["NORMAL"]} on {colors_lst["GREEN"]}{conf.env.DEST_OS}{colors_lst["NORMAL"]}')  # pylint: disable=C0301
-        Logs.pprint('NORMAL', f'    --> CFLAGS:     {colors_lst["GREEN"]}{" ".join(conf.env.CFLAGS) or colors_lst["NORMAL"]+"(None)"}{colors_lst["NORMAL"]}')  # pylint: disable=C0301
-        Logs.pprint('NORMAL', f'    --> DEFINES:    {colors_lst["GREEN"]}{" ".join(conf.env.DEFINES) or colors_lst["NORMAL"]+"(None)"}{colors_lst["NORMAL"]}')  # pylint: disable=C0301
-        Logs.pprint('NORMAL', f'    --> LDFLAGS:    {colors_lst["GREEN"]}{" ".join(conf.env.LDFLAGS) or colors_lst["NORMAL"]+"(None)"}{colors_lst["NORMAL"]}')  # pylint: disable=C0301
-        Logs.pprint('NORMAL', f'    --> LINKFLAGS:  {colors_lst["GREEN"]}{" ".join(conf.env.LINKFLAGS) or colors_lst["NORMAL"]+"(None)"}{colors_lst["NORMAL"]}')  # pylint: disable=C0301
-    print()
+        Logs.pprint('NORMAL', f'--> Using {C_G}{conf.env.CC_NAME}{C_N} on {C_G}{conf.env.DEST_OS}{C_N}')  # pylint: disable=C0301
+        Logs.pprint('NORMAL', f'    --> CFLAGS:     {C_G}{" ".join(conf.env.CFLAGS) or C_N+"(None)"}{C_N}')  # pylint: disable=C0301
+        Logs.pprint('NORMAL', f'    --> DEFINES:    {C_G}{" ".join(conf.env.DEFINES) or C_N+"(None)"}{C_N}')  # pylint: disable=C0301
+        Logs.pprint('NORMAL', f'    --> LDFLAGS:    {C_G}{" ".join(conf.env.LDFLAGS) or C_N+"(None)"}{C_N}')  # pylint: disable=C0301
+        Logs.pprint('NORMAL', f'    --> LINKFLAGS:  {C_G}{" ".join(conf.env.LINKFLAGS) or C_N+"(None)"}{C_N}')  # pylint: disable=C0301
+    Logs.pprint('NORMAL', f'--> Running tests: {C_G}{conf.env.run_tests}{C_N}')
 
 def build(bld):
     '''Wrapper for the compiler specific build'''
@@ -154,7 +163,4 @@ def build(bld):
     formatter = logging.Formatter('%(message)s')
     hdlr.setFormatter(formatter)
     bld.logger.addHandler(hdlr)
-    bld.recurse('lua')
-
-def test(bld):
     bld.recurse('lua')

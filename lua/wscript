@@ -81,7 +81,6 @@ def build(bld):
 
     if bld.is_install:
         Logs.info(f'--> {bld.env.DEST_OS} [{bld.env.CC_NAME}]')
-
     if bld.env.DEST_OS == 'win32':
         bld.install_files('${BINDIR}', ['luadll.dll'])
         if bld.env.CC_NAME == 'gcc':
@@ -102,8 +101,24 @@ def build(bld):
                                         'lua-5.3.4/src/lualib.h',
                                         'lua-5.3.4/src/lauxlib.h',
                                         'lua-5.3.4/src/lua.hpp'])
-
-def test(bld):
-    bld.test_files = bld.path.ant_glob('**/*.lua', excl=['**/all*.lua'])
-    for test_file in bld.test_files:
-        print(test_file)
+    if bld.env.run_tests:
+        t_files = bld.path.ant_glob('lua-5.3.4-tests/**/*.lua')
+        t_files = [t.path_from(bld.path) for t in t_files]
+        bld(features='subst', source=t_files, target=t_files, is_copy=True)
+        bld.path.get_bld().make_node("lua-5.3.4-tests/libs/P1").mkdir()
+        bld.shlib(source='lua-5.3.4-tests/libs/lib1.c',
+                  target="lua-5.3.4-tests/libs/1",
+                  name="lib1")
+        bld.shlib(source='lua-5.3.4-tests/libs/lib11.c',
+                  target="lua-5.3.4-tests/libs/11",
+                  name="lib11")
+        bld.shlib(source='lua-5.3.4-tests/libs/lib2.c',
+                  target="lua-5.3.4-tests/libs/2",
+                  name="lib2")
+        bld.shlib(source='lua-5.3.4-tests/libs/lib21.c',
+                  target="lua-5.3.4-tests/libs/21",
+                  name="lib21")
+        bld(features='subst',
+            source="lua-5.3.4-tests/libs/lib2.so",
+            target="lua-5.3.4-tests/libs/lib2-v2.so",
+            is_copy=True)

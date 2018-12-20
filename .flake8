@@ -5,4 +5,5 @@ exclude =
     __pycache__,
     build,
     waf*-*.*.*-*,
+    .waf*-*.*.*-*,
     docs/*
