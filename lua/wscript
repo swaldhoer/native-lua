@@ -138,13 +138,13 @@ def build_win32(bld):
 
         bld.shlib(source=bld.env.sources,
                   target='luadll',
-                  defines=defines+['LUA_BUILD_AS_DL'],
+                  defines=defines+['LUA_BUILD_AS_DLL'],
                   name='shared-lua-library')
 
         bld.program(source=bld.env.source_interpreter,
                     target='lua',
                     defines=defines,
-                    use='shared-lua-library')
+                    use=['shared-lua-library'])
         bld.program(source=bld.env.source_compiler,
                     target='luac',
                     defines=defines,
