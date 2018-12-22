@@ -7,3 +7,5 @@ exclude =
     waf*-*.*.*-*,
     .waf*-*.*.*-*,
     docs/*
+include = *wscript
+max-line-length = 79

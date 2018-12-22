@@ -6,7 +6,6 @@ import os
 import logging
 
 from waflib import Logs, Utils, Options
-from waflib.Logs import colors_lst
 from waflib.Tools.compiler_c import c_compiler
 from waflib.Build import BuildContext, CleanContext, ListContext, StepContext
 from waflib.Build import InstallContext, UninstallContext
@@ -16,10 +15,9 @@ APPNAME = 'lua'
 top = '.'  # pylint: disable=C0103
 out = 'build'  # pylint: disable=C0103
 
-C_G = colors_lst["GREEN"]
-C_N = colors_lst["NORMAL"]
+host_os = Utils.unversioned_sys_platform()  # pylint: disable=C0103
 
-for x in c_compiler[Utils.unversioned_sys_platform()]:
+for x in c_compiler[host_os]:
     for y in (BuildContext, CleanContext, ListContext, StepContext,
               InstallContext, UninstallContext):
         name = y.__name__.replace('Context', '').lower()
@@ -27,8 +25,7 @@ for x in c_compiler[Utils.unversioned_sys_platform()]:
             cmd = name + '_' + x
             variant = x
 
-# fix prefix on Windows
-if Utils.unversioned_sys_platform() == 'win32':
+if host_os == 'win32':
     os.environ['PREFIX'] = os.path.join(os.environ.get('LOCALAPPDATA'),
                                         'Programs',
                                         'lua')
@@ -52,107 +49,171 @@ def options(opt):
                       dest='MAN1DIR')
     opt.add_option('--confcache', dest='confcache', default=0,
                    action='count', help='Use a configuration cache')
-    opt.add_option('--run-tests', dest='run_tests', default=False,
-                   action='store_true', help='Run tests after build')
+    opt.add_option('--include-tests', dest='include_tests', default=False,
+                   action='store_true', help='Include test files')
+    opt.add_option(
+        '--c-std',
+        dest='c_standard',
+        default='c99',
+        choices=['c89', 'c99'],
+        help='Specify C-standard to be used. \'c99\' is default. \'c99\' will '
+             'be replaced by \'gnu99\' for gcc, xlc and icc. \'c99\' will be '
+             'replaced by \'c++14\' for msvc. \'c89\' is passed verbatim for '
+             'gcc, xlc, icc and clang. \'c89\' will be replaced by \'c++14\' '
+             ' for msvc.')
+    opt.add_option('--ltests', dest='ltests', default=False,
+                   action='store_true', help='Building with \'ltests\'')
 
-def configure(conf):
-    # configure gnudirs the same on all platforms (Unix-like or not)
-    conf.load('gnu_dirs')
-    conf.env.MAN1DIR = Utils.subst_vars(conf.options.MAN1DIR, conf.env)
+def configure(cnf):  # pylint: disable=R0912
+    """Basic configuration of the project based on the operating system and
+the available compilers.
+    """
+
+    def get_c_standard(env_name, c_std):
+        """Define C standard for each compiler"""
+        c_std_string = None
+        if env_name in ('gcc', 'xlc', 'icc'):
+            pref = '-std='
+            if c_std == 'c89':
+                c_std_string = f'{pref}c89'
+            if c_std == 'c99':
+                c_std_string = f'{pref}gnu99'
+        elif env_name == 'clang':
+            c_std_string = f'-std={c_std}'
+        elif env_name == 'msvc':
+            c_std_string = f'/std:c++14'
+        return c_std_string or (cnf.fatal('Could not set C-standard'))
+
+    def set_new_basic_env(env_name):
+        """Create a new environment based on the base environment"""
+        cnf.setenv('')
+        tmp_env = cnf.env.derive()
+        tmp_env.detach()
+        cnf.setenv(env_name, tmp_env)
+        cnf.env.env_name = env_name
+        c_compiler[host_os] = [cnf.env.env_name]
+        cnf.env.c_standard = get_c_standard(cnf.env.env_name,
+                                            cnf.env.c_standard)
+
+    def check_libs(*libs):
+        for lib in libs:
+            cnf.check(lib=lib, uselib_store=lib.upper())
+
+    cnf.setenv('')
+    cnf.env.host_os = host_os
+    cnf.env.c_standard = cnf.options.c_standard
+    cnf.env.include_tests = cnf.options.include_tests
+    cnf.load('gnu_dirs')
+    cnf.env.MAN1DIR = Utils.subst_vars(cnf.options.MAN1DIR, cnf.env)
+
     min_c = '''\
 #include<stdio.h>
 int main() {
 return 0;
 }
 '''
-    check_os = Utils.unversioned_sys_platform()
-    dummy = c_compiler[check_os]
-    DEFINES_GLOB = ['LUA_COMPAT_5_2']  # pylint: disable=C0103
-    if check_os == 'win32':
-        DEFINES_WIN32 = []  # pylint: disable=C0103
-        # msvc
-        DEFINES_MSVC = ['_WIN32']  # pylint: disable=C0103
-        conf.setenv('msvc')
-        c_compiler[check_os] = ['msvc']
-        conf.load('compiler_c')
-        conf.env.CFLAGS = ['/nologo', '/std:c++14', '/O2', '/Wall']
-        conf.env.DEFINES = DEFINES_GLOB + DEFINES_WIN32 + DEFINES_MSVC
-        conf.check_cc(fragment=min_c, execute=True)
-        conf.env.run_tests = conf.options.run_tests
-        # gcc
-        DEFINES_GCC = []  # pylint: disable=C0103
-        conf.setenv('gcc')
-        c_compiler[check_os] = ['gcc']
-        conf.load('compiler_c')
-        conf.env.CFLAGS = ['-std=gnu99', '-O2', '-Wall', '-Wextra']
-        conf.env.DEFINES = DEFINES_GLOB + DEFINES_WIN32 + DEFINES_GCC
-        conf.check_cc(fragment=min_c, execute=True)
-        conf.check(lib='m', cflags='-Wall', uselib_store='M')
-        conf.env.run_tests = conf.options.run_tests
-        # clang
-        DEFINES_CLANG = []  # pylint: disable=C0103
-        conf.setenv('clang')
-        c_compiler[check_os] = ['clang']
-        conf.load('compiler_c')
-        conf.env.CFLAGS = ['-std=c99', '-O2', '-Wall', '-Wextra']
-        conf.env.DEFINES = DEFINES_GLOB + DEFINES_WIN32 + DEFINES_CLANG
-        conf.check_cc(fragment=min_c, execute=True)
-        conf.env.run_tests = conf.options.run_tests
-        dummy = ['msvc', 'gcc', 'clang']
-    elif check_os == 'cygwin':
-        conf.fatal('TODO')
-    elif check_os == 'linux':
-        DEFINES_LINUX = ['LUA_USE_LINUX']  # pylint: disable=C0103
-        # gcc
-        DEFINES_GCC = []  # pylint: disable=C0103
-        conf.setenv('gcc')
-        c_compiler[check_os] = ['gcc']
-        conf.load('compiler_c')
-        conf.env.CFLAGS = ['-std=gnu99', '-O2', '-Wall', '-Wextra']
-        conf.env.DEFINES = DEFINES_GLOB + DEFINES_LINUX + DEFINES_GCC
-        conf.env.LINKFLAGS = ['-Wl,-export-dynamic']
-        conf.check_cc(fragment=min_c, execute=True)
-        conf.check(lib='m', cflags='-Wall', uselib_store='M')
-        conf.check(lib='dl', cflags='-Wall', uselib_store='DL')
-        conf.check(lib='readline', cflags='-Wall', uselib_store='READLINE')
-        conf.env.run_tests = conf.options.run_tests
-        # clang
-        DEFINES_CLANG = []  # pylint: disable=C0103
-        conf.setenv('clang')
-        c_compiler[check_os] = ['clang']
-        conf.load('compiler_c')
-        conf.env.CFLAGS = ['-std=c99', '-O2', '-Wall', '-Wextra']
-        conf.env.DEFINES = DEFINES_GLOB + DEFINES_LINUX + DEFINES_CLANG
-        conf.env.LINKFLAGS = ['-Wl,-export-dynamic']
-        conf.check_cc(fragment=min_c, execute=True)
-        conf.check(lib='m', cflags='-Wall', uselib_store='M')
-        conf.check(lib='dl', cflags='-Wall', uselib_store='DL')
-        conf.check(lib='readline', cflags='-Wall', uselib_store='READLINE')
-        conf.env.run_tests = conf.options.run_tests
-        dummy = ['gcc', 'clang']
-    # reset to all supported and configured compilers
-    c_compiler[check_os] = dummy
-    Logs.pprint(
-        'NORMAL',
-        f'\nThe following compilers are configured: {c_compiler[check_os]}')
-    for tmp_cc in c_compiler[check_os]:
-        conf.setenv(tmp_cc)
-        Logs.pprint('NORMAL', f'--> Using {C_G}{conf.env.CC_NAME}{C_N} on {C_G}{conf.env.DEST_OS}{C_N}')  # pylint: disable=C0301
-        Logs.pprint('NORMAL', f'    --> CFLAGS:     {C_G}{" ".join(conf.env.CFLAGS) or C_N+"(None)"}{C_N}')  # pylint: disable=C0301
-        Logs.pprint('NORMAL', f'    --> DEFINES:    {C_G}{" ".join(conf.env.DEFINES) or C_N+"(None)"}{C_N}')  # pylint: disable=C0301
-        Logs.pprint('NORMAL', f'    --> LDFLAGS:    {C_G}{" ".join(conf.env.LDFLAGS) or C_N+"(None)"}{C_N}')  # pylint: disable=C0301
-        Logs.pprint('NORMAL', f'    --> LINKFLAGS:  {C_G}{" ".join(conf.env.LINKFLAGS) or C_N+"(None)"}{C_N}')  # pylint: disable=C0301
-    Logs.pprint('NORMAL', f'--> Running tests: {C_G}{conf.env.run_tests}{C_N}')
+    if cnf.options.c_standard == 'c89':
+        Logs.warn('C89 does not guarantee 64-bit integers for Lua.')
+        Logs.warn('Adding define: LUA_USE_C89')  # TODO
+        if host_os == 'win32':
+            Logs.warn('This will NOT effect msvc-builds on win32.')
+    Logs.info(f'C standard: {cnf.options.c_standard}')
+
+    platform_compilers = []
+    failed_platform_compilers = []
+    if host_os == 'aix':
+        cnf.fatal('TODO')
+    elif host_os in ('netbsd', 'openbsd'):
+        cnf.fatal('TODO')
+    elif host_os == 'freebsd':
+        cnf.fatal('TODO')
+    elif host_os == 'linux':
+        try:  # gcc
+            set_new_basic_env('gcc')
+            cnf.load('compiler_c')
+            cnf.env.CFLAGS = [cnf.env.c_standard, '-O2', '-Wall', '-Wextra']
+            cnf.env.LINKFLAGS = ['-Wl,-export-dynamic']
+            cnf.check_cc(fragment=min_c, execute=True)
+            check_libs('m', 'dl', 'readline')
+            platform_compilers.append(cnf.env.env_name)
+        except BaseException:
+            failed_platform_compilers.append(cnf.env.env_name)
+        try:  # clang
+            set_new_basic_env('clang')
+            cnf.load('compiler_c')
+            cnf.env.CFLAGS = [cnf.env.c_standard, '-O2', '-Wall', '-Wextra']
+            cnf.env.LINKFLAGS = ['-Wl,-export-dynamic']
+            cnf.check_cc(fragment=min_c, execute=True)
+            check_libs('m', 'dl', 'readline')
+            platform_compilers.append(cnf.env.env_name)
+        except BaseException:
+            failed_platform_compilers.append(cnf.env.env_name)
+        try:  # icc
+            set_new_basic_env('icc')
+            cnf.load('compiler_c')
+            cnf.env.CFLAGS = [cnf.env.c_standard, '-O2', '-Wall', '-Wextra']
+            cnf.env.LINKFLAGS = ['-Wl,-export-dynamic']
+            cnf.check_cc(fragment=min_c, execute=True)
+            check_libs('m', 'dl', 'readline')
+            platform_compilers.append(cnf.env.env_name)
+        except BaseException:
+            failed_platform_compilers.append(cnf.env.env_name)
+    elif host_os == 'darwin':
+        cnf.fatal('TODO')
+    elif host_os == 'win32':
+        try:  # msvc
+            set_new_basic_env('msvc')
+            cnf.load('compiler_c')
+            cnf.env.CFLAGS = ['/nologo', cnf.env.c_standard, '/O2', '/Wall']
+            cnf.check_cc(fragment=min_c, execute=True)
+            platform_compilers.append(cnf.env.env_name)
+        except BaseException:
+            failed_platform_compilers.append(cnf.env.env_name)
+        try:  # gcc
+            set_new_basic_env('gcc')
+            cnf.load('compiler_c')
+            cnf.env.CFLAGS = [cnf.env.c_standard, '-O2', '-Wall', '-Wextra']
+            cnf.check_cc(fragment=min_c, execute=True)
+            check_libs('m')
+            platform_compilers.append(cnf.env.env_name)
+        except BaseException:
+            failed_platform_compilers.append(cnf.env.env_name)
+        try:  # clang
+            set_new_basic_env('clang')
+            cnf.load('compiler_c')
+            cnf.env.CFLAGS = [cnf.env.c_standard, '-O2', '-Wall', '-Wextra']
+            cnf.check_cc(fragment=min_c, execute=True)
+            platform_compilers.append(cnf.env.env_name)
+        except BaseException:
+            failed_platform_compilers.append(cnf.env.env_name)
+    elif host_os == 'cygwin':
+        cnf.fatal('TODO')
+    elif host_os == 'solaris':
+        cnf.fatal('TODO')
+    else:
+        cnf.fatal('TODO')
+
+    if not platform_compilers:
+        cnf.fatal('Could not configure a single C compiler (tried: '
+                  f'{failed_platform_compilers}).')
+    if failed_platform_compilers:
+        Logs.warn(f'Could not configure compilers: {failed_platform_compilers}')
+
+    c_compiler[host_os] = platform_compilers
+    Logs.info(f'Configured compilers: {c_compiler[host_os]} on [{host_os}].')
+
 
 def build(bld):
     '''Wrapper for the compiler specific build'''
     if not bld.variant:
         if bld.cmd == 'clean':
             Logs.warn('Cleaning for all platforms')
-            Options.commands = [f'clean_{tmp_cc}' for tmp_cc in c_compiler[Utils.unversioned_sys_platform()]]  # pylint: disable=C0301
+            Options.commands = [f'clean_{t_cc}' for t_cc in \
+                c_compiler[host_os]]
             return
     if bld.cmd == 'build':
-        bld.fatal('Use a build variant: ' + f'{" ".join("build_"+tmp_cc for tmp_cc in c_compiler[Utils.unversioned_sys_platform()])}')  # pylint: disable=C0301
+        bld.fatal('Use a build variant: ' +
+                  f'{" ".join("build_"+t_cc for t_cc in c_compiler[host_os])}')
 
     bld.clean_files = bld.bldnode.ant_glob(
         '**', excl='.lock* config.log c4che/* build.log', quiet=True,

@@ -38,7 +38,7 @@ before_build:
 
 build_script:
   # Windows [
-  - cmd: python waf configure --run-tests
+  - cmd: python waf configure --include-tests
   # msvc [
   - cmd: python waf build_msvc
   - cmd: python waf install_msvc
@@ -61,16 +61,30 @@ build_script:
   - cmd: deactivate
   # Windows ]
   # Linux [
-  - sh: python waf configure --run-tests
+  - sh: python waf configure --include-tests
   # gcc [
   - sh: python waf build_gcc
   - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf install_gcc'
+  # until test is fixed
+  - sh: pushd lua/lua-5.3.4-tests/libs
+  - sh: mkdir P1
+  - sh: make
+  - sh: cd ..
+  - sh: lua all.lua
+  - sh: popd
   - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf uninstall_gcc'
   - sh: python waf clean_gcc
   # gcc ]
   # clang [
   - sh: python waf build_clang
   - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf install_clang'
+  # until test is fixed
+  - sh: pushd lua/lua-5.3.4-tests/libs
+  - sh: mkdir P1
+  - sh: make
+  - sh: cd ..
+  - sh: lua all.lua
+  - sh: popd
   - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf uninstall_clang'
   - sh: python waf clean_clang
   # clang ]
