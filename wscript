@@ -197,7 +197,8 @@ return 0;
         cnf.fatal('Could not configure a single C compiler (tried: '
                   f'{failed_platform_compilers}).')
     if failed_platform_compilers:
-        Logs.warn(f'Could not configure compilers: {failed_platform_compilers}')
+        Logs.warn(
+            f'Could not configure compilers: {failed_platform_compilers}')
 
     c_compiler[host_os] = platform_compilers
     Logs.info(f'Configured compilers: {c_compiler[host_os]} on [{host_os}].')

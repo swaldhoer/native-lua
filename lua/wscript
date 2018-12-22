@@ -2,8 +2,7 @@
 # encoding: utf-8
 
 import os
-
-from waflib import Logs
+import re
 
 def build(bld):
     bld.env.sources_basepath = os.path.join('lua-5.3.4', 'src')
@@ -46,6 +45,15 @@ def build(bld):
     bld.env.source_compiler = os.path.join(bld.env.sources_basepath,
                                            'luac.c')
 
+    bld.env.tests_basepath = 'lua-5.3.4-tests'
+    test_files = bld.path.ant_glob(bld.env.tests_basepath+'/**/*.lua')
+    bld.env.test_files = [t.path_from(bld.path) for t in test_files]
+    bld.env.libs_path = os.path.join(bld.env.tests_basepath, 'libs')
+    bld.env.test_sources = [os.path.join(bld.env.libs_path, 'lib1.c'),
+                            os.path.join(bld.env.libs_path, 'lib11.c'),
+                            os.path.join(bld.env.libs_path, 'lib2.c'),
+                            os.path.join(bld.env.libs_path, 'lib21.c')]
+
     if bld.env.host_os == 'aix':
         build_aix(bld)
     elif bld.env.host_os in ('netbsd', 'openbsd'):
@@ -64,6 +72,13 @@ def build(bld):
         bld.cygwin(bld)
     else:
         bld.fatal('TODO')
+
+    if bld.env.include_tests:
+        bld(features='subst',
+            source=bld.env.test_files,
+            target=bld.env.test_files,
+            is_copy=True)
+
 
 def build_aix(bld):
     bld.fatal('TODO')
@@ -90,6 +105,19 @@ def build_linux(bld):
                 defines=defines,
                 use=['static-lua-library']+use)
 
+    if bld.env.include_tests:
+        bld.path.get_bld().make_node(bld.env.tests_basepath+"/libs/P1").mkdir()
+        for tst_src in bld.env.test_sources:
+            outfile = re.match('.*?([0-9]+.c)$',
+                               tst_src).group(1).split(".")[0]
+            outfile = bld.env.tests_basepath+"/libs/"+outfile
+            bld.shlib(source=tst_src,
+                      target=outfile)
+        bld(features="subst",
+            source=bld.env.tests_basepath+"/libs/lib2.so",
+            target=bld.env.tests_basepath+"/libs/lib2-v2.so",
+            is_copy=True)
+
 def build_darwin(bld):
     bld.fatal('TODO')
 
@@ -100,39 +128,39 @@ def build_win32(bld):
     - gcc
     - clang
     """
-    def build_win32_msvc(bld):
+    def build_win32_msvc():
         """Building on win32 with msvc"""
         defines = ['LUA_COMPAT_5_2', '_WIN32']
         bld.stlib(source=bld.env.sources,
-                target='lua',
-                defines=defines,
-                name='static-lua-library')
+                  target='lua',
+                  defines=defines,
+                  name='static-lua-library')
 
         bld.shlib(source=bld.env.sources,
-                target='luadll',
-                defines=defines+['LUA_BUILD_AS_DL'],
-                name='shared-lua-library')
+                  target='luadll',
+                  defines=defines+['LUA_BUILD_AS_DL'],
+                  name='shared-lua-library')
 
         bld.program(source=bld.env.source_interpreter,
                     target='lua',
                     defines=defines,
                     use='shared-lua-library')
         bld.program(source=bld.env.source_compiler,
-                target='luac',
-                defines=defines,
-                use=['static-lua-library']+use)
+                    target='luac',
+                    defines=defines,
+                    use=['static-lua-library'])
 
-    def build_win32_gcc(bld):
+    def build_win32_gcc():
         pass
-    def build_win32_clang(bld):
+    def build_win32_clang():
         pass
 
     if bld.env.CC_NAME == 'msvc':
-        build_win32_msvc(bld)
+        build_win32_msvc()
     elif bld.env.CC_NAME == 'gcc':
-        build_win32_gcc(bld)
+        build_win32_gcc()
     elif bld.env.CC_NAME == 'clang':
-        build_win32_clang(bld)
+        build_win32_clang()
 
 def build_cygwin(bld):
     bld.fatal('TODO')
