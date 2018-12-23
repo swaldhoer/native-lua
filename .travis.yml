@@ -11,6 +11,10 @@ matrix:
     sudo: true
 
 script:
+  - python --version
+  - python3 --version
+  - sudo python --version
+  - sudo python3 --version
   - python waf configure --include-tests
   # gcc [
   - python waf build_gcc
