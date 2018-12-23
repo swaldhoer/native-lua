@@ -9,7 +9,7 @@ script:
   - sudo python --version
   - sudo whereis python
   - sudo ls -la /home/travis/virtualenv/
-  - sudo source /home/travis/virtualenv/python3.7/bin/activate
+  - sudo source /home/travis/virtualenv/python3.7.1/bin/activate
   - sudo whereis python
   - python waf configure --include-tests
   # gcc [
