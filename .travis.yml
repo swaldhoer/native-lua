@@ -1,10 +1,12 @@
 language: python
 sudo: required
 dist: xenial
-python: "3.6"
+python: "3.7"
 os: linux
 
 script:
+  - python --version
+  - sudo python --version
   - python waf configure --include-tests
   # gcc [
   - python waf build_gcc
