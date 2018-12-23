@@ -11,6 +11,7 @@ matrix:
     sudo: true
 
 script:
+  - pwd
   - python --version
   - sudo python --version
   - python waf configure --include-tests
