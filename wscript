@@ -103,6 +103,7 @@ the available compilers.
     cnf.env.host_os = host_os
     cnf.env.c_standard = cnf.options.c_standard
     cnf.env.include_tests = cnf.options.include_tests
+    cnf.env.ltests = cnf.options.ltests
     cnf.load('gnu_dirs')
     cnf.env.MAN1DIR = Utils.subst_vars(cnf.options.MAN1DIR, cnf.env)
 
