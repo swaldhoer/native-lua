@@ -1,8 +1,8 @@
-matrix:
-  include:
-    - os: linux
-      dist: trusty
-      sudo: required
+language: python
+sudo: required
+dist: xenial
+python: "3.7"
+os: linux
 
 script:
   - python3.7 waf configure --include-tests
