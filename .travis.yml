@@ -1,6 +1,12 @@
+language: python
+sudo: required
+dist: xenial
+python: "3.7"
+os: linux
+
 matrix:
   include:
-    - python: 3.7
+  - python: 3.7
       dist: xenial
       sudo: true
 
