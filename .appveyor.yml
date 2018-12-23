@@ -76,7 +76,7 @@ build_script:
   # clang [
   - sh: python waf build_clang
   - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf install_clang'
-  - sh: pushd build/gcc/lua/lua-5.3.4-tests
+  - sh: pushd build/clang/lua/lua-5.3.4-tests
   - sh: lua -e"_U=true" all.lua
   #- sh: lua all.lua
   - sh: popd
@@ -99,7 +99,7 @@ build_script:
   # clang [
   - sh: python waf build_clang
   - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf install_clang'
-  - sh: pushd build/gcc/lua/lua-5.3.4-tests
+  - sh: pushd build/clang/lua/lua-5.3.4-tests
   - sh: lua -e"_U=true" all.lua
   #- sh: lua all.lua
   - sh: popd
