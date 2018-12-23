@@ -1,22 +1,16 @@
-language: python
-sudo: required
-dist: xenial
-python: "3.7"
-os: linux
-
 matrix:
   include:
-  - python: 3.7
-      dist: xenial
-      sudo: true
+  - os: linux
+    dist: xenial
+    sudo: true
+    python: "3.7"
+  - os: osx
+    sudo: true
+    python: "3.7"
 
 script:
   - python --version
   - sudo python --version
-  - sudo whereis python
-  - sudo ls -la /home/travis/virtualenv/
-  - sudo source /home/travis/virtualenv/python3.7/bin/activate
-  - sudo whereis python
   - python waf configure --include-tests
   # gcc [
   - python waf build_gcc
