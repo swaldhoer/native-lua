@@ -113,7 +113,9 @@ def build_linux(bld):
             outfile = bld.env.tests_basepath+"/libs/"+outfile
             bld.shlib(source=tst_src,
                       target=outfile,
-                      includes=os.path.abspath(bld.env.sources_basepath))
+                      includes=os.path.abspath(
+                          os.path.join(bld.path.abspath(),
+                                       bld.env.sources_basepath)))
         bld(features="subst",
             source=bld.env.tests_basepath+"/libs/lib2.so",
             target=bld.env.tests_basepath+"/libs/lib2-v2.so",
