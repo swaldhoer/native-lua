@@ -5,49 +5,49 @@ matrix:
       sudo: required
 
 script:
-  - sh: python3.7 waf configure --include-tests
+  - python3.7 waf configure --include-tests
   # gcc [
-  - sh: python3.7 waf build_gcc
-  - sh: python3.7 waf install_gcc
-  - sh: pushd build/gcc/lua/lua-5.3.4-tests
-  - sh: lua -e"_U=true" all.lua
-  - sh: lua all.lua
-  - sh: popd
-  - sh: python3.7 waf uninstall_gcc
-  - sh: python3.7 waf clean_gcc
+  - python3.7 waf build_gcc
+  - python3.7 waf install_gcc
+  - pushd build/gcc/lua/lua-5.3.4-tests
+  - lua -e"_U=true" all.lua
+  - lua all.lua
+  - popd
+  - python3.7 waf uninstall_gcc
+  - python3.7 waf clean_gcc
   # gcc ]
   # clang [
-  - sh: python3.7 waf build_clang
-  - sh: python3.7 waf install_clang
-  - sh: pushd build/clang/lua/lua-5.3.4-tests
-  - sh: lua -e"_U=true" all.lua
-  - sh: lua all.lua
-  - sh: popd
-  - sh: python3.7 waf uninstall_clang
-  - sh: python3.7 waf clean_clang
+  - python3.7 waf build_clang
+  - python3.7 waf install_clang
+  - pushd build/clang/lua/lua-5.3.4-tests
+  - lua -e"_U=true" all.lua
+  - lua all.lua
+  - popd
+  - python3.7 waf uninstall_clang
+  - python3.7 waf clean_clang
   # clang ]
-  - sh: python3.7 waf distclean
+  - python3.7 waf distclean
   # including ltests
-  - sh: python3.7 waf configure --ltests --include-tests
+  - python3.7 waf configure --ltests --include-tests
   # gcc [
-  - sh: python3.7 waf build_gcc
-  - sh: python3.7 waf install_gcc
-  - sh: pushd build/gcc/lua/lua-5.3.4-tests
-  - sh: lua -e"_U=true" all.lua
-  - sh: lua all.lua
-  - sh: popd
-  - sh: python3.7 waf uninstall_gcc
-  - sh: python3.7 waf clean_gcc
+  - python3.7 waf build_gcc
+  - python3.7 waf install_gcc
+  - pushd build/gcc/lua/lua-5.3.4-tests
+  - lua -e"_U=true" all.lua
+  - lua all.lua
+  - popd
+  - python3.7 waf uninstall_gcc
+  - python3.7 waf clean_gcc
   # gcc ]
   # clang [
-  - sh: python3.7 waf build_clang
-  - sh: python3.7 waf install_clang
-  - sh: pushd build/clang/lua/lua-5.3.4-tests
-  - sh: lua -e"_U=true" all.lua
-  - sh: lua all.lua
-  - sh: popd
-  - sh: python3.7 waf uninstall_clang
-  - sh: python3.7 waf clean_clang
+  - python3.7 waf build_clang
+  - python3.7 waf install_clang
+  - pushd build/clang/lua/lua-5.3.4-tests
+  - lua -e"_U=true" all.lua
+  - lua all.lua
+  - popd
+  - python3.7 waf uninstall_clang
+  - python3.7 waf clean_clang
   # clang ]
-  - sh: python3.7 waf distclean
+  - python3.7 waf distclean
   # Linux ]
