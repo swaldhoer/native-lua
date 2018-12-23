@@ -7,6 +7,7 @@ os: linux
 script:
   - python --version
   - sudo python --version
+  - sudo whereis python
   - python waf configure --include-tests
   # gcc [
   - python waf build_gcc
