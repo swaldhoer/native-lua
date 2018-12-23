@@ -78,6 +78,7 @@ assert(io.output() ~= io.stdout)
 
 if not _port then   -- invalid seek
   local status, msg, code = io.stdin:seek("set", 1000)
+  print(status, msg, code) -- ci debug
   assert(not status and type(msg) == "string" and type(code) == "number")
 end
 
