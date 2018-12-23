@@ -14,7 +14,7 @@ script:
   - python waf configure --include-tests
   # gcc [
   - python waf build_gcc
-  - sudo bash -c 'source ~/virtualenv/python3.7/bin/activate & whereis python & python3.7 waf install_gcc'
+  - sudo bash -c 'source ~/virtualenv/python3.7/bin/activate & whereis python & python3 waf install_gcc'
   - pushd build/gcc/lua/lua-5.3.4-tests
   - lua -e"_U=true" all.lua
   - lua all.lua
