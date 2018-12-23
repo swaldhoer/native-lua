@@ -8,6 +8,8 @@ script:
   - python --version
   - sudo python --version
   - sudo whereis python
+  - sudo source /home/travis/virtualenv/python3.7/bin/activate
+  - sudo whereis python
   - python waf configure --include-tests
   # gcc [
   - python waf build_gcc
