@@ -66,6 +66,7 @@ build_script:
   - sh: python waf build_gcc
   - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf install_gcc'
   - sh: pushd build/gcc/lua/lua-5.3.4-tests
+  - sh: lua -e"_U=true" all.lua
   - sh: lua all.lua
   - sh: popd
   - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf uninstall_gcc'
