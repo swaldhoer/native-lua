@@ -14,6 +14,8 @@ script:
   - pwd
   - python --version
   - sudo python --version
+  - sudo source ~/virtualenv/python3.7/bin/activate
+  - sudo python --version
   - python waf configure --include-tests
   # gcc [
   - python waf build_gcc
