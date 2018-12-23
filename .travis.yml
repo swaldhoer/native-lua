@@ -5,49 +5,49 @@ python: "3.6"
 os: linux
 
 script:
-  - python3.7 waf configure --include-tests
+  - python waf configure --include-tests
   # gcc [
-  - python3.7 waf build_gcc
-  - sudo python3.7 waf install_gcc
+  - python waf build_gcc
+  - sudo python waf install_gcc
   - pushd build/gcc/lua/lua-5.3.4-tests
   - lua -e"_U=true" all.lua
   - lua all.lua
   - popd
-  - sudo python3.7 waf uninstall_gcc
-  - python3.7 waf clean_gcc
+  - sudo python waf uninstall_gcc
+  - python waf clean_gcc
   # gcc ]
   # clang [
-  - python3.7 waf build_clang
-  - sudo python3.7 waf install_clang
+  - python waf build_clang
+  - sudo python waf install_clang
   - pushd build/clang/lua/lua-5.3.4-tests
   - lua -e"_U=true" all.lua
   - lua all.lua
   - popd
-  - sudo python3.7 waf uninstall_clang
-  - python3.7 waf clean_clang
+  - sudo python waf uninstall_clang
+  - python waf clean_clang
   # clang ]
-  - python3.7 waf distclean
+  - python waf distclean
   # including ltests
-  - python3.7 waf configure --ltests --include-tests
+  - python waf configure --ltests --include-tests
   # gcc [
-  - python3.7 waf build_gcc
-  - sudo python3.7 waf install_gcc
+  - python waf build_gcc
+  - sudo python waf install_gcc
   - pushd build/gcc/lua/lua-5.3.4-tests
   - lua -e"_U=true" all.lua
   - lua all.lua
   - popd
-  - sudo python3.7 waf uninstall_gcc
-  - python3.7 waf clean_gcc
+  - sudo python waf uninstall_gcc
+  - python waf clean_gcc
   # gcc ]
   # clang [
-  - python3.7 waf build_clang
-  - sudo python3.7 waf install_clang
+  - python waf build_clang
+  - sudo python waf install_clang
   - pushd build/clang/lua/lua-5.3.4-tests
   - lua -e"_U=true" all.lua
   - lua all.lua
   - popd
-  - sudo python3.7 waf uninstall_clang
-  - python3.7 waf clean_clang
+  - sudo python waf uninstall_clang
+  - python waf clean_clang
   # clang ]
-  - python3.7 waf distclean
+  - python waf distclean
   # Linux ]
