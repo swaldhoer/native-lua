@@ -38,27 +38,27 @@ before_build:
 
 build_script:
   # Windows [
-  - cmd: python waf configure --include-tests
+  #- cmd: python waf configure --include-tests
   # msvc [
-  - cmd: python waf build_msvc
-  - cmd: python waf install_msvc
-  - cmd: python waf uninstall_msvc
-  - cmd: python waf clean_msvc
+  #- cmd: python waf build_msvc
+  #- cmd: python waf install_msvc
+  #- cmd: python waf uninstall_msvc
+  #- cmd: python waf clean_msvc
   # msvc ]
   # gcc [
-  - cmd: python waf build_gcc
-  - cmd: python waf install_gcc
-  - cmd: python waf uninstall_gcc
-  - cmd: python waf clean_gcc
+  #- cmd: python waf build_gcc
+  #- cmd: python waf install_gcc
+  #- cmd: python waf uninstall_gcc
+  #- cmd: python waf clean_gcc
   # gcc ]
   # clang [
-  - cmd: python waf build_clang
-  - cmd: python waf install_clang
-  - cmd: python waf uninstall_clang
-  - cmd: python waf clean_clang
+  #- cmd: python waf build_clang
+  #- cmd: python waf install_clang
+  #- cmd: python waf uninstall_clang
+  #- cmd: python waf clean_clang
   # clang ]
-  - cmd: python waf distclean
-  - cmd: deactivate
+  #- cmd: python waf distclean
+  #- cmd: deactivate
   # Windows ]
   # Linux [
   # without ltests
@@ -68,7 +68,7 @@ build_script:
   - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf install_gcc'
   - sh: pushd build/gcc/lua/lua-5.3.4-tests
   - sh: lua -e"_U=true" all.lua
-  #- sh: lua all.lua
+  - sh: lua all.lua
   - sh: popd
   - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf uninstall_gcc'
   - sh: python waf clean_gcc
@@ -78,7 +78,7 @@ build_script:
   - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf install_clang'
   - sh: pushd build/clang/lua/lua-5.3.4-tests
   - sh: lua -e"_U=true" all.lua
-  #- sh: lua all.lua
+  - sh: lua all.lua
   - sh: popd
   - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf uninstall_clang'
   - sh: python waf clean_clang
@@ -91,7 +91,7 @@ build_script:
   - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf install_gcc'
   - sh: pushd build/gcc/lua/lua-5.3.4-tests
   - sh: lua -e"_U=true" all.lua
-  #- sh: lua all.lua
+  - sh: lua all.lua
   - sh: popd
   - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf uninstall_gcc'
   - sh: python waf clean_gcc
@@ -101,7 +101,7 @@ build_script:
   - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf install_clang'
   - sh: pushd build/clang/lua/lua-5.3.4-tests
   - sh: lua -e"_U=true" all.lua
-  #- sh: lua all.lua
+  - sh: lua all.lua
   - sh: popd
   - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf uninstall_clang'
   - sh: python waf clean_clang
