@@ -1,5 +1,4 @@
 language: python
-python: "3.7"
 sudo: required
 
 matrix:
@@ -11,53 +10,53 @@ matrix:
     sudo: true
 
 script:
-  - python --version
   - python3 --version
-  - sudo python --version
+  - python3 --version
   - sudo python3 --version
-  - python waf configure --include-tests
+  - sudo python3 --version
+  - python3 waf configure --include-tests
   # gcc [
-  - python waf build_gcc
-  - sudo bash -c 'source ~/virtualenv/python3.7/bin/activate & whereis python & python3 waf install_gcc'
+  - python3 waf build_gcc
+  - sudo python3 waf install_gcc
   - pushd build/gcc/lua/lua-5.3.4-tests
   - lua -e"_U=true" all.lua
   - lua all.lua
   - popd
-  - sudo bash -c 'source ~/virtualenv/python3.7/bin/activate & python3.7 waf uninstall_gcc'
-  - python waf clean_gcc
+  - sudo python3 waf uninstall_gcc
+  - python3 waf clean_gcc
   # gcc ]
   # clang [
-  - python waf build_clang
-  - sudo python waf install_clang
+  - python3 waf build_clang
+  - sudo python3 waf install_clang
   - pushd build/clang/lua/lua-5.3.4-tests
   - lua -e"_U=true" all.lua
   - lua all.lua
   - popd
-  - sudo python waf uninstall_clang
-  - python waf clean_clang
+  - sudo python3 waf uninstall_clang
+  - python3 waf clean_clang
   # clang ]
-  - python waf distclean
+  - python3 waf distclean
   # including ltests
-  - python waf configure --ltests --include-tests
+  - python3 waf configure --ltests --include-tests
   # gcc [
-  - python waf build_gcc
-  - sudo python waf install_gcc
+  - python3 waf build_gcc
+  - sudo python3 waf install_gcc
   - pushd build/gcc/lua/lua-5.3.4-tests
   - lua -e"_U=true" all.lua
   - lua all.lua
   - popd
-  - sudo python waf uninstall_gcc
-  - python waf clean_gcc
+  - sudo python3 waf uninstall_gcc
+  - python3 waf clean_gcc
   # gcc ]
   # clang [
-  - python waf build_clang
-  - sudo python waf install_clang
+  - python3 waf build_clang
+  - sudo python3 waf install_clang
   - pushd build/clang/lua/lua-5.3.4-tests
   - lua -e"_U=true" all.lua
   - lua all.lua
   - popd
-  - sudo python waf uninstall_clang
-  - python waf clean_clang
+  - sudo python3 waf uninstall_clang
+  - python3 waf clean_clang
   # clang ]
-  - python waf distclean
+  - python3 waf distclean
   # Linux ]

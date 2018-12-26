@@ -75,13 +75,13 @@ the available compilers.
         if env_name in ('gcc', 'xlc', 'icc'):
             pref = '-std='
             if c_std == 'c89':
-                c_std_string = f'{pref}c89'
+                c_std_string = '{}c89'.format(pref)
             if c_std == 'c99':
-                c_std_string = f'{pref}gnu99'
+                c_std_string = '{}gnu99'.format(pref)
         elif env_name == 'clang':
-            c_std_string = f'-std={c_std}'
+            c_std_string = '-std={}'.format(c_std)
         elif env_name == 'msvc':
-            c_std_string = f'/std:c++14'
+            c_std_string = '/std:c++14'
         return c_std_string or (cnf.fatal('Could not set C-standard'))
 
     def set_new_basic_env(env_name):
@@ -118,7 +118,7 @@ return 0;
         Logs.warn('Adding define: LUA_USE_C89')  # TODO
         if host_os == 'win32':
             Logs.warn('This will NOT effect msvc-builds on win32.')
-    Logs.info(f'C standard: {cnf.options.c_standard}')
+    Logs.info('C standard: {}'.format(cnf.options.c_standard))
 
     platform_compilers = []
     failed_platform_compilers = []
@@ -195,14 +195,15 @@ return 0;
         cnf.fatal('TODO')
 
     if not platform_compilers:
-        cnf.fatal('Could not configure a single C compiler (tried: '
-                  f'{failed_platform_compilers}).')
+        cnf.fatal('Could not configure a single C compiler (tried: {}).'.format(
+                  failed_platform_compilers))
     if failed_platform_compilers:
-        Logs.warn(
-            f'Could not configure compilers: {failed_platform_compilers}')
+        Logs.warn('Could not configure compilers: {}'.format(
+            failed_platform_compilers))
 
     c_compiler[host_os] = platform_compilers
-    Logs.info(f'Configured compilers: {c_compiler[host_os]} on [{host_os}].')
+    Logs.info('Configured compilers: {} on [{}].'.format(c_compiler[host_os],
+                                                         host_os))
 
 
 def build(bld):
@@ -210,12 +211,12 @@ def build(bld):
     if not bld.variant:
         if bld.cmd == 'clean':
             Logs.warn('Cleaning for all platforms')
-            Options.commands = [f'clean_{t_cc}' for t_cc in \
+            Options.commands = ['clean_{}'.format(t_cc) for t_cc in \
                 c_compiler[host_os]]
             return
     if bld.cmd == 'build':
-        bld.fatal('Use a build variant: ' +
-                  f'{" ".join("build_"+t_cc for t_cc in c_compiler[host_os])}')
+        bld.fatal('Use a build variant: {}'.format(
+            " ".join("build_"+t_cc for t_cc in c_compiler[host_os])))
 
     bld.clean_files = bld.bldnode.ant_glob(
         '**', excl='.lock* config.log c4che/* build.log', quiet=True,
