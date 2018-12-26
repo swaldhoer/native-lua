@@ -5,8 +5,6 @@ sudo: required
 
 script:
   - python3 --version
-  - python3 --version
-  - sudo python3 --version
   - sudo python3 --version
   - python3 waf configure --include-tests
   # gcc [
@@ -53,4 +51,49 @@ script:
   - python3 waf clean_clang
   # clang ]
   - python3 waf distclean
-  # Linux ]
+  # checking c89 mode
+  - python3 waf configure --include-tests --c-std=c89
+  # gcc [
+  - python3 waf build_gcc
+  - sudo python3 waf install_gcc
+  - pushd build/gcc/lua/lua-5.3.4-tests
+  - lua -e"_U=true" all.lua
+  - lua all.lua
+  - popd
+  - sudo python3 waf uninstall_gcc
+  - python3 waf clean_gcc
+  # gcc ]
+  # clang [
+  - python3 waf build_clang
+  - sudo python3 waf install_clang
+  - pushd build/clang/lua/lua-5.3.4-tests
+  - lua -e"_U=true" all.lua
+  - lua all.lua
+  - popd
+  - sudo python3 waf uninstall_clang
+  - python3 waf clean_clang
+  # clang ]
+  - python3 waf distclean
+  # including ltests
+  - python3 waf configure --ltests --include-tests --c-std=c89
+  # gcc [
+  - python3 waf build_gcc
+  - sudo python3 waf install_gcc
+  - pushd build/gcc/lua/lua-5.3.4-tests
+  - lua -e"_U=true" all.lua
+  - lua all.lua
+  - popd
+  - sudo python3 waf uninstall_gcc
+  - python3 waf clean_gcc
+  # gcc ]
+  # clang [
+  - python3 waf build_clang
+  - sudo python3 waf install_clang
+  - pushd build/clang/lua/lua-5.3.4-tests
+  - lua -e"_U=true" all.lua
+  - lua all.lua
+  - popd
+  - sudo python3 waf uninstall_clang
+  - python3 waf clean_clang
+  # clang ]
+  - python3 waf distclean

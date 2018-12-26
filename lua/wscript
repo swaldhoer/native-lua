@@ -95,8 +95,13 @@ def build_linux(bld):
     use = ['M', 'DL', 'READLINE']
     use_ltests = []
     defines = ['LUA_COMPAT_5_2', 'LUA_USE_LINUX']
+    defines_tests = []
     cflags = []
     includes = []
+    if bld.env.c_standard.endswith("89"):
+        defines_c89 = ["LUA_USE_C89"]
+        defines_tests += defines_c89
+        defines += defines_c89
     if bld.env.ltests:
         use_ltests += ['LTESTS']
         cflags += ['-g']
@@ -136,6 +141,7 @@ def build_linux(bld):
             outfile = bld.env.tests_basepath+"/libs/"+outfile
             bld.shlib(source=tst_src,
                       target=outfile,
+                      defines=defines_tests,
                       includes=os.path.abspath(
                           os.path.join(bld.path.abspath(),
                                        bld.env.sources_basepath)))
