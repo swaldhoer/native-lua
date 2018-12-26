@@ -195,8 +195,8 @@ return 0;
         cnf.fatal('TODO')
 
     if not platform_compilers:
-        cnf.fatal('Could not configure a single C compiler (tried: {}).'.format(
-                  failed_platform_compilers))
+        cnf.fatal('Could not configure a single C compiler (tried: {}).\
+            '.format(failed_platform_compilers))
     if failed_platform_compilers:
         Logs.warn('Could not configure compilers: {}'.format(
             failed_platform_compilers))
