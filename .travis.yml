@@ -1,13 +1,7 @@
+os: linux
+dist: xenial
 language: python
 sudo: required
-
-matrix:
-  include:
-  - os: linux
-    dist: xenial
-    sudo: true
-  - os: osx
-    sudo: true
 
 script:
   - python3 --version
