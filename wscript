@@ -94,6 +94,7 @@ the available compilers.
         c_compiler[host_os] = [cnf.env.env_name]
         cnf.env.c_standard = get_c_standard(cnf.env.env_name,
                                             cnf.env.c_standard)
+        cnf.path.get_bld().make_node(env_name).mkdir()
 
     def check_libs(*libs):
         for lib in libs:
@@ -165,7 +166,11 @@ return 0;
         try:  # msvc
             set_new_basic_env('msvc')
             cnf.load('compiler_c')
+            cnf.env.WAF_CONFIG_H_PRELUDE = '#pragma warning(disable: \
+4242 4820 4668 4710 4711)'
+            cnf.write_config_header(os.path.join('msvc', 'config.h'))
             cnf.env.CFLAGS = ['/nologo', cnf.env.c_standard, '/O2', '/Wall']
+            cnf.env.CFLAGS += ['/FI'+cnf.env.cfg_files[0]]
             cnf.check_cc(fragment=min_c, execute=True)
             platform_compilers.append(cnf.env.env_name)
         except BaseException:
