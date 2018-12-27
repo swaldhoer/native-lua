@@ -22,7 +22,7 @@ install:
           $env:path = ($env:path -split ";").Where({!($_ -like "*$i*")}) -join ";"
         }
       }
-  - cmd: set PATH=C:\mingw-w64\x86_64-7.2.0-posix-seh-rt_v5-rev1\bin;%PATH%
+  - cmd: set PATH=C:\mingw-w64\x86_64-7.2.0-posix-seh-rt_v5-rev1\mingw64\bin;%PATH%
   - ps: |
       if ($isWindows) {
         Write-Host New `$env:Path
