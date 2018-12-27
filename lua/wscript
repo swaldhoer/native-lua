@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # encoding: utf-8
 
+# pylint: disable=W0612
+
 import os
 import re
 
@@ -83,13 +85,81 @@ def build(bld):
 
 
 def build_aix(bld):
+    use = ['M', 'DL']
+    use_ltests = []
+    defines = ['LUA_COMPAT_5_2', 'LUA_USE_POSIX', 'LUA_USE_DLOPEN']
+    defines_tests = []
+    cflags = []
+    includes = []
     bld.fatal('TODO')
 
 def build_netbsd_or_openbsd(bld):
+    use = ['M']
+    use_ltests = []
+    defines = ['LUA_COMPAT_5_2', 'LUA_USE_POSIX', 'LUA_USE_DLOPEN']
+    defines_tests = []
+    cflags = []
+    includes = []
     bld.fatal('TODO')
 
 def build_freebsd(bld):
-    bld.fatal('TODO')
+    use = ['M', 'READLINE']
+    use_ltests = []
+    defines = ['LUA_COMPAT_5_2', 'LUA_USE_LINUX']
+    defines_tests = []
+    cflags = []
+    includes = []
+    if bld.env.c_standard.endswith("89"):
+        defines_c89 = ["LUA_USE_C89"]
+        defines_tests += defines_c89
+        defines += defines_c89
+    if bld.env.ltests:
+        use_ltests += ['LTESTS']
+        cflags += ['-g']
+        defines += ['LUA_USER_H=\"ltests.h\"']
+        includes += [bld.env.ltests_dir]
+        bld.objects(source=bld.env.ltests_sources,
+                    defines=defines,
+                    cflags=cflags,
+                    includes=[bld.env.ltests_dir, bld.env.sources_basepath],
+                    name='LTESTS')
+
+    bld.stlib(source=bld.env.sources,
+              target='lua',
+              defines=defines,
+              cflags=cflags,
+              use=use_ltests,
+              includes=includes,
+              name='static-lua-library')
+    bld.program(source=bld.env.source_interpreter,
+                target='lua',
+                defines=defines,
+                cflags=cflags,
+                includes=includes,
+                use=['static-lua-library']+use+use_ltests)
+    bld.program(source=bld.env.source_compiler,
+                target='luac',
+                defines=defines,
+                cflags=cflags,
+                includes=includes,
+                use=['static-lua-library']+use+use_ltests)
+
+    if bld.env.include_tests:
+        bld.path.get_bld().make_node(bld.env.tests_basepath+"/libs/P1").mkdir()
+        for tst_src in bld.env.test_sources:
+            outfile = re.match('.*?([0-9]+.c)$',
+                               tst_src).group(1).split(".")[0]
+            outfile = bld.env.tests_basepath+"/libs/"+outfile
+            bld.shlib(source=tst_src,
+                      target=outfile,
+                      defines=defines_tests,
+                      includes=os.path.abspath(
+                          os.path.join(bld.path.abspath(),
+                                       bld.env.sources_basepath)))
+        bld(features="subst",
+            source=bld.env.tests_basepath+"/libs/lib2.so",
+            target=bld.env.tests_basepath+"/libs/lib2-v2.so",
+            is_copy=True)
 
 def build_linux(bld):
     use = ['M', 'DL', 'READLINE']
@@ -151,7 +221,63 @@ def build_linux(bld):
             is_copy=True)
 
 def build_darwin(bld):
-    bld.fatal('TODO')
+    use = ['M', 'READLINE']
+    use_ltests = []
+    defines = ['LUA_COMPAT_5_2', 'LUA_USE_MACOSX']
+    defines_tests = []
+    cflags = []
+    includes = []
+    if bld.env.c_standard.endswith("89"):
+        defines_c89 = ["LUA_USE_C89"]
+        defines_tests += defines_c89
+        defines += defines_c89
+    if bld.env.ltests:
+        use_ltests += ['LTESTS']
+        cflags += ['-g']
+        defines += ['LUA_USER_H=\"ltests.h\"']
+        includes += [bld.env.ltests_dir]
+        bld.objects(source=bld.env.ltests_sources,
+                    defines=defines,
+                    cflags=cflags,
+                    includes=[bld.env.ltests_dir, bld.env.sources_basepath],
+                    name='LTESTS')
+
+    bld.stlib(source=bld.env.sources,
+              target='lua',
+              defines=defines,
+              cflags=cflags,
+              use=use_ltests,
+              includes=includes,
+              name='static-lua-library')
+    bld.program(source=bld.env.source_interpreter,
+                target='lua',
+                defines=defines,
+                cflags=cflags,
+                includes=includes,
+                use=['static-lua-library']+use+use_ltests)
+    bld.program(source=bld.env.source_compiler,
+                target='luac',
+                defines=defines,
+                cflags=cflags,
+                includes=includes,
+                use=['static-lua-library']+use+use_ltests)
+
+    if bld.env.include_tests:
+        bld.path.get_bld().make_node(bld.env.tests_basepath+"/libs/P1").mkdir()
+        for tst_src in bld.env.test_sources:
+            outfile = re.match('.*?([0-9]+.c)$',
+                               tst_src).group(1).split(".")[0]
+            outfile = bld.env.tests_basepath+"/libs/"+outfile
+            bld.shlib(source=tst_src,
+                      target=outfile,
+                      defines=defines_tests,
+                      includes=os.path.abspath(
+                          os.path.join(bld.path.abspath(),
+                                       bld.env.sources_basepath)))
+        bld(features="subst",
+            source=bld.env.tests_basepath+"/libs/lib2.so",
+            target=bld.env.tests_basepath+"/libs/lib2-v2.so",
+            is_copy=True)
 
 def build_win32(bld):
     """Building on win32 platform
@@ -198,4 +324,61 @@ def build_cygwin(bld):
     bld.fatal('TODO')
 
 def build_solaris(bld):
-    bld.fatal('TODO')
+    use = ['M', 'DL']
+    use_ltests = []
+    defines = ['LUA_COMPAT_5_2', 'LUA_USE_POSIX',
+               'LUA_USE_DLOPEN', '_REENTRANT']
+    defines_tests = []
+    cflags = []
+    includes = []
+    if bld.env.c_standard.endswith("89"):
+        defines_c89 = ["LUA_USE_C89"]
+        defines_tests += defines_c89
+        defines += defines_c89
+    if bld.env.ltests:
+        use_ltests += ['LTESTS']
+        cflags += ['-g']
+        defines += ['LUA_USER_H=\"ltests.h\"']
+        includes += [bld.env.ltests_dir]
+        bld.objects(source=bld.env.ltests_sources,
+                    defines=defines,
+                    cflags=cflags,
+                    includes=[bld.env.ltests_dir, bld.env.sources_basepath],
+                    name='LTESTS')
+
+    bld.stlib(source=bld.env.sources,
+              target='lua',
+              defines=defines,
+              cflags=cflags,
+              use=use_ltests,
+              includes=includes,
+              name='static-lua-library')
+    bld.program(source=bld.env.source_interpreter,
+                target='lua',
+                defines=defines,
+                cflags=cflags,
+                includes=includes,
+                use=['static-lua-library']+use+use_ltests)
+    bld.program(source=bld.env.source_compiler,
+                target='luac',
+                defines=defines,
+                cflags=cflags,
+                includes=includes,
+                use=['static-lua-library']+use+use_ltests)
+
+    if bld.env.include_tests:
+        bld.path.get_bld().make_node(bld.env.tests_basepath+"/libs/P1").mkdir()
+        for tst_src in bld.env.test_sources:
+            outfile = re.match('.*?([0-9]+.c)$',
+                               tst_src).group(1).split(".")[0]
+            outfile = bld.env.tests_basepath+"/libs/"+outfile
+            bld.shlib(source=tst_src,
+                      target=outfile,
+                      defines=defines_tests,
+                      includes=os.path.abspath(
+                          os.path.join(bld.path.abspath(),
+                                       bld.env.sources_basepath)))
+        bld(features="subst",
+            source=bld.env.tests_basepath+"/libs/lib2.so",
+            target=bld.env.tests_basepath+"/libs/lib2-v2.so",
+            is_copy=True)

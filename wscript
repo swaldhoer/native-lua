@@ -63,6 +63,9 @@ def options(opt):
              ' for msvc.')
     opt.add_option('--ltests', dest='ltests', default=False,
                    action='store_true', help='Building with \'ltests\'')
+    opt.add_option('--generic', dest='generic', default=False,
+                   action='store_true', help='Build generic on the host '
+                   'platform. This is not supported on win32.')
 
 def configure(cnf):  # pylint: disable=R0912
     """Basic configuration of the project based on the operating system and
@@ -123,12 +126,85 @@ return 0;
 
     platform_compilers = []
     failed_platform_compilers = []
-    if host_os == 'aix':
-        cnf.fatal('TODO')
+    if cnf.options.generic:
+        if host_os == 'win32':
+            cnf.fatal('Generic build not available on win32')
+        # TODO generic configuration (gcc, clang)
+    elif host_os == 'aix':
+        try:  # xlc
+            set_new_basic_env('xlc')
+            cnf.load('compiler_c')
+            cnf.env.CFLAGS = [cnf.env.c_standard, '-O2', '-Wall', '-Wextra']
+            cnf.env.LINKFLAGS = ['-Wl,-brtl,-bexpall']
+            cnf.check_cc(fragment=min_c, execute=True)
+            check_libs('m', 'dl')
+            platform_compilers.append(cnf.env.env_name)
+        except BaseException:
+            failed_platform_compilers.append(cnf.env.env_name)
+        try:  # gcc
+            # TODO linker options: -Wl,-brtl,-bexpall
+            # TODO when compling with gcc, it must still be used xlc linker
+            set_new_basic_env('gcc')
+            cnf.load('compiler_c')
+            cnf.env.CFLAGS = [cnf.env.c_standard, '-O2', '-Wall', '-Wextra']
+            cnf.env.LINKFLAGS = ['-Wl,-export-dynamic']
+            cnf.check_cc(fragment=min_c, execute=True)
+            check_libs('m', 'dl')
+            platform_compilers.append(cnf.env.env_name)
+        except BaseException:
+            failed_platform_compilers.append(cnf.env.env_name)
+        try:  # clang
+            set_new_basic_env('gcc')
+            cnf.load('compiler_c')
+            cnf.env.CFLAGS = [cnf.env.c_standard, '-O2', '-Wall', '-Wextra']
+            cnf.env.LINKFLAGS = ['-Wl,-brtl,-bexpall']
+            cnf.check_cc(fragment=min_c, execute=True)
+            check_libs('m', 'dl')
+            platform_compilers.append(cnf.env.env_name)
+        except BaseException:
+            failed_platform_compilers.append(cnf.env.env_name)
     elif host_os in ('netbsd', 'openbsd'):
-        cnf.fatal('TODO')
+        try:  # gcc
+            set_new_basic_env('gcc')
+            cnf.load('compiler_c')
+            cnf.env.CFLAGS = [cnf.env.c_standard, '-O2', '-Wall', '-Wextra']
+            cnf.env.LINKFLAGS = ['-Wl,-export-dynamic']
+            cnf.check_cc(fragment=min_c, execute=True)
+            check_libs('m')
+            platform_compilers.append(cnf.env.env_name)
+        except BaseException:
+            failed_platform_compilers.append(cnf.env.env_name)
+        try:  # clang
+            set_new_basic_env('clang')
+            cnf.load('compiler_c')
+            cnf.env.CFLAGS = [cnf.env.c_standard, '-O2', '-Wall', '-Wextra']
+            cnf.env.LINKFLAGS = ['-Wl,-export-dynamic']
+            cnf.check_cc(fragment=min_c, execute=True)
+            check_libs('m')
+            platform_compilers.append(cnf.env.env_name)
+        except BaseException:
+            failed_platform_compilers.append(cnf.env.env_name)
     elif host_os == 'freebsd':
-        cnf.fatal('TODO')
+        try:  # gcc
+            set_new_basic_env('gcc')
+            cnf.load('compiler_c')
+            cnf.env.CFLAGS = [cnf.env.c_standard, '-O2', '-Wall', '-Wextra']
+            cnf.env.LINKFLAGS = ['-Wl,-export-dynamic']
+            cnf.check_cc(fragment=min_c, execute=True)
+            check_libs('m', 'readline')
+            platform_compilers.append(cnf.env.env_name)
+        except BaseException:
+            failed_platform_compilers.append(cnf.env.env_name)
+        try:  # clang
+            set_new_basic_env('clang')
+            cnf.load('compiler_c')
+            cnf.env.CFLAGS = [cnf.env.c_standard, '-O2', '-Wall', '-Wextra']
+            cnf.env.LINKFLAGS = ['-Wl,-export-dynamic']
+            cnf.check_cc(fragment=min_c, execute=True)
+            check_libs('m', 'readline')
+            platform_compilers.append(cnf.env.env_name)
+        except BaseException:
+            failed_platform_compilers.append(cnf.env.env_name)
     elif host_os == 'linux':
         try:  # gcc
             set_new_basic_env('gcc')
@@ -161,13 +237,31 @@ return 0;
         except BaseException:
             failed_platform_compilers.append(cnf.env.env_name)
     elif host_os == 'darwin':
-        cnf.fatal('TODO')
+        try:  # gcc
+            set_new_basic_env('gcc')
+            cnf.load('compiler_c')
+            cnf.env.CFLAGS = [cnf.env.c_standard, '-O2', '-Wall', '-Wextra']
+            cnf.env.LINKFLAGS = ['-Wl,-export-dynamic']
+            cnf.check_cc(fragment=min_c, execute=True)
+            check_libs('m', 'readline')
+            platform_compilers.append(cnf.env.env_name)
+        except BaseException:
+            failed_platform_compilers.append(cnf.env.env_name)
+        try:  # clang
+            set_new_basic_env('clang')
+            cnf.load('compiler_c')
+            cnf.env.CFLAGS = [cnf.env.c_standard, '-O2', '-Wall', '-Wextra']
+            cnf.env.LINKFLAGS = ['-Wl,-export-dynamic']
+            cnf.check_cc(fragment=min_c, execute=True)
+            check_libs('m', 'readline')
+            platform_compilers.append(cnf.env.env_name)
+        except BaseException:
+            failed_platform_compilers.append(cnf.env.env_name)
     elif host_os == 'win32':
-        cnf.env.WAF_CONFIG_H_PRELUDE = '''\
-#if defined(_MSC_VER) && defined(_MSC_FULL_VER)
-#pragma warning(disable: 4242 4820 4668 4710 4711)
-#endif\
-'''
+        cnf.env.WAF_CONFIG_H_PRELUDE = \
+            '#if defined(_MSC_VER) && defined(_MSC_FULL_VER)\n' \
+            '#pragma warning(disable: 4242 4820 4668 4710 4711)\n' \
+            '#endif'
         cnf.write_config_header('config.h')
         try:  # msvc
             set_new_basic_env('msvc')
@@ -196,10 +290,39 @@ return 0;
         except BaseException:
             failed_platform_compilers.append(cnf.env.env_name)
     elif host_os == 'cygwin':
-        cnf.fatal('TODO')
+        try:  # gcc
+            set_new_basic_env('gcc')
+            cnf.load('compiler_c')
+            cnf.env.CFLAGS = [cnf.env.c_standard, '-O2', '-Wall', '-Wextra']
+            cnf.env.LINKFLAGS = ['-Wl,-export-dynamic']
+            cnf.check_cc(fragment=min_c, execute=True)
+            check_libs('m', 'readline')
+            platform_compilers.append(cnf.env.env_name)
+        except BaseException:
+            failed_platform_compilers.append(cnf.env.env_name)
     elif host_os == 'solaris':
-        cnf.fatal('TODO')
+        try:  # gcc
+            set_new_basic_env('gcc')
+            cnf.load('compiler_c')
+            cnf.env.CFLAGS = [cnf.env.c_standard, '-O2', '-Wall', '-Wextra']
+            cnf.env.LINKFLAGS = ['-Wl,-export-dynamic']
+            cnf.check_cc(fragment=min_c, execute=True)
+            check_libs('m', 'dl')
+            platform_compilers.append(cnf.env.env_name)
+        except BaseException:
+            failed_platform_compilers.append(cnf.env.env_name)
+        try:  # gcc
+            set_new_basic_env('clang')
+            cnf.load('compiler_c')
+            cnf.env.CFLAGS = [cnf.env.c_standard, '-O2', '-Wall', '-Wextra']
+            cnf.env.LINKFLAGS = ['-Wl,-export-dynamic']
+            cnf.check_cc(fragment=min_c, execute=True)
+            check_libs('m', 'dl')
+            platform_compilers.append(cnf.env.env_name)
+        except BaseException:
+            failed_platform_compilers.append(cnf.env.env_name)
     else:
+        Logs.warn('Building generic for platform: {}'.format(host_os))
         cnf.fatal('TODO')
 
     if not platform_compilers:
