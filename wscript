@@ -163,12 +163,15 @@ return 0;
     elif host_os == 'darwin':
         cnf.fatal('TODO')
     elif host_os == 'win32':
+        cnf.env.WAF_CONFIG_H_PRELUDE = '''\
+#if defined(_MSC_VER) && defined(_MSC_FULL_VER)
+#pragma warning(disable: 4242 4820 4668 4710 4711)
+#endif\
+'''
+        cnf.write_config_header('config.h')
         try:  # msvc
             set_new_basic_env('msvc')
             cnf.load('compiler_c')
-            cnf.env.WAF_CONFIG_H_PRELUDE = '#pragma warning(disable: \
-4242 4820 4668 4710 4711)'
-            cnf.write_config_header(os.path.join('msvc', 'config.h'))
             cnf.env.CFLAGS = ['/nologo', cnf.env.c_standard, '/O2', '/Wall']
             cnf.env.CFLAGS += ['/FI'+cnf.env.cfg_files[0]]
             cnf.check_cc(fragment=min_c, execute=True)
