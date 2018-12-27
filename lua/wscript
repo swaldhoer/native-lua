@@ -303,13 +303,36 @@ def build_win32(bld):
                     target='lua',
                     defines=defines,
                     use=['shared-lua-library'])
+
         bld.program(source=bld.env.source_compiler,
                     target='luac',
                     defines=defines,
                     use=['static-lua-library'])
 
     def build_win32_gcc():
-        pass
+        """Building on win32 with gcc"""
+        use = ['M']
+        use_ltests = []
+        defines = ['LUA_COMPAT_5_2', '_WIN32']
+        defines_tests = []
+        cflags = []
+        includes = []
+        bld.stlib(source=bld.env.sources,
+                  target='lua',
+                  defines=defines,
+                  name='static-lua-library')
+        bld.shlib(source=bld.env.sources,
+                  target='luadll',
+                  defines=defines+['LUA_BUILD_AS_DLL'],
+                  name='shared-lua-library')
+        bld.program(source=bld.env.source_interpreter,
+                    target='lua',
+                    use=['shared-lua-library']+use)
+        bld.program(source=bld.env.source_compiler,
+                    target='luac',
+                    defines=defines,
+                    use=['static-lua-library']+use)
+
     def build_win32_clang():
         pass
 
