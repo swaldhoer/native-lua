@@ -40,20 +40,20 @@ For all build and test options see the output of `python3 waf --help`.
 The current setup supports the following platform/compiler combinations (`*`
 means under development and/or untested):
 
-| Platform | Official Lua Releases             | Native Lua Releases                                                                           |
-|----------|-----------------------------------|-----------------------------------------------------------------------------------------------|
-| aix      | <ul><li>[x] gcc </li></ul>        | <ul><li>[x] xlc`*` </li></ul> <ul><li>[x] gcc`*` </li></ul> <ul><li>[x] clang`*`</li></ul>    |
-| bsd      | <ul><li>[x] gcc </li></ul>        | <ul><li>[x] gcc`*` </li></ul> <ul><li>[x] clang`*` </li></ul>                                 |
-| c89      | <ul><li>[x] gcc </li></ul>        | all compilers <br> (tests are currently failing)                                              |
-| freebsd  | <ul><li>[x] gcc </li></ul>        | <ul><li>[x] gcc`*` </li></ul> <ul><li>[x] clang`*` </li></ul>                                 |
-| generic  | <ul><li>[x] gcc </li></ul>        | TODO                                                                                          |
-| linux    | <ul><li>[x] gcc </li></ul>        | <ul><li>[x] gcc </li></ul> <ul><li>[x] clang </li></ul> <ul><li>[x] icc`*`</li></ul>          |
-| macos    | <ul><li>[x] gcc </li></ul>        | <ul><li>[x] gcc`*` </li></ul> <ul><li>[x] clang`*` </li></ul>                                 |
-| mingw    | <ul><li>[x] gcc </li></ul>        | see win32                                                                                     |
-| posix    | <ul><li>[x] gcc </li></ul>        | TODO                                                                                          |
-| solaris  | <ul><li>[x] gcc </li></ul>        | <ul><li>[x] gcc`*` </li></ul> <ul><li>[x] clang`*` </li></ul>                                 |
-| win32    | see mingw                         | <ul><li>[x] msvc </li></ul> <ul><li>[x] gcc </li></ul> <ul><li>[x] clang`*` </li></ul>        |
-| cygwin   | no                                | <ul><li>[x] gcc`*` </li></ul>                                                                 |
+| Platform | Official Lua Releases             | Native Lua Releases                                                       |
+|----------|-----------------------------------|---------------------------------------------------------------------------|
+| aix      | <ul><li>[x] gcc </li></ul>        | <ul><li>[x] xlc`*` </li> <li>[x] gcc`*` </li> <li>[x] clang`*` </li></ul> |
+| bsd      | <ul><li>[x] gcc </li></ul>        | <ul><li>[x] gcc`*` </li><li>[x] clang`*` </li></ul>                       |
+| c89      | <ul><li>[x] gcc </li></ul>        | all compilers <br> (tests are currently failing)                          |
+| freebsd  | <ul><li>[x] gcc </li></ul>        | <ul><li>[x] gcc`*` </li><li>[x] clang`*` </li></ul>                       |
+| generic  | <ul><li>[x] gcc </li></ul>        | TODO                                                                      |
+| linux    | <ul><li>[x] gcc </li></ul>        | <ul><li>[x] gcc </li><li>[x] clang </li><li>[x] icc`*` </li></ul>          |
+| macos    | <ul><li>[x] gcc </li></ul>        | <ul><li>[x] gcc`*` </li><li>[x] clang`*` </li></ul>                       |
+| mingw    | <ul><li>[x] gcc </li></ul>        | see win32                                                                 |
+| posix    | <ul><li>[x] gcc </li></ul>        | TODO                                                                      |
+| solaris  | <ul><li>[x] gcc </li></ul>        | <ul><li>[x] gcc`*` </li><li>[x] clang`*` </li></ul>                       |
+| win32    | see mingw                         | <ul><li>[x] msvc </li><li>[x] gcc </li><li>[x] clang`*` </li></ul>        |
+| cygwin   | no                                | <ul><li>[x] gcc`*` </li></ul>                                             |
 
 ## Contents Of This Repository
 
