@@ -1,77 +1,99 @@
-env:
-  global:
-    - LUA_VERSION=5.3.4
-    - SRC_DIR=lua/lua-$LUA_VERSION
-    - TEST_DIR=lua/lua-$LUA_VERSION-tests
-    - SCRIPTS_DIR=linux
-
-compiler:
-  - gcc
-
-branches:
-  except:
-  - msbuild
-  - /.win./
-
-matrix:
-  include:
-    - os: linux
-      dist: trusty
-      sudo: required
+os: linux
+dist: xenial
+language: python
+sudo: required
 
 script:
-  # Build lua WITHOUT ltests and install it and run tests with -e"_U=true" and
-  # without. After testing this, we clean and uninstall lua without ltests.
-  # After that we copy the ltest sources to the src directory and patch the 
-  # Makefile to compile with ltest. We again install lua and run tests
-  # -e"_U=true" and without. The build and test matrix is therefore:
-  # Build-Test matrix:
-  #  compiled WITHOUT   ltests  interpreter run WITH    argument    -e"_U=true" (-> simple test)
-  #  compiled WITHOUT   ltests  interpreter run WITHOUT argument                (-> full test)
-  #  compiled WITH      ltests  interpreter run WITH    argument    -e"_U=true" (-> simple test)
-  #  compiled WITH      ltests  interpreter run WITHOUT argument                (-> full test)
-  - pushd $SRC_DIR
-  - make linux
-  - echo "Successfully build lua-$LUA_VERSION without testC"
-  - sudo make install
-  - echo "Successfully installed lua-$LUA_VERSION without testC"
-  - which lua
-  - lua -v
+  - python3 --version
+  - sudo python3 --version
+  - python3 waf configure --include-tests
+  # gcc [
+  - python3 waf build_gcc
+  - sudo python3 waf install_gcc
+  - pushd build/gcc/lua/lua-5.3.4-tests
+  - lua -e"_U=true" all.lua
+  - lua all.lua
   - popd
-  # We successfully build without testC and installed it, now lets get to testing
-  - bash $SCRIPTS_DIR/generate-test-directories.sh
-  - pushd $TEST_DIR
-  - echo "Starting tests without testC"
-  - echo "Runnig simple test without testC and -e\"_U=true\""
-  - sudo lua -e"_U=true" all.lua
-  - echo "Simple test without testC successful"
-  - echo "Running full test without testC"
-  - sudo lua all.lua
-  - echo "Normal test without testC successful"
-  - echo "Done testing without testC"
+  - sudo python3 waf uninstall_gcc
+  - python3 waf clean_gcc
+  # gcc ]
+  # clang [
+  - python3 waf build_clang
+  - sudo python3 waf install_clang
+  - pushd build/clang/lua/lua-5.3.4-tests
+  - lua -e"_U=true" all.lua
+  - lua all.lua
   - popd
-  # After testing went good, we need to prepare for a clean build
-  - pushd $SRC_DIR
-  - make clean
-  - sudo make uninstall
+  - sudo python3 waf uninstall_clang
+  - python3 waf clean_clang
+  # clang ]
+  - python3 waf distclean
+  # including ltests
+  - python3 waf configure --ltests --include-tests
+  # gcc [
+  - python3 waf build_gcc
+  - sudo python3 waf install_gcc
+  - pushd build/gcc/lua/lua-5.3.4-tests
+  - lua -e"_U=true" all.lua
+  - lua all.lua
   - popd
-  # Now we set the build up to compile with ltests, therefore we first copy the
-  # sources and then we patch the Makefile
-  - bash $SCRIPTS_DIR/ltests-update-sources.sh
-  - git apply $SCRIPTS_DIR/ltests-Makefile.patch
-  - pushd $SRC_DIR
-  - make linux
-  - echo "Successfully build lua-$LUA_VERSION with testC"
-  - sudo make install
+  - sudo python3 waf uninstall_gcc
+  - python3 waf clean_gcc
+  # gcc ]
+  # clang [
+  - python3 waf build_clang
+  - sudo python3 waf install_clang
+  - pushd build/clang/lua/lua-5.3.4-tests
+  - lua -e"_U=true" all.lua
+  - lua all.lua
   - popd
-  # We successfully build with testC and installed it, now lets get to testing
-  - pushd $TEST_DIR
-  - echo "Runnig simple test with testC and -e\"_U=true\""
-  - sudo lua -e"_U=true" all.lua
-  - echo "Simple test with testC successful"
-  - echo "Running full test with testC"
-  - sudo lua all.lua
-  - echo "Normal test with testC successful"
-  - echo "Done testing with testC"
-  - echo "Done testing"
-  - echo "All tests were successful"
+  - sudo python3 waf uninstall_clang
+  - python3 waf clean_clang
+  # clang ]
+  - python3 waf distclean
+  # checking c89 mode
+  - python3 waf configure --include-tests --c-std=c89
+  # gcc [
+  - python3 waf build_gcc
+  - sudo python3 waf install_gcc
+  - pushd build/gcc/lua/lua-5.3.4-tests
+  - lua -e"_U=true" all.lua
+  - lua all.lua
+  - popd
+  - sudo python3 waf uninstall_gcc
+  - python3 waf clean_gcc
+  # gcc ]
+  # clang [
+  - python3 waf build_clang
+  - sudo python3 waf install_clang
+  - pushd build/clang/lua/lua-5.3.4-tests
+  - lua -e"_U=true" all.lua
+  - lua all.lua
+  - popd
+  - sudo python3 waf uninstall_clang
+  - python3 waf clean_clang
+  # clang ]
+  - python3 waf distclean
+  # including ltests
+  - python3 waf configure --ltests --include-tests --c-std=c89
+  # gcc [
+  - python3 waf build_gcc
+  - sudo python3 waf install_gcc
+  - pushd build/gcc/lua/lua-5.3.4-tests
+  - lua -e"_U=true" all.lua
+  - lua all.lua
+  - popd
+  - sudo python3 waf uninstall_gcc
+  - python3 waf clean_gcc
+  # gcc ]
+  # clang [
+  - python3 waf build_clang
+  - sudo python3 waf install_clang
+  - pushd build/clang/lua/lua-5.3.4-tests
+  - lua -e"_U=true" all.lua
+  - lua all.lua
+  - popd
+  - sudo python3 waf uninstall_clang
+  - python3 waf clean_clang
+  # clang ]
+  - python3 waf distclean

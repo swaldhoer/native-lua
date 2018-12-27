@@ -1,114 +1,114 @@
 version: 5.3.4.{build}
 
-image: Visual Studio 2017
+image:
+  - Visual Studio 2017
+  - Ubuntu
+
+stack: python 3.7.0
 
 skip_commits:
   files:
     - .travis.yml
-    - docs/*
-
-branches:
-  except:
-  - linux
-  - /.lin./
-  - /.travis./
-
-environment:
-  LUA_VERSION: "5.3.4"
-  SRC_DIR: "lua\\lua-5.3.4"
-  TEST_DIR: "lua\\lua-5.3.4-tests"
-  SCRIPTS_DIR: "win"
-  BUILD_DIR: "build"
-  LUA_X64_DEBUG_BINDIR: ".\\lua\\x64\\Debug\\"
-  LUA_X64_RELEASE_BINDIR: ".\\lua\\x64\\Release\\"
-  LUA_X86_DEBUG_BINDIR: ".\\lua\\x86\\Debug\\"
-  LUA_X86_RELEASE_BINDIR: ".\\lua\\x86\\Release\\"
 
 init:
   - git config --global core.autocrlf input
 
 install:
-  - "SET PATH=C:\\Miniconda36-x64;C:\\Miniconda36-x64\\Scripts;%PATH%"
-  - "C:\\Miniconda36-x64\\Scripts\\activate && conda install -y sphinx sphinx_rtd_theme && deactivate"
+  - python --version
+  - ps: |
+      if ($isWindows) {
+        $rmpath = "Docker", "SQL", "Mercurial", "Subversion", "Maven", "CMake", "nodejs", "nunit", "nuget", "java", "xunit", "go", "python", "Amazon", "ruby", "perl", "Azur", "Webdriver", "Coverity", "Octopus", "erl9", "dotnet", "iojs", "curl", "Yarn", "chocolatey", "npm"
+        foreach ($i in $rmpath) {
+          $env:path = ($env:path -split ";").Where({!($_ -like "*$i*")}) -join ";"
+        }
+      }
+  - cmd: set PATH=C:\mingw-w64\x86_64-7.2.0-posix-seh-rt_v5-rev1\mingw64\bin;%PATH%
+  - ps: |
+      if ($isWindows) {
+        Write-Host New `$env:Path
+        Write-Host ($env:Path).Replace(';',"`n")
+        }
+  - cmd: C:\Miniconda37-x64\Scripts\activate
+  - cmd: conda install pylint flake8 vs2017_win-64 -c anaconda -y -q
+  - cmd: python --version
+
+before_build:
+  # ensure that only well formated wscripts are checked in
+  - cmd: python waf --help
+  - cmd: flake8
+  - cmd: pylint wscript
+  - cmd: pylint lua\wscript
 
 build_script:
-  - ps: Push-Location -Path msbuild
-  - ps: Get-Location
-  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
-  - msbuild /property:Platform=x64 /property:Configuration=Debug /verbosity:normal
-  - msbuild /property:Platform=x64 /property:Configuration=Release /verbosity:normal
-  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat"
-  - msbuild /property:Platform=x86 /property:Configuration=Debug /verbosity:normal
-  - msbuild /property:Platform=x86 /property:Configuration=Release /verbosity:normal
-  - ps: Write-Host "Successfully build lua-$env:LUA_VERSION"
-  - ps: Pop-Location
-  - ps: Get-Location
-
-before_test:
-  - ps: Push-Location -Path $env:BUILD_DIR
-  - ps: Push-Location -Path $env:LUA_X64_RELEASE_BINDIR
-  - ps: .\lua.exe -v
-  - ps: Pop-Location
-  - ps: Push-Location -Path $env:LUA_X64_DEBUG_BINDIR
-  - ps: .\lua.exe -v
-  - ps: Pop-Location
-  - ps: Push-Location -Path $env:LUA_X86_DEBUG_BINDIR
-  - ps: .\lua.exe -v
-  - ps: Pop-Location
-  - ps: Push-Location -Path $env:LUA_X86_RELEASE_BINDIR
-  - ps: .\lua.exe -v
-  - ps: Pop-Location
-  - ps: Pop-Location
-  - ps: Write-Host "Simple interpreter version echoing test done..."
-  - ps: Get-Location
-  - ps: Write-Host "section ""before_test"" done"
-
-test_script:
-  # We run the tests in cmd instead of PowerShell, since PowerShell on AppVeyor
-  # thinks there is an error, but in fact if testing locally there is none,
-  # either running the tests on cmd or PowerShell
-  - ps: powershell .\$env:SCRIPTS_DIR\Makefile.ps1 install
-  # We need to source as the install script does not effect the current
-  # PowerShell session
-  - ps: Get-Content -Path C:\Lua\luaprofile.ps1
-  - ps: . C:\Lua\luaprofile.ps1
-  - ps: Write-Host $env:Path
-  - ps: lua.exe -v
-  - ps: Write-Host "Successfully installed lua-$env:LUA_VERSION"
-  # We successfully build and installed, now lets get to testing
-  - ps: powershell .\$env:SCRIPTS_DIR\generate-test-directories.ps1
-  - ps: Push-Location -Path $env:TEST_DIR
-  - ps: Write-Host "Starting tests without testC"
-  - ps: Write-Host "Runnig simple test without testC and -e""_U=true"""
-  - cmd: lua.exe -e"_U=true" all_win.lua
-  - ps: Write-Host "Simple test without testC successful"
-  - ps: Write-Host "Running full tests without testC"
-  - cmd: lua.exe all_win.lua
-  - ps: Write-Host "Normal test without testC successful"
-  - ps: Write-Host "Done testing without testC"
-  - ps: Pop-Location
-  # After testing went good, we need to prepare for a clean build
-  - ps: Remove-Item -Recurse -Force $env:BUILD_DIR
-  - ps: powershell .\$env:SCRIPTS_DIR\Makefile.ps1 uninstall
-  # Now we set the build up to compile with ltests, therefore we first copy the
-  # sources and then we patch the msbuild files
-  - ps: powershell .\$env:SCRIPTS_DIR\ltests-update-sources.ps1
-  - ps: git apply .\$env:SCRIPTS_DIR\ltests-vcxproj.patch
-  - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
-  - ps: Push-Location -Path $env:APPVEYOR_BUILD_FOLDER
-  - ps: Push-Location -Path msbuild
-  - msbuild /property:Platform=x64 /property:Configuration=Debug /verbosity:normal
-  - ps: Pop-Location
-  - ps: Pop-Location
-  - ps: powershell .\$env:SCRIPTS_DIR\Makefile.ps1 install Debug
-  # We successfully build with testC and installed it, now lets get to testing
-  - ps: Push-Location -Path $env:TEST_DIR
-  - ps: Write-Host "Starting tests without testC"
-  - ps: Write-Host "Runnig simple test without testC and -e""_U=true"""
-  - cmd: lua.exe -e"_U=true" all_win.lua
-  - ps: Write-Host "Simple test without testC successful"
-  - ps: Write-Host "Running full tests without testC"
-  - cmd: lua.exe all_win.lua
-  - ps: Write-Host "Normal test without testC successful"
-  - ps: Write-Host "Done testing without testC"
-  - ps: Pop-Location
+  # Windows [
+  - cmd: python waf configure --include-tests
+  - cmd: dir build
+  # msvc [
+  - cmd: python waf build_msvc
+  - cmd: python waf install_msvc
+  - cmd: python waf uninstall_msvc
+  - cmd: python waf clean_msvc
+  # msvc ]
+  # gcc [
+  - cmd: python waf build_gcc
+  - cmd: python waf install_gcc
+  - cmd: python waf uninstall_gcc
+  - cmd: python waf clean_gcc
+  # gcc ]
+  # clang [
+  - cmd: python waf build_clang
+  - cmd: python waf install_clang
+  - cmd: python waf uninstall_clang
+  - cmd: python waf clean_clang
+  # clang ]
+  - cmd: python waf distclean
+  - cmd: deactivate
+  # Windows ]
+  # Linux [
+  # without ltests
+  - sh: python waf configure --include-tests
+  # gcc [
+  - sh: python waf build_gcc
+  - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf install_gcc'
+  - sh: pushd build/gcc/lua/lua-5.3.4-tests
+  - sh: lua -e"_U=true" all.lua
+  #- sh: lua all.lua
+  - sh: popd
+  - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf uninstall_gcc'
+  - sh: python waf clean_gcc
+  # gcc ]
+  # clang [
+  - sh: python waf build_clang
+  - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf install_clang'
+  - sh: pushd build/clang/lua/lua-5.3.4-tests
+  - sh: lua -e"_U=true" all.lua
+  #- sh: lua all.lua
+  - sh: popd
+  - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf uninstall_clang'
+  - sh: python waf clean_clang
+  # clang ]
+  - sh: python waf distclean
+  # including ltests
+  - sh: python waf configure --ltests --include-tests
+  # gcc [
+  - sh: python waf build_gcc
+  - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf install_gcc'
+  - sh: pushd build/gcc/lua/lua-5.3.4-tests
+  - sh: lua -e"_U=true" all.lua
+  #- sh: lua all.lua
+  - sh: popd
+  - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf uninstall_gcc'
+  - sh: python waf clean_gcc
+  # gcc ]
+  # clang [
+  - sh: python waf build_clang
+  - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf install_clang'
+  - sh: pushd build/clang/lua/lua-5.3.4-tests
+  - sh: lua -e"_U=true" all.lua
+  #- sh: lua all.lua
+  - sh: popd
+  - sh: sudo bash -c 'source /home/appveyor/venv3.7.0/bin/activate && python waf uninstall_clang'
+  - sh: python waf clean_clang
+  # clang ]
+  - sh: python waf distclean
+  # Linux ]

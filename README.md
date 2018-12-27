@@ -8,14 +8,52 @@
 written in ANSI C. Lua is licensed under [MIT license][1].
 For information on `Lua` see [Lua.org][2]
 
-`Lua` requires `gcc` and `make` to be installed to build the `Lua` binaries,
-therefore building for e.g., Linux or other POSIX systems where `gcc` and `make`
-are natively available is easy, see [here][3].
+## Overview
 
-Building `Lua` for Windows under Windows with native tools (therefore **not**
-building with `gcc` from `MinGW` or `Cygwin`, but the Visual Studio tools) is
-nice for Windows users and developers. Therefore this project provides a
-`msbuild` solution for building the binaries.
+As default `Lua` requires `gcc` and `make` to be installed to build the `Lua`
+binaries, therefore building for e.g., Linux or other POSIX systems where `gcc`
+and `make` are natively available is easy, see [here][3]. Building `Lua` on
+Windows with MinGWs' `gcc` and some sort of `make` is also straight forward.
+
+But this does not allow a good platform and compiler independent way of building
+and testing `Lua`, especially testing is not that simple as it should be.
+Therefore this project trie a platform and compiler independent waf of building
+**and** testing `Lua`.
+
+## How-To
+
+```bash
+git clone https://github.com/swaldhoer/native-lua
+cd native-lua
+# to see possible options for your platform and compilers
+python3 waf --help
+python3 waf configure
+# replace {compiler} accordingly to the successful configured compilers
+python3 waf build_{compiler}
+python3 waf install_{compiler}
+```
+
+For all build and test options see the output of `python3 waf --help`.
+
+## Supported Platforms And Compilers
+
+The current setup supports the following platform/compiler combinations (`*`
+means under development and/or untested):
+
+| Platform | Official Lua Releases             | Native Lua Releases                                                       |
+|----------|-----------------------------------|---------------------------------------------------------------------------|
+| aix      | <ul><li>[x] gcc </li></ul>        | <ul><li>[x] xlc`*` </li> <li>[x] gcc`*` </li> <li>[x] clang`*` </li></ul> |
+| bsd      | <ul><li>[x] gcc </li></ul>        | <ul><li>[x] gcc`*` </li><li>[x] clang`*` </li></ul>                       |
+| c89      | <ul><li>[x] gcc </li></ul>        | all compilers <br> (tests are currently failing)                          |
+| freebsd  | <ul><li>[x] gcc </li></ul>        | <ul><li>[x] gcc`*` </li><li>[x] clang`*` </li></ul>                       |
+| generic  | <ul><li>[x] gcc </li></ul>        | TODO                                                                      |
+| linux    | <ul><li>[x] gcc </li></ul>        | <ul><li>[x] gcc </li><li>[x] clang </li><li>[x] icc`*` </li></ul>          |
+| macos    | <ul><li>[x] gcc </li></ul>        | <ul><li>[x] gcc`*` </li><li>[x] clang`*` </li></ul>                       |
+| mingw    | <ul><li>[x] gcc </li></ul>        | see win32                                                                 |
+| posix    | <ul><li>[x] gcc </li></ul>        | TODO                                                                      |
+| solaris  | <ul><li>[x] gcc </li></ul>        | <ul><li>[x] gcc`*` </li><li>[x] clang`*` </li></ul>                       |
+| win32    | see mingw                         | <ul><li>[x] msvc </li><li>[x] gcc </li><li>[x] clang`*` </li></ul>        |
+| cygwin   | no                                | <ul><li>[x] gcc`*` </li></ul>                                             |
 
 ## Contents Of This Repository
 

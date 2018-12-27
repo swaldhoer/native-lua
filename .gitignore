@@ -4,7 +4,12 @@
 *.dist
 *.exe
 *.dll
+*.log
 build
-libs
-lua/lua-5.3.4/src/ltests.c
-lua/lua-5.3.4/src/ltests.h
+.lock-waf_*
+waf3-*
+.waf3-*
+*.a
+*.o
+*.so
+*.patch
