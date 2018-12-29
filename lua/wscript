@@ -368,7 +368,7 @@ def build_cygwin(bld):
     """Building on win32-cygwin with gcc"""
     use = ['M']
     use_ltests = []
-    defines = ['LUA_COMPAT_5_2']
+    defines = ['LUA_COMPAT_5_2', 'LUA_USE_LINUX']
     defines_tests = []
     cflags = []
     includes = []
