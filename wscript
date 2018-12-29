@@ -294,7 +294,7 @@ return 0;
             set_new_basic_env('gcc')
             cnf.load('compiler_c')
             cnf.env.CFLAGS = [cnf.env.c_standard, '-O2', '-Wall', '-Wextra']
-            cnf.env.LINKFLAGS = ['-Wl,-export-dynamic']
+            cnf.env.LINKFLAGS = ['-Wl,--export-all-symbols']
             cnf.check_cc(fragment=min_c, execute=True)
             check_libs('m')
             platform_compilers.append(cnf.env.env_name)
