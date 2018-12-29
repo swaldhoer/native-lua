@@ -296,7 +296,7 @@ return 0;
             cnf.env.CFLAGS = [cnf.env.c_standard, '-O2', '-Wall', '-Wextra']
             cnf.env.LINKFLAGS = ['-Wl,-export-dynamic']
             cnf.check_cc(fragment=min_c, execute=True)
-            check_libs('m', 'readline')
+            check_libs('m')
             platform_compilers.append(cnf.env.env_name)
         except BaseException:
             failed_platform_compilers.append(cnf.env.env_name)

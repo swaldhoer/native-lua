@@ -365,7 +365,28 @@ def build_win32(bld):
         build_win32_clang()
 
 def build_cygwin(bld):
-    bld.fatal('TODO')
+    """Building on win32-cygwin with gcc"""
+    use = ['M']
+    use_ltests = []
+    defines = ['LUA_COMPAT_5_2']
+    defines_tests = []
+    cflags = []
+    includes = []
+    bld.stlib(source=bld.env.sources,
+              target='lua',
+              defines=defines,
+              name='static-lua-library')
+    bld.shlib(source=bld.env.sources,
+              target='luadll',
+              defines=defines+['LUA_BUILD_AS_DLL'],
+              name='shared-lua-library')
+    bld.program(source=bld.env.source_interpreter,
+                target='lua',
+                use=['shared-lua-library']+use)
+    bld.program(source=bld.env.source_compiler,
+                target='luac',
+                defines=defines,
+                use=['static-lua-library']+use)
 
 def build_solaris(bld):
     use = ['M', 'DL']
