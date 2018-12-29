@@ -3,6 +3,10 @@ dist: xenial
 language: python
 sudo: required
 
+branches:
+  except:
+  - /^appveyor-.*$/
+
 script:
   - python3 --version
   - sudo python3 --version

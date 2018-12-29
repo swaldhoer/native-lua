@@ -68,6 +68,7 @@ build_script:
   # Windows ]
   # Linux [
   # without ltests
+  - sh: clang --version
   - sh: python waf configure --include-tests
   # gcc [
   - sh: python waf build_gcc
