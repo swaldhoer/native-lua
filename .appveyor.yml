@@ -34,7 +34,6 @@ install:
   - sh: alias clang='clang-6.0'
   - sh: clang --version
   - sh: shopt -s expand_aliases
-  - sh: source ~/.bash_aliases
 
 before_build:
   # ensure that only well formated wscripts are checked in
@@ -71,6 +70,7 @@ build_script:
   # Linux [
   # without ltests
   - sh: clang --version
+  - sh: shopt -s expand_aliases
   - sh: python waf configure --include-tests
   # gcc [
   - sh: python waf build_gcc
