@@ -31,7 +31,7 @@ install:
   - cmd: C:\Miniconda37-x64\Scripts\activate
   - cmd: conda install pylint flake8 vs2017_win-64 -c anaconda -y -q
   - cmd: python --version
-  - sh: alias clang='clang-6.0'
+  - sh: sudo ln -s /usr/bin/clang-6.0 /usr/bin/clang
   - sh: clang --version
 
 before_build:
@@ -68,7 +68,6 @@ build_script:
   # Windows ]
   # Linux [
   # without ltests
-  - sh: clang --version
   - sh: python waf configure --include-tests
   # gcc [
   - sh: python waf build_gcc
