@@ -13,33 +13,33 @@ skip_commits:
 init:
   - git config --global core.autocrlf input
 
-install:
-  - python --version
-  - ps: |
-      if ($isWindows) {
-        $rmpath = "Docker", "SQL", "Mercurial", "Subversion", "Maven", "CMake", "nodejs", "nunit", "nuget", "java", "xunit", "go", "python", "Amazon", "ruby", "perl", "Azur", "Webdriver", "Coverity", "Octopus", "erl9", "dotnet", "iojs", "curl", "Yarn", "chocolatey", "npm"
-        foreach ($i in $rmpath) {
-          $env:path = ($env:path -split ";").Where({!($_ -like "*$i*")}) -join ";"
-        }
-      }
-  - cmd: set PATH=C:\mingw-w64\x86_64-7.2.0-posix-seh-rt_v5-rev1\mingw64\bin;%PATH%
-  - ps: |
-      if ($isWindows) {
-        Write-Host New `$env:Path
-        Write-Host ($env:Path).Replace(';',"`n")
-        }
-  - cmd: C:\Miniconda37-x64\Scripts\activate
-  - cmd: conda install pylint flake8 vs2017_win-64 -c anaconda -y -q
-  - cmd: python --version
-  - sh: sudo ln -s /usr/bin/clang-6.0 /usr/bin/clang
-  - sh: clang --version
+# install:
+#   - python --version
+#   - ps: |
+#       if ($isWindows) {
+#         $rmpath = "Docker", "SQL", "Mercurial", "Subversion", "Maven", "CMake", "nodejs", "nunit", "nuget", "java", "xunit", "go", "python", "Amazon", "ruby", "perl", "Azur", "Webdriver", "Coverity", "Octopus", "erl9", "dotnet", "iojs", "curl", "Yarn", "chocolatey", "npm"
+#         foreach ($i in $rmpath) {
+#           $env:path = ($env:path -split ";").Where({!($_ -like "*$i*")}) -join ";"
+#         }
+#       }
+#   - cmd: set PATH=C:\mingw-w64\x86_64-7.2.0-posix-seh-rt_v5-rev1\mingw64\bin;%PATH%
+#   - ps: |
+#       if ($isWindows) {
+#         Write-Host New `$env:Path
+#         Write-Host ($env:Path).Replace(';',"`n")
+#         }
+#   - cmd: C:\Miniconda37-x64\Scripts\activate
+#   - cmd: conda install pylint flake8 vs2017_win-64 -c anaconda -y -q
+#   - cmd: python --version
+#   - sh: sudo ln -s /usr/bin/clang-6.0 /usr/bin/clang
+#   - sh: clang --version
 
-before_build:
-  # ensure that only well formated wscripts are checked in
-  - cmd: python waf --help
-  - cmd: flake8
-  - cmd: pylint wscript
-  - cmd: pylint lua\wscript
+# before_build:
+#   # ensure that only well formated wscripts are checked in
+#   - cmd: python waf --help
+#   - cmd: flake8
+#   - cmd: pylint wscript
+#   - cmd: pylint lua\wscript
 
 build_script:
   # # Windows [
@@ -67,7 +67,7 @@ build_script:
   # - cmd: deactivate
   # cygwin [
   # gcc [
-  - cmd: C:\cygwin64\bin\bash.exe - l -c "pwd"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "pwd && python3 --version"
   # gcc ]
   # cygwin ]
   # # Windows ]
