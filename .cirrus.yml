@@ -9,11 +9,13 @@ freebsd11_task:
     - env ASSUME_ALWAYS_YES=YES pkg upgrade pkg
     - env ASSUME_ALWAYS_YES=YES pkg install lang/gcc
     - env ASSUME_ALWAYS_YES=YES pkg install readline
+    - env ASSUME_ALWAYS_YES=YES pkg install bash
 
   container:
     image: python:latest
 
   script:
+    - chsh -s /usr/local/bin/bash
     - python waf configure --include-tests
     # gcc [
     - python waf build_gcc
