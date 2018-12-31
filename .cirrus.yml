@@ -10,7 +10,8 @@ freebsd11_task:
     - env ASSUME_ALWAYS_YES=YES pkg install lang/gcc
     - env ASSUME_ALWAYS_YES=YES pkg install readline
     - env ASSUME_ALWAYS_YES=YES pkg install bash
-    - cd /usr/ports/devel/readline/ && make install
+    - env ASSUME_ALWAYS_YES=YES pkg install dialog4ports
+    - cd /usr/ports/devel/readline/ && make install clean
 
   container:
     image: python:latest
