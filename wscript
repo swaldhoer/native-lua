@@ -17,7 +17,11 @@ out = 'build'  # pylint: disable=C0103
 
 host_os = Utils.unversioned_sys_platform()  # pylint: disable=C0103
 
-for x in c_compiler[host_os]:
+plat_comp = c_compiler['default']  # pylint: disable=C0103
+if host_os in c_compiler:
+    plat_comp = c_compiler[host_os]  # pylint: disable=C0103
+
+for x in plat_comp:
     for y in (BuildContext, CleanContext, ListContext, StepContext,
               InstallContext, UninstallContext):
         name = y.__name__.replace('Context', '').lower()

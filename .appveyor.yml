@@ -9,6 +9,7 @@ stack: python 3.7.0
 skip_commits:
   files:
     - .travis.yml
+    - .cirrus.yml
 
 init:
   - git config --global core.autocrlf input
@@ -33,6 +34,7 @@ install:
   - cmd: python --version
   - sh: sudo ln -s /usr/bin/clang-6.0 /usr/bin/clang
   - sh: clang --version
+  - sh: bash --version
 
 before_build:
   # ensure that only well formated wscripts are checked in
