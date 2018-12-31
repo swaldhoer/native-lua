@@ -1,57 +1,53 @@
 freebsd11_task:
   freebsd_instance:
     image: freebsd-11-2-release-amd64
-  container:
-    image: python:3.6
 
-#  freebsd_setup_script:
-#    - pkg install -y python3
+  container:
+    image: python:latest
 
   script:
-    - python3 waf configure --include-tests
+    - python waf configure --include-tests
     # gcc [
-    - python3 waf build_gcc
-    - sudo python3 waf install_gcc
+    - python waf build_gcc
+    - sudo python waf install_gcc
     - pushd build/gcc/lua/lua-5.3.4-tests
     - lua -e"_U=true" all.lua
     - lua all.lua
     - popd
-    - sudo python3 waf uninstall_gcc
-    - python3 waf clean_gcc
+    - sudo python waf uninstall_gcc
+    - python waf clean_gcc
     # gcc ]
     # clang [
-    - python3 waf build_clang
-    - sudo python3 waf install_clang
+    - python waf build_clang
+    - sudo python waf install_clang
     - pushd build/clang/lua/lua-5.3.4-tests
     - lua -e"_U=true" all.lua
     - lua all.lua
     - popd
-    - sudo python3 waf uninstall_clang
-    - python3 waf clean_clang
+    - sudo python waf uninstall_clang
+    - python waf clean_clang
     # clang ]
-    - python3 waf distclean
+    - python waf distclean
     # including ltests
-    - python3 waf configure --ltests --include-tests
+    - python waf configure --ltests --include-tests
     # gcc [
-    - python3 waf build_gcc
-    - sudo python3 waf install_gcc
+    - python waf build_gcc
+    - sudo python waf install_gcc
     - pushd build/gcc/lua/lua-5.3.4-tests
     - lua -e"_U=true" all.lua
     - lua all.lua
     - popd
-    - sudo python3 waf uninstall_gcc
-    - python3 waf clean_gcc
+    - sudo python waf uninstall_gcc
+    - python waf clean_gcc
     # gcc ]
     # clang [
-    - python3 waf build_clang
-    - sudo python3 waf install_clang
+    - python waf build_clang
+    - sudo python waf install_clang
     - pushd build/clang/lua/lua-5.3.4-tests
     - lua -e"_U=true" all.lua
     - lua all.lua
     - popd
-    - sudo python3 waf uninstall_clang
-    - python3 waf clean_clang
+    - sudo python waf uninstall_clang
+    - python waf clean_clang
     # clang ]
-    - python3 waf distclean
-
-
+    - python waf distclean
