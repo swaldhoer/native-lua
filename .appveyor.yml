@@ -9,6 +9,7 @@ stack: python 3.7.0
 skip_commits:
   files:
     - .travis.yml
+    - .cirrus.yml
 
 init:
   - git config --global core.autocrlf input
