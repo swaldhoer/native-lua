@@ -5,9 +5,10 @@ freebsd11_task:
   install_script:
     #- env ASSUME_ALWAYS_YES=yes
     - pkg update -f
-    - pkg upgrade pkg -y
-    - pkg install lang/gcc -y
-    - pkg install readline -y
+    - env ASSUME_ALWAYS_YES=YES pkg bootstrap -f
+    - env ASSUME_ALWAYS_YES=YES pkg upgrade pkg
+    - env ASSUME_ALWAYS_YES=YES pkg install lang/gcc
+    - env ASSUME_ALWAYS_YES=YES pkg install readline
 
   container:
     image: python:latest
