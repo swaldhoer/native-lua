@@ -18,10 +18,10 @@ freebsd11_task:
     # gcc [
     - python waf build_gcc
     - sudo python waf install_gcc
-    - pushd build/gcc/lua/lua-5.3.4-tests
+    - cd build/gcc/lua/lua-5.3.4-tests
     - lua -e"_U=true" all.lua
     - lua all.lua
-    - popd
+    - cd ../../../../
     - sudo python waf uninstall_gcc
     - python waf clean_gcc
     # gcc ]
