@@ -4,7 +4,7 @@ freebsd11_task:
 
   install_script:
     #- env ASSUME_ALWAYS_YES=yes
-    - pkg update -y -f
+    - pkg update -f
     - pkg upgrade pkg -y
     - pkg install lang/gcc -y
     - pkg install readline -y
