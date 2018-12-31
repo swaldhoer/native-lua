@@ -44,10 +44,10 @@ means under development and/or untested):
 |----------|-----------------------------------|---------------------------------------------------------------------------|
 | aix      | <ul><li>[x] gcc </li></ul>        | <ul><li>[x] xlc`*` </li> <li>[x] gcc`*` </li> <li>[x] clang`*` </li></ul> |
 | bsd      | <ul><li>[x] gcc </li></ul>        | <ul><li>[x] gcc`*` </li><li>[x] clang`*` </li></ul>                       |
-| c89      | <ul><li>[x] gcc </li></ul>        | all compilers <br> (tests are currently failing)                          |
+| c89      | <ul><li>[x] gcc </li></ul>        | all compilers`*`                                                          |
 | freebsd  | <ul><li>[x] gcc </li></ul>        | <ul><li>[x] gcc`*` </li><li>[x] clang`*` </li></ul>                       |
 | generic  | <ul><li>[x] gcc </li></ul>        | TODO                                                                      |
-| linux    | <ul><li>[x] gcc </li></ul>        | <ul><li>[x] gcc </li><li>[x] clang </li><li>[x] icc`*` </li></ul>          |
+| linux    | <ul><li>[x] gcc </li></ul>        | <ul><li>[x] gcc </li><li>[x] clang </li><li>[x] icc`*` </li></ul>         |
 | macos    | <ul><li>[x] gcc </li></ul>        | <ul><li>[x] gcc`*` </li><li>[x] clang`*` </li></ul>                       |
 | mingw    | <ul><li>[x] gcc </li></ul>        | see win32                                                                 |
 | posix    | <ul><li>[x] gcc </li></ul>        | TODO                                                                      |
