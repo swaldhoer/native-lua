@@ -2,8 +2,7 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/1gtcdi6wslxx3d6u/branch/master?svg=true)](https://ci.appveyor.com/project/swaldhoer/native-lua/branch/master)
 [![Build Status](https://travis-ci.org/swaldhoer/native-lua.svg?branch=master)](https://travis-ci.org/swaldhoer/native-lua)
-[![Build Status](https://travis-ci.org/swaldhoer/native-lua.svg?branch=master)](https://travis-ci.org/swaldhoer/native-lua)
-https://api.cirrus-ci.com/github/swaldhoer/native-lua.svg
+[![Build Status](https://api.cirrus-ci.com/github/swaldhoer/native-lua.svg)](https://cirrus-ci.com/github/swaldhoer/native-lua)
 [![Documentation Status](https://readthedocs.org/projects/native-lua/badge/?version=latest)](https://native-lua.readthedocs.io/en/latest/?badge=latest)
 
 `Lua` is multi-paradigm programming language. `Lua` is cross-platform as it is
