@@ -3,10 +3,11 @@ freebsd11_task:
     image: freebsd-11-2-release-amd64
 
   install_script:
-    - env ASSUME_ALWAYS_YES=yes
-    - pkg upgrade pkg
-    - pkg install lang/gcc
-    - pkg install readline
+    #- env ASSUME_ALWAYS_YES=yes
+    - pkg update -y -f
+    - pkg upgrade pkg -y
+    - pkg install lang/gcc -y
+    - pkg install readline -y
 
   container:
     image: python:latest
