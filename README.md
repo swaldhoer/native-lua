@@ -18,7 +18,7 @@ Windows with MinGWs' `gcc` and some sort of `make` is also straight forward.
 
 But this does not allow a good platform and compiler independent way of building
 and testing `Lua`, especially testing is not that simple as it should be.
-Therefore this project trie a platform and compiler independent waf of building
+Therefore this project tries a platform and compiler independent waf of building
 **and** testing `Lua`.
 
 ## How-To

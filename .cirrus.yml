@@ -27,16 +27,6 @@ freebsd11_task:
     - sudo python waf uninstall_gcc
     - python waf clean_gcc
     # gcc ]
-    # clang [
-    - python waf build_clang
-    - sudo python waf install_clang
-    - pushd build/clang/lua/lua-5.3.4-tests
-    - lua -e"_U=true" all.lua
-    #- lua all.lua
-    - popd
-    - sudo python waf uninstall_clang
-    - python waf clean_clang
-    # clang ]
     - python waf distclean
     # including ltests
     - python waf configure --ltests --include-tests
