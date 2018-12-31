@@ -18,7 +18,7 @@ out = 'build'  # pylint: disable=C0103
 host_os = Utils.unversioned_sys_platform()  # pylint: disable=C0103
 
 plat_comp = c_compiler['default']  # pylint: disable=C0103
-if host_os in c_compiler:
+if c_compiler.get(host_os):
     plat_comp = c_compiler[host_os]  # pylint: disable=C0103
 
 for x in plat_comp:
