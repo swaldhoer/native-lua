@@ -8,7 +8,7 @@ linux_task:
     - python waf install_gcc
     - pushd build/gcc/lua/lua-5.3.4-tests
     - lua -e"_U=true" all.lua
-    - lua all.lua
+    #- lua all.lua
     - popd
     - python waf uninstall_gcc
     - python waf clean_gcc
@@ -21,7 +21,7 @@ linux_task:
     - python waf install_gcc
     - pushd build/gcc/lua/lua-5.3.4-tests
     - lua -e"_U=true" all.lua
-    - lua all.lua
+    #- lua all.lua
     - popd
     - python waf uninstall_gcc
     - python waf clean_gcc
