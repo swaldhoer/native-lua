@@ -6,6 +6,8 @@
 *.log
 build
 .lock-waf_*
+waf-*
+.waf-*
 waf3-*
 .waf3-*
 *.a
