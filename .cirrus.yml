@@ -1,21 +1,46 @@
-freebsd11_task:
+linux_task:
+  container:
+      image: python:latest
+  script:
+    - python waf configure --include-tests
+    # gcc [
+    - python waf build_gcc
+    - python waf install_gcc
+    - pushd build/gcc/lua/lua-5.3.4-tests
+    - lua -e"_U=true" all.lua
+    #- lua all.lua
+    - popd
+    - python waf uninstall_gcc
+    - python waf clean_gcc
+    # gcc ]
+    - python waf distclean
+    # including ltests
+    - python waf configure --ltests --include-tests
+    # gcc [
+    - python waf build_gcc
+    - python waf install_gcc
+    - pushd build/gcc/lua/lua-5.3.4-tests
+    - lua -e"_U=true" all.lua
+    #- lua all.lua
+    - popd
+    - python waf uninstall_gcc
+    - python waf clean_gcc
+    # gcc ]
+
+freebsd_task:
   freebsd_instance:
     matrix:
-        image: freebsd-11-2-release-amd64
-        image: freebsd-12-0-release-amd64
-
+      image: freebsd-11-2-release-amd64
+      image: freebsd-12-0-release-amd64
   install_script:
-    #- env ASSUME_ALWAYS_YES=yes
     - pkg update -f
     - env ASSUME_ALWAYS_YES=YES pkg bootstrap -f
     - env ASSUME_ALWAYS_YES=YES pkg upgrade pkg
     - env ASSUME_ALWAYS_YES=YES pkg install lang/gcc
     - env ASSUME_ALWAYS_YES=YES pkg install readline
     - env ASSUME_ALWAYS_YES=YES pkg install bash
-
   container:
     image: python:latest
-
   script:
     - chsh -s /usr/local/bin/bash
     - python waf configure --include-tests
