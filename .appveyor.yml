@@ -57,7 +57,7 @@ build_script:
   # msvc
   - cmd: python waf build_msvc
   - cmd: python waf install_msvc
-  - cmd: pushd build/gcc/lua/lua-5.3.4-tests
+  - cmd: pushd build/msvc/lua/lua-5.3.4-tests
   # - cmd: lua -e"_U=true" all.lua
   # - cmd: lua all.lua
   - cmd: popd
