@@ -32,7 +32,7 @@ install:
         Write-Host New `$env:Path
         Write-Host ($env:Path).Replace(';',"`n")
         }
-  - sh: sudo apt-get install pylint
+  - sh: sudo apt-get -y install pylint
 #  - pip install flake8 -q -y
 #  - pip install pylint -q -y
   - python --version
