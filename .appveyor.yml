@@ -41,6 +41,8 @@ install:
   - clang --version
   - gcc --version
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python --version"
+  # for testing
+  - cmd: set PATH=%PATH%;%userprofile%\AppData\Local\Programs\lua\bin
 
 before_build:
   - python waf --help
@@ -59,7 +61,7 @@ build_script:
   - cmd: python waf build_msvc
   - cmd: python waf install_msvc
   - cmd: cd build/msvc/lua/lua-5.3.4-tests
-  # - cmd: lua -e"_U=true" all.lua
+  - cmd: lua -e"_U=true" all.lua
   # - cmd: lua all.lua
   - cmd: cd ../../../..
   - cmd: python waf uninstall_msvc
@@ -69,7 +71,7 @@ build_script:
   - cmd: python waf install_gcc
   - sh: sudo python waf install_gcc
   - cd build/gcc/lua/lua-5.3.4-tests
-  - sh: lua -e"_U=true" all.lua
+  - lua -e"_U=true" all.lua
   #- sh: lua all.lua
   - cd ../../../..
   - cmd: python waf uninstall_gcc
@@ -80,7 +82,7 @@ build_script:
   - cmd: python waf install_clang
   - sh: sudo python waf install_clang
   - cd build/clang/lua/lua-5.3.4-tests
-  - sh: lua -e"_U=true" all.lua
+  - lua -e"_U=true" all.lua
   #- sh: lua all.lua
   - cd ../../../..
   - cmd: python waf uninstall_clang
@@ -101,7 +103,7 @@ build_script:
   - cmd: python waf build_msvc
   - cmd: python waf install_msvc
   - cmd: cd build/gcc/lua/lua-5.3.4-tests
-  # - cmd: lua -e"_U=true" all.lua
+  - cmd: lua -e"_U=true" all.lua
   # - cmd: lua all.lua
   - cmd: cd ../../../..
   - cmd: python waf uninstall_msvc
@@ -111,7 +113,7 @@ build_script:
   - cmd: python waf install_gcc
   - sh: sudo python waf install_gcc
   - cd build/gcc/lua/lua-5.3.4-tests
-  - sh: lua -e"_U=true" all.lua
+  - lua -e"_U=true" all.lua
   #- sh: lua all.lua
   - cd ../../../..
   - cmd: python waf uninstall_gcc
@@ -122,7 +124,7 @@ build_script:
   - cmd: python waf install_clang
   - sh: sudo python waf install_clang
   - cd build/clang/lua/lua-5.3.4-tests
-  - sh: lua -e"_U=true" all.lua
+  - lua -e"_U=true" all.lua
   #- sh: lua all.lua
   - cd ../../../..
   - cmd: python waf uninstall_clang
