@@ -52,25 +52,26 @@ before_build:
 build_script:
   # basic configuration
   - python waf configure
+  - python waf distclean
   # configure including the test files
   - python waf configure --include-tests
   # msvc
   - cmd: python waf build_msvc
   - cmd: python waf install_msvc
-  - cmd: pushd build/msvc/lua/lua-5.3.4-tests
+  - cmd: cd build/msvc/lua/lua-5.3.4-tests
   # - cmd: lua -e"_U=true" all.lua
   # - cmd: lua all.lua
-  - cmd: popd
+  - cmd: cd ../../../..
   - cmd: python waf uninstall_msvc
   - cmd: python waf clean_msvc
   # gcc
   - python waf build_gcc
   - cmd: python waf install_gcc
   - sh: sudo python waf install_gcc
-  - pushd build/gcc/lua/lua-5.3.4-tests
+  - cd build/gcc/lua/lua-5.3.4-tests
   - sh: lua -e"_U=true" all.lua
   #- sh: lua all.lua
-  - popd
+  - cd ../../../..
   - cmd: python waf uninstall_gcc
   - sh: sudo python waf uninstall_gcc
   - python waf clean_gcc
@@ -78,10 +79,10 @@ build_script:
   - python waf build_clang
   - cmd: python waf install_clang
   - sh: sudo python waf install_clang
-  - pushd build/clang/lua/lua-5.3.4-tests
+  - cd build/clang/lua/lua-5.3.4-tests
   - sh: lua -e"_U=true" all.lua
   #- sh: lua all.lua
-  - popd
+  - cd ../../../..
   - cmd: python waf uninstall_clang
   - sh: sudo python waf uninstall_clang
   - python waf clean_clang
@@ -99,20 +100,20 @@ build_script:
   # msvc
   - cmd: python waf build_msvc
   - cmd: python waf install_msvc
-  - cmd: pushd build/gcc/lua/lua-5.3.4-tests
+  - cmd: cd build/gcc/lua/lua-5.3.4-tests
   # - cmd: lua -e"_U=true" all.lua
   # - cmd: lua all.lua
-  - cmd: popd
+  - cmd: cd ../../../..
   - cmd: python waf uninstall_msvc
   - cmd: python waf clean_msvc
   # gcc
   - python waf build_gcc
   - cmd: python waf install_gcc
   - sh: sudo python waf install_gcc
-  - pushd build/gcc/lua/lua-5.3.4-tests
+  - cd build/gcc/lua/lua-5.3.4-tests
   - sh: lua -e"_U=true" all.lua
   #- sh: lua all.lua
-  - popd
+  - cd ../../../..
   - cmd: python waf uninstall_gcc
   - sh: sudo python waf uninstall_gcc
   - python waf clean_gcc
@@ -120,10 +121,10 @@ build_script:
   - python waf build_clang
   - cmd: python waf install_clang
   - sh: sudo python waf install_clang
-  - pushd build/clang/lua/lua-5.3.4-tests
+  - cd build/clang/lua/lua-5.3.4-tests
   - sh: lua -e"_U=true" all.lua
   #- sh: lua all.lua
-  - popd
+  - cd ../../../..
   - cmd: python waf uninstall_clang
   - sh: sudo python waf uninstall_clang
   - python waf clean_clang
