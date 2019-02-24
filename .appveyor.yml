@@ -43,9 +43,9 @@ install:
 before_build:
   # ensure that only well formated wscripts are checked in
   - python waf --help
-  - flake8
+  - sh: flake8
   - pylint wscript
-  - pylint lua\wscript
+  - pylint lua/wscript
 
 build_script:
   # basic configuration
