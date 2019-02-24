@@ -33,19 +33,17 @@ install:
         Write-Host ($env:Path).Replace(';',"`n")
         }
   - sh: sudo apt-get -y install pylint
-#  - pip install flake8 -q -y
-#  - pip install pylint -q -y
   - python --version
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python --version"
   - clang --version
   - gcc --version
 
 before_build:
-  # ensure that only well formated wscripts are checked in
   - python waf --help
+  # ensure that only well formated wscripts are checked in
   - sh: flake8
-  - pylint wscript
-  - pylint lua/wscript
+  - sh: pylint wscript
+  - sh: pylint lua/wscript
 
 build_script:
   # basic configuration
@@ -63,21 +61,25 @@ build_script:
   - cmd: python waf clean_msvc
   # gcc
   - python waf build_gcc
-  - python waf install_gcc
+  - cmd: python waf install_gcc
+  - sh: sudo python waf install_gcc
   - pushd build/gcc/lua/lua-5.3.4-tests
   - sh: lua -e"_U=true" all.lua
   #- sh: lua all.lua
   - popd
-  - python waf uninstall_gcc
+  - cmd: python waf uninstall_gcc
+  - sh: sudo python waf uninstall_gcc
   - python waf clean_gcc
   # clang
   - python waf build_clang
-  - python waf install_clang
+  - cmd: python waf install_clang
+  - sh: sudo python waf install_clang
   - pushd build/clang/lua/lua-5.3.4-tests
   - sh: lua -e"_U=true" all.lua
   #- sh: lua all.lua
   - popd
-  - python waf uninstall_clang
+  - cmd: python waf uninstall_clang
+  - sh: sudo python waf uninstall_clang
   - python waf clean_clang
   - python waf distclean
   # cygwin gcc
@@ -101,21 +103,25 @@ build_script:
   - cmd: python waf clean_msvc
   # gcc
   - python waf build_gcc
-  - python waf install_gcc
+  - cmd: python waf install_gcc
+  - sh: sudo python waf install_gcc
   - pushd build/gcc/lua/lua-5.3.4-tests
   - sh: lua -e"_U=true" all.lua
   #- sh: lua all.lua
   - popd
-  - python waf uninstall_gcc
+  - cmd: python waf uninstall_gcc
+  - sh: sudo python waf uninstall_gcc
   - python waf clean_gcc
   # clang
   - python waf build_clang
-  - python waf install_clang
+  - cmd: python waf install_clang
+  - sh: sudo python waf install_clang
   - pushd build/clang/lua/lua-5.3.4-tests
   - sh: lua -e"_U=true" all.lua
   #- sh: lua all.lua
   - popd
-  - python waf uninstall_clang
+  - cmd: python waf uninstall_clang
+  - sh: sudo python waf uninstall_clang
   - python waf clean_clang
   - python waf distclean
   # cygwin gcc
