@@ -32,18 +32,22 @@ install:
         Write-Host New `$env:Path
         Write-Host ($env:Path).Replace(';',"`n")
         }
+  - cmd: C:\Miniconda37-x64\Scripts\activate
+  - cmd: conda install conda pylint flake8 vs2017_win-64 -c anaconda -y -q
   - sh: sudo apt-get -y install pylint
   - python --version
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "python --version"
+  - flake8 --version
+  - pylint --version
   - clang --version
   - gcc --version
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "python --version"
 
 before_build:
   - python waf --help
   # ensure that only well formated wscripts are checked in
-  - sh: flake8
-  - sh: pylint wscript
-  - sh: pylint lua/wscript
+  - flake8
+  - pylint wscript
+  - pylint lua/wscript
 
 build_script:
   # basic configuration
