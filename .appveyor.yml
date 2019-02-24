@@ -32,8 +32,8 @@ install:
         Write-Host New `$env:Path
         Write-Host ($env:Path).Replace(';',"`n")
         }
-  - pip install flake8 -q -y
-  - pip install pylint -q -y
+#  - pip install flake8 -q -y
+#  - pip install pylint -q -y
   - python --version
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python --version"
   - cmd: cl
