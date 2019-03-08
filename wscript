@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # encoding: utf-8
 
 import sys
@@ -26,6 +26,7 @@ for x in plat_comp:
               InstallContext, UninstallContext):
         name = y.__name__.replace('Context', '').lower()
         class Tmp(y):
+            __doc__ = y.__doc__ + ' ({})'.format(x)
             cmd = name + '_' + x
             variant = x
 
@@ -356,6 +357,16 @@ def build(bld):
     bld.clean_files = bld.bldnode.ant_glob(
         '**', excl='.lock* config.log c4che/* build.log', quiet=True,
         generator=True)
+
+    if Utils.is_win32:
+        bld.install_files('${BINDIR}', os.path.join('lua', 'luadll.dll'))
+        if bld.variant == 'msvc':
+            bld.install_files('${BINDIR}',
+                              os.path.join('lua', 'luadll.dll.manifest'))
+            bld.install_files('${BINDIR}',
+                              os.path.join('lua', 'lua.exe.manifest'))
+            bld.install_files('${BINDIR}',
+                              os.path.join('lua', 'luac.exe.manifest'))
 
     bld.logger = Logs.make_logger(os.path.join(out, 'build.log'), 'build')
     hdlr = logging.StreamHandler(sys.stdout)
