@@ -39,7 +39,7 @@ install:
 #  - cmd: call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
   - cmd: pushd "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\" && call "VC\Auxiliary\Build\vcvars64.bat" && popd
   #
-  - cmd: set PY_VCRUNTIME_REDIST="C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.16.27023\bin\Hostx64\x64\vcruntime140.dll"
+  - cmd: set "PY_VCRUNTIME_REDIST=C:\Python37-x64\vcruntime140.dll"
   - cmd: python -m pip install --upgrade pip -q
   - cmd: python -m pip install flake8 pylint -q
   - sh: sudo apt-get -y install pylint
