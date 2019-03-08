@@ -270,6 +270,7 @@ return 0;
         cnf.write_config_header('config.h')
         try:  # msvc
             set_new_basic_env('msvc')
+            vcruntime140.dll
             cnf.load('compiler_c')
             cnf.env.CFLAGS = ['/nologo', cnf.env.c_standard, '/O2', '/Wall']
             cnf.env.CFLAGS += ['/FI'+cnf.env.cfg_files[0]]
@@ -283,7 +284,6 @@ return 0;
             failed_platform_compilers.append(cnf.env.env_name)
         try:  # gcc
             set_new_basic_env('gcc')
-            cnf.load('compiler_c')
             cnf.env.CFLAGS = [cnf.env.c_standard, '-O2', '-Wall', '-Wextra']
             cnf.check_cc(fragment=min_c, execute=True)
             check_libs('m')
