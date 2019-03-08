@@ -275,6 +275,7 @@ return 0;
             cnf.env.CFLAGS += ['/FI'+cnf.env.cfg_files[0]]
             cnf.check_cc(fragment=min_c, execute=True)
             platform_compilers.append(cnf.env.env_name)
+            print("Have MANIFEST:", cnf.env.MSVC_MANIFEST)
         except BaseException:
             failed_platform_compilers.append(cnf.env.env_name)
         try:  # gcc
@@ -360,7 +361,7 @@ def build(bld):
 
     if Utils.is_win32:
         bld.install_files('${BINDIR}', os.path.join('lua', 'luadll.dll'))
-        if bld.variant == 'msvc':
+        if bld.variant == 'msvc' and bld.env.MSVC_MANIFEST:
             bld.install_files('${BINDIR}',
                               os.path.join('lua', 'luadll.dll.manifest'))
             bld.install_files('${BINDIR}',
