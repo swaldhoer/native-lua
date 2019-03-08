@@ -275,7 +275,10 @@ return 0;
             cnf.env.CFLAGS += ['/FI'+cnf.env.cfg_files[0]]
             cnf.check_cc(fragment=min_c, execute=True)
             platform_compilers.append(cnf.env.env_name)
-            print("Have MANIFEST:", cnf.env.MSVC_MANIFEST)
+            if cnf.env.MSVC_MANIFEST:
+                Logs.info("Have MANIFEST: %s", cnf.env.MSVC_MANIFEST)
+            else:
+                Logs.warn("Have MANIFEST: %s", cnf.env.MSVC_MANIFEST)
         except BaseException:
             failed_platform_compilers.append(cnf.env.env_name)
         try:  # gcc
