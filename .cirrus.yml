@@ -29,7 +29,7 @@ task:
         image: python:latest
 
   script:
-    - python waf configure --include-tests
+    - python waf configure --include-tests -vvv
     # gcc [
     - python waf build_gcc
     - sudo python waf install_gcc
