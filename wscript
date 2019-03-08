@@ -275,6 +275,10 @@ return 0;
             cnf.env.CFLAGS += ['/FI'+cnf.env.cfg_files[0]]
             cnf.check_cc(fragment=min_c, execute=True)
             platform_compilers.append(cnf.env.env_name)
+            if cnf.env.MSVC_MANIFEST:
+                Logs.info("Have MANIFEST: %s", cnf.env.MSVC_MANIFEST)
+            else:
+                Logs.warn("Have MANIFEST: %s", cnf.env.MSVC_MANIFEST)
         except BaseException:
             failed_platform_compilers.append(cnf.env.env_name)
         try:  # gcc
@@ -359,14 +363,18 @@ def build(bld):
         generator=True)
 
     if Utils.is_win32:
-        bld.install_files('${BINDIR}', os.path.join('lua', 'luadll.dll'))
+        if bld.variant == 'gcc':
+            # the DLL produced by gcc is already installed to ${BINDIR}
+            pass
         if bld.variant == 'msvc':
-            bld.install_files('${BINDIR}',
-                              os.path.join('lua', 'luadll.dll.manifest'))
-            bld.install_files('${BINDIR}',
-                              os.path.join('lua', 'lua.exe.manifest'))
-            bld.install_files('${BINDIR}',
-                              os.path.join('lua', 'luac.exe.manifest'))
+            bld.install_files('${BINDIR}', os.path.join('lua', 'luadll.dll'))
+            if bld.env.MSVC_MANIFEST:
+                bld.install_files('${BINDIR}',
+                                  os.path.join('lua', 'luadll.dll.manifest'))
+                bld.install_files('${BINDIR}',
+                                  os.path.join('lua', 'lua.exe.manifest'))
+                bld.install_files('${BINDIR}',
+                                  os.path.join('lua', 'luac.exe.manifest'))
 
     bld.logger = Logs.make_logger(os.path.join(out, 'build.log'), 'build')
     hdlr = logging.StreamHandler(sys.stdout)
