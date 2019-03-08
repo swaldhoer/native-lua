@@ -16,7 +16,7 @@ install:
   - ps: |
       if ($isWindows) {
         $rmpath = "Docker", "SQL", "Mercurial", "Subversion", "Maven", "CMake"
-        $rmpath += "nodejs", "nunit", "nuget", "java", "xunit", "go"
+        $rmpath += "nodejs", "nunit", "nuget", "java", "xunit", "go", "python"
         $rmpath += "Amazon", "ruby", "perl", "Azur", "Webdriver", "Coverity"
         $rmpath += "Octopus", "erl9", "dotnet", "iojs", "curl", "Yarn"
         $rmpath += "chocolatey", "npm", "Windows Performance Toolkit"
@@ -33,7 +33,7 @@ install:
         Write-Host ($env:Path).Replace(';',"`n")
         }
   - cmd: C:\Miniconda37-x64\Scripts\activate
-  - cmd: conda install conda pylint flake8 vs2017_win-64 -c anaconda -y -q
+  - cmd: conda install conda=4.6.4 pylint flake8 vs2017_win-64 -c anaconda -y -q
   - sh: sudo apt-get -y install pylint
   - python --version
   - flake8 --version
