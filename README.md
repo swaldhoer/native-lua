@@ -1,4 +1,4 @@
-# The Why & The Goal Of This Project
+# The ``native-lua`` Project
 
 [![Build status](https://ci.appveyor.com/api/projects/status/1gtcdi6wslxx3d6u/branch/master?svg=true)](https://ci.appveyor.com/project/swaldhoer/native-lua/branch/master)
 [![Build Status](https://travis-ci.org/swaldhoer/native-lua.svg?branch=master)](https://travis-ci.org/swaldhoer/native-lua)
@@ -91,6 +91,14 @@ except the following:
 
 The documentation can be found on
 [readthedocs](https://native-lua.readthedocs.io/en/latest/).
+
+## CI
+
+- AppVeyor: Linux and Windows
+- Cirrus CI: Linux and FreeBSD
+- Travis CI: Linux
+
+On AppVeyor we also run ``flake8`` and ``pylint``.
 
 ---
 
