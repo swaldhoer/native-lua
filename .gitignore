@@ -1,15 +1,19 @@
-*.vs
+# directories
+build
+.vs
+.vscode
+waf-*
+.waf-*
+waf3-*
+.waf3-*
+
+# files
 *.user
 *.dist
 *.exe
 *.dll
 *.log
-build
 .lock-waf_*
-waf-*
-.waf-*
-waf3-*
-.waf3-*
 *.a
 *.o
 *.so
