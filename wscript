@@ -26,6 +26,7 @@ for x in plat_comp:
               InstallContext, UninstallContext):
         name = y.__name__.replace('Context', '').lower()
         class Tmp(y):
+            __doc__ = y.__doc__ + ' ({})'.format(x)
             cmd = name + '_' + x
             variant = x
 
