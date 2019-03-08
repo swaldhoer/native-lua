@@ -359,11 +359,13 @@ def build(bld):
 
     if Utils.is_win32:
         bld.install_files('${BINDIR}', os.path.join('lua', 'luadll.dll'))
-        bld.install_files('${BINDIR}',
-                          os.path.join('lua', 'luadll.dll.manifest'))
-        bld.install_files('${BINDIR}', os.path.join('lua', 'lua.exe.manifest'))
-        bld.install_files('${BINDIR}',
-                          os.path.join('lua', 'luac.exe.manifest'))
+        if bld.variant == 'msvc':
+            bld.install_files('${BINDIR}',
+                              os.path.join('lua', 'luadll.dll.manifest'))
+            bld.install_files('${BINDIR}',
+                              os.path.join('lua', 'lua.exe.manifest'))
+            bld.install_files('${BINDIR}',
+                              os.path.join('lua', 'luac.exe.manifest'))
 
     bld.logger = Logs.make_logger(os.path.join(out, 'build.log'), 'build')
     hdlr = logging.StreamHandler(sys.stdout)
