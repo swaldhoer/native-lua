@@ -1,11 +1,9 @@
-environment:
-  LUA: LUA
 task:
   matrix:
-  - container:
-      matrix:
-        image: python2.7
-        image: python3.7
+    - container:
+        matrix:
+          image: python2.7
+          image: python3.7
 
     - freebsd_instance:
         matrix:
