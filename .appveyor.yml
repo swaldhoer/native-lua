@@ -27,7 +27,7 @@ install:
         }
       }
   - cmd: set PATH=C:\mingw-w64\x86_64-8.1.0-posix-seh-rt_v6-rev0\mingw64\bin;%PATH%
-  - cmd: set PATH=C:\Python27-x64;%PATH%
+  - cmd: set PATH=C:\Python27-x64;C:\Python27-x64\Scripts;%PATH%
   - ps: |
       if ($isWindows) {
         Write-Host New `$env:Path
