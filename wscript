@@ -363,14 +363,15 @@ def build(bld):
         if bld.variant == 'gcc':
             # the DLL produced by gcc is already installed to ${BINDIR}
             pass
-        if bld.variant == 'msvc' and bld.env.MSVC_MANIFEST:
+        if bld.variant == 'msvc':
             bld.install_files('${BINDIR}', os.path.join('lua', 'luadll.dll'))
-            bld.install_files('${BINDIR}',
-                              os.path.join('lua', 'luadll.dll.manifest'))
-            bld.install_files('${BINDIR}',
-                              os.path.join('lua', 'lua.exe.manifest'))
-            bld.install_files('${BINDIR}',
-                              os.path.join('lua', 'luac.exe.manifest'))
+            if bld.env.MSVC_MANIFEST:
+                bld.install_files('${BINDIR}',
+                                  os.path.join('lua', 'luadll.dll.manifest'))
+                bld.install_files('${BINDIR}',
+                                  os.path.join('lua', 'lua.exe.manifest'))
+                bld.install_files('${BINDIR}',
+                                  os.path.join('lua', 'luac.exe.manifest'))
 
     bld.logger = Logs.make_logger(os.path.join(out, 'build.log'), 'build')
     hdlr = logging.StreamHandler(sys.stdout)
