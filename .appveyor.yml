@@ -21,7 +21,6 @@ install:
         $rmpath += "Octopus", "erl9", "dotnet", "iojs", "curl", "Yarn"
         $rmpath += "chocolatey", "npm", "Windows Performance Toolkit"
         $rmpath += "Microsoft Service Fabric", "Microsoft DNX"
-        $rmpath += "Microsoft Visual Studio"
         $rmpath += "ServiceFabricLocalClusterManager"
         foreach ($i in $rmpath) {
           $env:path = ($env:path -split ";").Where({!($_ -like "*$i*")}) -join ";"
