@@ -28,14 +28,18 @@ install:
         }
       }
   - cmd: set PATH=C:\mingw-w64\x86_64-8.1.0-posix-seh-rt_v6-rev0\mingw64\bin;%PATH%
+  - cmd: set PATH=C:\Python37-x64;C:\Python37-x64\Scripts;%PATH%
   - ps: |
       if ($isWindows) {
         Write-Host New `$env:Path
         Write-Host ($env:Path).Replace(';',"`n")
         }
-  - cmd: C:\Miniconda37-x64\Scripts\activate
-  - cmd: conda install pylint flake8 -c anaconda -y -q
-  - cmd: call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+#  - cmd: C:\Miniconda37-x64\Scripts\activate
+#  - cmd: conda install pylint flake8 -c anaconda -y -q
+#  - cmd: call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
+  - cmd: pushd "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\" && call "VC\Auxiliary\Build\vcvars64.bat" && popd
+  - cmd: python -m pip install --upgrade pip
+  - cmd: python -m pip install flake8 pylint
   - sh: sudo apt-get -y install pylint
   - python --version
   - flake8 --version
