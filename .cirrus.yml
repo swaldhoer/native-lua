@@ -1,3 +1,6 @@
+environment:
+  LUA: LUA
+
 task:
 
   matrix:
@@ -14,6 +17,7 @@ task:
 
       freebsd_setup_script:
         - echo "freebsd_setup_script"
+
       freebsd_install_script:
         - echo "freebsd_install_script"
 
