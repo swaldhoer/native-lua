@@ -1,58 +1,37 @@
-linux_task:
-  container:
-      image: python:latest
-  script:
-    - python waf configure --include-tests
-    # gcc [
-    - python waf build_gcc
-    - python waf install_gcc
-    - pushd build/gcc/lua/lua-5.3.4-tests
-    - lua -e"_U=true" all.lua
-    #- lua all.lua
-    - popd
-    - python waf uninstall_gcc
-    - python waf clean_gcc
-    # gcc ]
-    - python waf distclean
-    # including ltests
-    - python waf configure --ltests --include-tests
-    # gcc [
-    - python waf build_gcc
-    - python waf install_gcc
-    - pushd build/gcc/lua/lua-5.3.4-tests
-    - lua -e"_U=true" all.lua
-    #- lua all.lua
-    - popd
-    - python waf uninstall_gcc
-    - python waf clean_gcc
-    # gcc ]
+task:
+  matrix:
+    - container:
+        matrix:
+          image: python:2.7
+          image: python:3.7
 
-freebsd_task:
-  freebsd_instance:
-    matrix:
-      image: freebsd-12-0-release-amd64
-      image: freebsd-11-2-release-amd64
-      image: freebsd-10-4-release-amd64
-  install_script:
-    - pkg update -f
-    - env ASSUME_ALWAYS_YES=YES pkg bootstrap -f
-    - env ASSUME_ALWAYS_YES=YES pkg upgrade pkg
-    - env ASSUME_ALWAYS_YES=YES pkg install lang/gcc
-    - env ASSUME_ALWAYS_YES=YES pkg install readline
-    - env ASSUME_ALWAYS_YES=YES pkg install bash
-  container:
-    image: python:latest
+    - freebsd_instance:
+        matrix:
+          image: freebsd-12-0-release-amd64
+          image: freebsd-11-2-release-amd64
+          image: freebsd-10-4-release-amd64
+      container:
+        image: python:latest
+      freebsd_install_script:
+        - pkg update -f
+        - env ASSUME_ALWAYS_YES=YES pkg bootstrap -f
+        - env ASSUME_ALWAYS_YES=YES pkg upgrade pkg
+        - env ASSUME_ALWAYS_YES=YES pkg install lang/gcc
+        - env ASSUME_ALWAYS_YES=YES pkg install readline
+        - env ASSUME_ALWAYS_YES=YES pkg install bash
+      freebsd_setup_script:
+        - chsh -s /usr/local/bin/bash
+
   script:
-    - chsh -s /usr/local/bin/bash
     - python waf configure --include-tests
     # gcc [
     - python waf build_gcc
-    - sudo python waf install_gcc
+    - python waf install_gcc
     - pushd build/gcc/lua/lua-5.3.4-tests
     - lua -e"_U=true" all.lua
     #- lua all.lua
     - popd
-    - sudo python waf uninstall_gcc
+    - python waf uninstall_gcc
     - python waf clean_gcc
     # gcc ]
     - python waf distclean
@@ -60,11 +39,11 @@ freebsd_task:
     - python waf configure --ltests --include-tests
     # gcc [
     - python waf build_gcc
-    - sudo python waf install_gcc
+    - python waf install_gcc
     - pushd build/gcc/lua/lua-5.3.4-tests
     - lua -e"_U=true" all.lua
     #- lua all.lua
     - popd
-    - sudo python waf uninstall_gcc
+    - python waf uninstall_gcc
     - python waf clean_gcc
     # gcc ]
