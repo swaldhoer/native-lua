@@ -360,8 +360,11 @@ def build(bld):
         generator=True)
 
     if Utils.is_win32:
-        bld.install_files('${BINDIR}', os.path.join('lua', 'luadll.dll'))
+        if bld.variant == 'gcc':
+            # the DLL produced by gcc is already installed to ${BINDIR}
+            pass
         if bld.variant == 'msvc' and bld.env.MSVC_MANIFEST:
+            bld.install_files('${BINDIR}', os.path.join('lua', 'luadll.dll'))
             bld.install_files('${BINDIR}',
                               os.path.join('lua', 'luadll.dll.manifest'))
             bld.install_files('${BINDIR}',
