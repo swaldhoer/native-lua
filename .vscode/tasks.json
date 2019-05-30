@@ -261,6 +261,36 @@
                 "args": ["waf", "uninstall_msvc"],
             },
         },
+        {
+            "label": "build_doc",
+            "type": "shell",
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "command": ["./waf"],
+            "args": ["build_doc"],
+            "windows": {
+                "command": "python",
+                "args": ["waf", "build_doc"],
+            },
+        },
+        {
+            "label": "clean_doc",
+            "type": "shell",
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared"
+            },
+            "command": ["./waf"],
+            "args": ["clean_doc"],
+            "windows": {
+                "command": "python",
+                "args": ["waf", "clean_doc"],
+            },
+        },
     ],
     "problemMatcher": []
 }

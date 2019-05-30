@@ -5,7 +5,7 @@ import sys
 import os
 import logging
 
-from waflib import Logs, Utils, Options
+from waflib import Logs, Utils, Options, Context
 from waflib.Tools.compiler_c import c_compiler
 from waflib.Build import BuildContext, CleanContext, ListContext, StepContext
 from waflib.Build import InstallContext, UninstallContext
@@ -14,6 +14,8 @@ VERSION = '0.0.1'
 APPNAME = 'lua'
 top = '.'  # pylint: disable=C0103
 out = 'build'  # pylint: disable=C0103
+
+Context.Context.line_just = 45
 
 host_os = Utils.unversioned_sys_platform()  # pylint: disable=C0103
 
@@ -39,6 +41,12 @@ def options(opt):
     opt.parser.remove_option('--top')
     opt.parser.remove_option('--out')
     opt.load('compiler_c')
+    opt.load('python')
+    opt.parser.remove_option("--nopyc")
+    opt.parser.remove_option("--nopyo")
+    opt.parser.remove_option("--nopycache")
+    opt.parser.remove_option("--pythondir")
+    opt.parser.remove_option("--pythonarchdir")
     opt.load('gnu_dirs')
     opt.parser.remove_option('--oldincludedir')
     opt.parser.remove_option('--dvidir')
@@ -76,6 +84,19 @@ def configure(cnf):  # pylint: disable=R0912
     """Basic configuration of the project based on the operating system and
 the available compilers.
     """
+    cnf.load("python")
+    cnf.check_python_version((2,7))
+    cnf.env.lua_src_version = tuple(
+        cnf.path.find_node('LUA_VERSION').read().splitlines()[0].split('.'))
+    cnf.msg('Lua version', '.'.join(cnf.env.lua_src_version))
+
+    cnf.find_program('sphinx-build', var='SPHINX_BUILD', mandatory=False)
+    cnf.check_python_module('sphinx_rtd_theme')
+    if not cnf.env.SPHINX_BUILD:
+        Logs.warn('Documentation build will not be available.')
+    else:
+        cnf.env.docs_out = os.path.join(out, 'docs')
+
 
     def get_c_standard(env_name, c_std):
         """Define C standard for each compiler"""
@@ -127,7 +148,7 @@ return 0;
         Logs.warn('Adding define: LUA_USE_C89')  # TODO
         if host_os == 'win32':
             Logs.warn('This will NOT effect msvc-builds on win32.')
-    Logs.info('C standard: {}'.format(cnf.options.c_standard))
+    cnf.msg('C standard', cnf.options.c_standard)
 
     platform_compilers = []
     failed_platform_compilers = []
@@ -147,12 +168,12 @@ return 0;
         except BaseException:
             failed_platform_compilers.append(cnf.env.env_name)
         try:  # gcc
-            # TODO linker options: -Wl,-brtl,-bexpall
-            # TODO when compling with gcc, it must still be used xlc linker
+            # when compling with gcc, the xlc linker must still be used
             set_new_basic_env('gcc')
+            cnf.env.LINK_CC = 'xlc'
             cnf.load('compiler_c')
             cnf.env.CFLAGS = [cnf.env.c_standard, '-O2', '-Wall', '-Wextra']
-            cnf.env.LINKFLAGS = ['-Wl,-export-dynamic']
+            cnf.env.LINKFLAGS = ['-Wl,-brtl,-bexpall']
             cnf.check_cc(fragment=min_c, execute=True)
             check_libs('m', 'dl')
             platform_compilers.append(cnf.env.env_name)
@@ -338,12 +359,11 @@ return 0;
         cnf.fatal('Could not configure a single C compiler (tried: {}).\
             '.format(failed_platform_compilers))
     if failed_platform_compilers:
-        Logs.warn('Could not configure compilers: {}'.format(
-            failed_platform_compilers))
+        Logs.warn('Could not configure the following compilers: {}'.format(
+            ', '.join(failed_platform_compilers)))
 
     c_compiler[host_os] = platform_compilers
-    Logs.info('Configured compilers: {} on [{}].'.format(c_compiler[host_os],
-                                                         host_os))
+    cnf.msg('Configured compilers', ', '.join(c_compiler[host_os]))
 
 
 def build(bld):
@@ -382,3 +402,16 @@ def build(bld):
     hdlr.setFormatter(formatter)
     bld.logger.addHandler(hdlr)
     bld.recurse('lua')
+
+def build_doc(ctx):
+    """builds the documentation"""
+    # TODO needs a waf-style implementation
+    ctx.cmd_and_log('sphinx-build -b html docs build/docs',
+                    output=Context.BOTH)
+
+def clean_doc(ctx):
+    """cleans the documentation"""
+    # TODO needs a waf-style implementation
+    doc_files = ctx.path.ant_glob(os.path.join('build', 'docs', '**/*'))
+    for doc_file in doc_files:
+        doc_file.delete()
