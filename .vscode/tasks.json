@@ -39,6 +39,8 @@
                 "reveal": "always",
                 "panel": "shared"
             },
+            "command": "echo",
+            "args": ["build_msvc not supported on this platform."],
             "windows": {
                 "command": "python",
                 "args": ["waf", "build_msvc"],
@@ -85,6 +87,8 @@
             "label": "clean_msvc",
             "type": "shell",
             "group": "build",
+            "command": "echo",
+            "args": ["clean_msvc not supported on this platform."],
             "windows": {
                 "command": "python",
                 "args": ["waf", "clean_msvc"],
@@ -168,6 +172,8 @@
             "label": "install_msvc",
             "type": "shell",
             "group": "build",
+            "command": "echo",
+            "args": ["install_msvc not supported on this platform."],
             "windows": {
                 "command": "python",
                 "args": ["waf", "install_msvc"],
@@ -207,6 +213,8 @@
             "label": "list_msvc",
             "type": "shell",
             "group": "build",
+            "command": "echo",
+            "args": ["list_msvc not supported on this platform."],
             "windows": {
                 "command": "python",
                 "args": ["waf", "list_msvc"],
@@ -246,6 +254,8 @@
             "label": "uninstall_msvc",
             "type": "shell",
             "group": "build",
+            "command": "echo",
+            "args": ["uninstall_msvc not supported on this platform."],
             "windows": {
                 "command": "python",
                 "args": ["waf", "uninstall_msvc"],
