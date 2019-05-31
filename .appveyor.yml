@@ -47,7 +47,8 @@ install:
   - sh: sudo apt-get -y install pylint3
   - python --version
   - flake8 --version
-  - pylint --version
+  - cmd: pylint --version
+  - sh: pylint3 --version
   - clang --version
   - gcc --version
   - cmd: cl
@@ -59,7 +60,8 @@ before_build:
   - python waf --help
   # ensure that only well formated wscripts are checked in
   - flake8
-  - pylint wscript
+  - cmd: pylint wscript
+  - sh: pylint3 wscript
 
 build_script:
   # basic configuration
