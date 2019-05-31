@@ -27,6 +27,13 @@ task:
         - chsh -s /usr/local/bin/bash
 
   script:
+    # basic configuration
+    - python waf configure
+    # documentation build
+    - python waf build_doc
+    - python waf clean_doc
+    - python waf distclean
+    # configuration
     - python waf configure --include-tests
     # gcc [
     - python waf build_gcc

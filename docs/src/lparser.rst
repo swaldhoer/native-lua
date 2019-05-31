@@ -6,7 +6,7 @@ LPARSER
 lparser.h
 ---------
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/lparser.h
+.. literalinclude:: ./../../src/lparser.h
    :language: c
 
 -----
@@ -14,5 +14,5 @@ lparser.h
 lparser.c
 ---------
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/lparser.c
+.. literalinclude:: ./../../src/lparser.c
    :language: c

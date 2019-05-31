@@ -1,5 +1,3 @@
-.. INSTALLING_LUA:
-
 ##############
 Installing Lua
 ##############

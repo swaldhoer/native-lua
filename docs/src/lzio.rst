@@ -6,7 +6,7 @@ LZIO
 lzio.h
 ------
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/lzio.h
+.. literalinclude:: ./../../src/lzio.h
    :language: c
 
 -----
@@ -14,5 +14,5 @@ lzio.h
 lzio.c
 ------
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/lzio.c
+.. literalinclude:: ./../../src/lzio.c
    :language: c

@@ -6,7 +6,7 @@ LFUNC
 lfunc.h
 -------
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/lfunc.h
+.. literalinclude:: ./../../src/lfunc.h
    :language: c
 
 -----
@@ -14,5 +14,5 @@ lfunc.h
 lfunc.c
 -------
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/lfunc.c
+.. literalinclude:: ./../../src/lfunc.c
    :language: c

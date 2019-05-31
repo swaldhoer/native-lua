@@ -6,7 +6,7 @@ LUA
 lua.h
 -----
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/lua.h
+.. literalinclude:: ./../../src/lua.h
    :language: c
 
 -----
@@ -14,7 +14,7 @@ lua.h
 lua.hpp
 -------
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/lua.hpp
+.. literalinclude:: ./../../src/lua.hpp
    :language: c
 
 -----
@@ -22,5 +22,5 @@ lua.hpp
 lua.c
 -----
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/lua.c
+.. literalinclude:: ./../../src/lua.c
    :language: c

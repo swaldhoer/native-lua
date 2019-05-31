@@ -6,7 +6,7 @@ LOPCODES
 lopcodes.h
 ----------
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/lopcodes.h
+.. literalinclude:: ./../../src/lopcodes.h
    :language: c
 
 -----
@@ -14,5 +14,5 @@ lopcodes.h
 lopcodes.c
 ----------
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/lopcodes.c
+.. literalinclude:: ./../../src/lopcodes.c
    :language: c

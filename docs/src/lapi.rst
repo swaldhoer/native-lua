@@ -6,7 +6,7 @@ LAPI
 lapi.h
 ------
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/lapi.h
+.. literalinclude:: ./../../src/lapi.h
    :language: c
 
 -----
@@ -14,5 +14,5 @@ lapi.h
 lapi.c
 ------
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/lapi.c
+.. literalinclude:: ./../../src/lapi.c
    :language: c

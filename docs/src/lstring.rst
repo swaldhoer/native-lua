@@ -6,7 +6,7 @@ LSTRING
 lstring.h
 ---------
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/lstring.h
+.. literalinclude:: ./../../src/lstring.h
    :language: c
 
 -----
@@ -14,5 +14,5 @@ lstring.h
 lstring.c
 ---------
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/lstring.c
+.. literalinclude:: ./../../src/lstring.c
    :language: c

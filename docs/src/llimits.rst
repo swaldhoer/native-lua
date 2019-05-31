@@ -6,5 +6,5 @@ LLIMITS
 llimits.h
 ---------
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/llimits.h
+.. literalinclude:: ./../../src/llimits.h
    :language: c

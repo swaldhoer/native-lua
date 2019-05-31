@@ -6,7 +6,7 @@ LSTATE
 lstate.h
 --------
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/lstate.h
+.. literalinclude:: ./../../src/lstate.h
    :language: c
 
 -----
@@ -14,5 +14,5 @@ lstate.h
 lstate.c
 --------
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/lstate.c
+.. literalinclude:: ./../../src/lstate.c
    :language: c

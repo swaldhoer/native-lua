@@ -6,7 +6,7 @@ LLEX
 llex.h
 ------
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/llex.h
+.. literalinclude:: ./../../src/llex.h
    :language: c
 
 -----
@@ -14,5 +14,5 @@ llex.h
 llex.c
 ------
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/llex.c
+.. literalinclude:: ./../../src/llex.c
    :language: c

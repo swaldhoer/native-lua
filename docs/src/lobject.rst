@@ -6,7 +6,7 @@ LOBJECT
 lobject.h
 ---------
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/lobject.h
+.. literalinclude:: ./../../src/lobject.h
    :language: c
 
 -----
@@ -14,5 +14,5 @@ lobject.h
 lobject.c
 ---------
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/lobject.c
+.. literalinclude:: ./../../src/lobject.c
    :language: c

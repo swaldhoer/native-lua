@@ -6,7 +6,7 @@ LDO
 ldo.h
 -----
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/ldo.h
+.. literalinclude:: ./../../src/ldo.h
    :language: c
 
 -----
@@ -14,5 +14,5 @@ ldo.h
 ldo.c
 -----
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/ldo.c
+.. literalinclude:: ./../../src/ldo.c
    :language: c

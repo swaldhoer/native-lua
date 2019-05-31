@@ -6,7 +6,7 @@ LUNDUMP
 lundump.h
 ---------
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/lundump.h
+.. literalinclude:: ./../../src/lundump.h
    :language: c
 
 -----
@@ -14,5 +14,5 @@ lundump.h
 lundump.c
 ---------
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/lundump.c
+.. literalinclude:: ./../../src/lundump.c
    :language: c

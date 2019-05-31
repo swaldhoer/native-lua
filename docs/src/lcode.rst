@@ -6,7 +6,7 @@ LCODE
 lcode.h
 -------
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/lcode.h
+.. literalinclude:: ./../../src/lcode.h
    :language: c
 
 -----
@@ -14,5 +14,5 @@ lcode.h
 lcode.c
 -------
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/lcode.c
+.. literalinclude:: ./../../src/lcode.c
    :language: c

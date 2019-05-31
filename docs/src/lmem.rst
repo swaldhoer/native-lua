@@ -6,7 +6,7 @@ LMEM
 lmem.h
 ------
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/lmem.h
+.. literalinclude:: ./../../src/lmem.h
    :language: c
 
 -----
@@ -14,5 +14,5 @@ lmem.h
 lmem.c
 ------
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/lmem.c
+.. literalinclude:: ./../../src/lmem.c
    :language: c
