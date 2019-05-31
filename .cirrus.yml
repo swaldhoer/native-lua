@@ -27,7 +27,7 @@ task:
     # gcc [
     - python waf build_gcc
     - python waf install_gcc
-    - pushd build/gcc/lua/lua-5.3.4-tests
+    - pushd build/gcc/tests
     - lua -e"_U=true" all.lua
     #- lua all.lua
     - popd
@@ -40,7 +40,7 @@ task:
     # gcc [
     - python waf build_gcc
     - python waf install_gcc
-    - pushd build/gcc/lua/lua-5.3.4-tests
+    - pushd build/gcc/tests
     - lua -e"_U=true" all.lua
     #- lua all.lua
     - popd

@@ -15,7 +15,7 @@ script:
   # gcc [
   - python3 waf build_gcc
   - sudo python3 waf install_gcc
-  - pushd build/gcc/lua/lua-5.3.4-tests
+  - pushd build/gcc/tests
   - lua -e"_U=true" all.lua
   - lua all.lua
   - popd
@@ -25,7 +25,7 @@ script:
   # clang [
   - python3 waf build_clang
   - sudo python3 waf install_clang
-  - pushd build/clang/lua/lua-5.3.4-tests
+  - pushd build/clang/tests
   - lua -e"_U=true" all.lua
   - lua all.lua
   - popd
@@ -38,7 +38,7 @@ script:
   # gcc [
   - python3 waf build_gcc
   - sudo python3 waf install_gcc
-  - pushd build/gcc/lua/lua-5.3.4-tests
+  - pushd build/gcc/tests
   - lua -e"_U=true" all.lua
   - lua all.lua
   - popd
@@ -48,7 +48,7 @@ script:
   # clang [
   - python3 waf build_clang
   - sudo python3 waf install_clang
-  - pushd build/clang/lua/lua-5.3.4-tests
+  - pushd build/clang/tests
   - lua -e"_U=true" all.lua
   - lua all.lua
   - popd

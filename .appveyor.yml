@@ -71,20 +71,20 @@ build_script:
   # msvc
   - cmd: python waf build_msvc
   - cmd: python waf install_msvc
-  - cmd: cd build/msvc/lua/lua-5.3.4-tests
+  - cmd: cd build/msvc/tests
   - cmd: lua -e"_U=true" all.lua
   # - cmd: lua all.lua
-  - cmd: cd ../../../..
+  - cmd: cd ../../..
   - cmd: python waf uninstall_msvc
   - cmd: python waf clean_msvc
   # gcc
   - python waf build_gcc
   - cmd: python waf install_gcc
   - sh: sudo python waf install_gcc
-  - cd build/gcc/lua/lua-5.3.4-tests
+  - cd build/gcc/tests
   - lua -e"_U=true" all.lua
   #- sh: lua all.lua
-  - cd ../../../..
+  - cd ../../..
   - cmd: python waf uninstall_gcc
   - sh: sudo python waf uninstall_gcc
   - python waf clean_gcc
@@ -92,10 +92,10 @@ build_script:
   - python waf build_clang
   - cmd: python waf install_clang
   - sh: sudo python waf install_clang
-  - cd build/clang/lua/lua-5.3.4-tests
+  - cd build/clang/tests
   - lua -e"_U=true" all.lua
   #- sh: lua all.lua
-  - cd ../../../..
+  - cd ../../..
   - cmd: python waf uninstall_clang
   - sh: sudo python waf uninstall_clang
   - python waf clean_clang
@@ -104,8 +104,8 @@ build_script:
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf configure --include-tests"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf build_gcc"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf install_gcc"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/lua/lua-5.3.4-tests && which lua && lua -v && lua -e\"_U=true\" all.lua"
-  #- cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/lua/lua-5.3.4-tests && which lua && lua -v && lua all.lua"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/tests && which lua && lua -v && lua -e\"_U=true\" all.lua"
+  #- cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/tests && which lua && lua -v && lua all.lua"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf uninstall_gcc"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf distclean"
   # configure including the test files and the ltests
@@ -113,20 +113,20 @@ build_script:
   # msvc
   - cmd: python waf build_msvc
   - cmd: python waf install_msvc
-  - cmd: cd build/gcc/lua/lua-5.3.4-tests
+  - cmd: cd build/gcc/tests
   - cmd: lua -e"_U=true" all.lua
   # - cmd: lua all.lua
-  - cmd: cd ../../../..
+  - cmd: cd ../../..
   - cmd: python waf uninstall_msvc
   - cmd: python waf clean_msvc
   # gcc
   - python waf build_gcc
   - cmd: python waf install_gcc
   - sh: sudo python waf install_gcc
-  - cd build/gcc/lua/lua-5.3.4-tests
+  - cd build/gcc/tests
   - lua -e"_U=true" all.lua
   #- sh: lua all.lua
-  - cd ../../../..
+  - cd ../../..
   - cmd: python waf uninstall_gcc
   - sh: sudo python waf uninstall_gcc
   - python waf clean_gcc
@@ -134,10 +134,10 @@ build_script:
   - python waf build_clang
   - cmd: python waf install_clang
   - sh: sudo python waf install_clang
-  - cd build/clang/lua/lua-5.3.4-tests
+  - cd build/clang/tests
   - lua -e"_U=true" all.lua
   #- sh: lua all.lua
-  - cd ../../../..
+  - cd ../../..
   - cmd: python waf uninstall_clang
   - sh: sudo python waf uninstall_clang
   - python waf clean_clang
@@ -146,7 +146,7 @@ build_script:
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf configure --include-tests"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf build_gcc"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf install_gcc"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/lua/lua-5.3.4-tests && which lua && lua -v && lua -e\"_U=true\" all.lua"
-  #- cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/lua/lua-5.3.4-tests && which lua && lua -v && lua all.lua"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/tests && which lua && lua -v && lua -e\"_U=true\" all.lua"
+  #- cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/tests && which lua && lua -v && lua all.lua"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf uninstall_gcc"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf distclean"
