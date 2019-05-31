@@ -44,7 +44,7 @@ install:
   - cmd: where vcruntime140.dll
   - cmd: python -m pip install --upgrade pip -q
   - cmd: python -m pip install flake8 pylint -q
-  - sh: sudo apt-get -y install pylint
+  - sh: sudo apt-get -y install pylint3
   - python --version
   - flake8 --version
   - pylint --version
