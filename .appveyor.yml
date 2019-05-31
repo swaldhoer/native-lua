@@ -41,10 +41,10 @@ install:
   - cmd: set MSSdk=1
   - cmd: set "PY_VCRUNTIME_REDIST=C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.16.27023\bin\Hostx64\x64\vcruntime140.dll"
   - cmd: pushd "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\" && call "VC\Auxiliary\Build\vcvars64.bat" && popd
-  - cmd: where vcruntime140.dll
   - cmd: python -m pip install --upgrade pip -q
-  - cmd: python -m pip install flake8 pylint -q
+  - cmd: python -m pip install flake8 pylint sphinx_rtd_theme -q
   - sh: sudo apt-get -y install pylint3
+  - sh: python -m pip install sphinx_rtd_theme -q
   - python --version
   - flake8 --version
   - cmd: pylint --version
