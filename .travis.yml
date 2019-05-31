@@ -10,6 +10,7 @@ branches:
 
 script:
   - python3 --version
+  - pip3 install sphinx_rtd_theme
   - sudo python3 --version
   - python3 waf configure --include-tests
   # gcc [

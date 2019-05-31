@@ -60,7 +60,6 @@ before_build:
   # ensure that only well formated wscripts are checked in
   - flake8
   - pylint wscript
-  - pylint lua/wscript
 
 build_script:
   # basic configuration

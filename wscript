@@ -3,10 +3,10 @@
 
 # SPDX-License-Identifier: MIT
 
-import sys
+# pylint: disable=unused-variable
+
 import os
 import re
-import logging
 
 from waflib import Logs, Utils, Options, Context
 from waflib.Tools.compiler_c import c_compiler
@@ -89,7 +89,7 @@ def configure(cnf):  # pylint: disable=R0912
     """
     print("-" * (Context.Context.line_just + 1) + ":")
     cnf.load("python")
-    cnf.check_python_version((2,7))
+    cnf.check_python_version((2, 7))
 
     cnf.find_program('sphinx-build', var='SPHINX_BUILD', mandatory=False)
     cnf.check_python_module('sphinx_rtd_theme')
