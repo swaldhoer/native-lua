@@ -8,4 +8,4 @@ strings.lua
 
 .. literalinclude:: ./../../tests/strings.lua
    :language: lua
-   :encoding: ANSI
+   :encoding: cp1252

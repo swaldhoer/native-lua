@@ -8,4 +8,4 @@ sort.lua
 
 .. literalinclude:: ./../../tests/sort.lua
    :language: lua
-   :encoding: ANSI
+   :encoding: cp1252

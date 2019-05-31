@@ -8,4 +8,4 @@ db.lua
 
 .. literalinclude:: ./../../tests/db.lua
    :language: lua
-   :encoding: ANSI
+   :encoding: cp1252
