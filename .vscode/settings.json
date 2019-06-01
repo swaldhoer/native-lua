@@ -49,6 +49,7 @@
         "brtl",
         "bexpall",
         "repo",
+        "editorconfig",
         // waf and python
         "bldnode",
         "setenv",

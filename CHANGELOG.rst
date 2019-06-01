@@ -12,7 +12,7 @@ The format is based on `Keep a Changelog`_ v1.0.0, and this project adheres to
 ************
 
 ********************
-[0.1.0] - 2019-05-XX
+[0.1.0] - 2019-06-XX
 ********************
 
 Added
@@ -26,9 +26,7 @@ Changed
 - Rewrote `configure` step to print better readable output.
 - Added ``LUA_VERSION`` file to indicate the lua version obtained from
   `lua.org`_.
-- Restructured the way sources, documentation etc. are stored. The structure is
-  not final, especially for the documentation, and is subject to change.
-- Updated to waf 2.0.16.
+- Restructured the way sources, documentation etc. are stored.
 - Added a rules for contributing to the project (see ``CONTRIBUTING.md``).
 
 Deprecated

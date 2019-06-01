@@ -1,1 +1,4 @@
-This folder contains the unchanged files downloaded from lua.org
+This folder contains the unchanged files downloaded from lua.org, except for
+the file .dummy in lua-5.3.4-tests\libs\P1. This file is needed to tell to git
+that the folder P1 should be added to the repository. Without this folder the
+tests do not pass.

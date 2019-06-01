@@ -13,5 +13,6 @@
     ./contributing.rst
     ./build.rst
     ./install.rst
+    ./test.rst
     ./ci.rst
     ./sources.rst
