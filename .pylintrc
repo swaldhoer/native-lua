@@ -15,7 +15,11 @@ ignore-patterns=waf*-*.*.*-*
 
 # Python code to execute, usually for sys.path manipulation such as
 # pygtk.require().
-init-hook='import sys; sys.path.extend(["waf-2.0.12-99294ba4df4d1c7132661cc921a025f1", ".waf-2.0.12-99294ba4df4d1c7132661cc921a025f1", "waf3-2.0.12-99294ba4df4d1c7132661cc921a025f1", ".waf3-2.0.12-99294ba4df4d1c7132661cc921a025f1"])'
+init-hook='import sys;
+      sys.path.insert(0, "waf-2.0.16-7b483e1a36a25810dfa3e6e6decbc8ba");
+      sys.path.insert(0, ".waf-2.0.16-7b483e1a36a25810dfa3e6e6decbc8ba");
+      sys.path.insert(0, "waf3-2.0.16-7b483e1a36a25810dfa3e6e6decbc8ba");
+      sys.path.insert(0, ".waf3-2.0.16-7b483e1a36a25810dfa3e6e6decbc8ba");'
 
 # Use multiple processes to speed up Pylint. Specifying 0 will auto-detect the
 # number of processors available to use.
@@ -499,7 +503,7 @@ max-attributes=7
 max-bool-expr=5
 
 # Maximum number of branch for function / method body.
-max-branches=12
+max-branches=20
 
 # Maximum number of locals for function / method body.
 max-locals=15

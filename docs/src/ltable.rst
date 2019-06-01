@@ -6,7 +6,7 @@ LTABLE
 ltable.h
 --------
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/ltable.h
+.. literalinclude:: ./../../src/ltable.h
    :language: c
 
 -----
@@ -14,5 +14,5 @@ ltable.h
 ltable.c
 --------
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/ltable.c
+.. literalinclude:: ./../../src/ltable.c
    :language: c

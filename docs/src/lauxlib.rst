@@ -6,7 +6,7 @@ LAUXLIB
 lauxlib.h
 ---------
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/lauxlib.h
+.. literalinclude:: ./../../src/lauxlib.h
    :language: c
 
 -----
@@ -14,5 +14,5 @@ lauxlib.h
 lauxlib.c
 ---------
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/lauxlib.c
+.. literalinclude:: ./../../src/lauxlib.c
    :language: c

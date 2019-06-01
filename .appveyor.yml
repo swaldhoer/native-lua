@@ -34,20 +34,13 @@ install:
         Write-Host New `$env:Path
         Write-Host ($env:Path).Replace(';',"`n")
         }
-#  - cmd: C:\Miniconda37-x64\Scripts\activate
-#  - cmd: conda install pylint flake8 -c anaconda -y -q
-#  - cmd: call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
-  - cmd: set DISTUTILS_USE_SDK=1
-  - cmd: set MSSdk=1
-  - cmd: set "PY_VCRUNTIME_REDIST=C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.16.27023\bin\Hostx64\x64\vcruntime140.dll"
   - cmd: pushd "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\" && call "VC\Auxiliary\Build\vcvars64.bat" && popd
-  - cmd: where vcruntime140.dll
   - cmd: python -m pip install --upgrade pip -q
-  - cmd: python -m pip install flake8 pylint -q
-  - sh: sudo apt-get -y install pylint
+  - cmd: python -m pip install flake8 pylint sphinx_rtd_theme -q
+  - sh: sudo python -m pip install sphinx_rtd_theme -q
   - python --version
-  - flake8 --version
-  - pylint --version
+  - cmd: flake8 --version
+  - cmd: pylint --version
   - clang --version
   - gcc --version
   - cmd: cl
@@ -58,33 +51,35 @@ install:
 before_build:
   - python waf --help
   # ensure that only well formated wscripts are checked in
-  - flake8
-  - pylint wscript
-  - pylint lua/wscript
+  - cmd: flake8
+  - cmd: pylint wscript
 
 build_script:
   # basic configuration
   - python waf configure
+  # check documentation build
+  - cmd: python waf build_doc
+  - cmd: python waf clean_doc
   - python waf distclean
   # configure including the test files
   - python waf configure --include-tests
   # msvc
   - cmd: python waf build_msvc
   - cmd: python waf install_msvc
-  - cmd: cd build/msvc/lua/lua-5.3.4-tests
+  - cmd: cd build/msvc/tests
   - cmd: lua -e"_U=true" all.lua
   # - cmd: lua all.lua
-  - cmd: cd ../../../..
+  - cmd: cd ../../..
   - cmd: python waf uninstall_msvc
   - cmd: python waf clean_msvc
   # gcc
   - python waf build_gcc
   - cmd: python waf install_gcc
   - sh: sudo python waf install_gcc
-  - cd build/gcc/lua/lua-5.3.4-tests
+  - cd build/gcc/tests
   - lua -e"_U=true" all.lua
   #- sh: lua all.lua
-  - cd ../../../..
+  - cd ../../..
   - cmd: python waf uninstall_gcc
   - sh: sudo python waf uninstall_gcc
   - python waf clean_gcc
@@ -92,10 +87,10 @@ build_script:
   - python waf build_clang
   - cmd: python waf install_clang
   - sh: sudo python waf install_clang
-  - cd build/clang/lua/lua-5.3.4-tests
+  - cd build/clang/tests
   - lua -e"_U=true" all.lua
   #- sh: lua all.lua
-  - cd ../../../..
+  - cd ../../..
   - cmd: python waf uninstall_clang
   - sh: sudo python waf uninstall_clang
   - python waf clean_clang
@@ -104,8 +99,8 @@ build_script:
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf configure --include-tests"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf build_gcc"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf install_gcc"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/lua/lua-5.3.4-tests && which lua && lua -v && lua -e\"_U=true\" all.lua"
-  #- cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/lua/lua-5.3.4-tests && which lua && lua -v && lua all.lua"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/tests && which lua && lua -v && lua -e\"_U=true\" all.lua"
+  #- cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/tests && which lua && lua -v && lua all.lua"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf uninstall_gcc"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf distclean"
   # configure including the test files and the ltests
@@ -113,20 +108,20 @@ build_script:
   # msvc
   - cmd: python waf build_msvc
   - cmd: python waf install_msvc
-  - cmd: cd build/gcc/lua/lua-5.3.4-tests
+  - cmd: cd build/gcc/tests
   - cmd: lua -e"_U=true" all.lua
   # - cmd: lua all.lua
-  - cmd: cd ../../../..
+  - cmd: cd ../../..
   - cmd: python waf uninstall_msvc
   - cmd: python waf clean_msvc
   # gcc
   - python waf build_gcc
   - cmd: python waf install_gcc
   - sh: sudo python waf install_gcc
-  - cd build/gcc/lua/lua-5.3.4-tests
+  - cd build/gcc/tests
   - lua -e"_U=true" all.lua
   #- sh: lua all.lua
-  - cd ../../../..
+  - cd ../../..
   - cmd: python waf uninstall_gcc
   - sh: sudo python waf uninstall_gcc
   - python waf clean_gcc
@@ -134,10 +129,10 @@ build_script:
   - python waf build_clang
   - cmd: python waf install_clang
   - sh: sudo python waf install_clang
-  - cd build/clang/lua/lua-5.3.4-tests
+  - cd build/clang/tests
   - lua -e"_U=true" all.lua
   #- sh: lua all.lua
-  - cd ../../../..
+  - cd ../../..
   - cmd: python waf uninstall_clang
   - sh: sudo python waf uninstall_clang
   - python waf clean_clang
@@ -146,7 +141,7 @@ build_script:
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf configure --include-tests"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf build_gcc"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf install_gcc"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/lua/lua-5.3.4-tests && which lua && lua -v && lua -e\"_U=true\" all.lua"
-  #- cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/lua/lua-5.3.4-tests && which lua && lua -v && lua all.lua"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/tests && which lua && lua -v && lua -e\"_U=true\" all.lua"
+  #- cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/tests && which lua && lua -v && lua all.lua"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf uninstall_gcc"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf distclean"

@@ -6,7 +6,7 @@ LGC
 lgc.h
 -----
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/lgc.h
+.. literalinclude:: ./../../src/lgc.h
    :language: c
 
 -----
@@ -14,5 +14,5 @@ lgc.h
 lgc.c
 -----
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/lgc.c
+.. literalinclude:: ./../../src/lgc.c
    :language: c

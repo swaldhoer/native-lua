@@ -6,5 +6,5 @@ LOSLIB
 loslib.c
 --------
 
-.. literalinclude:: ./../../lua/lua-5.3.4/src/loslib.c
+.. literalinclude:: ./../../src/loslib.c
    :language: c

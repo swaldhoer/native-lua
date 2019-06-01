@@ -1,11 +1,11 @@
 # directories
-build
-.vs
-.vscode
-waf-*
-.waf-*
-waf3-*
-.waf3-*
+/build/
+/.vs/
+/.vscode/
+/waf-*/
+/.waf-*/
+/waf3-*/
+/.waf3-*/
 
 # files
 *.user
@@ -20,3 +20,4 @@ waf3-*
 *.patch
 *.tar
 *.bz2
+*.zip

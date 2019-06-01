@@ -1,19 +1,18 @@
-.. _INDEX:
-
-########################
-native-lua Documentation
-########################
-
-The native-lua documentation
+############################
+``native-lua`` Documentation
+############################
 
 .. toctree::
-   :titlesonly:
-   :numbered:
-   :maxdepth: 1
-   :caption: Contents:
+    :titlesonly:
+    :numbered:
+    :maxdepth: 1
+    :caption: Contents:
 
-   ./general.rst
-   ./build.rst
-   ./install.rst
-   ./ci.rst
-   ./sources.rst
+    ./readme.rst
+    ./changelog.rst
+    ./contributing.rst
+    ./build.rst
+    ./install.rst
+    ./test.rst
+    ./ci.rst
+    ./sources.rst

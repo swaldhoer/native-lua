@@ -4,6 +4,8 @@ task:
         matrix:
           image: python:2.7
           image: python:3.7
+      install_script:
+        - pip install sphinx_rtd_theme
 
     - freebsd_instance:
         matrix:
@@ -19,15 +21,24 @@ task:
         - env ASSUME_ALWAYS_YES=YES pkg install lang/gcc
         - env ASSUME_ALWAYS_YES=YES pkg install readline
         - env ASSUME_ALWAYS_YES=YES pkg install bash
+        - env ASSUME_ALWAYS_YES=YES pkg install py27-pip
+        - pip install sphinx_rtd_theme
       freebsd_setup_script:
         - chsh -s /usr/local/bin/bash
 
   script:
+    # basic configuration
+    - python waf configure
+    # documentation build
+    - python waf build_doc
+    - python waf clean_doc
+    - python waf distclean
+    # configuration
     - python waf configure --include-tests
     # gcc [
     - python waf build_gcc
     - python waf install_gcc
-    - pushd build/gcc/lua/lua-5.3.4-tests
+    - pushd build/gcc/tests
     - lua -e"_U=true" all.lua
     #- lua all.lua
     - popd
@@ -40,7 +51,7 @@ task:
     # gcc [
     - python waf build_gcc
     - python waf install_gcc
-    - pushd build/gcc/lua/lua-5.3.4-tests
+    - pushd build/gcc/tests
     - lua -e"_U=true" all.lua
     #- lua all.lua
     - popd
