@@ -61,7 +61,7 @@ before_build:
   # ensure that only well formated wscripts are checked in
   - flake8
   - cmd: pylint wscript
-  - sh: pylint3 wscript
+  - sh: pylint3 --rcfile=.pylintrc wscript
 
 build_script:
   # basic configuration
