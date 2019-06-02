@@ -10,13 +10,13 @@ task:
         - apt-get update
         - apt-get install -y dialog
         - apt-get install -y software-properties-common
-        - apt-add-repository "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-8 main"
+        - apt-add-repository "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-7 main"
         - apt-get update
         - apt-get -y upgrade
         - apt-get install -y build-essential
-        - apt-get install -y clang-8 lld-8
-        - alias clang='clang-8'
-        - alias clang++='clang++-8'
+        - apt-get install -y clang-7 lld-7
+        - alias clang='clang-7'
+        - alias clang++='clang++-7'
         - pip install sphinx_rtd_theme
 
     # - freebsd_instance:
