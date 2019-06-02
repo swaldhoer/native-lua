@@ -50,6 +50,7 @@
         "bexpall",
         "repo",
         "editorconfig",
+        "cmds",
         // waf and python
         "bldnode",
         "setenv",
@@ -64,6 +65,7 @@
         "linenos",
         "recurse",
         "sys",
+        "shutil",
         "unversioned",
         "waflib",
         "wscript",
@@ -72,6 +74,7 @@
         "nopyc",
         "nopyo",
         "nopycache",
+        "isdir",
         // project variables
         "ltests",
         "cflags",
@@ -79,6 +82,7 @@
         "luadll",
         "hdlr",
         // lua file names
+        "lualib",
         "lapi",
         "lauxlib",
         "lbaselib",

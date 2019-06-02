@@ -28,6 +28,8 @@ Changed
   `lua.org`_.
 - Restructured the way sources, documentation etc. are stored.
 - Added a rules for contributing to the project (see ``CONTRIBUTING.md``).
+- include and man files are installed
+- Added a script to make testing simpler (``scripts/run_test``)
 
 Deprecated
 ==========

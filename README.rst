@@ -146,7 +146,8 @@ official website as fast as possible.
 ==================
 
 Project documentation. The documentation from the official `Lua` releases is
-**not** included.
+currently **not** included outside the ``dl`` directory. The man files
+(``lua.1``, ``luac.1``) however are included in ``docs/man`` and ``docs/man1``.
 
 ``src`` Directory
 =================

@@ -53,6 +53,8 @@ before_build:
   # ensure that only well formated wscripts are checked in
   - cmd: flake8
   - cmd: pylint wscript
+  - cmd: pylint scripts\\run_test.py
+  - cmd: pylint scripts\\utils.py
 
 build_script:
   # basic configuration
