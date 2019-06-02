@@ -5,37 +5,38 @@ task:
           image: python:2.7
           image: python:3.7
       install_script:
-        - pip install sphinx_rtd_theme
         # https://askubuntu.com/a/1065402
         - wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
         - apt-get update
+        - apt-get install -y dialog
         - apt-get install -y software-properties-common
         - apt-add-repository "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-8 main"
         - apt-get update
-        - apt-get upgrade
+        - apt-get -y upgrade
         - apt-get install -y build-essential
         - apt-get install -y clang-8 lld-8
         - alias clang='clang-8'
         - alias clang++='clang++-8'
-
-    - freebsd_instance:
-        matrix:
-          image: freebsd-12-0-release-amd64
-          image: freebsd-11-2-release-amd64
-          image: freebsd-10-4-release-amd64
-      container:
-        image: python:latest
-      freebsd_install_script:
-        - pkg update -f
-        - env ASSUME_ALWAYS_YES=YES pkg bootstrap -f
-        - env ASSUME_ALWAYS_YES=YES pkg upgrade pkg
-        - env ASSUME_ALWAYS_YES=YES pkg install lang/gcc
-        - env ASSUME_ALWAYS_YES=YES pkg install readline
-        - env ASSUME_ALWAYS_YES=YES pkg install bash
-        - env ASSUME_ALWAYS_YES=YES pkg install py27-pip
         - pip install sphinx_rtd_theme
-      freebsd_setup_script:
-        - chsh -s /usr/local/bin/bash
+
+    # - freebsd_instance:
+        # matrix:
+          # image: freebsd-12-0-release-amd64
+          # image: freebsd-11-2-release-amd64
+          # image: freebsd-10-4-release-amd64
+      # container:
+        # image: python:latest
+      # freebsd_install_script:
+        # - pkg update -f
+        # - env ASSUME_ALWAYS_YES=YES pkg bootstrap -f
+        # - env ASSUME_ALWAYS_YES=YES pkg upgrade pkg
+        # - env ASSUME_ALWAYS_YES=YES pkg install lang/gcc
+        # - env ASSUME_ALWAYS_YES=YES pkg install readline
+        # - env ASSUME_ALWAYS_YES=YES pkg install bash
+        # - env ASSUME_ALWAYS_YES=YES pkg install py27-pip
+        # - pip install sphinx_rtd_theme
+      # freebsd_setup_script:
+        # - chsh -s /usr/local/bin/bash
 
   script:
     # basic configuration
