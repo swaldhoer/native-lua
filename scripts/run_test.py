@@ -72,7 +72,9 @@ def main():
             import distutils.spawn
             logging.warning(
                 'Falling back to distutils (instead of using shutil).')
-            distutils.spawn.find_executable("lua")
+            lua_exe = distutils.spawn.find_executable(
+                "lua",
+                path=os.path.join(repo_root, prefix, 'bin'))
         if lua_exe is None:
             nr_errors = nr_errors + 1
             errors.update(
@@ -82,15 +84,12 @@ def main():
 
         test_cwd = str(os.path.join(repo_root, 'build', compiler, 'tests'))
         if os.path.isdir(test_cwd) and lua_exe:
-            cmd = ['lua']
+            cmd = [lua_exe]
             if args.simple_test:
                 cmd.extend(['-e"_U=true"'])
             cmd.extend(['all.lua'])
-            if sys.platform.lower().startswith('win'):
-                # somehow the double quotation marks are not escaped properly
-                # on windows, and using a string makes it work somehow.
-                cmd = ' '.join(cmd)
-            logging.debug('running %s in %s', ' '.join(cmd), test_cwd)
+            cmd = ' '.join(cmd)
+            logging.debug('running %s in %s', cmd, test_cwd)
             proc = subprocess.Popen(args=cmd, cwd=test_cwd, shell=True)
             proc.communicate()
             if proc.returncode:
