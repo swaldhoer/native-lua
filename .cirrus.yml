@@ -11,6 +11,7 @@ task:
         - apt-get update
         - apt-get install -y software-properties-common
         - apt-add-repository "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-8 main"
+        - apt-get update
         - apt-get install -y clang-8 lld-8
         - alias clang='clang-8'
         - alias clang++='clang++-8'
