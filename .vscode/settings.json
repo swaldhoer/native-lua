@@ -1,6 +1,6 @@
 {
-    "terminal.integrated.shell.linux": "sh",
-    "terminal.integrated.shell.osx": "sh",
+    "terminal.integrated.shell.linux": "bash",
+    "terminal.integrated.shell.osx": "bash",
     "terminal.integrated.shell.windows": "C:\\Windows\\sysnative\\cmd.exe",
     "files.trimTrailingWhitespace": true,
     "files.trimFinalNewlines": true,

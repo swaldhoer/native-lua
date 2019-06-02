@@ -58,3 +58,33 @@ task:
     - python waf uninstall_gcc
     - python waf clean_gcc
     # gcc ]
+    # configuration
+    - python waf configure --include-tests
+    # clang [
+    - python waf build_clang
+    - python waf install_clang
+    - pushd build/clang/tests
+    - lua -e"_U=true" all.lua
+    #- lua all.lua
+    - popd
+    - python waf uninstall_clang
+    - python waf clean_clang
+    # clang ]
+    - python waf distclean
+    # including ltests
+    - python waf configure --ltests --include-tests
+    # clang [
+    - python waf build_clang
+    - python waf install_clang
+    - pushd build/clang/tests
+    - lua -e"_U=true" all.lua
+    #- lua all.lua
+    - popd
+    - python waf uninstall_clang
+    - python waf clean_clang
+    # clang ]
+    # test script
+    - python scripts/run_test.py -c gcc -c clang --simple-test
+    - python scripts/run_test.py -c gcc -c clang
+    - python scripts/run_test.py -c gcc -c clang --simple-test --ltests
+    - python scripts/run_test.py -c gcc -c clang --ltests

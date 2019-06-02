@@ -85,6 +85,7 @@ means under development and/or untested):
 |          |                       | - clang *           |
 +----------+-----------------------+---------------------+
 | generic  | - gcc                 | - gcc (not win32)   |
+|          |                       | - msvc (win32)      |
 +----------+-----------------------+---------------------+
 | linux    | - gcc                 | - gcc               |
 |          |                       | - clang             |

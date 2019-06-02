@@ -163,10 +163,29 @@ def configure(cnf):  # pylint: disable=R0912
     failed_platform_compilers = []
     if cnf.options.generic:
         if host_os == 'win32':
-            cnf.fatal('Generic build not available on win32')
+            Logs.info("Generic build uses msvc on win32")
+            cnf.env.WAF_CONFIG_H_PRELUDE = \
+                '#if defined(_MSC_VER) && defined(_MSC_FULL_VER)\n' \
+                '#pragma warning(disable: 4242 4820 4668 4710 4711)\n' \
+                '#endif'
+            cnf.write_config_header('config.h')
+            try:  # msvc
+                set_new_basic_env('msvc')
+                cnf.load('compiler_c')
+                cnf.env.CFLAGS = [
+                    '/nologo', cnf.env.c_standard, '/O2', '/Wall']
+                cnf.env.CFLAGS += ['/FI'+cnf.env.cfg_files[0]]
+                cnf.check_cc(fragment=min_c, execute=True)
+                platform_compilers.append(cnf.env.env_name)
+                cnf.msg('Manifest', cnf.env.MSVC_MANIFEST)
+            except BaseException:
+                failed_platform_compilers.append(cnf.env.env_name)
         else:
             try:
                 # generic build only for gcc
+                Logs.info(
+                    "Generic build on {} with gcc".format(
+                        Utils.unversioned_sys_platform()))
                 set_new_basic_env('gcc')
                 cnf.load('compiler_c')
                 cnf.env.CFLAGS = [
