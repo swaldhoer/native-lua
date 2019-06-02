@@ -14,7 +14,8 @@ task:
         - apt-get -y upgrade
         - apt-get install -y build-essential
         - apt-get install -y clang-8 lld-8
-        - update-alternatives --install /usr/bin/clang-8 clang
+        - update-alternatives --install /usr/bin/clang clang /usr/bin/clang-8 100
+        - update-alternatives --config clang
         - which clang
         - pip install sphinx_rtd_theme
 
