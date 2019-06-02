@@ -7,7 +7,7 @@ task:
       install_script:
         - pip install sphinx_rtd_theme
         # https://askubuntu.com/a/1065402
-        - wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+        - wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
         - apt-get update
         - apt-add-repository "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-8 main"
         - apt-get install -y clang-8 lld-8
