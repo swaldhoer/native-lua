@@ -84,7 +84,7 @@ means under development and/or untested):
 | FreeBSD  | - gcc                 | - gcc *             |
 |          |                       | - clang *           |
 +----------+-----------------------+---------------------+
-| generic  | - gcc                 | - TODO              |
+| generic  | - gcc                 | - gcc (not win32)   |
 +----------+-----------------------+---------------------+
 | linux    | - gcc                 | - gcc               |
 |          |                       | - clang             |

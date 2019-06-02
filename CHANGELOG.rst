@@ -30,6 +30,7 @@ Changed
 - Added a rules for contributing to the project (see ``CONTRIBUTING.md``).
 - include and man files are installed
 - Added a script to make testing simpler (``scripts/run_test.py``)
+- Added `generic` build option
 
 Deprecated
 ==========

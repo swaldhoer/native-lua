@@ -109,6 +109,8 @@ def configure(cnf):  # pylint: disable=R0912
     cnf.msg('Lua version', '.'.join(cnf.env.lua_src_version))
     cnf.msg("Including tests", cnf.options.include_tests)
     cnf.msg("Using ltests", cnf.options.ltests)
+    cnf.env.generic = cnf.options.generic
+    cnf.msg("Generic", cnf.env.generic)
     def get_c_standard(env_name, c_std):
         """Define C standard for each compiler"""
         c_std_string = None
@@ -170,6 +172,7 @@ def configure(cnf):  # pylint: disable=R0912
                 cnf.env.CFLAGS = [
                     cnf.env.c_standard, '-O2', '-Wall', '-Wextra']
                 cnf.check_cc(fragment=min_c, execute=True)
+                check_libs('m')
                 platform_compilers.append(cnf.env.env_name)
             except BaseException:
                 failed_platform_compilers.append(cnf.env.env_name)
@@ -473,8 +476,7 @@ def build(bld):
         os.path.join(bld.env.libs_path, 'lib11.c'),
         os.path.join(bld.env.libs_path, 'lib2.c'),
         os.path.join(bld.env.libs_path, 'lib21.c')]
-
-    if bld.options.generic:
+    if bld.env.generic:
         build_generic(bld)
     elif bld.env.host_os == 'aix':
         build_aix(bld)
@@ -503,7 +505,7 @@ def build(bld):
 
 
 def build_generic(bld):
-    use = []
+    use = ['M']
     use_ltests = []
     defines = ['LUA_COMPAT_5_2']
     defines_tests = []
