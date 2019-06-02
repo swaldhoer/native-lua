@@ -5,8 +5,6 @@ task:
           image: python:2.7
           image: python:3.7
       install_script:
-        # https://askubuntu.com/a/1065402
-        - cat /etc/os-release
         - wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
         - apt-get update
         - apt-get install -y dialog
@@ -16,8 +14,8 @@ task:
         - apt-get -y upgrade
         - apt-get install -y build-essential
         - apt-get install -y clang-8 lld-8
-        - alias clang='clang-8'
-        - alias clang++='clang++-8'
+        - update-alternatives --install /usr/bin/clang clang
+        - which clang
         - pip install sphinx_rtd_theme
 
     # - freebsd_instance:
