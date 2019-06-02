@@ -3,7 +3,7 @@
 
 # SPDX-License-Identifier: MIT
 
-#pylint: disable-msg=R0914
+# pylint: disable-msg=R0914
 
 import os
 import argparse
