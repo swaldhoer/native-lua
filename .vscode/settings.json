@@ -51,7 +51,7 @@
         "repo",
         "editorconfig",
         "cmds",
-        // waf and python
+        // waf, python, rst
         "bldnode",
         "setenv",
         "shlib",
@@ -75,6 +75,7 @@
         "nopyo",
         "nopycache",
         "isdir",
+        "literalinclude",
         // project variables
         "ltests",
         "cflags",

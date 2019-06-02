@@ -16,8 +16,14 @@ import shutil
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-v', '--verbose', action='count', default=0)
-    parser.add_argument('-c', '--compiler', action='append', required=True)
+    parser.add_argument('-v', '--verbose', action='count', default=0,
+                        help='sets the verbosity level')
+    parser.add_argument('-c', '--compiler', action='append', required=True,
+                        help='specifies the compilers that should be tested')
+    parser.add_argument('--simple-test', action='store_true', default=False,
+                        help='if specified, only simple tests are run.')
+    parser.add_argument('--ltests', action='store_true', default=None,
+                        help='compile lua with ltests')
     args = parser.parse_args()
     logger = logging.getLogger()
     if args.verbose == 0:
@@ -31,9 +37,15 @@ def main():
     nr_errors = 0
     errors = {}
     base_cmd = [sys.executable, 'waf']
+    prefix = os.path.join('build', 'test')
     for compiler in args.compiler:
+        cfg_args = ['configure',
+                    '--prefix={}'.format(prefix),
+                    '--include-tests']
+        if args.ltests:
+            cfg_args.extend(['--ltests'])
         cmds = [
-            ['configure', '--include-tests'],
+            cfg_args,
             ['uninstall_{}'.format(compiler)],
             ['build_{}'.format(compiler)],
             ['install_{}'.format(compiler)]]
@@ -54,7 +66,8 @@ def main():
 
         logging.debug('searching lua')
         try:
-            lua_exe = shutil.which('lua')
+            lua_exe = shutil.which('lua',
+                                   path=os.path.join(repo_root, prefix, 'bin'))
         except AttributeError:
             import distutils.spawn
             logging.warning(
@@ -69,9 +82,16 @@ def main():
 
         test_cwd = str(os.path.join(repo_root, 'build', compiler, 'tests'))
         if os.path.isdir(test_cwd) and lua_exe:
-            cmd = ['lua', 'all.lua']
+            cmd = ['lua']
+            if args.simple_test:
+                cmd.extend(['-e"_U=true"'])
+            cmd.extend(['all.lua'])
+            if sys.platform.lower().startswith('win'):
+                # somehow the double quotation marks are not escaped properly
+                # on windows, and using a string makes it work somehow.
+                cmd = ' '.join(cmd)
             logging.debug('running %s in %s', ' '.join(cmd), test_cwd)
-            proc = subprocess.Popen(args=cmd, cwd=test_cwd)
+            proc = subprocess.Popen(args=cmd, cwd=test_cwd, shell=True)
             proc.communicate()
             if proc.returncode:
                 err_msg = 'error during testing {} build'.format(compiler)
