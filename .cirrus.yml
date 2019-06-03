@@ -18,6 +18,7 @@ task:
         - update-alternatives --config clang
         - which clang
         - pip install sphinx_rtd_theme
+        - pip install pathlib
 
     # - freebsd_instance:
         # matrix:
@@ -97,6 +98,6 @@ task:
     # clang ]
     # test script
     - python scripts/run_test.py -c gcc -c clang --simple-test
-    - python scripts/run_test.py -c gcc -c clang
+    # - python scripts/run_test.py -c gcc -c clang
     - python scripts/run_test.py -c gcc -c clang --simple-test --ltests
-    - python scripts/run_test.py -c gcc -c clang --ltests
+    # - python scripts/run_test.py -c gcc -c clang --ltests
