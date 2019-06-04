@@ -101,6 +101,4 @@ task:
     # clang ]
     # test script
     - python scripts/run_test.py -c gcc -c clang --simple-test
-    # - python scripts/run_test.py -c gcc -c clang
     - python scripts/run_test.py -c gcc -c clang --simple-test --ltests
-    # - python scripts/run_test.py -c gcc -c clang --ltests
