@@ -20,8 +20,8 @@ task:
 
     - freebsd_instance:
         matrix:
-          image: freebsd-12-0-release-amd64
-          image: freebsd-11-2-release-amd64
+          #image: freebsd-12-0-release-amd64
+          #image: freebsd-11-2-release-amd64
           image: freebsd-10-4-release-amd64
       container:
         image: python:latest
@@ -31,12 +31,13 @@ task:
         - env ASSUME_ALWAYS_YES=YES pkg upgrade pkg
         - env ASSUME_ALWAYS_YES=YES pkg install lang/gcc
         - env ASSUME_ALWAYS_YES=YES pkg install readline
+        - env ASSUME_ALWAYS_YES=YES pkg install devel/readline
         - env ASSUME_ALWAYS_YES=YES pkg install bash
         - env ASSUME_ALWAYS_YES=YES pkg install py27-pip
         - pip install sphinx_rtd_theme
         - pip install pathlib
-        - cd /usr/ports/devel/readline/ && make install clean
-        - pkg install readline
+        #- cd /usr/ports/devel/readline/ && make install clean
+        # - pkg install readline
       freebsd_setup_script:
         - chsh -s /usr/local/bin/bash
 
