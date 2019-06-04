@@ -64,7 +64,7 @@ script:
   # clang ]
   - python3 waf distclean
   # test script
-  - sudo python scripts/run_test.py -c gcc -c clang --simple-test
-  - sudo python scripts/run_test.py -c gcc -c clang
-  - sudo python scripts/run_test.py -c gcc -c clang --simple-test --ltests
-  - sudo python scripts/run_test.py -c gcc -c clang --ltests
+  - sudo python3 scripts/run_test.py -c gcc -c clang --simple-test
+  - sudo python3 scripts/run_test.py -c gcc -c clang
+  - sudo python3 scripts/run_test.py -c gcc -c clang --simple-test --ltests
+  - sudo python3 scripts/run_test.py -c gcc -c clang --ltests
