@@ -36,8 +36,9 @@ task:
         - env ASSUME_ALWAYS_YES=YES pkg install py27-pip
         - pip install sphinx_rtd_theme
         - pip install pathlib
+        - env ASSUME_ALWAYS_YES=YES dialog4ports
         - cd /usr/ports/devel/readline/ && make install clean
-        - pkg install readline
+        - pkg install -y readline
       freebsd_setup_script:
         - chsh -s /usr/local/bin/bash
 
