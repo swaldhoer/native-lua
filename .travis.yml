@@ -10,6 +10,8 @@ branches:
 
 script:
   - python3 --version
+  - which pip
+  - pip --version
   - pip3 install sphinx_rtd_theme
   - sudo python3 --version
   # basic configuration
