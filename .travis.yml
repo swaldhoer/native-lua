@@ -19,7 +19,7 @@ script:
   - python waf configure --include-tests
   # gcc [
   - python waf build_gcc
-  - sudo python waf install_gcc
+  - python waf install_gcc
   - pushd build/gcc/tests
   - lua -e"_U=true" all.lua
   - lua all.lua
