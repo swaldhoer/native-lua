@@ -260,6 +260,9 @@ def configure(cnf):  # pylint: disable=R0912
             cnf.env.CFLAGS = [cnf.env.c_standard, '-O2', '-Wall', '-Wextra']
             cnf.env.LINKFLAGS = ['-Wl,-export-dynamic']
             cnf.check_cc(fragment=min_c, execute=True)
+            cnf.env.append_unique('INCLUDES', '/usr/local/include')
+            cnf.env.append_unique('INCLUDES', '/usr/local/include/readline')
+            cnf.env.append_unique('LIBPATH', '/usr/local/lib')
             check_libs('m', 'readline')
             platform_compilers.append(cnf.env.env_name)
         except BaseException:
