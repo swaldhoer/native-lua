@@ -1,6 +1,6 @@
 {
-    "terminal.integrated.shell.linux": "sh",
-    "terminal.integrated.shell.osx": "sh",
+    "terminal.integrated.shell.linux": "bash",
+    "terminal.integrated.shell.osx": "bash",
     "terminal.integrated.shell.windows": "C:\\Windows\\sysnative\\cmd.exe",
     "files.trimTrailingWhitespace": true,
     "files.trimFinalNewlines": true,
@@ -50,7 +50,10 @@
         "bexpall",
         "repo",
         "editorconfig",
-        // waf and python
+        "cmds",
+        "readline",
+        "rpath",
+        // waf, python, rst
         "bldnode",
         "setenv",
         "shlib",
@@ -64,6 +67,7 @@
         "linenos",
         "recurse",
         "sys",
+        "shutil",
         "unversioned",
         "waflib",
         "wscript",
@@ -72,6 +76,8 @@
         "nopyc",
         "nopyo",
         "nopycache",
+        "isdir",
+        "literalinclude",
         // project variables
         "ltests",
         "cflags",
@@ -79,6 +85,7 @@
         "luadll",
         "hdlr",
         // lua file names
+        "lualib",
         "lapi",
         "lauxlib",
         "lbaselib",

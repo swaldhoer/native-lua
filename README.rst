@@ -31,7 +31,7 @@ How-To
 
 Building `Lua` requires python 2.7 or greater and some C compiler.
 
-.. code-block::
+.. code-block:: sh
 
   git clone https://github.com/swaldhoer/native-lua
   cd native-lua
@@ -40,7 +40,7 @@ Building `Lua` requires python 2.7 or greater and some C compiler.
 The output will show a number of successfully configured compilers, e.g., for
 Windows with installed MSVC, gcc and clang the output should like this:
 
-.. code-block::
+.. code-block:: sh
 
   ...
   Configured compilers                          : msvc, gcc, clang
@@ -50,7 +50,7 @@ Now the build commands ``build_msvc``, ``build_gcc`` and ``build_clang`` should
 work. The command concatenate is the same on all platforms, ``build_`` and then
 the name of the successfully configured compiler.
 
-.. code-block::
+.. code-block:: sh
 
   python waf build_gcc
   ...
@@ -58,7 +58,7 @@ the name of the successfully configured compiler.
 
 For all build and test options on the platform see the output of
 
-.. code-block::
+.. code-block:: sh
 
     python waf --help
 
@@ -84,7 +84,8 @@ means under development and/or untested):
 | FreeBSD  | - gcc                 | - gcc *             |
 |          |                       | - clang *           |
 +----------+-----------------------+---------------------+
-| generic  | - gcc                 | - TODO              |
+| generic  | - gcc                 | - gcc (not win32)   |
+|          |                       | - msvc (win32)      |
 +----------+-----------------------+---------------------+
 | linux    | - gcc                 | - gcc               |
 |          |                       | - clang             |
@@ -146,7 +147,8 @@ official website as fast as possible.
 ==================
 
 Project documentation. The documentation from the official `Lua` releases is
-**not** included.
+currently **not** included outside the ``dl`` directory. The man files
+(``lua.1``, ``luac.1``) however are included in ``docs/man`` and ``docs/man1``.
 
 ``src`` Directory
 =================
@@ -167,7 +169,7 @@ the sources. Furthermore for some tests, require changes to the test files in
 order to work on Windows. The changes made to these files are indicated by the
 following line:
 
-.. code-block::
+.. code-block:: sh
 
     -- Added by 'native-lua' project, see https://github.com/swaldhoer/native-lua.
 

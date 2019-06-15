@@ -9,13 +9,9 @@ branches:
   - /^cirrus-ci.*$/
 
 script:
-  - python3 --version
-  - which pip
-  - pip --version
   - pip3 install sphinx_rtd_theme
-  - sudo python3 --version
   # basic configuration
-  - python waf configure
+  - python3 waf configure
   # check documentation build
   - python3 waf build_doc
   - python3 waf clean_doc
@@ -65,3 +61,8 @@ script:
   - python3 waf clean_clang
   # clang ]
   - python3 waf distclean
+  # test script
+  - python3 scripts/run_test.py -c gcc -c clang --simple-test
+  - python3 scripts/run_test.py -c gcc -c clang
+  - python3 scripts/run_test.py -c gcc -c clang --simple-test --ltests
+  - python3 scripts/run_test.py -c gcc -c clang --ltests

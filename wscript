@@ -13,6 +13,11 @@ from waflib.Tools.compiler_c import c_compiler
 from waflib.Build import BuildContext, CleanContext, ListContext, StepContext
 from waflib.Build import InstallContext, UninstallContext
 
+from waflib.Tools.gnu_dirs import gnuopts
+
+# man1 is missing waf gnu_dirs implementation
+gnuopts += 'mandir1, manual pages, ${DATAROOTDIR}/man1\n'
+
 VERSION = '0.0.1'
 APPNAME = 'lua'
 top = '.'  # pylint: disable=C0103
@@ -25,6 +30,10 @@ host_os = Utils.unversioned_sys_platform()  # pylint: disable=C0103
 plat_comp = c_compiler['default']  # pylint: disable=C0103
 if c_compiler.get(host_os):
     plat_comp = c_compiler[host_os]  # pylint: disable=C0103
+else:
+    # add host compilers to compiler list. We need to do this, in order that we
+    # use c_compiler[host_os] everywhere we need it.
+    c_compiler[host_os] = plat_comp
 
 for x in plat_comp:
     for y in (BuildContext, CleanContext, ListContext, StepContext,
@@ -104,6 +113,8 @@ def configure(cnf):  # pylint: disable=R0912
     cnf.msg('Lua version', '.'.join(cnf.env.lua_src_version))
     cnf.msg("Including tests", cnf.options.include_tests)
     cnf.msg("Using ltests", cnf.options.ltests)
+    cnf.env.generic = cnf.options.generic
+    cnf.msg("Generic", cnf.env.generic)
     def get_c_standard(env_name, c_std):
         """Define C standard for each compiler"""
         c_std_string = None
@@ -143,12 +154,8 @@ def configure(cnf):  # pylint: disable=R0912
     cnf.load('gnu_dirs')
     cnf.env.MAN1DIR = Utils.subst_vars(cnf.options.MAN1DIR, cnf.env)
 
-    min_c = '''\
-#include<stdio.h>
-int main() {
-return 0;
-}
-'''
+    min_c = '#include<stdio.h>\nint main() {\n    return 0;\n}\n'
+
     if cnf.options.c_standard == 'c89':
         Logs.warn('C89 does not guarantee 64-bit integers for Lua.')
         Logs.warn('Adding define: LUA_USE_C89')  # TODO
@@ -160,8 +167,38 @@ return 0;
     failed_platform_compilers = []
     if cnf.options.generic:
         if host_os == 'win32':
-            cnf.fatal('Generic build not available on win32')
-        # TODO generic configuration (gcc, clang)
+            Logs.info("Generic build uses msvc on win32")
+            cnf.env.WAF_CONFIG_H_PRELUDE = \
+                '#if defined(_MSC_VER) && defined(_MSC_FULL_VER)\n' \
+                '#pragma warning(disable: 4242 4820 4668 4710 4711)\n' \
+                '#endif'
+            cnf.write_config_header('config.h')
+            try:  # msvc
+                set_new_basic_env('msvc')
+                cnf.load('compiler_c')
+                cnf.env.CFLAGS = [
+                    '/nologo', cnf.env.c_standard, '/O2', '/Wall']
+                cnf.env.CFLAGS += ['/FI'+cnf.env.cfg_files[0]]
+                cnf.check_cc(fragment=min_c, execute=True)
+                platform_compilers.append(cnf.env.env_name)
+                cnf.msg('Manifest', cnf.env.MSVC_MANIFEST)
+            except BaseException:
+                failed_platform_compilers.append(cnf.env.env_name)
+        else:
+            try:
+                # generic build only for gcc
+                Logs.info(
+                    "Generic build on {} with gcc".format(
+                        Utils.unversioned_sys_platform()))
+                set_new_basic_env('gcc')
+                cnf.load('compiler_c')
+                cnf.env.CFLAGS = [
+                    cnf.env.c_standard, '-O2', '-Wall', '-Wextra']
+                cnf.check_cc(fragment=min_c, execute=True)
+                check_libs('m')
+                platform_compilers.append(cnf.env.env_name)
+            except BaseException:
+                failed_platform_compilers.append(cnf.env.env_name)
     elif host_os == 'aix':
         try:  # xlc
             set_new_basic_env('xlc')
@@ -220,6 +257,14 @@ return 0;
         try:  # gcc
             set_new_basic_env('gcc')
             cnf.load('compiler_c')
+            cnf.env.CC_VERSION_MAJOR = cnf.env.CC_VERSION[0]
+            rpath = '/usr/local/lib/gcc' + cnf.env.CC_VERSION_MAJOR
+            if not os.path.isdir(rpath):
+                Logs.warn('Could not validate rpath, as path {} ' \
+                          'does not exist'.format(rpath))
+            else:
+                cnf.env.append_unique('RPATH', rpath)
+                cnf.msg('RPATH', cnf.env.RPATH[0])
             cnf.env.CFLAGS = [cnf.env.c_standard, '-O2', '-Wall', '-Wextra']
             cnf.env.LINKFLAGS = ['-Wl,-export-dynamic']
             cnf.check_cc(fragment=min_c, execute=True)
@@ -233,6 +278,9 @@ return 0;
             cnf.env.CFLAGS = [cnf.env.c_standard, '-O2', '-Wall', '-Wextra']
             cnf.env.LINKFLAGS = ['-Wl,-export-dynamic']
             cnf.check_cc(fragment=min_c, execute=True)
+            cnf.env.append_unique('INCLUDES', '/usr/local/include')
+            cnf.env.append_unique('INCLUDES', '/usr/local/include/readline')
+            cnf.env.append_unique('LIBPATH', '/usr/local/lib')
             check_libs('m', 'readline')
             platform_compilers.append(cnf.env.env_name)
         except BaseException:
@@ -356,7 +404,6 @@ return 0;
             failed_platform_compilers.append(cnf.env.env_name)
     else:
         Logs.warn('Building generic for platform: {}'.format(host_os))
-        cnf.fatal('TODO')
 
     if not platform_compilers:
         cnf.fatal('Could not configure a single C compiler (tried: {}).\
@@ -398,6 +445,21 @@ def build(bld):
                 libinst += bld.path.get_bld().ant_glob('**/*dll.manifest')
             bld.install_files('${BINDIR}', bininst)
             bld.install_files('${LIBDIR}', libinst)
+    else:
+        # man files do not make sense on win32
+        bld.install_files(
+            '${MAN}', bld.path.find_node(os.path.join('docs', 'man', 'lua.1')))
+        bld.install_files(
+            '${MAN1}',
+            bld.path.find_node(os.path.join('docs', 'man1', 'luac.1')))
+    include_files = [
+        bld.path.find_node(os.path.join('src', 'lua.h')),
+        bld.path.find_node(os.path.join('src', 'luaconf.h')),
+        bld.path.find_node(os.path.join('src', 'lualib.h')),
+        bld.path.find_node(os.path.join('src', 'lauxlib.h')),
+        bld.path.find_node(os.path.join('src', 'lua.hpp'))]
+    for incfile in include_files:
+        bld.install_files('${INCLUDEDIR}', incfile)
 
     bld.env.src_basepath = 'src'
     bld.env.sources = ' '.join([
@@ -448,8 +510,9 @@ def build(bld):
         os.path.join(bld.env.libs_path, 'lib11.c'),
         os.path.join(bld.env.libs_path, 'lib2.c'),
         os.path.join(bld.env.libs_path, 'lib21.c')]
-
-    if bld.env.host_os == 'aix':
+    if bld.env.generic:
+        build_generic(bld)
+    elif bld.env.host_os == 'aix':
         build_aix(bld)
     elif bld.env.host_os in ('netbsd', 'openbsd'):
         build_netbsd_or_openbsd(bld)
@@ -472,6 +535,66 @@ def build(bld):
         bld(features='subst',
             source=bld.env.test_files,
             target=bld.env.test_files,
+            is_copy=True)
+
+
+def build_generic(bld):
+    use = ['M']
+    use_ltests = []
+    defines = ['LUA_COMPAT_5_2']
+    defines_tests = []
+    cflags = []
+    includes = []
+    if bld.env.c_standard.endswith("89"):
+        defines_c89 = ["LUA_USE_C89"]
+        defines_tests += defines_c89
+        defines += defines_c89
+    if bld.env.ltests:
+        use_ltests += ['LTESTS']
+        cflags += ['-g']
+        defines += ['LUA_USER_H=\"ltests.h\"']
+        includes += [bld.env.ltests_dir]
+        bld.objects(source=bld.env.ltests_sources,
+                    defines=defines,
+                    cflags=cflags,
+                    includes=[bld.env.ltests_dir, bld.env.src_basepath],
+                    name='LTESTS')
+
+    bld.stlib(source=bld.env.sources,
+              target='lua',
+              defines=defines,
+              cflags=cflags,
+              use=use_ltests,
+              includes=includes,
+              name='static-lua-library')
+    bld.program(source=bld.env.source_interpreter,
+                target='lua',
+                defines=defines,
+                cflags=cflags,
+                includes=includes,
+                use=['static-lua-library']+use+use_ltests)
+    bld.program(source=bld.env.source_compiler,
+                target='luac',
+                defines=defines,
+                cflags=cflags,
+                includes=includes,
+                use=['static-lua-library']+use+use_ltests)
+
+    if bld.env.include_tests:
+        bld.path.get_bld().make_node(bld.env.tests_basepath+"/libs/P1").mkdir()
+        for tst_src in bld.env.test_sources:
+            outfile = re.match('.*?([0-9]+.c)$',
+                               tst_src).group(1).split(".")[0]
+            outfile = bld.env.tests_basepath+"/libs/"+outfile
+            bld.shlib(source=tst_src,
+                      target=outfile,
+                      defines=defines_tests,
+                      includes=os.path.abspath(
+                          os.path.join(bld.path.abspath(),
+                                       bld.env.src_basepath)))
+        bld(features="subst",
+            source=bld.env.tests_basepath+"/libs/lib2.so",
+            target=bld.env.tests_basepath+"/libs/lib2-v2.so",
             is_copy=True)
 
 
@@ -838,7 +961,6 @@ def build_solaris(bld):
             source=bld.env.tests_basepath+"/libs/lib2.so",
             target=bld.env.tests_basepath+"/libs/lib2-v2.so",
             is_copy=True)
-
 
 
 def build_doc(ctx):
