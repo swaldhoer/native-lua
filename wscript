@@ -16,7 +16,7 @@ from waflib.Build import InstallContext, UninstallContext
 from waflib.Tools.gnu_dirs import gnuopts
 
 # man1 is missing waf gnu_dirs implementation
-gnuopts = gnuopts + 'mandir1, manual pages, ${DATAROOTDIR}/man1\n' # pylint: disable=C0103
+gnuopts += 'mandir1, manual pages, ${DATAROOTDIR}/man1\n'
 
 VERSION = '0.0.1'
 APPNAME = 'lua'
@@ -30,6 +30,10 @@ host_os = Utils.unversioned_sys_platform()  # pylint: disable=C0103
 plat_comp = c_compiler['default']  # pylint: disable=C0103
 if c_compiler.get(host_os):
     plat_comp = c_compiler[host_os]  # pylint: disable=C0103
+else:
+    # add host compilers to compiler list. We need to do this, in order that we
+    # use c_compiler[host_os] everywhere we need it.
+    c_compiler[host_os] = plat_comp
 
 for x in plat_comp:
     for y in (BuildContext, CleanContext, ListContext, StepContext,
@@ -946,7 +950,6 @@ def build_solaris(bld):
             source=bld.env.tests_basepath+"/libs/lib2.so",
             target=bld.env.tests_basepath+"/libs/lib2-v2.so",
             is_copy=True)
-
 
 
 def build_doc(ctx):
