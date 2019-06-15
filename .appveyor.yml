@@ -8,6 +8,7 @@ skip_commits:
   files:
     - .travis.yml
     - .cirrus.yml
+    - .vscode/*
 
 init:
   - git config --global core.autocrlf input

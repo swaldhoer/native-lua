@@ -1,22 +1,22 @@
 task:
   matrix:
-    #- container:
-        #matrix:
-          #image: python:2.7
-          #image: python:3.7
-      #install_script:
-        #- wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
-        #- apt-get update
-        #- apt-get install -y dialog
-        #- apt-get install -y software-properties-common
-        #- apt-add-repository "deb http://apt.llvm.org/stretch/ llvm-toolchain-stretch-8 main"
-        #- apt-get update
-        #- apt-get -y upgrade
-        #- apt-get install -y build-essential
-        #- apt-get install -y clang-8 lld-8
-        #- update-alternatives --install /usr/bin/clang clang /usr/bin/clang-8 100
-        #- pip install sphinx_rtd_theme
-        #- pip install pathlib
+    - container:
+        matrix:
+          image: python:2.7
+          image: python:3.7
+      install_script:
+        - wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
+        - apt-get update
+        - apt-get install -y dialog
+        - apt-get install -y software-properties-common
+        - apt-add-repository "deb http://apt.llvm.org/stretch/ llvm-toolchain-stretch-8 main"
+        - apt-get update
+        - apt-get -y upgrade
+        - apt-get install -y build-essential
+        - apt-get install -y clang-8 lld-8
+        - update-alternatives --install /usr/bin/clang clang /usr/bin/clang-8 100
+        - pip install sphinx_rtd_theme
+        - pip install pathlib
 
     - freebsd_instance:
         matrix:

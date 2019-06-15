@@ -257,6 +257,14 @@ def configure(cnf):  # pylint: disable=R0912
         try:  # gcc
             set_new_basic_env('gcc')
             cnf.load('compiler_c')
+            cnf.env.CC_VERSION_MAJOR = cnf.env.CC_VERSION[0]
+            rpath = '/usr/local/lib/gcc' + cnf.env.CC_VERSION_MAJOR
+            if not os.path.isdir(rpath):
+                Logs.warn('Could not validate rpath, as path {} ' \
+                          'does not exist'.format(rpath))
+            else:
+                cnf.env.append_unique('RPATH', rpath)
+                cnf.msg('RPATH', cnf.env.RPATH[0])
             cnf.env.CFLAGS = [cnf.env.c_standard, '-O2', '-Wall', '-Wextra']
             cnf.env.LINKFLAGS = ['-Wl,-export-dynamic']
             cnf.check_cc(fragment=min_c, execute=True)

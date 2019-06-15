@@ -52,6 +52,7 @@
         "editorconfig",
         "cmds",
         "readline",
+        "rpath",
         // waf, python, rst
         "bldnode",
         "setenv",
