@@ -18,19 +18,20 @@ The format is based on `Keep a Changelog`_ v1.0.0, and this project adheres to
 Added
 =====
 
+- Added a rules for contributing to the project (see ``CONTRIBUTING.md``).
+- Added a script to make testing simpler (``scripts/run_test.py``)
+- Added `generic` build option.
+- Added ``LUA_VERSION`` file to indicate the lua version obtained from
+  `lua.org`_.
+- `include` and `man` files are installed.
+
 Changed
 =======
 
 - Pasted `build` step from ``lua/wscript`` to ``wscript`` to have only one
   ``wscript``. These changes should be transparent.
 - Rewrote `configure` step to print better readable output.
-- Added ``LUA_VERSION`` file to indicate the lua version obtained from
-  `lua.org`_.
 - Restructured the way sources, documentation etc. are stored.
-- Added a rules for contributing to the project (see ``CONTRIBUTING.md``).
-- include and man files are installed
-- Added a script to make testing simpler (``scripts/run_test.py``)
-- Added `generic` build option
 
 Deprecated
 ==========
@@ -38,8 +39,13 @@ Deprecated
 Removed
 =======
 
+- ``lua/wscript``, see section `Changed`
+
 Fixed
 =====
+
+- Use correct include path of the of the `readline` library on FreeBSD when
+  using clang.
 
 Security
 ========

@@ -51,6 +51,7 @@
         "repo",
         "editorconfig",
         "cmds",
+        "readline",
         // waf, python, rst
         "bldnode",
         "setenv",
