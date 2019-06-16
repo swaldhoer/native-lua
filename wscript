@@ -788,10 +788,14 @@ def build_darwin(bld):
                       includes=os.path.abspath(
                           os.path.join(bld.path.abspath(),
                                        bld.env.src_basepath)))
-        # bld(features="subst",
-        #     source=bld.env.tests_basepath+"/libs/lib2.dylib",
-        #     target=bld.env.tests_basepath+"/libs/lib2-v2.dylib",
-        #     is_copy=True)
+        if bld.env.CC_NAME == "gcc":
+            ext = ".so"
+        elif bld.env.CC_NAME == "clang":
+            ext = ".dylib"
+        bld(features="subst",
+            source=bld.env.tests_basepath+"/libs/lib2"+ext,
+            target=bld.env.tests_basepath+"/libs/lib2-v2"+ext,
+            is_copy=True)
 
 def build_win32(bld):
     """Building on win32 platform
