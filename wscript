@@ -789,8 +789,8 @@ def build_darwin(bld):
                           os.path.join(bld.path.abspath(),
                                        bld.env.src_basepath)))
         bld(features="subst",
-            source=bld.env.tests_basepath+"/libs/lib2.so",
-            target=bld.env.tests_basepath+"/libs/lib2-v2.so",
+            source=bld.env.tests_basepath+"/libs/lib2.dylib",
+            target=bld.env.tests_basepath+"/libs/lib2-v2.dylib",
             is_copy=True)
 
 def build_win32(bld):
