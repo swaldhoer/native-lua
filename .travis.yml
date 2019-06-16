@@ -10,11 +10,14 @@ matrix:
       language: python
       sudo: required
     - os: osx
+      osx_image: xcode10.2
       language: c
       sudo: required
       addons:
         homebrew:
-          packages: python3
+          packages:
+            - python3
+            - gcc
 
 script:
   - pip3 install sphinx_rtd_theme
