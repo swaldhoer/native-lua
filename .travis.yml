@@ -19,70 +19,71 @@ matrix:
           packages:
             - python3
             - gcc
-      before_install:
-        - export PATH=/Applications/Xcode-10.2.1.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:$PATH
+  allow_failures:
+    - os: osx
 
 before_script:
   - which gcc
   - gcc --version
   - which clang
   - clang --version
+  - echo $PATH
 
 script:
-  - pip3 install sphinx_rtd_theme
+  - pip3 install sphinx_rtd_theme -q
   # basic configuration
   - python3 waf configure -vv
   # check documentation build
-  # - python3 waf build_doc
-  # - python3 waf clean_doc
-  # - python3 waf distclean
-  # - python3 waf configure --include-tests
-  # # gcc [
-  # - python3 waf build_gcc
-  # - sudo python3 waf install_gcc
-  # - pushd build/gcc/tests
-  # - lua -e"_U=true" all.lua
-  # - lua all.lua
-  # - popd
-  # - sudo python3 waf uninstall_gcc
-  # - python3 waf clean_gcc
-  # # gcc ]
-  # # clang [
-  # - python3 waf build_clang
-  # - sudo python3 waf install_clang
-  # - pushd build/clang/tests
-  # - lua -e"_U=true" all.lua
-  # - lua all.lua
-  # - popd
-  # - sudo python3 waf uninstall_clang
-  # - python3 waf clean_clang
-  # # clang ]
-  # - python3 waf distclean
-  # # including ltests
-  # - python3 waf configure --ltests --include-tests
-  # # gcc [
-  # - python3 waf build_gcc
-  # - sudo python3 waf install_gcc
-  # - pushd build/gcc/tests
-  # - lua -e"_U=true" all.lua
-  # - lua all.lua
-  # - popd
-  # - sudo python3 waf uninstall_gcc
-  # - python3 waf clean_gcc
-  # # gcc ]
-  # # clang [
-  # - python3 waf build_clang
-  # - sudo python3 waf install_clang
-  # - pushd build/clang/tests
-  # - lua -e"_U=true" all.lua
-  # - lua all.lua
-  # - popd
-  # - sudo python3 waf uninstall_clang
-  # - python3 waf clean_clang
-  # # clang ]
-  # - python3 waf distclean
-  # # test script
-  # - python3 scripts/run_test.py -c gcc -c clang --simple-test
-  # - python3 scripts/run_test.py -c gcc -c clang
-  # - python3 scripts/run_test.py -c gcc -c clang --simple-test --ltests
-  # - python3 scripts/run_test.py -c gcc -c clang --ltests
+  - python3 waf build_doc
+  - python3 waf clean_doc
+  - python3 waf distclean
+  - python3 waf configure --include-tests
+  # gcc [
+  - python3 waf build_gcc
+  - sudo python3 waf install_gcc
+  - pushd build/gcc/tests
+  - lua -e"_U=true" all.lua
+  - lua all.lua
+  - popd
+  - sudo python3 waf uninstall_gcc
+  - python3 waf clean_gcc
+  # gcc ]
+  # clang [
+  - python3 waf build_clang
+  - sudo python3 waf install_clang
+  - pushd build/clang/tests
+  - lua -e"_U=true" all.lua
+  - lua all.lua
+  - popd
+  - sudo python3 waf uninstall_clang
+  - python3 waf clean_clang
+  # clang ]
+  - python3 waf distclean
+  # including ltests
+  - python3 waf configure --ltests --include-tests
+  # gcc [
+  - python3 waf build_gcc
+  - sudo python3 waf install_gcc
+  - pushd build/gcc/tests
+  - lua -e"_U=true" all.lua
+  - lua all.lua
+  - popd
+  - sudo python3 waf uninstall_gcc
+  - python3 waf clean_gcc
+  # gcc ]
+  # clang [
+  - python3 waf build_clang
+  - sudo python3 waf install_clang
+  - pushd build/clang/tests
+  - lua -e"_U=true" all.lua
+  - lua all.lua
+  - popd
+  - sudo python3 waf uninstall_clang
+  - python3 waf clean_clang
+  # clang ]
+  - python3 waf distclean
+  # test script
+  - python3 scripts/run_test.py -c gcc -c clang --simple-test
+  - python3 scripts/run_test.py -c gcc -c clang
+  - python3 scripts/run_test.py -c gcc -c clang --simple-test --ltests
+  - python3 scripts/run_test.py -c gcc -c clang --ltests
