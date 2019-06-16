@@ -44,7 +44,7 @@ task:
         image: mojave-xcode-10.2
       macos_setup_script:
         - curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-        - python get-pip.py
+        - python get-pip.py --user
         - pip install sphinx_rtd_theme -q
 
   script:
