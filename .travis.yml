@@ -24,7 +24,7 @@ matrix:
 
 before_script:
   - which gcc
-  - gcc --vesion
+  - gcc --version
   - which clang
   - clang --version
 
