@@ -42,13 +42,11 @@ task:
 
     - osx_instance:
         image: mojave-xcode-10.2
+      env:
+        PATH: /usr/local/opt/python/libexec/bin:${PATH}
       macos_setup_script:
         - brew install python3
-        - unlink /usr/bin/python
-        - unlink /usr/bin/pip
-        - ln -s /usr/local/opt/python/libexec/bin/python /usr/local/bin/python
-        - ln -s /usr/local/opt/python/libexec/bin/pip /usr/local/bin/pip
-        - pip3 install sphinx_rtd_theme -q
+        - pip install sphinx_rtd_theme -q
 
   script:
     - python --version
