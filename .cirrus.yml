@@ -43,11 +43,14 @@ task:
     - osx_instance:
         image: mojave-xcode-10.2
       macos_setup_script:
-        - curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
-        - sudo python get-pip.py
-        - pip install sphinx_rtd_theme -q
+        - -m ensurepip --default-pip
+        - unlink /usr/bin/python
+        - ln -s /usr/local/opt/python/libexec/bin/python /usr/local/bin/python
+        - ln -s /usr/local/opt/python/libexec/bin/pp /usr/local/bin/python
+        - pip3 install sphinx_rtd_theme -q
 
   script:
+    - python --version
     # basic configuration
     - python waf configure
     # documentation build
