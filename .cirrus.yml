@@ -51,7 +51,7 @@ task:
   script:
     - python --version
     # basic configuration
-    - python waf configure
+    - python waf configure -v
     # documentation build
     - python waf build_doc
     - python waf clean_doc
