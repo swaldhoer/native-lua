@@ -1,4 +1,5 @@
 task:
+  skip: "changesInclude('.travis.yml', '.appveyor.yml')"
   matrix:
     - container:
         matrix:
