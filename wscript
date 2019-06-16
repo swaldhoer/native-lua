@@ -788,10 +788,10 @@ def build_darwin(bld):
                       includes=os.path.abspath(
                           os.path.join(bld.path.abspath(),
                                        bld.env.src_basepath)))
-        bld(features="subst",
-            source=bld.env.tests_basepath+"/libs/lib2.dylib",
-            target=bld.env.tests_basepath+"/libs/lib2-v2.dylib",
-            is_copy=True)
+        # bld(features="subst",
+        #     source=bld.env.tests_basepath+"/libs/lib2.dylib",
+        #     target=bld.env.tests_basepath+"/libs/lib2-v2.dylib",
+        #     is_copy=True)
 
 def build_win32(bld):
     """Building on win32 platform
