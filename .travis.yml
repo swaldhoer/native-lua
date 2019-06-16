@@ -1,12 +1,20 @@
-os: linux
-dist: xenial
-language: python
-sudo: required
-
 branches:
   except:
   - /^appveyor-.*$/
   - /^cirrus-ci.*$/
+
+matrix:
+  include:
+    - os: linux
+      dist: xenial
+      language: python
+      sudo: required
+    - os: osx
+      language: c
+      sudo: required
+      addons:
+        homebrew:
+          packages: python3
 
 script:
   - pip3 install sphinx_rtd_theme
