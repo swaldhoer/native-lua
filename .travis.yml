@@ -4,6 +4,7 @@ branches:
   - /^cirrus-ci.*$/
 
 matrix:
+  fast_finish: true
   include:
     - os: linux
       dist: xenial
@@ -18,6 +19,10 @@ matrix:
           packages:
             - python3
             - gcc
+
+before_script:
+  - which gcc
+  - which clang
 
 script:
   - pip3 install sphinx_rtd_theme
