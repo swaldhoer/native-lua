@@ -1,5 +1,6 @@
 task:
   skip: "changesInclude('.travis.yml', '.appveyor.yml')"
+  allow_failures: $CIRRUS_OS == 'darwin'
   matrix:
     - container:
         matrix:
@@ -22,10 +23,10 @@ task:
     - freebsd_instance:
         matrix:
           image: freebsd-12-0-release-amd64
-          image: freebsd-11-2-release-amd64
-          image: freebsd-10-4-release-amd64
-      container:
-        image: python:latest
+          #image: freebsd-11-2-release-amd64
+          #image: freebsd-10-4-release-amd64
+      #container:
+      #  image: python:latest
       freebsd_install_script:
         - pkg update -f
         - env ASSUME_ALWAYS_YES=YES pkg bootstrap -f
