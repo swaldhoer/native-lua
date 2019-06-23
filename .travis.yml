@@ -1,17 +1,38 @@
-os: linux
-dist: xenial
-language: python
-sudo: required
-
 branches:
   except:
   - /^appveyor-.*$/
   - /^cirrus-ci.*$/
 
+matrix:
+  fast_finish: true
+  include:
+    - os: linux
+      dist: xenial
+      language: python
+      sudo: required
+    - os: osx
+      osx_image: xcode10.2
+      language: c
+      sudo: required
+      addons:
+        homebrew:
+          packages:
+            - python3
+            - gcc
+  allow_failures:
+    - os: osx
+
+before_script:
+  - which gcc
+  - gcc --version
+  - which clang
+  - clang --version
+  - echo $PATH
+
 script:
-  - pip3 install sphinx_rtd_theme
+  - pip3 install sphinx_rtd_theme -q
   # basic configuration
-  - python3 waf configure
+  - python3 waf configure -vv
   # check documentation build
   - python3 waf build_doc
   - python3 waf clean_doc

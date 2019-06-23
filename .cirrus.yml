@@ -1,4 +1,7 @@
 task:
+  skip: "changesInclude('.travis.yml', '.appveyor.yml')"
+  allow_failures: $CIRRUS_OS == 'darwin'
+  skip_notifications: $CIRRUS_OS == 'darwin'
   matrix:
     - container:
         matrix:
@@ -21,17 +24,12 @@ task:
     - freebsd_instance:
         matrix:
           image: freebsd-12-0-release-amd64
-          image: freebsd-11-2-release-amd64
-          image: freebsd-10-4-release-amd64
-      container:
-        image: python:latest
       freebsd_install_script:
         - pkg update -f
         - env ASSUME_ALWAYS_YES=YES pkg bootstrap -f
         - env ASSUME_ALWAYS_YES=YES pkg upgrade pkg
         - env ASSUME_ALWAYS_YES=YES pkg install lang/gcc
         - env ASSUME_ALWAYS_YES=YES pkg install readline
-        - env ASSUME_ALWAYS_YES=YES pkg install devel/readline
         - env ASSUME_ALWAYS_YES=YES pkg install bash
         - env ASSUME_ALWAYS_YES=YES pkg install py27-pip
         - pip install sphinx_rtd_theme
@@ -39,9 +37,18 @@ task:
       freebsd_setup_script:
         - chsh -s /usr/local/bin/bash
 
+    - osx_instance:
+        image: mojave-xcode-10.2
+      env:
+        PATH: /usr/local/opt/python/libexec/bin:${PATH}
+      macos_setup_script:
+        - brew install python3
+        - pip install sphinx_rtd_theme -q
+
   script:
+    - python --version
     # basic configuration
-    - python waf configure
+    - python waf configure -v
     # documentation build
     - python waf build_doc
     - python waf clean_doc

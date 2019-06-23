@@ -331,7 +331,7 @@ def configure(cnf):  # pylint: disable=R0912
             set_new_basic_env('clang')
             cnf.load('compiler_c')
             cnf.env.CFLAGS = [cnf.env.c_standard, '-O2', '-Wall', '-Wextra']
-            cnf.env.LINKFLAGS = ['-Wl,-export-dynamic']
+            cnf.env.LINKFLAGS = ['-Wl,-export_dynamic']
             cnf.check_cc(fragment=min_c, execute=True)
             check_libs('m', 'readline')
             platform_compilers.append(cnf.env.env_name)
@@ -788,9 +788,13 @@ def build_darwin(bld):
                       includes=os.path.abspath(
                           os.path.join(bld.path.abspath(),
                                        bld.env.src_basepath)))
+        if bld.env.CC_NAME == "gcc":
+            ext = ".so"
+        elif bld.env.CC_NAME == "clang":
+            ext = ".dylib"
         bld(features="subst",
-            source=bld.env.tests_basepath+"/libs/lib2.so",
-            target=bld.env.tests_basepath+"/libs/lib2-v2.so",
+            source=bld.env.tests_basepath+"/libs/lib2"+ext,
+            target=bld.env.tests_basepath+"/libs/lib2-v2"+ext,
             is_copy=True)
 
 def build_win32(bld):
