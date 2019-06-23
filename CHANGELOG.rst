@@ -47,6 +47,7 @@ Fixed
 - Use correct include path of the of the `readline` library on FreeBSD when
   using clang.
 - Use correct `rpath` on FreeBSD when using gcc.
+- Fixed clang linker flag on OSX
 
 Security
 ========
