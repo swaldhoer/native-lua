@@ -1,5 +1,4 @@
 task:
-  skip: "changesInclude('.travis.yml', '.appveyor.yml')"
   allow_failures: $CIRRUS_OS == 'darwin'
   skip_notifications: $CIRRUS_OS == 'darwin'
   matrix:
