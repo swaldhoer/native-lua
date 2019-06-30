@@ -32,12 +32,12 @@ jobs:
       - script: python waf configure --include-tests
       # gcc [
       - script: python waf build_gcc
-      - script: python waf install_gcc
+      - script: sudo python waf install_gcc
       - script: pushd build/gcc/tests
       - script: lua -e"_U=true" all.lua
       - script: lua all.lua
       - script: popd
-      - script: python waf uninstall_gcc
+      - script: sudo python waf uninstall_gcc
       - script: python waf clean_gcc
       # gcc ]
       - script: python waf distclean
@@ -45,24 +45,24 @@ jobs:
       - script: python waf configure --ltests --include-tests
       # gcc [
       - script: python waf build_gcc
-      - script: python waf install_gcc
+      - script: sudo python waf install_gcc
       - script: pushd build/gcc/tests
       - script: lua -e"_U=true" all.lua
       - script: lua all.lua
       - script: popd
-      - script: python waf uninstall_gcc
+      - script: sudo python waf uninstall_gcc
       - script: python waf clean_gcc
       # gcc ]
       # configuration
       - script: python waf configure --include-tests
       # clang [
       - script: python waf build_clang
-      - script: python waf install_clang
+      - script: sudo python waf install_clang
       - script: pushd build/clang/tests
       - script: lua -e"_U=true" all.lua
       - script: lua all.lua
       - script: popd
-      - script: python waf uninstall_clang
+      - script: sudo python waf uninstall_clang
       - script: python waf clean_clang
       # clang ]
       - script: python waf distclean
@@ -70,12 +70,12 @@ jobs:
       - script: python waf configure --ltests --include-tests
       # clang [
       - script: python waf build_clang
-      - script: python waf install_clang
+      - script: sudo python waf install_clang
       - script: pushd build/clang/tests
       - script: lua -e"_U=true" all.lua
       #- lua all.lua
       - script: popd
-      - script: python waf uninstall_clang
+      - script: sudo python waf uninstall_clang
       - script: python waf clean_clang
       # clang ]
       # test script
