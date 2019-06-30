@@ -8,6 +8,7 @@ jobs:
         inputs:
           versionSpec: '3.6'
           architecture: 'x64'
+      - script: PATH=/opt/lua/bin:$PATH
       - script: wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
       - script: sudo apt-get update
       - script: sudo apt-get install -y dialog
@@ -29,7 +30,7 @@ jobs:
       - script: python waf clean_doc
       - script: python waf distclean
       # configuration
-      - script: python waf configure --include-tests
+      - script: python waf configure --include-tests --prefix=/opt/lua
       # gcc [
       - script: python waf build_gcc
       - script: sudo python waf install_gcc
@@ -42,40 +43,40 @@ jobs:
       # gcc ]
       - script: python waf distclean
       # including ltests
-      - script: python waf configure --ltests --include-tests
+      - script: python waf configure --ltests --include-tests --prefix=/opt/lua
       # gcc [
       - script: python waf build_gcc
-      - script: sudo python waf install_gcc
+      - script: python waf install_gcc
       - script: pushd build/gcc/tests
       - script: lua -e"_U=true" all.lua
       - script: lua all.lua
       - script: popd
-      - script: sudo python waf uninstall_gcc
+      - script: python waf uninstall_gcc
       - script: python waf clean_gcc
       # gcc ]
       # configuration
-      - script: python waf configure --include-tests
+      - script: python waf configure --include-tests --prefix=/opt/lua
       # clang [
       - script: python waf build_clang
-      - script: sudo python waf install_clang
+      - script: python waf install_clang
       - script: pushd build/clang/tests
       - script: lua -e"_U=true" all.lua
       - script: lua all.lua
       - script: popd
-      - script: sudo python waf uninstall_clang
+      - script: python waf uninstall_clang
       - script: python waf clean_clang
       # clang ]
       - script: python waf distclean
       # including ltests
-      - script: python waf configure --ltests --include-tests
+      - script: python waf configure --ltests --include-tests --prefix=/opt/lua
       # clang [
       - script: python waf build_clang
-      - script: sudo python waf install_clang
+      - script: python waf install_clang
       - script: pushd build/clang/tests
       - script: lua -e"_U=true" all.lua
-      #- lua all.lua
+      - script: lua all.lua
       - script: popd
-      - script: sudo python waf uninstall_clang
+      - script: python waf uninstall_clang
       - script: python waf clean_clang
       # clang ]
       # test script
