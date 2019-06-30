@@ -10,6 +10,8 @@ jobs:
           architecture: 'x64'
       - script: echo "##vso[task.prependpath]/opt/lua/bin"
         displayName: Add to path
+      - script: echo $PATH
+        displayName: echo PATH
       - script: |
           wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
           sudo apt-get update
@@ -26,25 +28,25 @@ jobs:
           pip install pathlib
         displayName: Install dependencies
       - script: python --version
-      # basic configuration
-      - script: python waf configure -v
-      # documentation build
-      - script: python waf build_doc
-      - script: python waf clean_doc
-      - script: python waf distclean
-      # configuration
-      - script: python waf configure --include-tests --prefix=/opt/lua
-      # gcc [
-      - script: python waf build_gcc
-      - script: python waf install_gcc
-      - script: pushd build/gcc/tests
-      - script: lua -e"_U=true" all.lua
-      - script: lua all.lua
-      - script: popd
-      - script: python waf uninstall_gcc
-      - script: python waf clean_gcc
-      # gcc ]
-      - script: python waf distclean
+        displayName: Python version
+      - script: |
+          python waf configure -v
+          python waf build_doc
+          python waf clean_doc
+          python waf distclean
+        displayName: Documentation build
+      - script: |
+          python waf configure --include-tests --prefix=/opt/lua
+          python waf build_gcc
+          python waf install_gcc
+          pushd build/gcc/tests
+          lua -e"_U=true" all.lua
+          lua all.lua
+          popd
+          python waf uninstall_gcc
+          python waf clean_gcc
+          python waf distclean
+        displayName: GCC build including tests
       # including ltests
       - script: python waf configure --ltests --include-tests --prefix=/opt/lua
       # gcc [
