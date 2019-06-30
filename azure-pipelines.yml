@@ -8,22 +8,24 @@ jobs:
         inputs:
           versionSpec: '3.6'
           architecture: 'x64'
-      - script: PATH=/opt/lua/bin:$PATH
-      - script: echo $PATH
-      - script: wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-      - script: sudo apt-get update
-      - script: sudo apt-get install -y dialog
-      - script: sudo apt-get install -y software-properties-common
-      - script: sudo apt-get install -y libreadline6 libreadline6-dev
-      - script: sudo apt-add-repository "deb http://apt.llvm.org/stretch/ llvm-toolchain-stretch-8 main"
-      - script: sudo apt-get update
-      - script: sudo apt-get -y upgrade
-      - script: sudo apt-get install -y build-essential
-      - script: sudo apt-get install -y clang-8 lld-8
-      - script: sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-8 100
-      - script: pip install sphinx_rtd_theme
-      - script: pip install pathlib
-      - script: python --version
+      - script: echo "##vso[task.prependpath]/opt/lua/bin"
+        displayName: Add to path
+      - script: |
+        wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+        sudo apt-get update
+        sudo apt-get install -y dialog
+        sudo apt-get install -y software-properties-common
+        sudo apt-get install -y libreadline6 libreadline6-dev
+        sudo apt-add-repository "deb http://apt.llvm.org/stretch/ llvm-toolchain-stretch-8 main"
+        sudo apt-get update
+        sudo apt-get -y upgrade
+        sudo apt-get install -y build-essential
+        sudo apt-get install -y clang-8 lld-8
+        sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-8 100
+        pip install sphinx_rtd_theme
+        pip install pathlib
+        displayName: Install dependencies
+      python --version
       # basic configuration
       - script: python waf configure -v
       # documentation build
