@@ -4,7 +4,7 @@ jobs:
       vmImage: 'ubuntu-latest'
     displayName: "Linux Build"
     steps:
-      - script: sudo wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
+      - script: wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
       - script: apt-get update
       - script: apt-get install -y dialog
       - script: apt-get install -y software-properties-common
