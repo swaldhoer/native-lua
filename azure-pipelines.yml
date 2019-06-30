@@ -33,12 +33,12 @@ jobs:
       - script: python waf configure --include-tests --prefix=/opt/lua
       # gcc [
       - script: python waf build_gcc
-      - script: sudo python waf install_gcc
+      - script: python waf install_gcc
       - script: pushd build/gcc/tests
       - script: lua -e"_U=true" all.lua
       - script: lua all.lua
       - script: popd
-      - script: sudo python waf uninstall_gcc
+      - script: python waf uninstall_gcc
       - script: python waf clean_gcc
       # gcc ]
       - script: python waf distclean
