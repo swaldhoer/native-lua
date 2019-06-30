@@ -12,7 +12,7 @@ jobs:
       - script: sudo apt-get update
       - script: sudo apt-get install -y dialog
       - script: sudo apt-get install -y software-properties-common
-      - script: sudo apt-get install -y libreadline libreadline-dev
+      - script: sudo apt-get install -y libreadline66 libreadline6-dev
       - script: sudo apt-add-repository "deb http://apt.llvm.org/stretch/ llvm-toolchain-stretch-8 main"
       - script: sudo apt-get update
       - script: sudo apt-get -y upgrade
