@@ -58,35 +58,34 @@ jobs:
           python waf uninstall_gcc
           python waf clean_gcc
         displayName: GCC build including tests and ltests
-      # gcc ]
-      # configuration
-      - script: python waf configure --include-tests --prefix=/opt/lua
-      # clang [
-      - script: python waf build_clang
-      - script: python waf install_clang
-      - script: pushd build/clang/tests
-      - script: lua -e"_U=true" all.lua
-      - script: lua all.lua
-      - script: popd
-      - script: python waf uninstall_clang
-      - script: python waf clean_clang
-      # clang ]
-      - script: python waf distclean
-      # including ltests
-      - script: python waf configure --ltests --include-tests --prefix=/opt/lua
-      # clang [
-      - script: python waf build_clang
-      - script: python waf install_clang
-      - script: pushd build/clang/tests
-      - script: lua -e"_U=true" all.lua
-      - script: lua all.lua
-      - script: popd
-      - script: python waf uninstall_clang
-      - script: python waf clean_clang
-      # clang ]
+      - script: |
+          python waf configure --include-tests --prefix=/opt/lua
+          python waf build_clang
+          python waf install_clang
+          pushd build/clang/tests
+          lua -e"_U=true" all.lua
+          lua all.lua
+          popd
+          python waf uninstall_clang
+          python waf clean_clang
+          python waf distclean
+        displayName: clang build including tests
+      - script: |
+          python waf configure --ltests --include-tests --prefix=/opt/lua
+          python waf build_clang
+          python waf install_clang
+          pushd build/clang/tests
+          lua -e"_U=true" all.lua
+          lua all.lua
+          popd
+          python waf uninstall_clang
+          python waf clean_clang
+        displayName: GCC build including tests and ltests
       # test script
       - script: python scripts/run_test.py -c gcc -c clang --simple-test
+        displayName: test script (gcc, clang) with --simple-test
       - script: python scripts/run_test.py -c gcc -c clang --simple-test --ltests
+        displayName: test script (gcc, clang) with --simple-test and ltests
 
   - job: Windows
     pool:
