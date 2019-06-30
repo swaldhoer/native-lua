@@ -1,0 +1,92 @@
+jobs:
+  - job: Linux
+    pool:
+      vmImage: 'ubuntu-latest'
+    displayName: "Linux Build"
+    steps:
+      - script: wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
+      - script: apt-get update
+      - script: apt-get install -y dialog
+      - script: apt-get install -y software-properties-common
+      - script: apt-add-repository "deb http://apt.llvm.org/stretch/ llvm-toolchain-stretch-8 main"
+      - script: apt-get update
+      - script: apt-get -y upgrade
+      - script: apt-get install -y build-essential
+      - script: apt-get install -y clang-8 lld-8
+      - script: update-alternatives --install /usr/bin/clang clang /usr/bin/clang-8 100
+      - script: pip install sphinx_rtd_theme
+      - script: pip install pathlib
+      - script: python --version
+      # basic configuration
+      - script: python waf configure -v
+      # documentation build
+      - script: python waf build_doc
+      - script: python waf clean_doc
+      - script: python waf distclean
+      # configuration
+      - script: python waf configure --include-tests
+      # gcc [
+      - script: python waf build_gcc
+      - script: python waf install_gcc
+      - script: pushd build/gcc/tests
+      - script: lua -e"_U=true" all.lua
+      - script: lua all.lua
+      - script: popd
+      - script: python waf uninstall_gcc
+      - script: python waf clean_gcc
+      # gcc ]
+      - script: python waf distclean
+      # including ltests
+      - script: python waf configure --ltests --include-tests
+      # gcc [
+      - script: python waf build_gcc
+      - script: python waf install_gcc
+      - script: pushd build/gcc/tests
+      - script: lua -e"_U=true" all.lua
+      - script: lua all.lua
+      - script: popd
+      - script: python waf uninstall_gcc
+      - script: python waf clean_gcc
+      # gcc ]
+      # configuration
+      - script: python waf configure --include-tests
+      # clang [
+      - script: python waf build_clang
+      - script: python waf install_clang
+      - script: pushd build/clang/tests
+      - script: lua -e"_U=true" all.lua
+      - script: lua all.lua
+      - script: popd
+      - script: python waf uninstall_clang
+      - script: python waf clean_clang
+      # clang ]
+      - script: python waf distclean
+      # including ltests
+      - script: python waf configure --ltests --include-tests
+      # clang [
+      - script: python waf build_clang
+      - script: python waf install_clang
+      - script: pushd build/clang/tests
+      - script: lua -e"_U=true" all.lua
+      #- lua all.lua
+      - script: popd
+      - script: python waf uninstall_clang
+      - script: python waf clean_clang
+      # clang ]
+      # test script
+      - script: python scripts/run_test.py -c gcc -c clang --simple-test
+      - script: python scripts/run_test.py -c gcc -c clang --simple-test --ltests
+
+  - job: Windows
+    pool:
+      vmImage: 'vs2019-win2016'
+    displayName: "Windows Build"
+    steps:
+      - script: echo $(Agent.OS)
+
+  - job: OSXBuild
+    pool:
+      vmImage: 'macOS-10.13'
+    displayName: "MacOSX Build"
+    steps:
+      - script: echo MacOSX
