@@ -47,17 +47,17 @@ jobs:
           python waf clean_gcc
           python waf distclean
         displayName: GCC build including tests
-      # including ltests
-      - script: python waf configure --ltests --include-tests --prefix=/opt/lua
-      # gcc [
-      - script: python waf build_gcc
-      - script: python waf install_gcc
-      - script: pushd build/gcc/tests
-      - script: lua -e"_U=true" all.lua
-      - script: lua all.lua
-      - script: popd
-      - script: python waf uninstall_gcc
-      - script: python waf clean_gcc
+      - script: |
+          python waf configure --ltests --include-tests --prefix=/opt/lua
+          python waf build_gcc
+          python waf install_gcc
+          pushd build/gcc/tests
+          lua -e"_U=true" all.lua
+          lua all.lua
+          popd
+          python waf uninstall_gcc
+          python waf clean_gcc
+        displayName: GCC build including tests and ltests
       # gcc ]
       # configuration
       - script: python waf configure --include-tests --prefix=/opt/lua
