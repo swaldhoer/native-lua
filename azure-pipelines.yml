@@ -4,6 +4,10 @@ jobs:
       vmImage: 'ubuntu-latest'
     displayName: "Linux Build"
     steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: '3.6'
+          architecture: 'x64'
       - script: wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
       - script: sudo apt-get update
       - script: sudo apt-get install -y dialog
