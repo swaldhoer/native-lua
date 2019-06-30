@@ -80,7 +80,7 @@ jobs:
           popd
           python waf uninstall_clang
           python waf clean_clang
-        displayName: GCC build including tests and ltests
+        displayName: clang build including tests and ltests
       # test script
       - script: python scripts/run_test.py -c gcc -c clang --simple-test
         displayName: test script (gcc, clang) with --simple-test
@@ -99,4 +99,34 @@ jobs:
       vmImage: 'macOS-10.13'
     displayName: "MacOSX Build"
     steps:
-      - script: echo MacOSX
+      - script: echo "##vso[task.prependpath]/usr/local/opt/python/libexec/bin"
+        displayName: Add to path
+      - script: echo $PATH
+        displayName: echo PATH
+      - script: |
+          brew install python3
+          pip install sphinx_rtd_theme -q
+        displayName: Install dependencies
+      - script: |
+          python waf configure --include-tests --prefix=/opt/lua
+          python waf build_clang
+          python waf install_clang
+          pushd build/clang/tests
+          lua -e"_U=true" all.lua
+          lua all.lua
+          popd
+          python waf uninstall_clang
+          python waf clean_clang
+          python waf distclean
+        displayName: clang build including tests
+      - script: |
+          python waf configure --ltests --include-tests --prefix=/opt/lua
+          python waf build_clang
+          python waf install_clang
+          pushd build/clang/tests
+          lua -e"_U=true" all.lua
+          lua all.lua
+          popd
+          python waf uninstall_clang
+          python waf clean_clang
+        displayName: clang build including tests and ltests
