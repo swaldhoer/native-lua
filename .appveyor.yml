@@ -6,9 +6,10 @@ image:
 
 skip_commits:
   files:
-    - .travis.yml
-    - .cirrus.yml
     - .vscode/*
+    - .cirrus.yml
+    - .travis.yml
+    - azure-pipelines.yml
 
 init:
   - git config --global core.autocrlf input

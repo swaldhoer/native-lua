@@ -1,6 +1,7 @@
 branches:
   except:
   - /^appveyor-.*$/
+  - /^azure.*$/
   - /^cirrus-ci.*$/
 
 matrix:
