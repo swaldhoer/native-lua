@@ -5,15 +5,15 @@ jobs:
     displayName: "Linux Build"
     steps:
       - script: wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-      - script: apt-get update
-      - script: apt-get install -y dialog
-      - script: apt-get install -y software-properties-common
-      - script: apt-add-repository "deb http://apt.llvm.org/stretch/ llvm-toolchain-stretch-8 main"
-      - script: apt-get update
-      - script: apt-get -y upgrade
-      - script: apt-get install -y build-essential
-      - script: apt-get install -y clang-8 lld-8
-      - script: update-alternatives --install /usr/bin/clang clang /usr/bin/clang-8 100
+      - script: sudo apt-get update
+      - script: sudo apt-get install -y dialog
+      - script: sudo apt-get install -y software-properties-common
+      - script: sudo apt-add-repository "deb http://apt.llvm.org/stretch/ llvm-toolchain-stretch-8 main"
+      - script: sudo apt-get update
+      - script: sudo apt-get -y upgrade
+      - script: sudo apt-get install -y build-essential
+      - script: sudo apt-get install -y clang-8 lld-8
+      - script: sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-8 100
       - script: pip install sphinx_rtd_theme
       - script: pip install pathlib
       - script: python --version
