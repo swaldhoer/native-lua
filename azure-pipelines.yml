@@ -9,6 +9,7 @@ jobs:
           versionSpec: '3.6'
           architecture: 'x64'
       - script: PATH=/opt/lua/bin:$PATH
+      - script: echo $PATH
       - script: wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
       - script: sudo apt-get update
       - script: sudo apt-get install -y dialog
