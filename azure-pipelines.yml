@@ -25,7 +25,7 @@ jobs:
           pip install sphinx_rtd_theme
           pip install pathlib
         displayName: Install dependencies
-      python --version
+      - script: python --version
       # basic configuration
       - script: python waf configure -v
       # documentation build
