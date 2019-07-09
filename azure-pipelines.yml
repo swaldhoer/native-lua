@@ -89,7 +89,6 @@ jobs:
           python waf clean_clang
         displayName: clang build including tests and ltests
         failOnStderr: true
-      # test script
       - script: python scripts/run_test.py -c gcc -c clang --simple-test
         displayName: test script (gcc, clang) with --simple-test
         failOnStderr: true
@@ -117,7 +116,7 @@ jobs:
           brew install python3
           pip install sphinx_rtd_theme -q
         displayName: Install dependencies
-        failOnStderr: true
+        failOnStderr: false
       - script: |
           python waf configure --include-tests --prefix=/opt/lua
           python waf build_clang
