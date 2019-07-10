@@ -31,8 +31,8 @@ task:
         - env ASSUME_ALWAYS_YES=YES pkg install readline
         - env ASSUME_ALWAYS_YES=YES pkg install bash
         - env ASSUME_ALWAYS_YES=YES pkg install py27-pip
-        - pip install sphinx_rtd_theme
-        - pip install pathlib
+        - pip-2.7 install sphinx_rtd_theme
+        - pip-2.7 install pathlib
       freebsd_setup_script:
         - chsh -s /usr/local/bin/bash
 
