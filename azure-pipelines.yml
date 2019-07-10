@@ -10,9 +10,12 @@ jobs:
           architecture: 'x64'
       - script: echo "##vso[task.prependpath]/opt/lua/bin"
         displayName: Add to path
+
       - script: echo $PATH
         displayName: echo PATH
+
       - script: |
+          set -euxo pipefail
           wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
           sudo apt-get update
           sudo apt-get install -y dialog apt-utils
@@ -27,18 +30,20 @@ jobs:
           pip install sphinx_rtd_theme
           pip install pathlib
         displayName: Install dependencies
-        failOnStderr: false
+
       - script: python --version
         displayName: Python version
-        failOnStderr: true
+
       - script: |
+          set -euxo pipefail
           python waf configure -v
           python waf build_doc
           python waf clean_doc
           python waf distclean
         displayName: Documentation build
-        failOnStderr: false
+
       - script: |
+          set -euxo pipefail
           python waf configure --include-tests --prefix=/opt/lua
           python waf build_gcc
           python waf install_gcc
@@ -50,8 +55,9 @@ jobs:
           python waf clean_gcc
           python waf distclean
         displayName: GCC build including tests
-        failOnStderr: true
+
       - script: |
+          set -euxo pipefail
           python waf configure --ltests --include-tests --prefix=/opt/lua
           python waf build_gcc
           python waf install_gcc
@@ -62,8 +68,9 @@ jobs:
           python waf uninstall_gcc
           python waf clean_gcc
         displayName: GCC build including tests and ltests
-        failOnStderr: true
+
       - script: |
+          set -euxo pipefail
           python waf configure --include-tests --prefix=/opt/lua
           python waf build_clang
           python waf install_clang
@@ -75,8 +82,9 @@ jobs:
           python waf clean_clang
           python waf distclean
         displayName: clang build including tests
-        failOnStderr: true
+
       - script: |
+          set -euxo pipefail
           python waf configure --ltests --include-tests --prefix=/opt/lua
           python waf build_clang
           python waf install_clang
@@ -87,13 +95,17 @@ jobs:
           python waf uninstall_clang
           python waf clean_clang
         displayName: clang build including tests and ltests
-        failOnStderr: true
-      - script: python scripts/run_test.py -c gcc -c clang --simple-test
+
+      - script: |
+          set -euxo pipefail
+          python scripts/run_test.py -c gcc -c clang --simple-test
         displayName: test script (gcc, clang) with --simple-test
-        failOnStderr: true
-      - script: python scripts/run_test.py -c gcc -c clang --simple-test --ltests
+
+      - script: |
+          set -euxo pipefail
+          python scripts/run_test.py -c gcc -c clang --simple-test --ltests
         displayName: test script (gcc, clang) with --simple-test and ltests
-        failOnStderr: true
+
 
   - job: Windows
     pool:
@@ -112,11 +124,13 @@ jobs:
       - script: echo $PATH
         displayName: echo PATH
       - script: |
+          set -euxo pipefail
           brew install python3
           pip install sphinx_rtd_theme -q
         displayName: Install dependencies
-        failOnStderr: false
+
       - script: |
+          set -euxo pipefail
           python waf configure --include-tests --prefix=/opt/lua
           python waf build_clang
           python waf install_clang
@@ -128,8 +142,9 @@ jobs:
           python waf clean_clang
           python waf distclean
         displayName: clang build including tests
-        failOnStderr: true
+
       - script: |
+          set -euxo pipefail
           python waf configure --ltests --include-tests --prefix=/opt/lua
           python waf build_clang
           python waf install_clang
@@ -140,4 +155,4 @@ jobs:
           python waf uninstall_clang
           python waf clean_clang
         displayName: clang build including tests and ltests
-        failOnStderr: true
+
