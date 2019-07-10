@@ -2,7 +2,7 @@
 The ``native-lua`` Project
 ##########################
 
-|appveyor-badge|_ |travis-badge|_ |cirrus-badge|_ |readthedocs-badge|_
+|appveyor-badge|_ |travis-badge|_ |cirrus-badge|_ |azure-badge|_ |readthedocs-badge|_
 
 
 
@@ -206,6 +206,9 @@ On AppVeyor we also run ``flake8`` and ``pylint``.
 
 .. |cirrus-badge| image:: https://api.cirrus-ci.com/github/swaldhoer/native-lua.svg
 .. _cirrus-badge: https://cirrus-ci.com/github/swaldhoer/native-lua
+
+.. |azure-badge| image:: https://dev.azure.com/stefanwaldhoer/stefanwaldhoer/_apis/build/status/swaldhoer.native-lua?branchName=master
+.. _azure-badge: https://dev.azure.com/stefanwaldhoer/stefanwaldhoer/
 
 .. |readthedocs-badge| image:: https://readthedocs.org/projects/native-lua/badge/?version=latest
 .. _readthedocs-badge: https://native-lua.readthedocs.io/en/latest/?badge=latest

@@ -31,18 +31,18 @@ task:
         - env ASSUME_ALWAYS_YES=YES pkg install readline
         - env ASSUME_ALWAYS_YES=YES pkg install bash
         - env ASSUME_ALWAYS_YES=YES pkg install py27-pip
-        - pip install sphinx_rtd_theme
-        - pip install pathlib
+        - pip-2.7 install sphinx_rtd_theme
+        - pip-2.7 install pathlib
       freebsd_setup_script:
         - chsh -s /usr/local/bin/bash
 
-    - osx_instance:
-        image: mojave-xcode-10.2
-      env:
-        PATH: /usr/local/opt/python/libexec/bin:${PATH}
-      macos_setup_script:
-        - brew install python3
-        - pip install sphinx_rtd_theme -q
+#    - osx_instance:
+#        image: mojave-xcode-10.2
+#      env:
+#        PATH: /usr/local/opt/python/libexec/bin:${PATH}
+#      macos_setup_script:
+#        - brew install python3
+#        - pip install sphinx_rtd_theme -q
 
   script:
     - python --version
