@@ -9,6 +9,8 @@ task:
       install_script:
         - wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
         - apt-get update
+        - apt-get install -y apt-utils lsb-release
+        - lsb_release -a
         - apt-get install -y dialog
         - apt-get install -y software-properties-common
         - apt-add-repository "deb http://apt.llvm.org/stretch/ llvm-toolchain-stretch-8 main"
@@ -20,21 +22,21 @@ task:
         - pip install sphinx_rtd_theme
         - pip install pathlib
 
-    - freebsd_instance:
-        matrix:
-          image: freebsd-12-0-release-amd64
-      freebsd_install_script:
-        - pkg update -f
-        - env ASSUME_ALWAYS_YES=YES pkg bootstrap -f
-        - env ASSUME_ALWAYS_YES=YES pkg upgrade pkg
-        - env ASSUME_ALWAYS_YES=YES pkg install lang/gcc
-        - env ASSUME_ALWAYS_YES=YES pkg install readline
-        - env ASSUME_ALWAYS_YES=YES pkg install bash
-        - env ASSUME_ALWAYS_YES=YES pkg install py27-pip
-        - pip-2.7 install sphinx_rtd_theme
-        - pip-2.7 install pathlib
-      freebsd_setup_script:
-        - chsh -s /usr/local/bin/bash
+    # - freebsd_instance:
+    #     matrix:
+    #       image: freebsd-12-0-release-amd64
+    #   freebsd_install_script:
+    #     - pkg update -f
+    #     - env ASSUME_ALWAYS_YES=YES pkg bootstrap -f
+    #     - env ASSUME_ALWAYS_YES=YES pkg upgrade pkg
+    #     - env ASSUME_ALWAYS_YES=YES pkg install lang/gcc
+    #     - env ASSUME_ALWAYS_YES=YES pkg install readline
+    #     - env ASSUME_ALWAYS_YES=YES pkg install bash
+    #     - env ASSUME_ALWAYS_YES=YES pkg install py27-pip
+    #     - pip-2.7 install sphinx_rtd_theme
+    #     - pip-2.7 install pathlib
+    #   freebsd_setup_script:
+    #     - chsh -s /usr/local/bin/bash
 
 #    - osx_instance:
 #        image: mojave-xcode-10.2
