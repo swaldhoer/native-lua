@@ -7,11 +7,14 @@ task:
           image: python:2.7
           image: python:3.7
       install_script:
+        - export RUNLEVEL=1
         - wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
         - apt-get update
+        - apt-get install -y apt-utils lsb-release
+        - lsb_release -a
         - apt-get install -y dialog
         - apt-get install -y software-properties-common
-        - apt-add-repository "deb http://apt.llvm.org/stretch/ llvm-toolchain-stretch-8 main"
+        - apt-add-repository "deb http://apt.llvm.org/buster/ llvm-toolchain-buster-8 main"
         - apt-get update
         - apt-get -y upgrade
         - apt-get install -y build-essential
