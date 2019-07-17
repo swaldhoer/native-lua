@@ -120,12 +120,13 @@ The root directory contains the
 - general project documentation and a changelog (``README.rst``,
   ``CHANGELOG.rst``)
 - build script (``wscript``),
-- CI scripts (``.appveyor.yml``, ``.cirrus.yml``, ``.travis.yml``),
+- CI scripts (``.appveyor.yml``, ``.cirrus.yml``, ``.travis.yml``,
+  ``azure-pipelines.yml``),
 - editor configurations (``.vscode``, ``.editorconfig``),
 - coding and general guidelines (``.flake8``, ``.pylintrc``,
   ``CONTRIBUTING.rst``),
-- and licensing information (``LICENSE``, ``CONTRIBUTING.rst``),
-- information on the lua version (``LUA_VERSION``).
+- licensing information (``LICENSE``, ``CONTRIBUTING.rst``),
+- and information on the lua version (``LUA_VERSION``).
 
 ``dl`` Directory
 ================
@@ -183,10 +184,11 @@ The documentation can be found on `readthedocs.io`_.
 CI
 **
 
+- Azure Pipelines: Linux, MacOS
 - AppVeyor: Linux and Windows
 - Cirrus CI: Linux and FreeBSD
-- Travis CI: Linux
-- ReadTheDocs.org
+- Travis CI: Linux, MacOS
+- ReadTheDocs.org: Documentation
 
 On AppVeyor we also run ``flake8`` and ``pylint``.
 
@@ -214,3 +216,4 @@ On AppVeyor we also run ``flake8`` and ``pylint``.
 .. _readthedocs-badge: https://native-lua.readthedocs.io/en/latest/?badge=latest
 
 .. |license-badge| image:: https://img.shields.io/github/license/swaldhoer/native-lua.svg
+.. _license-badge: https://github.com/swaldhoer/native-lua/blob/master/LICENSE
