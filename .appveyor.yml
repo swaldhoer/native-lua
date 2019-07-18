@@ -41,7 +41,7 @@ install:
   - cmd: python -m pip install pylint black sphinx_rtd_theme -q
   - sh: sudo python -m pip install sphinx_rtd_theme -q
   - python --version
-  - cmd: black docs scripts wscript
+  - cmd: black --version
   - cmd: pylint --version
   - clang --version
   - gcc --version
@@ -53,7 +53,7 @@ install:
 before_build:
   - python waf --help
   # ensure that only well formated wscripts are checked in
-  - cmd: flake8
+  - cmd: black docs scripts wscript --check
   - cmd: pylint wscript
   - cmd: pylint scripts\\run_test.py
   - cmd: pylint scripts\\utils.py
