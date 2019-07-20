@@ -125,6 +125,7 @@ jobs:
       - script: |
           set -euxo pipefail
           brew install --force gcc
+          brew ls --verbose gcc
           brew install python3
           pip install sphinx_rtd_theme -q
         displayName: Install dependencies
