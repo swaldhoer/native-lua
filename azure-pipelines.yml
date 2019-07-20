@@ -126,6 +126,8 @@ jobs:
           set -euxo pipefail
           brew install --force gcc
           ln -s gcc-9 gcc
+          which gcc
+          gcc --version
           #brew ls --verbose gcc
           #brew unlink gcc
           #brew link gcc --dry-run
