@@ -143,7 +143,11 @@ def configure(cnf):  # pylint: disable=R0912
     cnf.env.lua_src_version = tuple(
         cnf.path.find_node("LUA_VERSION").read().splitlines()[0].split(".")
     )
+    cnf.env.lua_tests_version = tuple(
+        cnf.path.find_node("LUA_TESTS_VERSION").read().splitlines()[0].split(".")
+    )
     cnf.msg("Lua version", ".".join(cnf.env.lua_src_version))
+    cnf.msg("Lua tests version", ".".join(cnf.env.lua_tests_version))
     cnf.msg("Including tests", cnf.options.include_tests)
     cnf.msg("Using ltests", cnf.options.ltests)
     cnf.env.generic = cnf.options.generic
