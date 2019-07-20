@@ -141,7 +141,7 @@ jobs:
 
       - script: |
           set -euxo pipefail
-          python waf configure --include-tests --prefix=/opt/lua
+          python waf configure -v --include-tests --prefix=/opt/lua
           python waf build_clang
           python waf install_clang
           pushd build/clang/tests
