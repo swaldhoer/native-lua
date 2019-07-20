@@ -122,6 +122,7 @@ jobs:
         displayName: echo PATH
       - script: |
           set -euxo pipefail
+          brew install --force gcc
           brew install python3
           pip install sphinx_rtd_theme -q
         displayName: Install dependencies
@@ -152,4 +153,3 @@ jobs:
           python waf uninstall_clang
           python waf clean_clang
         displayName: clang build including tests and ltests
-
