@@ -117,11 +117,24 @@ jobs:
     displayName: "MacOSX Build"
     steps:
       - script: echo "##vso[task.prependpath]/usr/local/opt/python/libexec/bin"
-        displayName: Add to path
+        displayName: Add python to path
+      - script: echo "##vso[task.prependpath]/usr/local/Cellar/gcc/9.1.0/bin/"
+        displayName: Add gcc to path
       - script: echo $PATH
         displayName: echo PATH
       - script: |
           set -euxo pipefail
+          brew install --force gcc
+          brew install coreutils
+          brew ls --verbose gcc
+          brew unlink gcc
+          brew link gcc --dry-run
+          brew link gcc
+          ln -s /usr/local/bin/gcc-9 /usr/local/bin/gcc
+          which gcc
+          greadlink -f `which gcc`
+          gcc --version
+          echo | gcc -E -Wp,-v -
           brew install python3
           pip install sphinx_rtd_theme -q
         displayName: Install dependencies
@@ -152,4 +165,3 @@ jobs:
           python waf uninstall_clang
           python waf clean_clang
         displayName: clang build including tests and ltests
-
