@@ -125,9 +125,10 @@ jobs:
       - script: |
           set -euxo pipefail
           brew install --force gcc
+          brew install coreutils
           ln -s gcc-9 gcc
           which gcc
-          readlink -f `which gcc`
+          greadlink -f `which gcc`
           gcc --version
           #brew ls --verbose gcc
           #brew unlink gcc
