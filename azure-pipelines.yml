@@ -117,7 +117,9 @@ jobs:
     displayName: "MacOSX Build"
     steps:
       - script: echo "##vso[task.prependpath]/usr/local/opt/python/libexec/bin"
-        displayName: Add to path
+        displayName: Add python to path
+      - script: echo "##vso[task.prependpath]/usr/local/opt/gcc/bin"
+        displayName: Add to gcc path
       - script: echo $PATH
         displayName: echo PATH
       - script: |
