@@ -134,6 +134,7 @@ jobs:
           which gcc
           greadlink -f `which gcc`
           gcc --version
+          echo | gcc -E -Wp,-v -
           brew install python3
           pip install sphinx_rtd_theme -q
         displayName: Install dependencies
