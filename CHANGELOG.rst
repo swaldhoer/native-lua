@@ -12,7 +12,7 @@ The format is based on `Keep a Changelog`_ v1.0.0, and this project adheres to
 ************
 
 ********************
-[0.1.0] - 2019-06-XX
+[0.1.0] - 2019-07-XX
 ********************
 
 Added

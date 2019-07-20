@@ -27,3 +27,12 @@ Coding Guidelines
       # encoding: utf-8
 
       # SPDX-License-Identifier: MIT
+
+- lua files must have the following header
+
+  .. code-block:: lua
+     :linenos:
+
+     #!/usr/bin/env lua
+
+     -- SPDX-License-Identifier: MIT
