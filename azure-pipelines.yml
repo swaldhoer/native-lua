@@ -119,7 +119,7 @@ jobs:
       - script: echo "##vso[task.prependpath]/usr/local/opt/python/libexec/bin"
         displayName: Add python to path
       - script: echo "##vso[task.prependpath]/usr/local/Cellar/gcc/9.1.0/bin/"
-        displayName: Add to gcc path
+        displayName: Add gcc to path
       - script: echo $PATH
         displayName: echo PATH
       - script: |
