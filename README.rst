@@ -22,8 +22,8 @@ MinGWs' `gcc` and some sort of `make` is also straight forward.
 
 But this does not allow a good platform and compiler independent way of building
 and testing `Lua`, especially testing is not that simple as it should be.
-Therefore this project tries a platform and compiler independent waf of building
-**and** testing `Lua`.
+Therefore this project tries to implement a platform and compiler independent
+way of building **and** testing `Lua`.
 
 ******
 How-To
@@ -128,22 +128,6 @@ The root directory contains the
 - licensing information (``LICENSE``, ``CONTRIBUTING.rst``),
 - and information on the lua version (``LUA_VERSION``).
 
-``dl`` Directory
-================
-
-All files in the `dl` directory are the source and test files as they are
-downloaded and extracted from `Lua.org`_ (for exceptions see the included
-``README`` file).
-
-The source and test files are tried to be kept in sync with the lua project
-official website as fast as possible.
-
-.. note::
-
-    It is still possible to use the ``make`` based build, install etc. of the
-    official Lua releases. Just ``cd`` into the ``dl/lua-5.3.4`` directory
-    and everything should work.
-
 ``docs`` Directory
 ==================
 
@@ -154,20 +138,19 @@ currently **not** included outside the ``dl`` directory. The man files
 ``src`` Directory
 =================
 
-This directory contains the source files coped from the ``dl`` directory.
-
-All files are kept as they are downloaded from `Lua.org`_, except that trailing
-whitespace and additional newlines at the end are removed.
+This directory contains the source files as they are downloaded from `Lua.org`_,
+except that trailing whitespace and additional newlines at the end of the files
+are removed.
 
 ``tests`` Directory
 ===================
 
-This directory contains the test files coped from the ``dl`` directory.
+This directory contains the test files as they are downloaded from `Lua.org`_,
+except that trailing whitespace and additional newlines at the end of the files
+are removed.
 
-All files are tried to be kept as they are downloaded from `Lua.org`_, except
-that trailing whitespace and additional newlines at the end are removed as for
-the sources. Furthermore for some tests, require changes to the test files in
-order to work on Windows. The changes made to these files are indicated by the
+Furthermore for some tests, require changes to the test files in order to work
+on platforms. The changes made to these files are indicated by the
 following line:
 
 .. code-block:: sh
@@ -185,12 +168,12 @@ CI
 **
 
 - Azure Pipelines: Linux, MacOS
-- AppVeyor: Linux and Windows
-- Cirrus CI: Linux and FreeBSD
+- AppVeyor: Linux, Windows
+- Cirrus CI: Linux, FreeBSD
 - Travis CI: Linux, MacOS
 - ReadTheDocs.org: Documentation
 
-On AppVeyor we also run ``flake8`` and ``pylint``.
+On AppVeyor we also run ``black`` and ``pylint``.
 
 ----
 

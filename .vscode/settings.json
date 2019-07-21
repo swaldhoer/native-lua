@@ -7,6 +7,7 @@
     "files.insertFinalNewline": true,
     "files.associations": {
         "wscript": "python",
+        "lprefix.h": "c"
     },
     "editor.wordWrap": "off",
     "editor.insertSpaces": true,
