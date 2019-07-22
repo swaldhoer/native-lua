@@ -149,4 +149,3 @@ result = dofile(file)
 assert(os.remove(file))
 print'OK'
 return result
-

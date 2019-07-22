@@ -76,7 +76,7 @@ while a < lim do
   a = math.ceil(a*1.3)
 end
 
- 
+
 local function check (t, na, nh)
   local a, h = T.querytab(t)
   if a ~= na or h ~= nh then
@@ -100,7 +100,7 @@ local s = 'return {'
 for i=1,lim do
   s = s..i..','
   local s = s
-  for k=0,lim do 
+  for k=0,lim do
     local t = load(s..'}', '')()
     assert(#t == i)
     check(t, fb(i), mp2(k))
@@ -263,7 +263,7 @@ do   -- clear global table
 end
 
 
--- 
+--
 
 local function checknext (a)
   local b = {}
@@ -462,7 +462,7 @@ else --[
   mt.__newindex = nil
   mt.__len = nil
   local tab2 = {}
-  local u2 = T.newuserdata(0) 
+  local u2 = T.newuserdata(0)
   debug.setmetatable(u2, {__newindex = function (_, k, v) tab2[k] = v end})
   table.move(u, 1, 4, 1, u2)
   assert(#tab2 == 4 and tab2[1] == tab[1] and tab2[4] == tab[4])
@@ -619,7 +619,7 @@ a[3] = 30
 -- testing ipairs with metamethods
 a = {n=10}
 setmetatable(a, { __index = function (t,k)
-                     if k <= t.n then return k * 10 end 
+                     if k <= t.n then return k * 10 end
                   end})
 i = 0
 for k,v in ipairs(a) do
