@@ -485,7 +485,7 @@ do
   local collected = false   -- to detect collection
   collectgarbage(); collectgarbage("stop")
   do
-    local function f (param) 
+    local function f (param)
       ;(function ()
         assert(type(f) == 'function' and type(param) == 'thread')
         param = {param, f}

@@ -31,7 +31,7 @@ do    -- test error in 'print' too...
   _ENV.tostring = function () return {} end
   local st, msg = pcall(print, 1)
   assert(st == false and string.find(msg, "must return a string"))
-  
+
   _ENV.tostring = tostring
 end
 

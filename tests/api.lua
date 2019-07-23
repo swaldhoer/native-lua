@@ -369,7 +369,7 @@ do
   -- "argerror" without frames
   assert(T.checkpanic("loadstring 4") ==
       "bad argument #4 (string expected, got no value)")
-  
+
 
   -- memory error
   T.totalmem(T.totalmem()+10000)   -- set low memory limit (+10k)
@@ -1169,4 +1169,3 @@ do
 end
 
 print'OK'
-

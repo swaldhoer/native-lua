@@ -126,4 +126,3 @@ LUA_API void *debug_realloc (void *ud, void *block,
 #define STRCACHE_M	5
 
 #endif
-

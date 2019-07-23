@@ -1567,4 +1567,3 @@ int luaB_opentests (lua_State *L) {
 }
 
 #endif
-

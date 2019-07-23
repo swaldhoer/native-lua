@@ -695,4 +695,3 @@ void luaG_traceexec (lua_State *L) {
     luaD_throw(L, LUA_YIELD);
   }
 }
-
