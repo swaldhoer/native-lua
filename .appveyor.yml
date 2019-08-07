@@ -53,7 +53,7 @@ install:
 before_build:
   - python waf --help
   # ensure that only well formated wscripts are checked in
-  - cmd: black docs scripts wscript --check
+  - cmd: black . --config=pyproject.toml --check -v
   - cmd: pylint wscript
   - cmd: pylint scripts\\run_test.py
   - cmd: pylint scripts\\utils.py
