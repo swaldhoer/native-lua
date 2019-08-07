@@ -12,10 +12,11 @@ charset = utf-8
 indent_style = space
 indent_size = 4
 
-[*.yml]
+[{*.yml,*.toml}]
 charset = utf-8
 indent_style = space
 indent_size = 2
 
-[Makefile]
-indent_style = tab
+[*.lua]
+indent_style = space
+indent_size = 2
