@@ -200,21 +200,25 @@ def configure(cnf):  # pylint: disable=R0912
             Logs.warn("This will NOT effect msvc-builds on win32.")
     cnf.msg("C standard", cnf.options.c_standard)
 
+    win32_msvc_waf_prelude = (
+        "#if defined(_MSC_VER) && defined(_MSC_FULL_VER)\n"
+        "#pragma warning(disable: 4242 4820 4668 4710 4711 5045)\n"
+        "/* Disable C5045 (see "
+        "https://docs.microsoft.com/de-de/cpp/error-messages/compiler-warnings/c5045) */\n"
+        "/* we are compiling with /Qspectre */\n"
+        "#endif"
+        )
     platform_compilers = []
     failed_platform_compilers = []
     if cnf.options.generic:
         if host_os == "win32":
             Logs.info("Generic build uses msvc on win32")
-            cnf.env.WAF_CONFIG_H_PRELUDE = (
-                "#if defined(_MSC_VER) && defined(_MSC_FULL_VER)\n"
-                "#pragma warning(disable: 4242 4820 4668 4710 4711)\n"
-                "#endif"
-            )
+            cnf.env.WAF_CONFIG_H_PRELUDE = win32_msvc_waf_prelude
             cnf.write_config_header("config.h")
             try:  # msvc
                 set_new_basic_env("msvc")
                 cnf.load("compiler_c")
-                cnf.env.CFLAGS = ["/nologo", cnf.env.c_standard, "/O2", "/Wall"]
+                cnf.env.CFLAGS = ["/nologo", cnf.env.c_standard, "/O2", "/Wall", "/Qspectre"]
                 cnf.env.CFLAGS += ["/FI" + cnf.env.cfg_files[0]]
                 cnf.check_cc(fragment=min_c, execute=True)
                 platform_compilers.append(cnf.env.env_name)
@@ -378,16 +382,12 @@ def configure(cnf):  # pylint: disable=R0912
         except BaseException:
             failed_platform_compilers.append(cnf.env.env_name)
     elif host_os == "win32":
-        cnf.env.WAF_CONFIG_H_PRELUDE = (
-            "#if defined(_MSC_VER) && defined(_MSC_FULL_VER)\n"
-            "#pragma warning(disable: 4242 4820 4668 4710 4711)\n"
-            "#endif"
-        )
+        cnf.env.WAF_CONFIG_H_PRELUDE = win32_msvc_waf_prelude
         cnf.write_config_header("config.h")
         try:  # msvc
             set_new_basic_env("msvc")
             cnf.load("compiler_c")
-            cnf.env.CFLAGS = ["/nologo", cnf.env.c_standard, "/O2", "/Wall"]
+            cnf.env.CFLAGS = ["/nologo", cnf.env.c_standard, "/O2", "/Wall", "/Qspectre"]
             cnf.env.CFLAGS += ["/FI" + cnf.env.cfg_files[0]]
             cnf.check_cc(fragment=min_c, execute=True)
             platform_compilers.append(cnf.env.env_name)
@@ -488,11 +488,11 @@ def build(bld):
             # the DLL produced by gcc is already installed to ${BINDIR}
             pass
         if bld.variant == "msvc":
-            bininst = bld.path.get_bld().ant_glob("*.dll **/*.manifest")
+            bininst = bld.path.get_bld().ant_glob("*.dll **/*.manifest", quiet=True)
             libinst = []
             if bld.env.MSVC_MANIFEST:
-                bininst += bld.path.get_bld().ant_glob("**/*.manifest")
-                libinst += bld.path.get_bld().ant_glob("**/*dll.manifest")
+                bininst += bld.path.get_bld().ant_glob("**/*.manifest", quiet=True)
+                libinst += bld.path.get_bld().ant_glob("**/*dll.manifest", quiet=True)
             bld.install_files("${BINDIR}", bininst)
             bld.install_files("${LIBDIR}", libinst)
     else:
