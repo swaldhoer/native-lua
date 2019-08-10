@@ -207,7 +207,7 @@ def configure(cnf):  # pylint: disable=R0912
         "https://docs.microsoft.com/de-de/cpp/error-messages/compiler-warnings/c5045) */\n"
         "/* we are compiling with /Qspectre */\n"
         "#endif"
-        )
+    )
     platform_compilers = []
     failed_platform_compilers = []
     if cnf.options.generic:
@@ -218,7 +218,13 @@ def configure(cnf):  # pylint: disable=R0912
             try:  # msvc
                 set_new_basic_env("msvc")
                 cnf.load("compiler_c")
-                cnf.env.CFLAGS = ["/nologo", cnf.env.c_standard, "/O2", "/Wall", "/Qspectre"]
+                cnf.env.CFLAGS = [
+                    "/nologo",
+                    cnf.env.c_standard,
+                    "/O2",
+                    "/Wall",
+                    "/Qspectre",
+                ]
                 cnf.env.CFLAGS += ["/FI" + cnf.env.cfg_files[0]]
                 cnf.check_cc(fragment=min_c, execute=True)
                 platform_compilers.append(cnf.env.env_name)
@@ -387,7 +393,13 @@ def configure(cnf):  # pylint: disable=R0912
         try:  # msvc
             set_new_basic_env("msvc")
             cnf.load("compiler_c")
-            cnf.env.CFLAGS = ["/nologo", cnf.env.c_standard, "/O2", "/Wall", "/Qspectre"]
+            cnf.env.CFLAGS = [
+                "/nologo",
+                cnf.env.c_standard,
+                "/O2",
+                "/Wall",
+                "/Qspectre",
+            ]
             cnf.env.CFLAGS += ["/FI" + cnf.env.cfg_files[0]]
             cnf.check_cc(fragment=min_c, execute=True)
             platform_compilers.append(cnf.env.env_name)
