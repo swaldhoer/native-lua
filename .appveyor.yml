@@ -47,6 +47,8 @@ install:
   - gcc --version
   - cmd: cl
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python --version"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "python -m ensurepip --upgrade"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "python -m pip install sphinx_rtd_theme -q"
   # for testing
   - cmd: set PATH=%PATH%;%userprofile%\AppData\Local\Programs\lua\bin
 
