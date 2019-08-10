@@ -129,10 +129,10 @@ use libraries that do not come with the `Lua` interpreter.
 ``docs`` Directory
 ==================
 
-This directory contains the project documentation. The documentation from the
-official `Lua` releases is currently **not** included . The man files
-(``lua.1``, ``luac.1``) from the official Lua releases however are included in
-``docs/man`` and ``docs/man1``.
+This directory contains the `native Lua` project documentation as well as the
+official `Lua` documentation. The official `Lua` documentation is found in
+`docs/_static/doc`. This documentation is also linked into the project
+documentation.
 
 ``src`` Directory
 =================

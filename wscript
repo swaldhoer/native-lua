@@ -518,10 +518,12 @@ def build(bld):
     else:
         # man files do not make sense on win32
         bld.install_files(
-            "${MAN}", bld.path.find_node(os.path.join("docs", "man", "lua.1"))
+            "${MAN}",
+            bld.path.find_node(os.path.join("docs", "_static", "doc", "lua.1")),
         )
         bld.install_files(
-            "${MAN1}", bld.path.find_node(os.path.join("docs", "man1", "luac.1"))
+            "${MAN1}",
+            bld.path.find_node(os.path.join("docs", "_static", "doc", "luac.1")),
         )
     include_files = [
         bld.path.find_node(os.path.join("src", "lua.h")),

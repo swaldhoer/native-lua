@@ -15,6 +15,7 @@ The ``native-Lua`` Documentation
    ./build.rst
    ./install.rst
    ./test.rst
+   ./manual.rst
    ./demos.rst
    ./ci.rst
    ./sources.rst

@@ -39,6 +39,7 @@
     ],
     "cSpell.ignoreWords": [
         // software, library, commands, options etc.
+        "iframe",
         "mathjax",
         "SPDX",
         "cygwin",
