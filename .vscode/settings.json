@@ -39,6 +39,8 @@
     ],
     "cSpell.ignoreWords": [
         // software, library, commands, options etc.
+        "iframe",
+        "mathjax",
         "SPDX",
         "cygwin",
         "solaris",
@@ -55,6 +57,7 @@
         "readline",
         "rpath",
         // waf, python, rst
+        "pyproject",
         "bldnode",
         "setenv",
         "shlib",
@@ -118,6 +121,18 @@
         "lundump",
         "lutf",
         "lzio",
+        "loadlib",
+        "lopcodes",
+        "loslib",
+        "lprefix",
+        "luaconf",
+        "maxdepth",
+        "nextvar",
+        "titlesonly",
+        "toctree",
+        "tpack",
+        "vararg",
+        "verybig",
         // lua sources
         "LOADK",
         "LOADKX",

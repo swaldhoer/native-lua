@@ -3,7 +3,6 @@
 
 import os
 import sys
-import sphinx_rtd_theme
 
 sys.path.insert(0, os.path.abspath("."))
 sys.path.insert(0, os.path.abspath(".."))
@@ -22,6 +21,8 @@ extensions = [
 
 templates_path = ["_templates"]
 
+html_static_path = ["_static"]
+
 source_suffix = ".rst"
 
 master_doc = "index"
@@ -30,7 +31,7 @@ project = "native-lua"
 copyright = "2018-2019, Stefan Waldhoer"
 author = "Stefan Waldhoer"
 
-version = "0.0.1"
+version = "0.1.0"
 release = version
 
 language = "en"

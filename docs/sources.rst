@@ -6,7 +6,7 @@ Sources
 License
 *******
 
-see end of file at :ref:`lua.h <LUA>`:
+For the `Lua` license information see the end of file :ref:`lua.h <LUA>`:
 
 .. literalinclude:: ./../src/lua.h
    :language: c
