@@ -47,6 +47,8 @@ install:
   - gcc --version
   - cmd: cl
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python --version"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "python -m ensurepip --upgrade"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "python -m pip install sphinx_rtd_theme -q"
   # for testing
   - cmd: set PATH=%PATH%;%userprofile%\AppData\Local\Programs\lua\bin
 
@@ -112,7 +114,7 @@ build_script:
   # msvc
   - cmd: python waf build_msvc
   - cmd: python waf install_msvc
-  - cmd: cd build/gcc/tests
+  - cmd: cd build/msvc/tests
   - cmd: lua -e"_U=true" all.lua
   # - cmd: lua all.lua
   - cmd: cd ../../..
