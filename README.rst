@@ -1,5 +1,5 @@
 ##########################
-The ``native-lua`` Project
+The ``native Lua`` Project
 ##########################
 
 |appveyor-badge|_ |travis-badge|_ |cirrus-badge|_ |azure-badge|_ |readthedocs-badge|_ |license-badge|_ |code-style-black-badge|_
@@ -66,51 +66,43 @@ For all build and test options on the platform see the output of
 Supported Platforms And Compilers
 *********************************
 
-The current release supports the following platform/compiler combinations (*
-means under development and/or untested):
+The current release supports the following platform/compiler combinations:
 
-+----------+-----------------------+---------------------+
-| Platform | Official Lua Releases | Native Lua Releases |
-+==========+=======================+=====================+
-| aix      | - gcc                 | - xlc *             |
-|          |                       | - gcc *             |
-|          |                       | - clang *           |
-+----------+-----------------------+---------------------+
-| bsd      | - gcc                 | - gcc *             |
-|          |                       | - clang *           |
-+----------+-----------------------+---------------------+
-| c89      | - gcc                 | all compilers *     |
-+----------+-----------------------+---------------------+
-| FreeBSD  | - gcc                 | - gcc *             |
-|          |                       | - clang *           |
-+----------+-----------------------+---------------------+
-| generic  | - gcc                 | - gcc (not win32)   |
-|          |                       | - msvc (win32)      |
-+----------+-----------------------+---------------------+
-| linux    | - gcc                 | - gcc               |
-|          |                       | - clang             |
-|          |                       | - icc *             |
-+----------+-----------------------+---------------------+
-| macOS    | - gcc                 | - gcc *             |
-|          |                       | - clang *           |
-+----------+-----------------------+---------------------+
-| MinGW    | - gcc                 | see win32           |
-+----------+-----------------------+---------------------+
-| posix    | - gcc                 | - TODO              |
-+----------+-----------------------+---------------------+
-| solaris  | - gcc                 | - gcc *             |
-|          |                       | - clang *           |
-+----------+-----------------------+---------------------+
-| win32    | see MinGw             | - msvc              |
-|          |                       | - gcc               |
-|          |                       | - clang *           |
-+----------+-----------------------+---------------------+
-| cygwin   | no                    | - gcc*              |
-+----------+-----------------------+---------------------+
++----------+-----------------------+-------------------------------+
+| Platform | Official Lua Releases | ``native Lua`` Releases       |
++==========+=======================+===============================+
+| aix      | gcc                   | xlc*, gcc*, clang*            |
++----------+-----------------------+-------------------------------+
+| bsd      | gcc                   | gcc*, clang*                  |
++----------+-----------------------+-------------------------------+
+| c89      | gcc                   | all compilers*                |
++----------+-----------------------+-------------------------------+
+| FreeBSD  | gcc                   | gcc, clang                    |
++----------+-----------------------+-------------------------------+
+| generic  | gcc                   | gcc (not win32), msvc (win32) |
++----------+-----------------------+-------------------------------+
+| linux    | gcc                   | gcc, clang, icc*              |
++----------+-----------------------+-------------------------------+
+| macOS    | gcc                   | gcc*, clang*                  |
++----------+-----------------------+-------------------------------+
+| MinGW    | gcc                   | see win32                     |
++----------+-----------------------+-------------------------------+
+| posix    | gcc                   | TODO                          |
++----------+-----------------------+-------------------------------+
+| solaris  | gcc                   | gcc*, clang*                  |
++----------+-----------------------+-------------------------------+
+| win32    | see MinGw             | msvc, gcc, clang              |
++----------+-----------------------+-------------------------------+
+| cygwin   | no                    | gcc*                          |
++----------+-----------------------+-------------------------------+
+
+\* means under development and/or (not fully) untested.
 
 ******************************************
 Repository Structure And Code Organization
 ******************************************
+
+The repository is structured into the parts described below.
 
 Root Directory
 ==============
@@ -123,17 +115,24 @@ The root directory contains the
 - CI scripts (``.appveyor.yml``, ``.cirrus.yml``, ``.travis.yml``,
   ``azure-pipelines.yml``),
 - editor configurations (``.vscode``, ``.editorconfig``),
-- coding and general guidelines (``.flake8``, ``.pylintrc``,
+- coding and general guidelines (``pyproject.toml``, ``.pylintrc``,
   ``CONTRIBUTING.rst``),
 - licensing information (``LICENSE``, ``CONTRIBUTING.rst``),
 - and information on the lua version (``LUA_VERSION``).
 
+``demos`` Directory
+===================
+
+Some scripts demonstrating what can be done with Lua. These demos should not
+use libraries that do not come with Lua interpreter.
+
 ``docs`` Directory
 ==================
 
-Project documentation. The documentation from the official `Lua` releases is
-currently **not** included outside the ``dl`` directory. The man files
-(``lua.1``, ``luac.1``) however are included in ``docs/man`` and ``docs/man1``.
+This directory contains the project documentation. The documentation from the
+official `Lua` releases is currently **not** included . The man files
+(``lua.1``, ``luac.1``) from the official Lua releases however are included in
+``docs/man`` and ``docs/man1``.
 
 ``src`` Directory
 =================
@@ -173,7 +172,7 @@ CI
 - Travis CI: Linux, MacOS
 - ReadTheDocs.org: Documentation
 
-On AppVeyor we also run ``black`` and ``pylint``.
+On AppVeyor's Windows build we also run |black|_ and |pylint|_.
 
 ----
 
@@ -182,6 +181,12 @@ On AppVeyor we also run ``black`` and ``pylint``.
 .. _lua_readme: https://www.lua.org/manual/5.3/readme.html
 
 .. _readthedocs.io: https://native-lua.readthedocs.io/en/latest/
+
+.. |black| replace:: ``black``
+.. _black: https://black.readthedocs.io/en/stable/
+
+.. |pylint| replace:: ``pylint``
+.. _pylint: https://www.pylint.org/
 
 .. |appveyor-badge| image:: https://ci.appveyor.com/api/projects/status/1gtcdi6wslxx3d6u/branch/master?svg=true
 .. _appveyor-badge: https://ci.appveyor.com/project/swaldhoer/native-lua/branch/master

@@ -1,6 +1,6 @@
 .. _BUILD_SCRIPT:
 
-WSCRIPT
+wscript
 =======
 
 .. literalinclude:: ./../../wscript

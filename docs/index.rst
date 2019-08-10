@@ -6,7 +6,7 @@
     :titlesonly:
     :numbered:
     :maxdepth: 1
-    :caption: Contents:
+    :caption: Contents
 
     ./readme.rst
     ./changelog.rst
