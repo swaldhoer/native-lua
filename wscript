@@ -419,6 +419,10 @@ def configure(cnf):  # pylint: disable=R0912
             set_new_basic_env("clang")
             cnf.load("compiler_c")
             cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            cnf.env.cstlib_PATTERN = "%s.lib"
+            cnf.env.LINKFLAGS = []
+            cnf.env.STLIB_MARKER = ""
+            cnf.env.SHLIB_MARKER = ""
             cnf.check_cc(fragment=min_c, execute=True)
             platform_compilers.append(cnf.env.env_name)
         except BaseException:
