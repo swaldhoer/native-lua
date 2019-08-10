@@ -22,10 +22,10 @@ Coding Guidelines
   .. code-block:: python
      :linenos:
 
-      #!/usr/bin/env python
-      # encoding: utf-8
+     #!/usr/bin/env python
+     # encoding: utf-8
 
-      # SPDX-License-Identifier: MIT
+     # SPDX-License-Identifier: MIT
 
 - lua files must have the following header
 

@@ -33,18 +33,18 @@ Building `Lua` requires python 2.7 or greater and some C compiler.
 
 .. code-block:: sh
 
-  git clone https://github.com/swaldhoer/native-lua
-  cd native-lua
-  python waf configure
+   git clone https://github.com/swaldhoer/native-lua
+   cd native-lua
+   python waf configure
 
 The output will show a number of successfully configured compilers, e.g., for
 Windows with installed MSVC, gcc and clang the output should like this:
 
 .. code-block:: sh
 
-  ...
-  Configured compilers                          : msvc, gcc, clang
-  'configure' finished successfully
+   ...
+   Configured compilers                          : msvc, gcc, clang
+   'configure' finished successfully
 
 Now the build commands ``build_msvc``, ``build_gcc`` and ``build_clang`` should
 work. The command concatenate is the same on all platforms, ``build_`` and then
@@ -52,15 +52,15 @@ the name of the successfully configured compiler.
 
 .. code-block:: sh
 
-  python waf build_gcc
-  ...
-  python waf install_gcc
+   python waf build_gcc
+   ...
+   python waf install_gcc
 
 For all build and test options on the platform see the output of
 
 .. code-block:: sh
 
-    python waf --help
+   python waf --help
 
 *********************************
 Supported Platforms And Compilers
@@ -96,7 +96,7 @@ The current release supports the following platform/compiler combinations:
 | cygwin   | no                    | gcc*                          |
 +----------+-----------------------+-------------------------------+
 
-\* means under development and/or (not fully) untested.
+\* means not or not fully tested.
 
 ******************************************
 Repository Structure And Code Organization
@@ -154,7 +154,7 @@ following line:
 
 .. code-block:: sh
 
-    -- Added by 'native-lua' project, see https://github.com/swaldhoer/native-lua.
+   -- Added by 'native-lua' project, see https://github.com/swaldhoer/native-lua.
 
 *****
 Links

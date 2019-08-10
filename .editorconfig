@@ -12,7 +12,11 @@ charset = utf-8
 indent_style = space
 indent_size = 4
 
-[{*.yml,*.toml}]
+[*.rst]
+charset = utf-8
+indent_style = space
+
+[{*.yml,*.yaml,*.toml}]
 charset = utf-8
 indent_style = space
 indent_size = 2

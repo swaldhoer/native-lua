@@ -1,5 +1,3 @@
-.. _BUILDING_LUA:
-
 ############
 Building Lua
 ############
@@ -13,7 +11,7 @@ configured. If e.g., `gcc` was successfully configured, simply run:
 
 .. code-block:: sh
 
-  python waf build_gcc
+   python waf build_gcc
 
 *******************************************
 Implementation Details Of The Build Process
