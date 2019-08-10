@@ -124,7 +124,7 @@ The root directory contains the
 ===================
 
 Some scripts demonstrating what can be done with Lua. These demos should not
-use libraries that do not come with Lua interpreter.
+use libraries that do not come with the `Lua` interpreter.
 
 ``docs`` Directory
 ==================

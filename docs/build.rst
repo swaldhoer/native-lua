@@ -17,10 +17,10 @@ configured. If e.g., `gcc` was successfully configured, simply run:
 Implementation Details Of The Build Process
 *******************************************
 
-.. TODO
+TODO
 
 ***********************
 OS Specific Information
 ***********************
 
-.. TODO
+TODO

@@ -1,6 +1,6 @@
-############################
-``native-Lua`` Documentation
-############################
+################################
+The ``native-Lua`` Documentation
+################################
 
 .. toctree::
    :titlesonly:
@@ -9,6 +9,7 @@
    :caption: Contents
 
    ./readme.rst
+   ./license.rst
    ./changelog.rst
    ./contributing.rst
    ./build.rst
