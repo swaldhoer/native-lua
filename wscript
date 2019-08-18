@@ -318,7 +318,7 @@ def configure(cnf):  # pylint: disable=R0912
             cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
             cnf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
             cnf.check_cc(fragment=min_c, execute=True)
-            check_libs("m", "readline")
+            check_libs("m", "edit")
             platform_compilers.append(cnf.env.env_name)
         except BaseException:
             failed_platform_compilers.append(cnf.env.env_name)
@@ -328,10 +328,9 @@ def configure(cnf):  # pylint: disable=R0912
             cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
             cnf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
             cnf.check_cc(fragment=min_c, execute=True)
-            cnf.env.append_unique("INCLUDES", "/usr/local/include")
-            cnf.env.append_unique("INCLUDES", "/usr/local/include/readline")
+            cnf.env.append_unique("INCLUDES", "/usr/include/edit")
             cnf.env.append_unique("LIBPATH", "/usr/local/lib")
-            check_libs("m", "readline")
+            check_libs("m", "edit")
             platform_compilers.append(cnf.env.env_name)
         except BaseException:
             failed_platform_compilers.append(cnf.env.env_name)
@@ -712,7 +711,7 @@ def build_netbsd_or_openbsd(bld):
 def build_freebsd(bld):
     use = ["M", "READLINE"]
     use_ltests = []
-    defines = ["LUA_COMPAT_5_2", "LUA_USE_LINUX"]
+    defines = ["LUA_COMPAT_5_2", "LUA_USE_LINUX", "LUA_USE_READLINE"]
     defines_tests = []
     cflags = []
     includes = []
