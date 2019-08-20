@@ -709,7 +709,7 @@ def build_netbsd_or_openbsd(bld):
 
 
 def build_freebsd(bld):
-    use = ["M", "READLINE", "EDIT"]
+    use = ["M", "DL", "EDIT"]
     use_ltests = []
     defines = ["LUA_COMPAT_5_2", "LUA_USE_LINUX"]
     defines_tests = []
