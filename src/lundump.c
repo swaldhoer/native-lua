@@ -276,4 +276,3 @@ LClosure *luaU_undump(lua_State *L, ZIO *Z, const char *name) {
   luai_verifycode(L, buff, cl->p);
   return cl;
 }
-
