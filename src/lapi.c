@@ -1295,5 +1295,3 @@ LUA_API void lua_upvaluejoin (lua_State *L, int fidx1, int n1,
   if (upisopen(*up1)) (*up1)->u.open.touched = 1;
   luaC_upvalbarrier(L, *up1);
 }
-
-

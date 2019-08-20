@@ -162,4 +162,3 @@ int luaT_callorderTM (lua_State *L, const TValue *p1, const TValue *p2,
   else
     return !l_isfalse(L->top);
 }
-
