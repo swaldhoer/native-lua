@@ -55,7 +55,7 @@ task:
     # configuration
     - python waf configure --include-tests
     # gcc [
-    - python waf build_gcc
+    - python waf build_gcc -v
     - python waf install_gcc
     - pushd build/gcc/tests
     - lua -e"_U=true" all.lua
@@ -68,7 +68,7 @@ task:
     # including ltests
     - python waf configure --ltests --include-tests
     # gcc [
-    - python waf build_gcc
+    - python waf build_gcc -v
     - python waf install_gcc
     - pushd build/gcc/tests
     - lua -e"_U=true" all.lua
@@ -80,7 +80,7 @@ task:
     # configuration
     - python waf configure --include-tests
     # clang [
-    - python waf build_clang
+    - python waf build_clang -v
     - python waf install_clang
     - pushd build/clang/tests
     - lua -e"_U=true" all.lua
@@ -93,7 +93,7 @@ task:
     # including ltests
     - python waf configure --ltests --include-tests
     # clang [
-    - python waf build_clang
+    - python waf build_clang -v
     - python waf install_clang
     - pushd build/clang/tests
     - lua -e"_U=true" all.lua
