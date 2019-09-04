@@ -58,7 +58,7 @@ task:
     - python waf install_gcc
     - pushd build/gcc/tests
     - lua -e"_U=true" all.lua
-    #- lua all.lua
+    - lua all.lua
     - popd
     - python waf uninstall_gcc
     - python waf clean_gcc
@@ -71,7 +71,7 @@ task:
     - python waf install_gcc
     - pushd build/gcc/tests
     - lua -e"_U=true" all.lua
-    #- lua all.lua
+    - lua all.lua
     - popd
     - python waf uninstall_gcc
     - python waf clean_gcc
@@ -83,7 +83,7 @@ task:
     - python waf install_clang
     - pushd build/clang/tests
     - lua -e"_U=true" all.lua
-    #- lua all.lua
+    - lua all.lua
     - popd
     - python waf uninstall_clang
     - python waf clean_clang
@@ -96,7 +96,7 @@ task:
     - python waf install_clang
     - pushd build/clang/tests
     - lua -e"_U=true" all.lua
-    #- lua all.lua
+    - lua all.lua
     - popd
     - python waf uninstall_clang
     - python waf clean_clang
