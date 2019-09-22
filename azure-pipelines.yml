@@ -1,3 +1,14 @@
+# specific path build
+trigger:
+  paths:
+    exclude:
+      - .vscode/*
+      - .github/*
+      - .appveyor.yml
+      - .cirrus.yml
+      - .editorconfig
+      - .travis.yml
+
 jobs:
   - job: Linux
     pool:
