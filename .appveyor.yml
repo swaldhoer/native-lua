@@ -66,8 +66,8 @@ build_script:
   # basic configuration
   - python waf configure
   # check documentation build
-  - cmd: python waf build_doc
-  - cmd: python waf clean_doc
+  - cmd: python waf build_docs
+  - cmd: python waf clean_docs
   - python waf distclean
   # configure including the test files
   - python waf configure --include-tests

@@ -47,8 +47,8 @@ task:
     # basic configuration
     - python waf configure -v
     # documentation build
-    - python waf build_doc
-    - python waf clean_doc
+    - python waf build_docs
+    - python waf clean_docs
     - python waf distclean
     # configuration
     - python waf configure --include-tests

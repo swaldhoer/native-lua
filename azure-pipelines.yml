@@ -44,8 +44,8 @@ jobs:
       - script: |
           set -euxo pipefail
           python waf configure -v
-          python waf build_doc
-          python waf clean_doc
+          python waf build_docs
+          python waf clean_docs
           python waf distclean
         displayName: Documentation build
 
