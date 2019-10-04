@@ -60,14 +60,15 @@ before_build:
   - cmd: black . --config=pyproject.toml --check -v
   - cmd: pylint wscript
   - cmd: pylint scripts\\run_test.py
+  - cmd: pylint scripts\\sphinx.py
   - cmd: pylint scripts\\utils.py
 
 build_script:
   # basic configuration
   - python waf configure
   # check documentation build
-  - cmd: python waf build_docs
-  - cmd: python waf clean_docs
+  - python waf build_docs
+  - python waf clean_docs
   - python waf distclean
   # configure including the test files
   - python waf configure --include-tests

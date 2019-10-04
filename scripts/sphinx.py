@@ -1,10 +1,13 @@
-from waflib.Node import Node
-from waflib import Utils
+#!/usr/bin/env python
+# encoding: utf-8
+
+# SPDX-License-Identifier: MIT
+
 from waflib.Task import Task
 from waflib.TaskGen import feature, extension
 
 
-class sphinxTask(Task):
+class SphinxTask(Task):
     color = "BLUE"
     run_str = "${SPHINX_BUILD} -b ${BUILDERNAME} -c ${CONFIG} ${INPUTDIR} ${OUTDIR}"
 
@@ -13,8 +16,8 @@ class sphinxTask(Task):
 
     def post_run(self):
         nodes = self.generator.bld.path.get_bld().ant_glob("**/*", quiet=True)
-        for x in nodes:
-            self.generator.bld.node_sigs[x] = self.uid()
+        for i in nodes:
+            self.generator.bld.node_sigs[i] = self.uid()
         return Task.post_run(self)
 
 
@@ -39,9 +42,9 @@ def build_sphinx(self):
     self.env.INPUTDIR = self.source[0].parent.abspath()
     self.env.OUTDIR = self.path.get_bld().abspath()
 
-    self.create_task("sphinxTask")
+    self.create_task("SphinxTask")
 
 
 @extension(".rst")
-def rst_hook(self, node):
+def rst_hook(self, node):  # pylint: disable=W0613
     pass
