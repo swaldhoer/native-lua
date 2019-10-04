@@ -617,34 +617,35 @@ def build(bld):
     if bld.variant == "docs":
         source = bld.path.ant_glob("*.rst docs/**/*.rst")
         bld(features="sphinx", source=source, confpy="conf.py", buildername="html")
-    if bld.env.generic:
-        build_generic(bld)
-    elif bld.env.host_os == "aix":
-        build_aix(bld)
-    elif bld.env.host_os in ("netbsd", "openbsd"):
-        build_netbsd_or_openbsd(bld)
-    elif bld.env.host_os == "freebsd":
-        build_freebsd(bld)
-    elif bld.env.host_os == "linux":
-        build_linux(bld)
-    elif bld.env.host_os == "darwin":
-        build_darwin(bld)
-    elif bld.env.host_os == "win32":
-        build_win32(bld)
-    elif bld.env.host_os == "cygwin":
-        build_cygwin(bld)
-    elif bld.env.host_os == "solaris":
-        bld.cygwin(bld)
     else:
-        bld.fatal("currently not supported platform")
+        if bld.env.generic:
+            build_generic(bld)
+        elif bld.env.host_os == "aix":
+            build_aix(bld)
+        elif bld.env.host_os in ("netbsd", "openbsd"):
+            build_netbsd_or_openbsd(bld)
+        elif bld.env.host_os == "freebsd":
+            build_freebsd(bld)
+        elif bld.env.host_os == "linux":
+            build_linux(bld)
+        elif bld.env.host_os == "darwin":
+            build_darwin(bld)
+        elif bld.env.host_os == "win32":
+            build_win32(bld)
+        elif bld.env.host_os == "cygwin":
+            build_cygwin(bld)
+        elif bld.env.host_os == "solaris":
+            bld.cygwin(bld)
+        else:
+            bld.fatal("currently not supported platform")
 
-    if bld.env.include_tests:
-        bld(
-            features="subst",
-            source=bld.env.test_files,
-            target=bld.env.test_files,
-            is_copy=True,
-        )
+        if bld.env.include_tests:
+            bld(
+                features="subst",
+                source=bld.env.test_files,
+                target=bld.env.test_files,
+                is_copy=True,
+            )
 
 
 def build_generic(bld):
