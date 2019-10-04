@@ -6,12 +6,14 @@
 /.waf-*/
 /waf3-*/
 /.waf3-*/
+__pycache__/
 
 # files
 *.user
 *.dist
 *.exe
 *.dll
+*.lib
 *.log
 .lock-waf_*
 *.a
@@ -22,3 +24,4 @@
 *.bz2
 *.zip
 *.luac
+*.out

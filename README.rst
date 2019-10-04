@@ -4,10 +4,11 @@ The ``native Lua`` Project
 
 |appveyor-badge|_ |travis-badge|_ |cirrus-badge|_ |azure-badge|_ |readthedocs-badge|_ |license-badge|_ |code-style-black-badge|_
 
-
+**Lua on the platform you use with the compiler you chose**
 
 `Lua` is multi-paradigm programming language. `Lua` is cross-platform as it is
-written in ANSI C. Lua is licensed under `MIT`_ license.
+written in ANSI C. Lua is licensed under `MIT`_ license. ``native Lua`` goal is
+to deliver a framework to build `Lua` on any platform with any compiler:
 
 For information on `Lua` see `Lua.org`_.
 
@@ -21,7 +22,7 @@ and `make` are natively available is easy. Building `Lua` on Windows with
 MinGWs' `gcc` and some sort of `make` is also straight forward.
 
 But this does not allow a good platform and compiler independent way of building
-and testing `Lua`, especially testing is not that simple as it should be.
+and testing `Lua`. Especially testing is not that simple as it should be.
 Therefore this project tries to implement a platform and compiler independent
 way of building **and** testing `Lua`.
 
@@ -29,38 +30,11 @@ way of building **and** testing `Lua`.
 How-To
 ******
 
-Building `Lua` requires python 2.7 or greater and some C compiler.
+Building `Lua` with the `native Lua` project requires python 2.7 or greater and
+some C compiler.
 
-.. code-block:: sh
-
-   git clone https://github.com/swaldhoer/native-lua
-   cd native-lua
-   python waf configure
-
-The output will show a number of successfully configured compilers, e.g., for
-Windows with installed MSVC, gcc and clang the output should like this:
-
-.. code-block:: sh
-
-   ...
-   Configured compilers                          : msvc, gcc, clang
-   'configure' finished successfully
-
-Now the build commands ``build_msvc``, ``build_gcc`` and ``build_clang`` should
-work. The command concatenate is the same on all platforms, ``build_`` and then
-the name of the successfully configured compiler.
-
-.. code-block:: sh
-
-   python waf build_gcc
-   ...
-   python waf install_gcc
-
-For all build and test options on the platform see the output of
-
-.. code-block:: sh
-
-   python waf --help
+.. image:: docs/_static/basic-cmds.gif
+   :alt: alternate text
 
 *********************************
 Supported Platforms And Compilers

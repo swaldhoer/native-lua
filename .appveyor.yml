@@ -40,8 +40,8 @@ install:
         }
   - cmd: pushd "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\" && call "VC\Auxiliary\Build\vcvars64.bat" && popd
   - cmd: python -m pip install --upgrade pip -q
-  - cmd: python -m pip install pylint black sphinx_rtd_theme -q
-  - sh: sudo python -m pip install sphinx_rtd_theme -q
+  - cmd: python -m pip install pylint black -q
+  - sh: sudo python -m pip install -q
   - python --version
   - cmd: black --version
   - cmd: pylint --version
@@ -50,7 +50,7 @@ install:
   - cmd: cl
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python --version"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python -m ensurepip --upgrade"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "python -m pip install sphinx_rtd_theme -q"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "python -m pip install -q"
   # for testing
   - cmd: set PATH=%PATH%;%userprofile%\AppData\Local\Programs\lua\bin
 

@@ -31,7 +31,6 @@ before_script:
   - echo $PATH
 
 script:
-  - pip3 install sphinx_rtd_theme -q
   # basic configuration
   - python3 waf configure -vv
   # check documentation build

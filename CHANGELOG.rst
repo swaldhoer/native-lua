@@ -12,7 +12,7 @@ The format is based on `Keep a Changelog`_ v1.0.0, and this project adheres to
 ************
 
 ********************
-[0.1.0] - 2019-08-XX
+[0.1.0] - 2019-10-XX
 ********************
 
 Added
@@ -26,6 +26,10 @@ Added
 - Added ``LUA_TESTS_VERSION`` file to indicate the lua tests version obtained
   from `lua.org`_.
 - `include` and `man` files are installed.
+- added `sphinx_rtd_theme` (based on commit
+  feb0beb44a444f875f3369a945e6055965ee993f from
+  https://github.com/readthedocs/sphinx_rtd_theme)
+- Added a batch wrapper script for waf on Windows (``waf.bat``)
 
 Changed
 =======
@@ -51,6 +55,7 @@ Fixed
 - Use correct `rpath` on FreeBSD when using gcc.
 - Fixed clang linker flag on OSX.
 - Fixed clang linker flags on Windows.
+- Fix name (``LICENSE``)
 
 Security
 ========
