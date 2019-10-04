@@ -9,7 +9,7 @@ class sphinxTask(Task):
     run_str = "${SPHINX_BUILD} -b ${BUILDERNAME} -c ${CONFIG} ${INPUTDIR} ${OUTDIR}"
 
     def keyword(self):
-        return f"Compiling {self.env.CONFIG} -> {self.env.OUTDIR}"
+        return "Compiling {} -> {}".format(self.env.CONFIG, self.env.OUTDIR)
 
     def post_run(self):
         nodes = self.generator.bld.path.get_bld().ant_glob("**/*", quiet=True)
