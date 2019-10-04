@@ -10,7 +10,7 @@ import re
 
 from waflib import Logs, Utils, Options, Context, Task
 from waflib.Tools.compiler_c import c_compiler
-from waflib.Tools.c import c  #pylint: disable=W0611
+from waflib.Tools.c import c  # pylint: disable=W0611
 from waflib.Tools import c_preproc
 from waflib.Build import BuildContext, CleanContext, ListContext, StepContext
 from waflib.Build import InstallContext, UninstallContext

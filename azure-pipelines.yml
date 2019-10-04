@@ -35,7 +35,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y clang-8 lld-8
           sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-8 100
-          pip install pathlib
+          pip install sphinx pathlib -q
         displayName: Install dependencies
 
       - script: python --version
@@ -146,6 +146,7 @@ jobs:
           gcc --version
           echo | gcc -E -Wp,-v -
           brew install python3
+          pip install sphinx -q
         displayName: Install dependencies
 
       - script: |
