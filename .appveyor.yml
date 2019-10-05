@@ -26,7 +26,7 @@ install:
   - ps: |
       if ($isWindows) {
         $rmpath = "Docker", "SQL", "Mercurial", "Subversion", "Maven", "CMake"
-        $rmpath += "nodejs", "nunit", "nuget", "java", "xunit", "go", "python"
+        $rmpath += "nodejs", "nunit", "nuget", "java", "xunit", "go"
         $rmpath += "Amazon", "ruby", "perl", "Azur", "Webdriver", "Coverity"
         $rmpath += "Octopus", "erl9", "dotnet", "iojs", "curl", "Yarn"
         $rmpath += "chocolatey", "npm", "Windows Performance Toolkit"
