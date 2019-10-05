@@ -148,7 +148,7 @@ def configure(cnf):  # pylint: disable=R0912
     """
     print("-" * (Context.Context.line_just + 1) + ":")
     cnf.load("python")
-    cnf.check_python_version((2, 7))
+    cnf.check_python_version((3, 5))
 
     cnf.load("sphinx", tooldir="scripts")
     if not cnf.env.SPHINX_BUILD:
