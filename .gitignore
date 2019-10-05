@@ -25,3 +25,5 @@ __pycache__/
 *.zip
 *.luac
 *.out
+*.pyc
+*.lnk

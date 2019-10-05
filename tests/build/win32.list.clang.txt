@@ -1,0 +1,5 @@
+lua
+luac
+shared-lua-library
+static-lua-library
+'list_clang' finished successfully

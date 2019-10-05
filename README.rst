@@ -30,7 +30,7 @@ way of building **and** testing `Lua`.
 How-To
 ******
 
-Building `Lua` with the `native Lua` project requires python 2.7 or greater and
+Building `Lua` with the `native Lua` project requires python 3.5 or greater and
 some C compiler.
 
 .. image:: docs/_static/basic-cmds.gif

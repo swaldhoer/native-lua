@@ -157,12 +157,13 @@ def configure(cnf):  # pylint: disable=R0912
         cnf.env.docs_out = os.path.join(out, "docs")
 
     print("-" * (Context.Context.line_just + 1) + ":")
-    cnf.env.lua_src_version = tuple(
-        cnf.path.find_node("LUA_VERSION").read().splitlines()[0].split(".")
-    )
-    cnf.env.lua_tests_version = tuple(
-        cnf.path.find_node("LUA_TESTS_VERSION").read().splitlines()[0].split(".")
-    )
+    version_info = cnf.path.find_node("VERSION").read()
+    project_v, lua_src_v, lua_tests_v = version_info.splitlines()
+    cnf.env.project_version = project_v.split(":")[1].strip().split(".")
+    assert ".".join(cnf.env.project_version) == VERSION
+    cnf.env.lua_src_version = lua_src_v.split(":")[1].strip().split(".")
+    cnf.env.lua_tests_version = lua_tests_v.split(":")[1].strip().split(".")
+    cnf.msg("native Lua version", ".".join(cnf.env.project_version))
     cnf.msg("Lua version", ".".join(cnf.env.lua_src_version))
     cnf.msg("Lua tests version", ".".join(cnf.env.lua_tests_version))
     cnf.msg("Including tests", cnf.options.include_tests)
