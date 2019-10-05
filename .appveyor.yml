@@ -41,6 +41,8 @@ install:
         }
   - cmd: python -m pip install --upgrade pip -q
   - cmd: python -m pip install pylint black sphinx -q
+  - sh: sudo apt-get update
+  - sh: sudo apt-get install python3-pip
   - sh: sudo python3 -m pip install sphinx -q
   - cmd: python --version
   - sh: python3 --version
