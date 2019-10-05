@@ -29,11 +29,11 @@ source_suffix = ".rst"
 
 master_doc = "index"
 
-project = "native-lua"
-copyright = "2018-2019, Stefan Waldhoer"
-author = "Stefan Waldhoer"
+project = "native Lua"
+copyright = "2018-2019, Stefan Waldhör"
+author = "Stefan Waldhör"
 
-version = "0.1.0"
+version = "0.1.0-development"
 release = version
 
 language = "en"
