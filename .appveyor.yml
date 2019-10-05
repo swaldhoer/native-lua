@@ -1,14 +1,8 @@
 version: 5.3.4.{build}
 
-environment:
-  matrix:
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      PYTHON: "C:\\Python36-x64"
-      PYTHON_ARCH: "64"
-    - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
-      PYTHON: "3.6"
-
-stack: python %PYTHON%
+image:
+  - Visual Studio 2019
+  - Ubuntu
 
 skip_commits:
   files:
@@ -26,7 +20,7 @@ install:
   - ps: |
       if ($isWindows) {
         $rmpath = "Docker", "SQL", "Mercurial", "Subversion", "Maven", "CMake"
-        $rmpath += "nodejs", "nunit", "nuget", "java", "xunit", "go"
+        $rmpath += "nodejs", "nunit", "nuget", "java", "xunit", "go", "python"
         $rmpath += "Amazon", "ruby", "perl", "Azur", "Webdriver", "Coverity"
         $rmpath += "Octopus", "erl9", "dotnet", "iojs", "curl", "Yarn"
         $rmpath += "chocolatey", "npm", "Windows Performance Toolkit"
@@ -38,13 +32,12 @@ install:
         }
       }
   - cmd: set PATH=C:\mingw-w64\x86_64-8.1.0-posix-seh-rt_v6-rev0\mingw64\bin;%PATH%
-  # - cmd: set PATH=C:\Python37-x64;C:\Python37-x64\Scripts;%PATH%
+  - cmd: set PATH=C:\Python37-x64;C:\Python37-x64\Scripts;%PATH%
   - ps: |
       if ($isWindows) {
         Write-Host New `$env:Path
         Write-Host ($env:Path).Replace(';',"`n")
         }
-  # - cmd: pushd "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\" && call "VC\Auxiliary\Build\vcvars64.bat" && popd
   - cmd: python -m pip install --upgrade pip -q
   - cmd: python -m pip install pylint black sphinx -q
   - sh: sudo python -m pip install sphinx -q
