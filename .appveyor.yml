@@ -150,7 +150,8 @@ build_script:
   - cd ../../..
   - cmd: python waf uninstall_gcc
   - sh: sudo python3 waf uninstall_gcc
-  - python waf clean_gcc
+  - cmd: python waf clean_gcc
+  - sh: python3 waf clean_gcc
   # clang
   - cmd: python waf build_clang
   - sh: python3 waf build_clang
