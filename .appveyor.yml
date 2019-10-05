@@ -51,9 +51,13 @@ install:
   - clang --version
   - gcc --version
   - cmd: cl
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "python --version"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "python -m ensurepip --upgrade"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "python -m pip install -q"
+
+  # setup cygwin64
+  - cmd: curl -o setup-x86_64.exe http://www.cygwin.com/setup-x86_64.exe
+  - cmd: setup-x86_64.exe --no-desktop --no-shortcuts --no-startmenu --quiet-mode --packages wget python37 python37-pip
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 --version"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 -m ensurepip --upgrade"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "git clone https://github.com/sphinx-doc/sphinx && cd sphinx && pip3 install ."
   # for testing
   - cmd: set PATH=%PATH%;%userprofile%\AppData\Local\Programs\lua\bin
 
@@ -120,13 +124,13 @@ build_script:
   - cmd: python waf distclean
   - sh: python3 waf distclean
   # cygwin gcc
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf configure --include-tests"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf build_gcc"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf install_gcc"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf configure --include-tests"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf build_gcc"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf install_gcc"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/tests && which lua && lua -v && lua -e\"_U=true\" all.lua"
   #- cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/tests && which lua && lua -v && lua all.lua"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf uninstall_gcc"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf distclean"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf uninstall_gcc"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf distclean"
   # configure including the test files and the ltests
   - cmd: python waf configure --include-tests --ltests
   - sh: python3 waf configure --include-tests --ltests
