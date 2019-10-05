@@ -22,7 +22,7 @@ install:
         $rmpath = "Docker", "SQL", "Mercurial", "Subversion", "Maven", "CMake"
         $rmpath += "nodejs", "nunit", "nuget", "java", "xunit", "go", "python"
         $rmpath += "Amazon", "ruby", "perl", "Azur", "Webdriver", "Coverity"
-        $rmpath += "Octopus", "erl9", "dotnet", "iojs", "curl", "Yarn"
+        $rmpath += "Octopus", "erl9", "dotnet", "iojs", "Yarn"
         $rmpath += "chocolatey", "npm", "Windows Performance Toolkit"
         $rmpath += "Microsoft Service Fabric", "Microsoft DNX"
         $rmpath += "Microsoft Visual Studio"
@@ -31,6 +31,7 @@ install:
           $env:path = ($env:path -split ";").Where({!($_ -like "*$i*")}) -join ";"
         }
       }
+  - cmd: pushd "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\" && call "VC\Auxiliary\Build\vcvars64.bat" && popd
   - cmd: set PATH=C:\mingw-w64\x86_64-8.1.0-posix-seh-rt_v6-rev0\mingw64\bin;%PATH%
   - cmd: set PATH=C:\Python37-x64;C:\Python37-x64\Scripts;%PATH%
   - ps: |
@@ -38,39 +39,53 @@ install:
         Write-Host New `$env:Path
         Write-Host ($env:Path).Replace(';',"`n")
         }
-  - cmd: pushd "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\" && call "VC\Auxiliary\Build\vcvars64.bat" && popd
   - cmd: python -m pip install --upgrade pip -q
-  - cmd: python -m pip install pylint black sphinx_rtd_theme -q
-  - sh: sudo python -m pip install sphinx_rtd_theme -q
-  - python --version
+  - cmd: python -m pip install pylint black sphinx -q
+  - sh: sudo apt-get update
+  - sh: sudo apt-get install python3-pip -y
+  - sh: sudo python3 -m pip install sphinx -q
+  - cmd: python --version
+  - sh: python3 --version
   - cmd: black --version
   - cmd: pylint --version
   - clang --version
   - gcc --version
   - cmd: cl
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "python --version"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "python -m ensurepip --upgrade"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "python -m pip install sphinx_rtd_theme -q"
+
+  # setup cygwin64
+  - cmd: curl -o setup-x86_64.exe http://www.cygwin.com/setup-x86_64.exe
+  - cmd: setup-x86_64.exe --no-desktop --no-shortcuts --no-startmenu --quiet-mode --packages wget python37 python37-pip
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 --version"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 -m ensurepip --upgrade"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "git clone https://github.com/sphinx-doc/sphinx && cd sphinx && pip3 install ."
   # for testing
   - cmd: set PATH=%PATH%;%userprofile%\AppData\Local\Programs\lua\bin
 
 before_build:
-  - python waf --help
+  # check that the correct python versions are used
+  - cmd: python waf --help
+  - sh: python3 waf --help
   # ensure that only well formated wscripts are checked in
   - cmd: black . --config=pyproject.toml --check -v
   - cmd: pylint wscript
   - cmd: pylint scripts\\run_test.py
+  - cmd: pylint scripts\\sphinx.py
   - cmd: pylint scripts\\utils.py
 
 build_script:
   # basic configuration
-  - python waf configure
+  - cmd: python waf configure
+  - sh: python3 waf configure
   # check documentation build
-  - cmd: python waf build_doc
-  - cmd: python waf clean_doc
-  - python waf distclean
+  - cmd: python waf build_docs
+  - sh: python3 waf build_docs
+  - cmd: python waf clean_docs
+  - sh: python3 waf clean_docs
+  - cmd: python waf distclean
+  - sh: python3 waf distclean
   # configure including the test files
-  - python waf configure --include-tests
+  - cmd: python waf configure --include-tests
+  - sh: python3 waf configure --include-tests
   # msvc
   - cmd: python waf build_msvc
   - cmd: python waf install_msvc
@@ -81,38 +96,47 @@ build_script:
   - cmd: python waf uninstall_msvc
   - cmd: python waf clean_msvc
   # gcc
-  - python waf build_gcc
+  - cmd: python waf build_gcc
+  - sh: python3 waf build_gcc
   - cmd: python waf install_gcc
-  - sh: sudo python waf install_gcc
+  - sh: sudo python3 waf install_gcc
   - cd build/gcc/tests
   - lua -e"_U=true" all.lua
   #- sh: lua all.lua
   - cd ../../..
   - cmd: python waf uninstall_gcc
-  - sh: sudo python waf uninstall_gcc
-  - python waf clean_gcc
+  - sh: sudo python3 waf uninstall_gcc
+  - cmd: python waf clean_gcc
+  - sh: python3 waf clean_gcc
   # clang
-  - python waf build_clang
+  - cmd: python waf build_clang
+  - sh: python3 waf build_clang
   - cmd: python waf install_clang
-  - sh: sudo python waf install_clang
+  - sh: sudo python3 waf install_clang
   - cd build/clang/tests
   - lua -e"_U=true" all.lua
   #- sh: lua all.lua
   - cd ../../..
   - cmd: python waf uninstall_clang
-  - sh: sudo python waf uninstall_clang
-  - python waf clean_clang
-  - python waf distclean
+  - sh: sudo python3 waf uninstall_clang
+  - cmd: python waf clean_clang
+  - sh: python3 waf clean_clang
+  - cmd: python waf distclean
+  - sh: python3 waf distclean
+  - git clean -xdf
   # cygwin gcc
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf configure --include-tests"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf build_gcc"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf install_gcc"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf distclean configure --include-tests"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf build_docs"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf build_gcc"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf install_gcc"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/tests && which lua && lua -v && lua -e\"_U=true\" all.lua"
   #- cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/tests && which lua && lua -v && lua all.lua"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf uninstall_gcc"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf distclean"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf uninstall_gcc"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf distclean"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 scripts/run_test.py -c gcc --simple-test"
   # configure including the test files and the ltests
-  - python waf configure --include-tests --ltests
+  - cmd: python waf configure --include-tests --ltests
+  - sh: python3 waf configure --include-tests --ltests
   # msvc
   - cmd: python waf build_msvc
   - cmd: python waf install_msvc
@@ -123,33 +147,41 @@ build_script:
   - cmd: python waf uninstall_msvc
   - cmd: python waf clean_msvc
   # gcc
-  - python waf build_gcc
+  - cmd: python waf build_gcc
+  - sh: python3 waf build_gcc
   - cmd: python waf install_gcc
-  - sh: sudo python waf install_gcc
+  - sh: sudo python3 waf install_gcc
   - cd build/gcc/tests
   - lua -e"_U=true" all.lua
   #- sh: lua all.lua
   - cd ../../..
   - cmd: python waf uninstall_gcc
-  - sh: sudo python waf uninstall_gcc
-  - python waf clean_gcc
+  - sh: sudo python3 waf uninstall_gcc
+  - cmd: python waf clean_gcc
+  - sh: python3 waf clean_gcc
   # clang
-  - python waf build_clang
+  - cmd: python waf build_clang
+  - sh: python3 waf build_clang
   - cmd: python waf install_clang
-  - sh: sudo python waf install_clang
+  - sh: sudo python3 waf install_clang
   - cd build/clang/tests
   - lua -e"_U=true" all.lua
   #- sh: lua all.lua
   - cd ../../..
   - cmd: python waf uninstall_clang
-  - sh: sudo python waf uninstall_clang
-  - python waf clean_clang
-  - python waf distclean
+  - sh: sudo python3 waf uninstall_clang
+  - cmd: python waf clean_clang
+  - sh: python3 waf clean_clang
+  - cmd: python waf distclean
+  - sh: python3 waf distclean
+  - git clean -xdf
   # cygwin gcc
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf configure --include-tests"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf build_gcc"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf install_gcc"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf distclean configure --include-tests"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf build_docs"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf build_gcc"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf install_gcc"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/tests && which lua && lua -v && lua -e\"_U=true\" all.lua"
   #- cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/tests && which lua && lua -v && lua all.lua"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf uninstall_gcc"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python waf distclean"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf uninstall_gcc"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf distclean"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 scripts/run_test.py -c gcc --simple-test"

@@ -8,8 +8,10 @@
 import os
 import re
 
-from waflib import Logs, Utils, Options, Context
+from waflib import Logs, Utils, Options, Context, Task
 from waflib.Tools.compiler_c import c_compiler
+from waflib.Tools.c import c  # pylint: disable=W0611
+from waflib.Tools import c_preproc
 from waflib.Build import BuildContext, CleanContext, ListContext, StepContext
 from waflib.Build import InstallContext, UninstallContext
 
@@ -18,12 +20,26 @@ from waflib.Tools.gnu_dirs import gnuopts
 # man1 is missing waf gnu_dirs implementation
 gnuopts += "mandir1, manual pages, ${DATAROOTDIR}/man1\n"
 
-VERSION = "0.0.1"
+VERSION = "0.1.0-development"
 APPNAME = "lua"
 top = "."  # pylint: disable=C0103
 out = "build"  # pylint: disable=C0103
 
 Context.Context.line_just = 45
+
+
+# we overwrite c class, as absolute paths can be parsed by VS Code error parser
+class c(Task.Task):  # pylint: disable=C0103,E0102
+    run_str = (
+        "${CC} ${ARCH_ST:ARCH} ${CFLAGS} ${FRAMEWORKPATH_ST:FRAMEWORKPATH} "
+        "${CPPPATH_ST:INCPATHS} ${DEFINES_ST:DEFINES} "
+        "${CC_SRC_F}${SRC[0].abspath()} ${CC_TGT_F}${TGT[0].abspath()} "
+        "${CPPFLAGS}"
+    )
+    vars = ["CCDEPS"]
+    ext_in = [".h"]
+    scan = c_preproc.scan
+
 
 host_os = Utils.unversioned_sys_platform()  # pylint: disable=C0103
 
@@ -35,21 +51,23 @@ else:
     # use c_compiler[host_os] everywhere we need it.
     c_compiler[host_os] = plat_comp
 
-for x in plat_comp:
-    for y in (
-        BuildContext,
-        CleanContext,
-        ListContext,
-        StepContext,
-        InstallContext,
-        UninstallContext,
-    ):
+for x in plat_comp + ["docs"]:
+    for y in (BuildContext, CleanContext):
         name = y.__name__.replace("Context", "").lower()
 
-        class Tmp(y):
+        class Tmp1(y):
             __doc__ = y.__doc__ + " ({})".format(x)
             cmd = name + "_" + x
             variant = x
+
+    if x != "docs":
+        for y in (ListContext, StepContext, InstallContext, UninstallContext):
+            name = y.__name__.replace("Context", "").lower()
+
+            class Tmp2(y):
+                __doc__ = y.__doc__ + " ({})".format(x)
+                cmd = name + "_" + x
+                variant = x
 
 
 if host_os == "win32":
@@ -130,22 +148,22 @@ def configure(cnf):  # pylint: disable=R0912
     """
     print("-" * (Context.Context.line_just + 1) + ":")
     cnf.load("python")
-    cnf.check_python_version((2, 7))
+    cnf.check_python_version((3, 5))
 
-    cnf.find_program("sphinx-build", var="SPHINX_BUILD", mandatory=False)
-    cnf.check_python_module("sphinx_rtd_theme")
+    cnf.load("sphinx", tooldir="scripts")
     if not cnf.env.SPHINX_BUILD:
         Logs.warn("Documentation build will not be available.")
     else:
         cnf.env.docs_out = os.path.join(out, "docs")
 
     print("-" * (Context.Context.line_just + 1) + ":")
-    cnf.env.lua_src_version = tuple(
-        cnf.path.find_node("LUA_VERSION").read().splitlines()[0].split(".")
-    )
-    cnf.env.lua_tests_version = tuple(
-        cnf.path.find_node("LUA_TESTS_VERSION").read().splitlines()[0].split(".")
-    )
+    version_info = cnf.path.find_node("VERSION").read()
+    project_v, lua_src_v, lua_tests_v = version_info.splitlines()
+    cnf.env.project_version = project_v.split(":")[1].strip().split(".")
+    assert ".".join(cnf.env.project_version) == VERSION
+    cnf.env.lua_src_version = lua_src_v.split(":")[1].strip().split(".")
+    cnf.env.lua_tests_version = lua_tests_v.split(":")[1].strip().split(".")
+    cnf.msg("native Lua version", ".".join(cnf.env.project_version))
     cnf.msg("Lua version", ".".join(cnf.env.lua_src_version))
     cnf.msg("Lua tests version", ".".join(cnf.env.lua_tests_version))
     cnf.msg("Including tests", cnf.options.include_tests)
@@ -200,21 +218,24 @@ def configure(cnf):  # pylint: disable=R0912
             Logs.warn("This will NOT effect msvc-builds on win32.")
     cnf.msg("C standard", cnf.options.c_standard)
 
-    win32_msvc_waf_prelude = (
+    cnf.env.WAF_CONFIG_H_PRELUDE = (
+        '#define NATIVE_LUA_PRE_MSG "based on native Lua"\n'
+        '#define NATIVE_LUA_VERSION "{}"\n'.format(VERSION) + ""
+        '#define NATIVE_LUA_REPO "https://github.com/swaldhoer/native-lua"\n'
+        '#define NATIVE_LUA_MSG " [" NATIVE_LUA_PRE_MSG " (" NATIVE_LUA_VERSION"), " NATIVE_LUA_REPO"]"\n\n'
         "#if defined(_MSC_VER) && defined(_MSC_FULL_VER)\n"
         "#pragma warning(disable: 4242 4820 4668 4710 4711 5045)\n"
         "/* Disable C5045 (see "
         "https://docs.microsoft.com/de-de/cpp/error-messages/compiler-warnings/c5045) */\n"
         "/* we are compiling with /Qspectre */\n"
-        "#endif"
+        "#endif\n"
     )
     platform_compilers = []
     failed_platform_compilers = []
+    cnf.write_config_header()
     if cnf.options.generic:
         if host_os == "win32":
             Logs.info("Generic build uses msvc on win32")
-            cnf.env.WAF_CONFIG_H_PRELUDE = win32_msvc_waf_prelude
-            cnf.write_config_header("config.h")
             try:  # msvc
                 set_new_basic_env("msvc")
                 cnf.load("compiler_c")
@@ -388,8 +409,6 @@ def configure(cnf):  # pylint: disable=R0912
         except BaseException:
             failed_platform_compilers.append(cnf.env.env_name)
     elif host_os == "win32":
-        cnf.env.WAF_CONFIG_H_PRELUDE = win32_msvc_waf_prelude
-        cnf.write_config_header("config.h")
         try:  # msvc
             set_new_basic_env("msvc")
             cnf.load("compiler_c")
@@ -486,12 +505,15 @@ def configure(cnf):  # pylint: disable=R0912
 
 def build(bld):
     """Wrapper for the compiler specific build"""
+
+    # check correct build commands
     if not bld.variant:
         if bld.cmd == "clean":
             Logs.warn("Cleaning for all platforms")
             Options.commands = ["clean_{}".format(t_cc) for t_cc in c_compiler[host_os]]
             Options.commands.append("clean_doc")
             return
+
     if bld.cmd == "build":
         bld.fatal(
             "Use a build variant: {}".format(
@@ -503,6 +525,7 @@ def build(bld):
         "**", excl=".lock* config.log c4che/* build.log", quiet=True, generator=True
     )
 
+    # setup install files
     if Utils.is_win32:
         if bld.variant == "gcc":
             # the DLL produced by gcc is already installed to ${BINDIR}
@@ -525,6 +548,7 @@ def build(bld):
             "${MAN1}",
             bld.path.find_node(os.path.join("docs", "_static", "doc", "luac.1")),
         )
+
     include_files = [
         bld.path.find_node(os.path.join("src", "lua.h")),
         bld.path.find_node(os.path.join("src", "luaconf.h")),
@@ -534,6 +558,9 @@ def build(bld):
     ]
     for incfile in include_files:
         bld.install_files("${INCLUDEDIR}", incfile)
+
+    # actual binary and documentation builds
+    bld.env.append_unique("INCLUDES", bld.path.get_bld().parent.abspath())
 
     bld.env.src_basepath = "src"
     bld.env.sources = " ".join(
@@ -588,34 +615,38 @@ def build(bld):
         os.path.join(bld.env.libs_path, "lib2.c"),
         os.path.join(bld.env.libs_path, "lib21.c"),
     ]
-    if bld.env.generic:
-        build_generic(bld)
-    elif bld.env.host_os == "aix":
-        build_aix(bld)
-    elif bld.env.host_os in ("netbsd", "openbsd"):
-        build_netbsd_or_openbsd(bld)
-    elif bld.env.host_os == "freebsd":
-        build_freebsd(bld)
-    elif bld.env.host_os == "linux":
-        build_linux(bld)
-    elif bld.env.host_os == "darwin":
-        build_darwin(bld)
-    elif bld.env.host_os == "win32":
-        build_win32(bld)
-    elif bld.env.host_os == "cygwin":
-        build_cygwin(bld)
-    elif bld.env.host_os == "solaris":
-        bld.cygwin(bld)
+    if bld.variant == "docs":
+        source = bld.path.ant_glob("*.rst docs/**/*.rst")
+        bld(features="sphinx", source=source, confpy="conf.py", buildername="html")
     else:
-        bld.fatal("currently not supported platform")
+        if bld.env.generic:
+            build_generic(bld)
+        elif bld.env.host_os == "aix":
+            build_aix(bld)
+        elif bld.env.host_os in ("netbsd", "openbsd"):
+            build_netbsd_or_openbsd(bld)
+        elif bld.env.host_os == "freebsd":
+            build_freebsd(bld)
+        elif bld.env.host_os == "linux":
+            build_linux(bld)
+        elif bld.env.host_os == "darwin":
+            build_darwin(bld)
+        elif bld.env.host_os == "win32":
+            build_win32(bld)
+        elif bld.env.host_os == "cygwin":
+            build_cygwin(bld)
+        elif bld.env.host_os == "solaris":
+            bld.cygwin(bld)
+        else:
+            bld.fatal("currently not supported platform")
 
-    if bld.env.include_tests:
-        bld(
-            features="subst",
-            source=bld.env.test_files,
-            target=bld.env.test_files,
-            is_copy=True,
-        )
+        if bld.env.include_tests:
+            bld(
+                features="subst",
+                source=bld.env.test_files,
+                target=bld.env.test_files,
+                is_copy=True,
+            )
 
 
 def build_generic(bld):
@@ -1136,17 +1167,3 @@ def build_solaris(bld):
             target=bld.env.tests_basepath + "/libs/lib2-v2.so",
             is_copy=True,
         )
-
-
-def build_doc(ctx):
-    """builds the documentation"""
-    # TODO needs a waf-style implementation
-    ctx.cmd_and_log("sphinx-build -b html docs build/docs", output=Context.BOTH)
-
-
-def clean_doc(ctx):
-    """cleans the documentation"""
-    # TODO needs a waf-style implementation
-    doc_files = ctx.path.ant_glob(os.path.join("build", "docs", "**/*"))
-    for doc_file in doc_files:
-        doc_file.delete()

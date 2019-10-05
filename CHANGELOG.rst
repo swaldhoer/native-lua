@@ -12,7 +12,7 @@ The format is based on `Keep a Changelog`_ v1.0.0, and this project adheres to
 ************
 
 ********************
-[0.1.0] - 2019-08-XX
+[0.1.0] - 2019-10-XX
 ********************
 
 Added
@@ -21,11 +21,14 @@ Added
 - Added a rules for contributing to the project (see ``CONTRIBUTING.rst``).
 - Added a script to make testing simpler (``scripts/run_test.py``).
 - Added `generic` build option.
-- Added ``LUA_VERSION`` file to indicate the lua version obtained from
-  `lua.org`_.
-- Added ``LUA_TESTS_VERSION`` file to indicate the lua tests version obtained
-  from `lua.org`_.
+- Added ``VERSION`` file to indicate the native Lua project version and the lua
+  and lua tests version obtained from `lua.org`_.
 - `include` and `man` files are installed.
+- added `sphinx_rtd_theme` (based on commit
+  feb0beb44a444f875f3369a945e6055965ee993f from
+  https://github.com/readthedocs/sphinx_rtd_theme)
+- Added a batch wrapper script for waf on Windows (``waf.bat``)
+- Added test files for Windows and Cygwin to test the build tools
 
 Changed
 =======
@@ -42,6 +45,7 @@ Removed
 =======
 
 - ``lua/wscript``, see section `Changed`.
+- Removed support for python versions < 3.5
 
 Fixed
 =====
@@ -51,6 +55,7 @@ Fixed
 - Use correct `rpath` on FreeBSD when using gcc.
 - Fixed clang linker flag on OSX.
 - Fixed clang linker flags on Windows.
+- Fix name (``LICENSE``)
 
 Security
 ========

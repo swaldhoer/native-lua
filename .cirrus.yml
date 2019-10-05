@@ -18,8 +18,7 @@ task:
         - apt-get install -y build-essential
         - apt-get install -y clang-8 lld-8
         - update-alternatives --install /usr/bin/clang clang /usr/bin/clang-8 100
-        - pip install sphinx_rtd_theme
-        - pip install pathlib
+        - pip install sphinx pathlib -q
 
     - freebsd_instance:
         image: freebsd-12-0-release-amd64
@@ -30,9 +29,8 @@ task:
         - env ASSUME_ALWAYS_YES=YES pkg install lang/gcc
         - env ASSUME_ALWAYS_YES=YES pkg install readline
         - env ASSUME_ALWAYS_YES=YES pkg install bash
-        - env ASSUME_ALWAYS_YES=YES pkg install py27-pip
-        - pip-2.7 install sphinx_rtd_theme
-        - pip-2.7 install pathlib
+        - env ASSUME_ALWAYS_YES=YES pkg install py36-pip
+        - pip-3.6 install sphinx pathlib -q
       freebsd_setup_script:
         - chsh -s /usr/local/bin/bash
 
@@ -42,66 +40,66 @@ task:
 #        PATH: /usr/local/opt/python/libexec/bin:${PATH}
 #      macos_setup_script:
 #        - brew install python3
-#        - pip install sphinx_rtd_theme -q
+#        - pip install sphinx -q
 
   script:
-    - python --version
+    - python3 --version
     # basic configuration
-    - python waf configure -v
+    - python3 waf configure -v
     # documentation build
-    - python waf build_doc
-    - python waf clean_doc
-    - python waf distclean
+    - python3 waf build_docs
+    - python3 waf clean_docs
+    - python3 waf distclean
     # configuration
-    - python waf configure --include-tests
+    - python3 waf configure --include-tests
     # gcc [
-    - python waf build_gcc
-    - python waf install_gcc
+    - python3 waf build_gcc
+    - python3 waf install_gcc
     - pushd build/gcc/tests
     - lua -e"_U=true" all.lua
     #- lua all.lua
     - popd
-    - python waf uninstall_gcc
-    - python waf clean_gcc
+    - python3 waf uninstall_gcc
+    - python3 waf clean_gcc
     # gcc ]
-    - python waf distclean
+    - python3 waf distclean
     # including ltests
-    - python waf configure --ltests --include-tests
+    - python3 waf configure --ltests --include-tests
     # gcc [
-    - python waf build_gcc
-    - python waf install_gcc
+    - python3 waf build_gcc
+    - python3 waf install_gcc
     - pushd build/gcc/tests
     - lua -e"_U=true" all.lua
     #- lua all.lua
     - popd
-    - python waf uninstall_gcc
-    - python waf clean_gcc
+    - python3 waf uninstall_gcc
+    - python3 waf clean_gcc
     # gcc ]
     # configuration
-    - python waf configure --include-tests
+    - python3 waf configure --include-tests
     # clang [
-    - python waf build_clang
-    - python waf install_clang
+    - python3 waf build_clang
+    - python3 waf install_clang
     - pushd build/clang/tests
     - lua -e"_U=true" all.lua
     #- lua all.lua
     - popd
-    - python waf uninstall_clang
-    - python waf clean_clang
+    - python3 waf uninstall_clang
+    - python3 waf clean_clang
     # clang ]
-    - python waf distclean
+    - python3 waf distclean
     # including ltests
-    - python waf configure --ltests --include-tests
+    - python3 waf configure --ltests --include-tests
     # clang [
-    - python waf build_clang
-    - python waf install_clang
+    - python3 waf build_clang
+    - python3 waf install_clang
     - pushd build/clang/tests
     - lua -e"_U=true" all.lua
     #- lua all.lua
     - popd
-    - python waf uninstall_clang
-    - python waf clean_clang
+    - python3 waf uninstall_clang
+    - python3 waf clean_clang
     # clang ]
     # test script
-    - python scripts/run_test.py -c gcc -c clang --simple-test
-    - python scripts/run_test.py -c gcc -c clang --simple-test --ltests
+    - python3 scripts/run_test.py -c gcc -c clang --simple-test
+    - python3 scripts/run_test.py -c gcc -c clang --simple-test --ltests
