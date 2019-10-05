@@ -30,7 +30,7 @@ task:
         - env ASSUME_ALWAYS_YES=YES pkg install readline
         - env ASSUME_ALWAYS_YES=YES pkg install bash
         - env ASSUME_ALWAYS_YES=YES pkg install py36-pip
-        - pip3 install sphinx pathlib -q
+        - pip-3.6 install sphinx pathlib -q
       freebsd_setup_script:
         - chsh -s /usr/local/bin/bash
 
