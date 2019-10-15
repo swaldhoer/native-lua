@@ -11,10 +11,6 @@ The format is based on `Keep a Changelog`_ v1.0.0, and this project adheres to
 [Unreleased]
 ************
 
-********************
-[0.1.0] - 2019-10-XX
-********************
-
 Added
 =====
 
