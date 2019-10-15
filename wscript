@@ -942,28 +942,30 @@ def build_darwin(bld):
     )
 
     if bld.env.include_tests:
-        bld.path.get_bld().make_node(bld.env.tests_basepath + "/libs/P1").mkdir()
-        for tst_src in bld.env.test_sources:
-            outfile = re.match(".*?([0-9]+.c)$", tst_src).group(1).split(".")[0]
-            outfile = bld.env.tests_basepath + "/libs/" + outfile
-            bld.shlib(
-                source=tst_src,
-                target=outfile,
-                defines=defines_tests,
-                includes=os.path.abspath(
-                    os.path.join(bld.path.abspath(), bld.env.src_basepath)
-                ),
-            )
-        if bld.env.CC_NAME == "gcc":
-            ext = ".so"
-        elif bld.env.CC_NAME == "clang":
-            ext = ".dylib"
-        bld(
-            features="subst",
-            source=bld.env.tests_basepath + "/libs/lib2" + ext,
-            target=bld.env.tests_basepath + "/libs/lib2-v2" + ext,
-            is_copy=True,
-        )
+        pass
+        # https://github.com/swaldhoer/native-lua/issues/44
+        # bld.path.get_bld().make_node(bld.env.tests_basepath + "/libs/P1").mkdir()
+        # for tst_src in bld.env.test_sources:
+        #     outfile = re.match(".*?([0-9]+.c)$", tst_src).group(1).split(".")[0]
+        #     outfile = bld.env.tests_basepath + "/libs/" + outfile
+        #     bld.shlib(
+        #         source=tst_src,
+        #         target=outfile,
+        #         defines=defines_tests,
+        #         includes=os.path.abspath(
+        #             os.path.join(bld.path.abspath(), bld.env.src_basepath)
+        #         ),
+        #     )
+        # if bld.env.CC_NAME == "gcc":
+        #     ext = ".so"
+        # elif bld.env.CC_NAME == "clang":
+        #     ext = ".dylib"
+        # bld(
+        #     features="subst",
+        #     source=bld.env.tests_basepath + "/libs/lib2" + ext,
+        #     target=bld.env.tests_basepath + "/libs/lib2-v2" + ext,
+        #     is_copy=True,
+        # )
 
 
 def build_win32(bld):
@@ -1005,6 +1007,10 @@ def build_win32(bld):
             use=["static-lua-library"],
         )
 
+        if bld.env.include_tests:
+            pass
+            # https://github.com/swaldhoer/native-lua/issues/46
+
     def build_win32_gcc():
         """Building on win32 with gcc"""
         use = ["M"]
@@ -1037,6 +1043,10 @@ def build_win32(bld):
             use=["static-lua-library"] + use,
         )
 
+        if bld.env.include_tests:
+            pass
+            # https://github.com/swaldhoer/native-lua/issues/46
+
     def build_win32_clang():
         """Building on win32 with clang"""
         use = ["M"]
@@ -1068,6 +1078,10 @@ def build_win32(bld):
             defines=defines,
             use=["static-lua-library"] + use,
         )
+
+        if bld.env.include_tests:
+            pass
+            # https://github.com/swaldhoer/native-lua/issues/46
 
     if bld.env.CC_NAME == "msvc":
         build_win32_msvc()
