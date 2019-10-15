@@ -20,7 +20,7 @@ from waflib.Tools.gnu_dirs import gnuopts
 # man1 is missing waf gnu_dirs implementation
 gnuopts += "mandir1, manual pages, ${DATAROOTDIR}/man1\n"
 
-VERSION = "0.1.0-development"
+VERSION = "0.1.0"
 APPNAME = "lua"
 top = "."  # pylint: disable=C0103
 out = "build"  # pylint: disable=C0103

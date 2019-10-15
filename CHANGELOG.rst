@@ -11,6 +11,10 @@ The format is based on `Keep a Changelog`_ v1.0.0, and this project adheres to
 [Unreleased]
 ************
 
+********************
+[0.1.0] - 2019-10-15
+********************
+
 Added
 =====
 
@@ -25,6 +29,8 @@ Added
   https://github.com/readthedocs/sphinx_rtd_theme)
 - Added a batch wrapper script for waf on Windows (``waf.bat``)
 - Added test files for Windows and Cygwin to test the build tools
+- For Linux (clang, gcc), macOS (clang), FreeBSD (clang, gcc) and Windows
+  (clang, gcc, msvc) the lua test suite passes with ``lua -e"_U=true" all.lua``
 
 Changed
 =======
@@ -34,14 +40,11 @@ Changed
 - Rewrote `configure` step to print better readable output.
 - Restructured the way sources, documentation etc. are stored.
 
-Deprecated
-==========
-
 Removed
 =======
 
 - ``lua/wscript``, see section `Changed`.
-- Removed support for python versions < 3.5
+- Removed support for Python versions < 3.5
 
 Fixed
 =====
@@ -52,9 +55,7 @@ Fixed
 - Fixed clang linker flag on OSX.
 - Fixed clang linker flags on Windows.
 - Fix name (``LICENSE``)
-
-Security
-========
+- Fixed typos
 
 .. _Keep a Changelog : https://keepachangelog.com/en/1.0.0/
 
