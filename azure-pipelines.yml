@@ -114,12 +114,12 @@ jobs:
         displayName: test script (gcc, clang) with --simple-test and ltests
 
 
-  - job: Windows
-    pool:
-      vmImage: 'vs2017-win2016'
-    displayName: "Windows Build"
-    steps:
-      - script: echo $(Agent.OS)
+#  - job: Windows
+#    pool:
+#      vmImage: 'vs2017-win2016'
+#    displayName: "Windows Build"
+#    steps:
+#      - script: echo $(Agent.OS)
 
   - job: OSXBuild
     pool:
@@ -128,6 +128,8 @@ jobs:
     steps:
       - script: echo "##vso[task.prependpath]/usr/local/opt/python/libexec/bin"
         displayName: Add python to path
+      - script: echo "##vso[task.prependpath]/opt/lua/bin"
+        displayName: Add lua install path to path
       - script: echo "##vso[task.prependpath]/usr/local/Cellar/gcc/9.1.0/bin/"
         displayName: Add gcc to path
       - script: echo $PATH
@@ -153,12 +155,12 @@ jobs:
           set -euxo pipefail
           python waf configure --include-tests --prefix=/opt/lua
           python waf build_clang
-          python waf install_clang
+          sudo python waf install_clang
           pushd build/clang/tests
           lua -e"_U=true" all.lua
-          lua all.lua
+          # lua all.lua
           popd
-          python waf uninstall_clang
+          sudo python waf uninstall_clang
           python waf clean_clang
           python waf distclean
         displayName: clang build including tests
@@ -167,11 +169,11 @@ jobs:
           set -euxo pipefail
           python waf configure --ltests --include-tests --prefix=/opt/lua
           python waf build_clang
-          python waf install_clang
+          sudo python waf install_clang
           pushd build/clang/tests
           lua -e"_U=true" all.lua
-          lua all.lua
+          # lua all.lua
           popd
-          python waf uninstall_clang
+          sudo python waf uninstall_clang
           python waf clean_clang
         displayName: clang build including tests and ltests
