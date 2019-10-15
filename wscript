@@ -164,9 +164,9 @@ def configure(cnf):  # pylint: disable=R0912
     cnf.env.project_version = project_v.split(":")[1].strip().split(".")
     assert ".".join(cnf.env.project_version) == VERSION
     confpy_version = cnf.path.find_node("conf.py").read(encoding="utf-8")
-    for x in confpy_version.split("\n"):
-        if x.startswith("version"):
-            ver = x.split("=")[1].replace('"', "").strip()
+    for i in confpy_version.split("\n"):
+        if i.startswith("version"):
+            ver = i.split("=")[1].replace('"', "").strip()
             break
     assert ver == VERSION
 
