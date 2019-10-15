@@ -158,7 +158,7 @@ jobs:
           sudo python waf install_clang
           pushd build/clang/tests
           lua -e"_U=true" all.lua
-          lua all.lua
+          # lua all.lua
           popd
           sudo python waf uninstall_clang
           python waf clean_clang
@@ -172,7 +172,7 @@ jobs:
           sudo python waf install_clang
           pushd build/clang/tests
           lua -e"_U=true" all.lua
-          lua all.lua
+          # lua all.lua
           popd
           sudo python waf uninstall_clang
           python waf clean_clang
