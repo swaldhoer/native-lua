@@ -124,7 +124,7 @@ def options(opt):
         "be replaced by 'gnu99' for gcc, xlc and icc. 'c99' will be "
         "replaced by 'c++14' for msvc. 'c89' is passed verbatim for "
         "gcc, xlc, icc and clang. 'c89' will be replaced by 'c++14' "
-        " for msvc.",
+        "for msvc.",
     )
     opt.add_option(
         "--ltests",
@@ -157,10 +157,19 @@ def configure(cnf):  # pylint: disable=R0912
         cnf.env.docs_out = os.path.join(out, "docs")
 
     print("-" * (Context.Context.line_just + 1) + ":")
+
+    # check that all version numbers match
     version_info = cnf.path.find_node("VERSION").read()
     project_v, lua_src_v, lua_tests_v = version_info.splitlines()
     cnf.env.project_version = project_v.split(":")[1].strip().split(".")
     assert ".".join(cnf.env.project_version) == VERSION
+    confpy_version = cnf.path.find_node("conf.py").read(encoding="utf-8")
+    for x in confpy_version.split("\n"):
+        if x.startswith("version"):
+            ver = x.split("=")[1].replace("\"", "").strip()
+            break
+    assert ver == VERSION
+
     cnf.env.lua_src_version = lua_src_v.split(":")[1].strip().split(".")
     cnf.env.lua_tests_version = lua_tests_v.split(":")[1].strip().split(".")
     cnf.msg("native Lua version", ".".join(cnf.env.project_version))
