@@ -124,6 +124,8 @@ jobs:
           versionSpec: '3.6'
           addToPath: true
           architecture: 'x64'
+      - script: pip install sphinx
+        displayName: installing dependencies
       - script: python scripts\run_test.py -c msvc --simple-test
         displayName: test script (msvc) with --simple-test
       - script: python scripts\run_test.py -c msvc --simple-test --ltests
