@@ -114,7 +114,7 @@ jobs:
         displayName: test script (gcc, clang) with --simple-test and ltests
 
 
-- job: Windows
+  - job: Windows
     pool:
       vmImage: 'windows-2019'
     displayName: "Windows Build"
