@@ -20,7 +20,7 @@ from waflib.Tools.gnu_dirs import gnuopts
 # man1 is missing waf gnu_dirs implementation
 gnuopts += "mandir1, manual pages, ${DATAROOTDIR}/man1\n"
 
-VERSION = "0.1.0"
+VERSION = "0.2.0-development"
 APPNAME = "lua"
 top = "."  # pylint: disable=C0103
 out = "build"  # pylint: disable=C0103
@@ -348,7 +348,7 @@ def configure(cnf):  # pylint: disable=R0912
             cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
             cnf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
             cnf.check_cc(fragment=min_c, execute=True)
-            check_libs("m", "readline")
+            check_libs("m", "dl", "edit")
             platform_compilers.append(cnf.env.env_name)
         except BaseException:
             failed_platform_compilers.append(cnf.env.env_name)
@@ -358,10 +358,9 @@ def configure(cnf):  # pylint: disable=R0912
             cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
             cnf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
             cnf.check_cc(fragment=min_c, execute=True)
-            cnf.env.append_unique("INCLUDES", "/usr/local/include")
-            cnf.env.append_unique("INCLUDES", "/usr/local/include/readline")
+            cnf.env.append_unique("INCLUDES", "/usr/include/edit")
             cnf.env.append_unique("LIBPATH", "/usr/local/lib")
-            check_libs("m", "readline")
+            check_libs("m", "dl", "edit")
             platform_compilers.append(cnf.env.env_name)
         except BaseException:
             failed_platform_compilers.append(cnf.env.env_name)
@@ -750,7 +749,7 @@ def build_netbsd_or_openbsd(bld):
 
 
 def build_freebsd(bld):
-    use = ["M", "READLINE"]
+    use = ["M", "DL", "EDIT"]
     use_ltests = []
     defines = ["LUA_COMPAT_5_2", "LUA_USE_LINUX"]
     defines_tests = []

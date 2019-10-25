@@ -36,4 +36,11 @@ Coding Guidelines
 
      -- SPDX-License-Identifier: MIT
 
+- C/C++ files must have the following header
+
+  .. code-block:: C
+     :linenos:
+
+     /* SPDX-License-Identifier: MIT */
+
 .. _MIT: https://opensource.org/licenses/MIT

@@ -33,7 +33,7 @@ project = "native Lua"
 copyright = "2018-2019, Stefan Waldhör"
 author = "Stefan Waldhör"
 
-version = "0.1.0"
+version = "0.2.0-development"
 release = version
 
 language = "en"

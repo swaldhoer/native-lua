@@ -7,6 +7,20 @@ All notable changes to this project will be documented in this file.
 The format is based on `Keep a Changelog`_ v1.0.0, and this project adheres to
 `Semantic Versioning`_ v2.0.0.
 
+**********
+Unreleased
+**********
+
+Added
+=====
+
+- Added header for C/C++ files (see ``CONTRIBUTING.rst``).
+
+Changed
+=======
+
+- Updated to Lua version 5.3.5 (see ``src/*``)
+
 ********************
 [0.1.0] - 2019-10-15
 ********************
