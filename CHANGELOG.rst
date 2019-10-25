@@ -14,12 +14,12 @@ Unreleased
 Added
 =====
 
-- Added header for C/C++ files
+- Added header for C/C++ files (see ``CONTRIBUTING.rst``).
 
 Changed
 =======
 
-- Updated to Lua version 5.3.5
+- Updated to Lua version 5.3.5 (see ``src/*``)
 
 ********************
 [0.1.0] - 2019-10-15
