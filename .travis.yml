@@ -31,12 +31,12 @@ before_script:
   - echo $PATH
 
 script:
-  - pip3 install sphinx_rtd_theme -q
+  - pip3 install sphinx -q
   # basic configuration
   - python3 waf configure -vv
   # check documentation build
-  - python3 waf build_doc
-  - python3 waf clean_doc
+  - python3 waf build_docs
+  - python3 waf clean_docs
   - python3 waf distclean
   - python3 waf configure --include-tests
   # gcc [

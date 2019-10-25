@@ -4,10 +4,11 @@ The ``native Lua`` Project
 
 |appveyor-badge|_ |travis-badge|_ |cirrus-badge|_ |azure-badge|_ |readthedocs-badge|_ |license-badge|_ |code-style-black-badge|_
 
-
+**Lua on the platform you use with the compiler you choose**
 
 `Lua` is multi-paradigm programming language. `Lua` is cross-platform as it is
-written in ANSI C. Lua is licensed under `MIT`_ license.
+written in ANSI C. Lua is licensed under `MIT`_ license. ``native Lua`` goal is
+to deliver a framework to build `Lua` on any platform with any compiler:
 
 For information on `Lua` see `Lua.org`_.
 
@@ -15,13 +16,13 @@ For information on `Lua` see `Lua.org`_.
 Overview
 ********
 
-As default `Lua` requires `gcc` and `make` to be installed to build the `Lua`
-binaries, therefore building for e.g., Linux or other POSIX systems where `gcc`
-and `make` are natively available is easy. Building `Lua` on Windows with
-MinGWs' `gcc` and some sort of `make` is also straight forward.
+As default `Lua` requires ``gcc`` and ``make`` to be installed to build the
+`Lua` binaries, therefore building for e.g., Linux or other POSIX systems where
+``gcc`` and ``make`` are natively available is easy. Building `Lua` on Windows
+with MinGWs' ``gcc`` and some sort of ``make`` is also straight forward.
 
 But this does not allow a good platform and compiler independent way of building
-and testing `Lua`, especially testing is not that simple as it should be.
+and testing `Lua`. Especially testing is not that simple as it should be.
 Therefore this project tries to implement a platform and compiler independent
 way of building **and** testing `Lua`.
 
@@ -29,38 +30,11 @@ way of building **and** testing `Lua`.
 How-To
 ******
 
-Building `Lua` requires python 2.7 or greater and some C compiler.
+Building `Lua` with the `native Lua` project requires Python 3.5 or greater and
+some C compiler.
 
-.. code-block:: sh
-
-   git clone https://github.com/swaldhoer/native-lua
-   cd native-lua
-   python waf configure
-
-The output will show a number of successfully configured compilers, e.g., for
-Windows with installed MSVC, gcc and clang the output should like this:
-
-.. code-block:: sh
-
-   ...
-   Configured compilers                          : msvc, gcc, clang
-   'configure' finished successfully
-
-Now the build commands ``build_msvc``, ``build_gcc`` and ``build_clang`` should
-work. The command concatenate is the same on all platforms, ``build_`` and then
-the name of the successfully configured compiler.
-
-.. code-block:: sh
-
-   python waf build_gcc
-   ...
-   python waf install_gcc
-
-For all build and test options on the platform see the output of
-
-.. code-block:: sh
-
-   python waf --help
+.. image:: docs/_static/basic-cmds.gif
+   :alt: alternate text
 
 *********************************
 Supported Platforms And Compilers
@@ -109,16 +83,16 @@ Root Directory
 
 The root directory contains the
 
-- general project documentation and a changelog (``README.rst``,
-  ``CHANGELOG.rst``)
-- build script (``wscript``),
+- general project documentation and a changelog (``README.rst``, ``index.rst``
+  ``conf.py``, ``CHANGELOG.rst``)
+- build script and build toolchain (``wscript``, ``waf``, ``waf.bat``),
 - CI scripts (``.appveyor.yml``, ``.cirrus.yml``, ``.travis.yml``,
   ``azure-pipelines.yml``),
 - editor configurations (``.vscode``, ``.editorconfig``),
 - coding and general guidelines (``pyproject.toml``, ``.pylintrc``,
   ``CONTRIBUTING.rst``),
 - licensing information (``LICENSE``, ``CONTRIBUTING.rst``),
-- and information on the lua version (``LUA_VERSION``).
+- and information on the project and the lua version (``VERSION``).
 
 ``demos`` Directory
 ===================
@@ -141,6 +115,15 @@ This directory contains the source files as they are downloaded from `Lua.org`_,
 except that trailing whitespace and additional newlines at the end of the files
 are removed.
 
+The lua interpreter (``lua.c``) as well as the lua compiler (``luac.c``) have
+been changed, to indicate, that they were build based on the ``native Lua``
+project:
+
+.. code-block:: sh
+
+   $ build/gcc/lua -v
+   Lua 5.3.4  Copyright (C) 1994-2017 Lua.org, PUC-Rio [based on native Lua (0.1.0), https://github.com/swaldhoer/native-lua]
+
 ``tests`` Directory
 ===================
 
@@ -155,6 +138,8 @@ following line:
 .. code-block:: sh
 
    -- Added by 'native-lua' project, see https://github.com/swaldhoer/native-lua.
+
+Test files for the build toolchain have been added in ``build``.
 
 *****
 Links

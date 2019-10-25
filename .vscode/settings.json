@@ -2,6 +2,14 @@
     "terminal.integrated.shell.linux": "bash",
     "terminal.integrated.shell.osx": "bash",
     "terminal.integrated.shell.windows": "C:\\Windows\\sysnative\\cmd.exe",
+    "files.autoGuessEncoding": false,
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true
+    },
     "files.trimTrailingWhitespace": true,
     "files.trimFinalNewlines": true,
     "files.insertFinalNewline": true,
@@ -9,24 +17,49 @@
         "wscript": "python",
         "*.h": "c"
     },
+    "python.linting.enabled": true,
+    "python.formatting.blackPath": "black",
+    "python.formatting.provider": "black",
+    "python.formatting.blackArgs": [
+        "--config=pyproject.toml"
+    ],
+    "editor.formatOnSave": true,
+    "[c]": {
+        "editor.formatOnSave": false
+    },
     "editor.wordWrap": "off",
     "editor.insertSpaces": true,
     "editor.renderWhitespace": "all",
-    "editor.rulers": [80],
+    "editor.rulers": [
+        80
+    ],
     "cSpell.languageSettings": [
-        { "languageId": "*",
-          "local": "en",
-          "dictionaries": ["wordsEn", "softwareTerms"]
+        {
+            "languageId": "*",
+            "local": "en",
+            "dictionaries": [
+                "wordsEn",
+                "softwareTerms"
+            ]
         },
-        { "languageId": "python",
-          "enableCompoundWords": true,
-          "allowCompoundWords": true,
-          "dictionaries": ["python", "softwareTerms"],
-        },
-        { "languageId": "c,cpp",
+        {
+            "languageId": "python",
             "enableCompoundWords": true,
             "allowCompoundWords": true,
-            "dictionaries": ["c", "cpp", "softwareTerms"],
+            "dictionaries": [
+                "python",
+                "softwareTerms"
+            ],
+        },
+        {
+            "languageId": "c,cpp",
+            "enableCompoundWords": true,
+            "allowCompoundWords": true,
+            "dictionaries": [
+                "c",
+                "cpp",
+                "softwareTerms"
+            ],
         },
     ],
     "cSpell.language": "en",
@@ -35,9 +68,9 @@
         "build/**",
         ".lock-waf*",
     ],
-    "cSpell.words": [
-    ],
     "cSpell.ignoreWords": [
+        "Qspectre",
+        "dylib",
         // software, library, commands, options etc.
         "iframe",
         "mathjax",
@@ -203,6 +236,15 @@
         "narg",
         "nresults",
         // other
-        "AppVeyor"
+        "AppVeyor",
+        "confpy",
+        "todos"
+    ],
+    "cSpell.words": [
+        "CCDEPS",
+        "CPPFLAGS",
+        "CPPPATH",
+        "intelli",
+        "sigs"
     ],
 }

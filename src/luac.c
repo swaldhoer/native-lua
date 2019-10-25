@@ -22,6 +22,8 @@
 #include "lstate.h"
 #include "lundump.h"
 
+#include "config.h"
+
 static void PrintFunction(const Proto* f, int full);
 #define luaU_print	PrintFunction
 
@@ -111,7 +113,8 @@ static int doargs(int argc, char* argv[])
  }
  if (version)
  {
-  printf("%s\n",LUA_COPYRIGHT);
+  printf("%s",LUA_COPYRIGHT); /* native-Lua */
+  printf("%s\n",NATIVE_LUA_MSG); /* native-Lua */
   if (version==argc-1) exit(EXIT_SUCCESS);
  }
  return i;

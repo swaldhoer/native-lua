@@ -7,12 +7,8 @@ All notable changes to this project will be documented in this file.
 The format is based on `Keep a Changelog`_ v1.0.0, and this project adheres to
 `Semantic Versioning`_ v2.0.0.
 
-************
-[Unreleased]
-************
-
 ********************
-[0.1.0] - 2019-08-XX
+[0.1.0] - 2019-10-15
 ********************
 
 Added
@@ -21,11 +17,16 @@ Added
 - Added a rules for contributing to the project (see ``CONTRIBUTING.rst``).
 - Added a script to make testing simpler (``scripts/run_test.py``).
 - Added `generic` build option.
-- Added ``LUA_VERSION`` file to indicate the lua version obtained from
-  `lua.org`_.
-- Added ``LUA_TESTS_VERSION`` file to indicate the lua tests version obtained
-  from `lua.org`_.
+- Added ``VERSION`` file to indicate the native Lua project version and the lua
+  and lua tests version obtained from `lua.org`_.
 - `include` and `man` files are installed.
+- added `sphinx_rtd_theme` (based on commit
+  feb0beb44a444f875f3369a945e6055965ee993f from
+  https://github.com/readthedocs/sphinx_rtd_theme)
+- Added a batch wrapper script for waf on Windows (``waf.bat``)
+- Added test files for Windows and Cygwin to test the build tools
+- For Linux (clang, gcc), macOS (clang), FreeBSD (clang, gcc) and Windows
+  (clang, gcc, msvc) the lua test suite passes with ``lua -e"_U=true" all.lua``
 
 Changed
 =======
@@ -35,13 +36,11 @@ Changed
 - Rewrote `configure` step to print better readable output.
 - Restructured the way sources, documentation etc. are stored.
 
-Deprecated
-==========
-
 Removed
 =======
 
 - ``lua/wscript``, see section `Changed`.
+- Removed support for Python versions < 3.5
 
 Fixed
 =====
@@ -51,9 +50,8 @@ Fixed
 - Use correct `rpath` on FreeBSD when using gcc.
 - Fixed clang linker flag on OSX.
 - Fixed clang linker flags on Windows.
-
-Security
-========
+- Fix name (``LICENSE``)
+- Fixed typos
 
 .. _Keep a Changelog : https://keepachangelog.com/en/1.0.0/
 

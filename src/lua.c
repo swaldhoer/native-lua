@@ -20,6 +20,8 @@
 #include "lualib.h"
 
 
+#include "config.h"
+
 
 #if !defined(LUA_PROMPT)
 #define LUA_PROMPT		"> "
@@ -211,6 +213,7 @@ static int docall (lua_State *L, int narg, int nres) {
 
 static void print_version (void) {
   lua_writestring(LUA_COPYRIGHT, strlen(LUA_COPYRIGHT));
+  lua_writestring(NATIVE_LUA_MSG, strlen(NATIVE_LUA_MSG)); /* native-Lua */
   lua_writeline();
 }
 
