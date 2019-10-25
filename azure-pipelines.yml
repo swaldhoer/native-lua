@@ -114,12 +114,20 @@ jobs:
         displayName: test script (gcc, clang) with --simple-test and ltests
 
 
-#  - job: Windows
-#    pool:
-#      vmImage: 'vs2017-win2016'
-#    displayName: "Windows Build"
-#    steps:
-#      - script: echo $(Agent.OS)
+- job: Windows
+    pool:
+      vmImage: 'windows-2019'
+    displayName: "Windows Build"
+    steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: '3.6'
+          addToPath: true
+          architecture: 'x64'
+      - script: python scripts\run_test.py -c msvc --simple-test
+        displayName: test script (msvc) with --simple-test
+      - script: python scripts\run_test.py -c msvc --simple-test --ltests
+        displayName: test script (msvc) with --simple-test and ltests
 
   - job: OSXBuild
     pool:
