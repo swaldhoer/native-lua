@@ -15,16 +15,20 @@ Added
 =====
 
 - Added header for C/C++ files (see ``CONTRIBUTING.rst``).
+- Added the license information for sphinx_rtd_theme
+  (``docs/_themes/sphinx_rtd_theme/LICENSE``).
 
 Changed
 =======
 
 - Updated to Lua version 5.3.5 (see ``src/*``).
+- Updated `sphinx_rtd_theme` to 2a1b2e1353f6401af96885a66488ac0811110ba2.
 
 Fixed
 =====
 
 - Lua manual was not correctly linked into the documentation.
+- Fixed list of tested compilers and platforms (``README.rst``).
 
 ********************
 [0.1.0] - 2019-10-15
