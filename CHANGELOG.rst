@@ -19,7 +19,12 @@ Added
 Changed
 =======
 
-- Updated to Lua version 5.3.5 (see ``src/*``)
+- Updated to Lua version 5.3.5 (see ``src/*``).
+
+Fixed
+=====
+
+- Lua manual was not correctly linked into the documentation.
 
 ********************
 [0.1.0] - 2019-10-15
