@@ -291,7 +291,7 @@ checkout('alo')
 -- bug in 5.2 beta (extra \0 after version line)
 RUN([[lua -v  -e"print'hello'" > %s]], out)
 t = getoutput()
-assert(string.find(t, "native%-lua]\nhello")) -- native-lua
+assert(string.find(t, "native Lua]\nhello")) -- native Lua
 
 
 -- testing os.exit

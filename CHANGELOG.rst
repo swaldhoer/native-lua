@@ -23,12 +23,17 @@ Changed
 
 - Updated to Lua version 5.3.5 (see ``src/*``).
 - Updated `sphinx_rtd_theme` to 2a1b2e1353f6401af96885a66488ac0811110ba2.
+- Check that all version numbers in the project match during project
+  configuration (``wscript``).
+- use yaml to load the version information from ``VERSION`` file.
 
 Fixed
 =====
 
 - Lua manual was not correctly linked into the documentation.
 - Fixed list of tested compilers and platforms (``README.rst``).
+- Consequently use the correct project name ``native Lua`` (previously
+  ``native-lua``).
 
 ********************
 [0.1.0] - 2019-10-15

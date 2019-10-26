@@ -7,7 +7,7 @@
 -- obtain the original file from https://www.lua.org/
 -- all changes to the original file all marked with the following comment
 --
--- Added by 'native-lua' project, see https://github.com/swaldhoer/native-lua
+-- Added by 'native Lua' project, see https://github.com/swaldhoer/native-lua
 --
 
 local version = "Lua 5.3"
@@ -141,7 +141,7 @@ local dofile = function (n, strip)
   return f()
 end
 
--- Added by 'native-lua' project, see https://github.com/swaldhoer/native-lua
+-- Added by 'native Lua' project, see https://github.com/swaldhoer/native-lua
 dofile('main_win.lua')
 
 do

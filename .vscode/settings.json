@@ -15,7 +15,8 @@
     "files.insertFinalNewline": true,
     "files.associations": {
         "wscript": "python",
-        "*.h": "c"
+        "*.h": "c",
+        "VERSION": "yaml"
     },
     "python.linting.enabled": true,
     "python.formatting.blackPath": "black",

@@ -7,6 +7,7 @@
 
 import os
 import re
+import yaml
 
 from waflib import Logs, Utils, Options, Context, Task
 from waflib.Tools.compiler_c import c_compiler
@@ -158,23 +159,39 @@ def configure(cnf):  # pylint: disable=R0912
 
     print("-" * (Context.Context.line_just + 1) + ":")
 
-    # check that all version numbers match
-    version_info = cnf.path.find_node("VERSION").read()
-    project_v, lua_src_v, lua_tests_v = version_info.splitlines()
-    cnf.env.project_version = project_v.split(":")[1].strip().split(".")
-    assert ".".join(cnf.env.project_version) == VERSION
+    # check that all version numbers match and the the version number adheres to
+    # Semantic Versioning
+    sem_ver_re = re.compile(
+        r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*"
+        r"[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))"
+        r"*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$"
+    )
+
+    version_info = yaml.load(cnf.path.find_node("VERSION").read(), Loader=yaml.SafeLoader)
+    cnf.env.project_version = version_info["native Lua"]
+    err_msg = "wscript VERSION ({}) and VERSION's native Lua attribute ({}) do not match".format(VERSION, cnf.env.project_version)
+    assert cnf.env.project_version == VERSION, err_msg
+
     confpy_version = cnf.path.find_node("conf.py").read(encoding="utf-8")
+    ver = ""
     for i in confpy_version.split("\n"):
         if i.startswith("version"):
             ver = i.split("=")[1].replace('"', "").strip()
             break
-    assert ver == VERSION
+    err_msg = "wscript VERSION ({}) and conf.py version ({}) do not match".format(VERSION, ver)
+    assert ver == VERSION, err_msg
+    ver = ""
 
-    cnf.env.lua_src_version = lua_src_v.split(":")[1].strip().split(".")
-    cnf.env.lua_tests_version = lua_tests_v.split(":")[1].strip().split(".")
-    cnf.msg("native Lua version", ".".join(cnf.env.project_version))
-    cnf.msg("Lua version", ".".join(cnf.env.lua_src_version))
-    cnf.msg("Lua tests version", ".".join(cnf.env.lua_tests_version))
+    readme = cnf.path.find_node("README.rst").read()
+    ver = readme.find("based on native Lua ({})".format(VERSION))
+    err_msg = "wscript VERSION ({}) and README.rst 'lua -v version' ({}) do not match".format(VERSION, ver)
+    assert ver > 0, err_msg
+
+    cnf.env.lua_src_version = version_info["lua"]
+    cnf.env.lua_tests_version = version_info["tests"]
+    cnf.msg("native Lua version", cnf.env.project_version)
+    cnf.msg("Lua version", cnf.env.lua_src_version)
+    cnf.msg("Lua tests version", cnf.env.lua_tests_version)
     cnf.msg("Including tests", cnf.options.include_tests)
     cnf.msg("Using ltests", cnf.options.ltests)
     cnf.env.generic = cnf.options.generic

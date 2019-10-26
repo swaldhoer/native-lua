@@ -1,5 +1,5 @@
 ################################
-The ``native-Lua`` Documentation
+The ``native Lua`` Documentation
 ################################
 
 .. toctree::
