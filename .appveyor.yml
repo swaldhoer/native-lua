@@ -58,7 +58,7 @@ install:
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 --version"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 -m ensurepip --upgrade"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "git clone https://github.com/sphinx-doc/sphinx && cd sphinx && pip3 install ."
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "wget https://github.com/yaml/pyyaml/archive/5.1.2.tar.gz && tar -xvf 5.1.2.tar.gz && cd 5.1.2 && python setup.py install"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "wget https://github.com/yaml/pyyaml/archive/5.1.2.tar.gz && tar -xvf 5.1.2.tar.gz && cd 5.1.2 && python3 setup.py install"
   # for testing
   - cmd: set PATH=%PATH%;%userprofile%\AppData\Local\Programs\lua\bin
 
