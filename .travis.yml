@@ -31,7 +31,7 @@ before_script:
   - echo $PATH
 
 script:
-  - pip3 install sphinx -q
+  - pip3 install sphinx pyyaml -q
   # basic configuration
   - python3 waf configure -vv
   # check documentation build

@@ -57,7 +57,7 @@ The current release supports the following platform/compiler combinations:
 +----------+-----------------------+-------------------------------+
 | linux    | gcc                   | gcc, clang, icc*              |
 +----------+-----------------------+-------------------------------+
-| macOS    | gcc                   | gcc*, clang*                  |
+| macOS    | gcc                   | gcc*, clang                   |
 +----------+-----------------------+-------------------------------+
 | MinGW    | gcc                   | see win32                     |
 +----------+-----------------------+-------------------------------+
@@ -67,7 +67,7 @@ The current release supports the following platform/compiler combinations:
 +----------+-----------------------+-------------------------------+
 | win32    | see MinGw             | msvc, gcc, clang              |
 +----------+-----------------------+-------------------------------+
-| cygwin   | no                    | gcc*                          |
+| cygwin   | no                    | gcc                           |
 +----------+-----------------------+-------------------------------+
 
 \* means not or not fully tested.
