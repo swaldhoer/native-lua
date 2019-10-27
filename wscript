@@ -167,9 +167,13 @@ def configure(cnf):  # pylint: disable=R0912
         r"*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$"
     )
 
-    version_info = yaml.load(cnf.path.find_node("VERSION").read(), Loader=yaml.SafeLoader)
+    version_info = yaml.load(
+        cnf.path.find_node("VERSION").read(), Loader=yaml.SafeLoader
+    )
     cnf.env.project_version = version_info["native Lua"]
-    err_msg = "wscript VERSION ({}) and VERSION's native Lua attribute ({}) do not match".format(VERSION, cnf.env.project_version)
+    err_msg = "wscript VERSION ({}) and VERSION's native Lua attribute ({}) do not match".format(
+        VERSION, cnf.env.project_version
+    )
     assert cnf.env.project_version == VERSION, err_msg
 
     confpy_version = cnf.path.find_node("conf.py").read(encoding="utf-8")
@@ -178,13 +182,17 @@ def configure(cnf):  # pylint: disable=R0912
         if i.startswith("version"):
             ver = i.split("=")[1].replace('"', "").strip()
             break
-    err_msg = "wscript VERSION ({}) and conf.py version ({}) do not match".format(VERSION, ver)
+    err_msg = "wscript VERSION ({}) and conf.py version ({}) do not match".format(
+        VERSION, ver
+    )
     assert ver == VERSION, err_msg
     ver = ""
 
     readme = cnf.path.find_node("README.rst").read()
     ver = readme.find("based on native Lua ({})".format(VERSION))
-    err_msg = "wscript VERSION ({}) and README.rst 'lua -v version' ({}) do not match".format(VERSION, ver)
+    err_msg = "wscript VERSION ({}) and README.rst 'lua -v version' ({}) do not match".format(
+        VERSION, ver
+    )
     assert ver > 0, err_msg
 
     cnf.env.lua_src_version = version_info["lua"]
