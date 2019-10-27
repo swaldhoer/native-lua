@@ -25,7 +25,9 @@ Changed
 - Updated `sphinx_rtd_theme` to 2a1b2e1353f6401af96885a66488ac0811110ba2.
 - Check that all version numbers in the project match during project
   configuration (``wscript``).
-- use yaml to load the version information from ``VERSION`` file.
+- Use yaml to load the version information from ``VERSION`` file.
+- Issue a warning if the lua binaries are installed into a directory that is not
+  available in PATH.
 
 Fixed
 =====
@@ -34,6 +36,8 @@ Fixed
 - Fixed list of tested compilers and platforms (``README.rst``).
 - Consequently use the correct project name ``native Lua`` (previously
   ``native-lua``).
+- man files were installed into $PREFIX. Now they are correctly installed into
+  man/man1.
 
 ********************
 [0.1.0] - 2019-10-15

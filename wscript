@@ -19,7 +19,7 @@ from waflib.Build import InstallContext, UninstallContext
 from waflib.Tools.gnu_dirs import gnuopts
 
 # man1 is missing waf gnu_dirs implementation
-gnuopts += "mandir1, manual pages, ${DATAROOTDIR}/man1\n"
+gnuopts += "man1dir, manual pages, ${DATAROOTDIR}/man1\n"
 
 VERSION = "0.2.0-development"
 APPNAME = "lua"
@@ -558,6 +558,15 @@ def build(bld):
         "**", excl=".lock* config.log c4che/* build.log", quiet=True, generator=True
     )
 
+    # check that the binary is available in PATH
+    if bld.cmd.startswith("install"):
+        bin_dir = Utils.subst_vars(bld.env.BINDIR, bld.env)
+        if not any(
+            [x if x == bin_dir else False for x in os.environ["PATH"].split(os.pathsep)]
+        ):
+            Logs.warn("lua is not in available in PATH.")
+            Logs.warn("Add the following path to PATH: {}".format(bin_dir))
+
     # setup install files
     if Utils.is_win32:
         if bld.variant == "gcc":
@@ -574,11 +583,11 @@ def build(bld):
     else:
         # man files do not make sense on win32
         bld.install_files(
-            "${MAN}",
+            "${MANDIR}",
             bld.path.find_node(os.path.join("docs", "_static", "doc", "lua.1")),
         )
         bld.install_files(
-            "${MAN1}",
+            "${MAN1DIR}",
             bld.path.find_node(os.path.join("docs", "_static", "doc", "luac.1")),
         )
 
