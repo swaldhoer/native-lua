@@ -17,6 +17,8 @@ Added
 - Added header for C/C++ files (see ``CONTRIBUTING.rst``).
 - Added the license information for sphinx_rtd_theme
   (``docs/_themes/sphinx_rtd_theme/LICENSE``).
+- Added information on the build and install process (``docs/build.rst``,
+  ``docs/install.rst``).
 
 Changed
 =======
