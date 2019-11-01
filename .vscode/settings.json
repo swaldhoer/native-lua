@@ -246,6 +246,7 @@
         "CPPFLAGS",
         "CPPPATH",
         "intelli",
-        "sigs"
+        "sigs",
+        "toolchain"
     ],
 }

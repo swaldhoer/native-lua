@@ -69,9 +69,9 @@ This means:
 Implementation Details Of The Build Process
 *******************************************
 
-``native Lua`` uses waf as build tool. For details on waf see
-`waf.io <https://waf.io/>`. The build instructions are implement in the build
-script ``wscript``.
+``native Lua`` uses ``waf`` as build tool. For details on ``waf`` see
+`waf.io <https://waf.io/>`_. The build instructions are implement in the build
+script (``wscript``).
 
 The build process consists of two steps:
 

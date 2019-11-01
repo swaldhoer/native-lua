@@ -31,10 +31,16 @@ Changed
 - Issue a warning if the lua binaries are installed into a directory that is
   not available in PATH.
 
+Removed
+=======
+
+- Unused file ``tests/all_win.lua`` has been removed.
+
 Fixed
 =====
 
-- Lua manual was not correctly linked into the documentation.
+- Lua manual was not correctly linked into the documentation. Now man files are
+  correctly installed into ``man/man1`` on Unix-like systems.
 - Fixed list of tested compilers and platforms (``README.rst``).
 - Consequently use the correct project name ``native Lua`` (previously
   ``native-lua``).

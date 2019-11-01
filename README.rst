@@ -133,11 +133,11 @@ are removed.
 
 Furthermore for some tests, require changes to the test files in order to work
 on platforms. The changes made to these files are indicated by the
-following line:
+following comment:
 
-.. code-block:: sh
+.. code-block:: lua
 
-   -- Added by 'native-lua' project, see https://github.com/swaldhoer/native-lua.
+   -- native-lua
 
 Test files for the build toolchain have been added in ``build``.
 
