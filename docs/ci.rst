@@ -31,7 +31,7 @@ Project Status
 +--------------------+-----------------------+-------------------+
 | Azure Pipelines    | |AzurePipelinesBUILD| | - Windows         |
 |                    |                       |                   |
-|                    |                       |   - msvc (TODO)   |
+|                    |                       |   - msvc          |
 |                    |                       |   - gcc (TODO)    |
 |                    |                       |   - clang (TODO)  |
 |                    |                       |                   |

@@ -17,6 +17,8 @@ Added
 - Added header for C/C++ files (see ``CONTRIBUTING.rst``).
 - Added the license information for sphinx_rtd_theme
   (``docs/_themes/sphinx_rtd_theme/LICENSE``).
+- Added information on the build and install process (``docs/build.rst``,
+  ``docs/install.rst``).
 
 Changed
 =======
@@ -26,13 +28,19 @@ Changed
 - Check that all version numbers in the project match during project
   configuration (``wscript``).
 - Use yaml to load the version information from ``VERSION`` file.
-- Issue a warning if the lua binaries are installed into a directory that is not
-  available in PATH.
+- Issue a warning if the lua binaries are installed into a directory that is
+  not available in PATH.
+
+Removed
+=======
+
+- Unused file ``tests/all_win.lua`` has been removed.
 
 Fixed
 =====
 
-- Lua manual was not correctly linked into the documentation.
+- Lua manual was not correctly linked into the documentation. Now man files are
+  correctly installed into ``man/man1`` on Unix-like systems.
 - Fixed list of tested compilers and platforms (``README.rst``).
 - Consequently use the correct project name ``native Lua`` (previously
   ``native-lua``).
