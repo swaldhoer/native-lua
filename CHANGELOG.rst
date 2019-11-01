@@ -26,8 +26,8 @@ Changed
 - Check that all version numbers in the project match during project
   configuration (``wscript``).
 - Use yaml to load the version information from ``VERSION`` file.
-- Issue a warning if the lua binaries are installed into a directory that is not
-  available in PATH.
+- Issue a warning if the lua binaries are installed into a directory that is
+  not available in PATH.
 
 Fixed
 =====

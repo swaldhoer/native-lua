@@ -16,10 +16,6 @@ from waflib.Tools import c_preproc
 from waflib.Build import BuildContext, CleanContext, ListContext, StepContext
 from waflib.Build import InstallContext, UninstallContext
 
-from waflib.Tools.gnu_dirs import gnuopts
-
-# man1 is missing waf gnu_dirs implementation
-gnuopts += "man1dir, manual pages, ${DATAROOTDIR}/man1\n"
 
 VERSION = "0.2.0-development"
 APPNAME = "lua"
@@ -95,13 +91,6 @@ def options(opt):
     opt.parser.remove_option("--psdir")
     opt.parser.remove_option("--localedir")
     opt_gr = opt.get_option_group("Installation directories")
-    opt_gr.add_option(
-        "--man1dir",
-        action="store",
-        default="${DATAROOTDIR}/man1",
-        help="system manual pages [DATAROOTDIR/man1]",
-        dest="MAN1DIR",
-    )
     opt.add_option(
         "--confcache",
         dest="confcache",
@@ -241,7 +230,6 @@ def configure(cnf):  # pylint: disable=R0912
     cnf.env.include_tests = cnf.options.include_tests
     cnf.env.ltests = cnf.options.ltests
     cnf.load("gnu_dirs")
-    cnf.env.MAN1DIR = Utils.subst_vars(cnf.options.MAN1DIR, cnf.env)
 
     min_c = "#include<stdio.h>\nint main() {\n    return 0;\n}\n"
 
@@ -583,12 +571,11 @@ def build(bld):
     else:
         # man files do not make sense on win32
         bld.install_files(
-            "${MANDIR}",
-            bld.path.find_node(os.path.join("docs", "_static", "doc", "lua.1")),
-        )
-        bld.install_files(
-            "${MAN1DIR}",
-            bld.path.find_node(os.path.join("docs", "_static", "doc", "luac.1")),
+            "${MANDIR}/man1",
+            [
+                bld.path.find_node(os.path.join("docs", "_static", "doc", "lua.1")),
+                bld.path.find_node(os.path.join("docs", "_static", "doc", "luac.1")),
+            ],
         )
 
     include_files = [
