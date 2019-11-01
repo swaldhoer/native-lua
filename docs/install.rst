@@ -28,6 +28,26 @@ On Unix-like systems the following files are installed:
   - lua.1
   - luac.1
 
-On Windows:
+On Windows the following files are installed:
 
-TODO
+- %LOCALAPPDATA%\Programs\lua\bin
+
+  - lua.exe
+  - lua.exe.manifest (msvc only)
+  - luac.exe
+  - luac.exe.manifest (msvc only)
+  - luadll.dll
+  - luadll.dll.manifest (msvc only)
+
+- %LOCALAPPDATA%\Programs\lua\include
+
+  - lauxlib.h
+  - lua.h
+  - lua.hpp
+  - luaconf.h
+  - lualib.h
+
+- - %LOCALAPPDATA%\Programs\lua\lib\luadll.dll.a (gcc only)
+- - %LOCALAPPDATA%\Programs\lua\lib\luadll.dll (clang, msvc only)
+- - %LOCALAPPDATA%\Programs\lua\lib\luadll.dll.manifest (msvc only)
+- - %LOCALAPPDATA%\Programs\lua\lib\luadll.lib (msvc only)
