@@ -46,6 +46,7 @@ Fixed
   ``native-lua``).
 - man files were installed into $PREFIX. Now they are correctly installed into
   man/man1.
+- Fixed linker flags on macOS when using GCC
 
 ********************
 [0.1.0] - 2019-10-15
