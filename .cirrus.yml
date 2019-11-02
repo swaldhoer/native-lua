@@ -1,6 +1,4 @@
 task:
-  allow_failures: $CIRRUS_OS == 'darwin'
-  skip_notifications: $CIRRUS_OS == 'darwin'
   matrix:
     - container:
         image: python:3.7

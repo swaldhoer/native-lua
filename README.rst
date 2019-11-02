@@ -57,7 +57,7 @@ The current release supports the following platform/compiler combinations:
 +----------+-----------------------+-------------------------------+
 | linux    | gcc                   | gcc, clang, icc*              |
 +----------+-----------------------+-------------------------------+
-| macOS    | gcc                   | gcc*, clang                   |
+| macOS    | gcc                   | gcc, clang                    |
 +----------+-----------------------+-------------------------------+
 | MinGW    | gcc                   | see win32                     |
 +----------+-----------------------+-------------------------------+
@@ -151,7 +151,7 @@ The documentation can be found on `readthedocs.io`_.
 CI
 **
 
-- Azure Pipelines: Linux, MacOS
+- Azure Pipelines: Linux, MacOS, Windows
 - AppVeyor: Linux, Windows
 - Cirrus CI: Linux, FreeBSD
 - Travis CI: Linux, MacOS

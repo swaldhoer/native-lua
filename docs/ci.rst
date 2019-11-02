@@ -39,9 +39,10 @@ Project Status
 |                    |                       |                   |
 |                    |                       |   - gcc           |
 |                    |                       |   - clang         |
+|                    |                       |                   |
 |                    |                       | - macOS           |
 |                    |                       |                   |
-|                    |                       |   - gcc (TODO)    |
+|                    |                       |   - gcc           |
 |                    |                       |   - clang         |
 +--------------------+-----------------------+-------------------+
 | Travis-CI          | |TravisBUILD|         | - Ubuntu          |
