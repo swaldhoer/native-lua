@@ -1,6 +1,7 @@
 task:
   allow_failures: $CIRRUS_OS == 'darwin'
   skip_notifications: $CIRRUS_OS == 'darwin'
+  skip: "!changesInclude('azure-pipelines.yml', '.travis.yml', '.appveyor.yml'"
   matrix:
     - container:
         image: python:3.7
