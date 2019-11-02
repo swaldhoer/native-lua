@@ -164,6 +164,7 @@ jobs:
       - script: |
           set -euxo pipefail
           python waf configure --include-tests --prefix=/opt/lua -v
+          # clang
           python waf build_clang -v
           sudo python waf install_clang
           pushd build/clang/tests
@@ -172,12 +173,22 @@ jobs:
           popd
           sudo python waf uninstall_clang
           python waf clean_clang
+          # gcc
+          python waf build_gcc -v
+          sudo python waf install_gcc
+          pushd build/gcc/tests
+          lua -e"_U=true" all.lua
+          # lua all.lua
+          popd
+          sudo python waf uninstall_gcc
+          python waf clean_gcc
           python waf distclean
-        displayName: clang build including tests
+        displayName: clang and gcc build including tests
 
       - script: |
           set -euxo pipefail
           python waf configure --ltests --include-tests --prefix=/opt/lua -v
+          # clang
           python waf build_clang -v
           sudo python waf install_clang
           pushd build/clang/tests
@@ -185,5 +196,14 @@ jobs:
           # lua all.lua
           popd
           sudo python waf uninstall_clang
-          python waf clean_clang
-        displayName: clang build including tests and ltests
+          # gcc
+          python waf build_gcc -v
+          sudo python waf install_gcc
+          pushd build/gcc/tests
+          lua -e"_U=true" all.lua
+          # lua all.lua
+          popd
+          sudo python waf uninstall_gcc
+          python waf clean_gcc
+          python waf distclean
+        displayName: clang and gcc build including tests and ltests

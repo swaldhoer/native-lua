@@ -412,8 +412,8 @@ def configure(cnf):  # pylint: disable=R0912
         try:  # gcc
             set_new_basic_env("gcc")
             cnf.load("compiler_c")
-            cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            #cnf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
+            cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra", "-v"]
+            # cnf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
             cnf.check_cc(fragment=min_c, execute=True)
             check_libs("m", "readline")
             platform_compilers.append(cnf.env.env_name)
