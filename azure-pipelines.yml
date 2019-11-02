@@ -163,8 +163,8 @@ jobs:
 
       - script: |
           set -euxo pipefail
-          python waf configure --include-tests --prefix=/opt/lua
-          python waf build_clang
+          python waf configure --include-tests --prefix=/opt/lua -v
+          python waf build_clang -v
           sudo python waf install_clang
           pushd build/clang/tests
           lua -e"_U=true" all.lua
@@ -177,8 +177,8 @@ jobs:
 
       - script: |
           set -euxo pipefail
-          python waf configure --ltests --include-tests --prefix=/opt/lua
-          python waf build_clang
+          python waf configure --ltests --include-tests --prefix=/opt/lua -v
+          python waf build_clang -v
           sudo python waf install_clang
           pushd build/clang/tests
           lua -e"_U=true" all.lua
