@@ -136,7 +136,7 @@ jobs:
 
   - job: OSXBuild
     pool:
-      vmImage: 'macOS-10.13'
+      vmImage: 'macOS-latest'
     displayName: "MacOSX Build"
     steps:
       - script: echo "##vso[task.prependpath]/usr/local/opt/python/libexec/bin"
