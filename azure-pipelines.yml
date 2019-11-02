@@ -19,6 +19,7 @@ jobs:
         inputs:
           versionSpec: '3.6'
           architecture: 'x64'
+
       - script: echo "##vso[task.prependpath]/opt/lua/bin"
         displayName: Add to path
 
@@ -113,7 +114,6 @@ jobs:
           python scripts/run_test.py -c gcc -c clang --simple-test --ltests
         displayName: test script (gcc, clang) with --simple-test and ltests
 
-
   - job: Windows
     pool:
       vmImage: 'windows-2019'
@@ -124,10 +124,13 @@ jobs:
           versionSpec: '3.6'
           addToPath: true
           architecture: 'x64'
+
       - script: pip install sphinx pyyaml -q
         displayName: installing dependencies
+
       - script: python scripts\run_test.py -c msvc --simple-test
         displayName: test script (msvc) with --simple-test
+
       - script: python scripts\run_test.py -c msvc --simple-test --ltests
         displayName: test script (msvc) with --simple-test and ltests
 
@@ -138,12 +141,15 @@ jobs:
     steps:
       - script: echo "##vso[task.prependpath]/usr/local/opt/python/libexec/bin"
         displayName: Add python to path
+
       - script: echo "##vso[task.prependpath]/opt/lua/bin"
         displayName: Add lua install path to path
       - script: echo "##vso[task.prependpath]/usr/local/Cellar/gcc/9.1.0/bin/"
         displayName: Add gcc to path
+
       - script: echo $PATH
         displayName: echo PATH
+
       - script: |
           set -euxo pipefail
           brew install --force gcc
@@ -160,10 +166,12 @@ jobs:
           brew install python3
           pip install sphinx pyyaml -q
         displayName: Install dependencies
+
       - script: |
           set -euxo pipefail
           python waf configure --include-tests --prefix=/opt/lua -v
         displayName: configure with tests
+
       - script: |
           set -euxo pipefail
           python waf build_clang -v
@@ -175,6 +183,7 @@ jobs:
           sudo python waf uninstall_clang
           python waf clean_clang
         displayName: clang build including tests
+
       - script: |
           set -euxo pipefail
           python waf build_gcc -v
@@ -186,14 +195,17 @@ jobs:
           sudo python waf uninstall_gcc
           python waf clean_gcc
         displayName: gcc build including tests
+
       - script: |
           set -euxo pipefail
           python waf distclean
         displayName: distclean
+
       - script: |
           set -euxo pipefail
           python waf configure --ltests --include-tests --prefix=/opt/lua -v
         displayName: configure with tests and ltests
+
       - script: |
           set -euxo pipefail
           python waf build_clang -v
@@ -205,6 +217,7 @@ jobs:
           sudo python waf uninstall_clang
           python waf clean_clang
         displayName: clang build including tests and ltests
+
       - script: |
           set -euxo pipefail
           python waf build_gcc -v
@@ -216,6 +229,7 @@ jobs:
           sudo python waf uninstall_gcc
           python waf clean_gcc
         displayName: gcc build including tests and ltests
+
       - script: |
           set -euxo pipefail
           python waf distclean
