@@ -160,11 +160,12 @@ jobs:
           brew install python3
           pip install sphinx pyyaml -q
         displayName: Install dependencies
-
       - script: |
           set -euxo pipefail
           python waf configure --include-tests --prefix=/opt/lua -v
-          # clang
+        displayName: configure with tests
+      - script: |
+          set -euxo pipefail
           python waf build_clang -v
           sudo python waf install_clang
           pushd build/clang/tests
@@ -173,7 +174,9 @@ jobs:
           popd
           sudo python waf uninstall_clang
           python waf clean_clang
-          # gcc
+        displayName: clang build including tests
+      - script: |
+          set -euxo pipefail
           python waf build_gcc -v
           sudo python waf install_gcc
           pushd build/gcc/tests
@@ -182,13 +185,17 @@ jobs:
           popd
           sudo python waf uninstall_gcc
           python waf clean_gcc
+        displayName: gcc build including tests
+      - script: |
+          set -euxo pipefail
           python waf distclean
-        displayName: clang and gcc build including tests
-
+        displayName: distclean
       - script: |
           set -euxo pipefail
           python waf configure --ltests --include-tests --prefix=/opt/lua -v
-          # clang
+        displayName: configure with tests and ltests
+      - script: |
+          set -euxo pipefail
           python waf build_clang -v
           sudo python waf install_clang
           pushd build/clang/tests
@@ -196,7 +203,10 @@ jobs:
           # lua all.lua
           popd
           sudo python waf uninstall_clang
-          # gcc
+          python waf clean_clang
+        displayName: clang build including tests and ltests
+      - script: |
+          set -euxo pipefail
           python waf build_gcc -v
           sudo python waf install_gcc
           pushd build/gcc/tests
@@ -205,5 +215,8 @@ jobs:
           popd
           sudo python waf uninstall_gcc
           python waf clean_gcc
+        displayName: gcc build including tests and ltests
+      - script: |
+          set -euxo pipefail
           python waf distclean
-        displayName: clang and gcc build including tests and ltests
+        displayName: distclean
