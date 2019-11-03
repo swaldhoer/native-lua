@@ -26,6 +26,9 @@ matrix:
 
 install:
   - pip3 install sphinx pyyaml -q
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew unlink gcc ; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew link gcc ; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then ln -s /usr/local/bin/gcc-9 /usr/local/bin/gcc ; fi
 
 before_script:
   - if [ "$TRAVIS_OS_NAME" = "linux" ]; then which gcc ; fi
