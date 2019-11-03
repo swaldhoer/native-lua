@@ -28,8 +28,8 @@ install:
   - pip3 install sphinx pyyaml -q
 
 before_script:
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; which gcc ; fi
-  - if [ "$TRAVIS_OS_NAME" = "osx" ]; greadlink -f `which gcc` ; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then which gcc ; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then greadlink -f `which gcc` ; fi
   - gcc --version
   - which clang
   - clang --version
