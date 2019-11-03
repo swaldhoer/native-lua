@@ -11,17 +11,13 @@ matrix:
       dist: xenial
       language: python
       sudo: required
-    - os: osx
-      osx_image: xcode10.2
-      language: c
+    - os: linux
+      dist: bionic
+      language: python
       sudo: required
-      addons:
-        homebrew:
-          packages:
-            - python3
-            - gcc
-  allow_failures:
-    - os: osx
+
+install:
+  - pip3 install sphinx pyyaml -q
 
 before_script:
   - which gcc
@@ -31,8 +27,6 @@ before_script:
   - echo $PATH
 
 script:
-  - pip3 install sphinx pyyaml -q
-  # basic configuration
   - python3 waf configure -vv
   # check documentation build
   - python3 waf build_docs

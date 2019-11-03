@@ -52,7 +52,6 @@ Project Status
 |                    |                       |                   |
 |                    |                       | - macOS           |
 |                    |                       |                   |
-|                    |                       |   - gcc (TODO)    |
 |                    |                       |   - clang         |
 +--------------------+-----------------------+-------------------+
 | Cirrus-CI          | |CirrusBUILD|         | - Linux           |
