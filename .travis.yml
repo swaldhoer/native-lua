@@ -11,28 +11,16 @@ matrix:
       dist: xenial
       language: python
       sudo: required
-    - os: osx
-      osx_image: xcode10.2
-      language: c
+    - os: linux
+      dist: bionic
+      language: python
       sudo: required
-      addons:
-        homebrew:
-          packages:
-            - python3
-            - gcc
-            - coreutils
-  allow_failures:
-    - os: osx
 
 install:
   - pip3 install sphinx pyyaml -q
-  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew unlink gcc ; fi
-  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then brew link gcc ; fi
-  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then ln -s /usr/local/bin/gcc-9 /usr/local/bin/gcc ; fi
 
 before_script:
-  - if [ "$TRAVIS_OS_NAME" = "linux" ]; then which gcc ; fi
-  - if [ "$TRAVIS_OS_NAME" = "osx" ]; then greadlink -f `which gcc` ; fi
+  - which gcc
   - gcc --version
   - which clang
   - clang --version

@@ -154,7 +154,7 @@ CI
 - Azure Pipelines: Linux, MacOS, Windows
 - AppVeyor: Linux, Windows
 - Cirrus CI: Linux, FreeBSD
-- Travis CI: Linux, MacOS
+- Travis CI: Linux
 - ReadTheDocs.org: Documentation
 
 On AppVeyor's Windows build we also run |black|_ and |pylint|_.
