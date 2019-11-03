@@ -20,19 +20,22 @@ matrix:
           packages:
             - python3
             - gcc
+            - coreutils
   allow_failures:
     - os: osx
 
+install:
+  - pip3 install sphinx pyyaml -q
+
 before_script:
-  - which gcc
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; which gcc ; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; greadlink -f `which gcc` ; fi
   - gcc --version
   - which clang
   - clang --version
   - echo $PATH
 
 script:
-  - pip3 install sphinx pyyaml -q
-  # basic configuration
   - python3 waf configure -vv
   # check documentation build
   - python3 waf build_docs
