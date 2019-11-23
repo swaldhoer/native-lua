@@ -32,7 +32,7 @@
     "editor.insertSpaces": true,
     "editor.renderWhitespace": "all",
     "editor.rulers": [
-        80
+        79
     ],
     "cSpell.languageSettings": [
         {
@@ -72,7 +72,6 @@
     "cSpell.ignoreWords": [
         "Qspectre",
         "dylib",
-        // software, library, commands, options etc.
         "iframe",
         "mathjax",
         "SPDX",
@@ -90,7 +89,6 @@
         "cmds",
         "readline",
         "rpath",
-        // waf, python, rst
         "pyproject",
         "bldnode",
         "setenv",
@@ -116,13 +114,11 @@
         "nopycache",
         "isdir",
         "literalinclude",
-        // project variables
         "ltests",
         "cflags",
         "luac",
         "luadll",
         "hdlr",
-        // lua file names
         "lualib",
         "lapi",
         "lauxlib",
@@ -167,7 +163,6 @@
         "tpack",
         "vararg",
         "verybig",
-        // lua sources
         "LOADK",
         "LOADKX",
         "GETTABUP",
@@ -236,17 +231,17 @@
         "checknelems",
         "narg",
         "nresults",
-        // other
         "AppVeyor",
         "confpy",
-        "todos"
-    ],
-    "cSpell.words": [
+        "todos",
         "CCDEPS",
         "CPPFLAGS",
         "CPPPATH",
+        "LOCALAPPDATA",
         "intelli",
-        "sigs",
+        "sigs"
+    ],
+    "cSpell.words": [
         "toolchain"
     ],
 }
