@@ -12,7 +12,7 @@ trigger:
 jobs:
   - job: Linux
     pool:
-      vmImage: 'ubuntu-latest'
+      vmImage: 'ubuntu-18.04'
     displayName: "Linux Build"
     steps:
       - task: UsePythonVersion@0
@@ -120,7 +120,7 @@ jobs:
 
   - job: Windows
     pool:
-      vmImage: 'windows-latest'
+      vmImage: 'windows-2019'
     displayName: "Windows Build"
     steps:
       - task: UsePythonVersion@0
@@ -142,7 +142,7 @@ jobs:
 
   - job: OSXBuild
     pool:
-      vmImage: 'macOS-latest'
+      vmImage: 'macOS-10.14'
     displayName: "MacOSX Build"
     steps:
       - script: echo "##vso[task.prependpath]/usr/local/opt/python/libexec/bin"
