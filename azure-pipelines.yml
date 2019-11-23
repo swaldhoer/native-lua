@@ -11,6 +11,7 @@ trigger:
 
 jobs:
   - job: Linux
+    pool:
       vmImage: 'ubuntu-latest'
     displayName: "Linux Build"
     steps:
