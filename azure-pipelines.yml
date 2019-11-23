@@ -11,7 +11,6 @@ trigger:
 
 jobs:
   - job: Linux
-    pool:
       vmImage: 'ubuntu-latest'
     displayName: "Linux Build"
     steps:
@@ -19,6 +18,9 @@ jobs:
         inputs:
           versionSpec: '3.6'
           architecture: 'x64'
+
+      - script: lsb_release -a
+        displayName: Ubuntu details
 
       - script: echo "##vso[task.prependpath]/opt/lua/bin"
         displayName: Add to path
@@ -36,6 +38,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y clang-8 lld-8
           sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-8 100
+          pip install --upgrade pip -q
           pip install sphinx pathlib pyyaml -q
         displayName: Install dependencies
 
@@ -125,7 +128,9 @@ jobs:
           addToPath: true
           architecture: 'x64'
 
-      - script: pip install sphinx pyyaml -q
+      - script: |
+          pip install --upgrade pip -q
+          pip install sphinx pyyaml -q
         displayName: installing dependencies
 
       - script: python scripts\run_test.py -c msvc --simple-test
@@ -164,6 +169,7 @@ jobs:
           gcc --version
           echo | gcc -E -Wp,-v -
           brew install python3
+          pip install --upgrade pip -q
           pip install sphinx pyyaml -q
         displayName: Install dependencies
 
