@@ -32,7 +32,7 @@ Project Status
 | Azure Pipelines    | |AzurePipelinesBUILD| | - Windows         |
 |                    |                       |                   |
 |                    |                       |   - msvc          |
-|                    |                       |   - gcc (TODO)    |
+|                    |                       |   - gcc           |
 |                    |                       |   - clang (TODO)  |
 |                    |                       |                   |
 |                    |                       | - Ubuntu          |
