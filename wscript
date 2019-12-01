@@ -636,11 +636,12 @@ def build(bld):
     test_files = bld.path.ant_glob(bld.env.tests_basepath + "/**/*.lua")
     bld.env.test_files = [t.path_from(bld.path) for t in test_files]
     bld.env.libs_path = os.path.join(bld.env.tests_basepath, "libs")
-    bld.env.test_sources = [
-        os.path.join(bld.env.libs_path, "lib1.c"),
-        os.path.join(bld.env.libs_path, "lib11.c"),
-        os.path.join(bld.env.libs_path, "lib2.c"),
-        os.path.join(bld.env.libs_path, "lib21.c"),
+    bld.env.library_test = [
+        (os.path.join(bld.env.libs_path, "lib1.c"), "lib1"),
+        (os.path.join(bld.env.libs_path, "lib11.c"), "lib11"),
+        (os.path.join(bld.env.libs_path, "lib2.c"), "lib2"),
+        (os.path.join(bld.env.libs_path, "lib2.c"), "lib2-v2"),
+        (os.path.join(bld.env.libs_path, "lib21.c"), "lib21"),
     ]
     if bld.variant == "docs":
         source = bld.path.ant_glob("*.rst docs/**/*.rst")
@@ -728,23 +729,16 @@ def build_generic(bld):
 
     if bld.env.include_tests:
         bld.path.get_bld().make_node(bld.env.tests_basepath + "/libs/P1").mkdir()
-        for tst_src in bld.env.test_sources:
-            outfile = re.match(".*?([0-9]+.c)$", tst_src).group(1).split(".")[0]
-            outfile = bld.env.tests_basepath + "/libs/" + outfile
+        for src, tgt in bld.env.library_test:
+            outfile = bld.env.tests_basepath + "/libs/" + tgt
             bld.shlib(
-                source=tst_src,
+                source=src,
                 target=outfile,
                 defines=defines_tests,
                 includes=os.path.abspath(
                     os.path.join(bld.path.abspath(), bld.env.src_basepath)
                 ),
             )
-        bld(
-            features="subst",
-            source=bld.env.tests_basepath + "/libs/lib2.so",
-            target=bld.env.tests_basepath + "/libs/lib2-v2.so",
-            is_copy=True,
-        )
 
 
 def build_aix(bld):
@@ -819,23 +813,16 @@ def build_freebsd(bld):
 
     if bld.env.include_tests:
         bld.path.get_bld().make_node(bld.env.tests_basepath + "/libs/P1").mkdir()
-        for tst_src in bld.env.test_sources:
-            outfile = re.match(".*?([0-9]+.c)$", tst_src).group(1).split(".")[0]
-            outfile = bld.env.tests_basepath + "/libs/" + outfile
+        for src, tgt in bld.env.library_test:
+            outfile = bld.env.tests_basepath + "/libs/" + tgt
             bld.shlib(
-                source=tst_src,
+                source=src,
                 target=outfile,
                 defines=defines_tests,
                 includes=os.path.abspath(
                     os.path.join(bld.path.abspath(), bld.env.src_basepath)
                 ),
             )
-        bld(
-            features="subst",
-            source=bld.env.tests_basepath + "/libs/lib2.so",
-            target=bld.env.tests_basepath + "/libs/lib2-v2.so",
-            is_copy=True,
-        )
 
 
 def build_linux(bld):
@@ -890,23 +877,16 @@ def build_linux(bld):
 
     if bld.env.include_tests:
         bld.path.get_bld().make_node(bld.env.tests_basepath + "/libs/P1").mkdir()
-        for tst_src in bld.env.test_sources:
-            outfile = re.match(".*?([0-9]+.c)$", tst_src).group(1).split(".")[0]
-            outfile = bld.env.tests_basepath + "/libs/" + outfile
+        for src, tgt in bld.env.library_test:
+            outfile = bld.env.tests_basepath + "/libs/" + tgt
             bld.shlib(
-                source=tst_src,
+                source=src,
                 target=outfile,
                 defines=defines_tests,
                 includes=os.path.abspath(
                     os.path.join(bld.path.abspath(), bld.env.src_basepath)
                 ),
             )
-        bld(
-            features="subst",
-            source=bld.env.tests_basepath + "/libs/lib2.so",
-            target=bld.env.tests_basepath + "/libs/lib2-v2.so",
-            is_copy=True,
-        )
 
 
 def build_darwin(bld):
@@ -962,28 +942,18 @@ def build_darwin(bld):
     if bld.env.include_tests:
         pass
         # https://github.com/swaldhoer/native-lua/issues/44
-        # bld.path.get_bld().make_node(bld.env.tests_basepath + "/libs/P1").mkdir()
-        # for tst_src in bld.env.test_sources:
-        #     outfile = re.match(".*?([0-9]+.c)$", tst_src).group(1).split(".")[0]
-        #     outfile = bld.env.tests_basepath + "/libs/" + outfile
-        #     bld.shlib(
-        #         source=tst_src,
-        #         target=outfile,
-        #         defines=defines_tests,
-        #         includes=os.path.abspath(
-        #             os.path.join(bld.path.abspath(), bld.env.src_basepath)
-        #         ),
-        #     )
-        # if bld.env.CC_NAME == "gcc":
-        #     ext = ".so"
-        # elif bld.env.CC_NAME == "clang":
-        #     ext = ".dylib"
-        # bld(
-        #     features="subst",
-        #     source=bld.env.tests_basepath + "/libs/lib2" + ext,
-        #     target=bld.env.tests_basepath + "/libs/lib2-v2" + ext,
-        #     is_copy=True,
-        # )
+        if bld.env.include_tests:
+            bld.path.get_bld().make_node(bld.env.tests_basepath + "/libs/P1").mkdir()
+            for src, tgt in bld.env.library_test:
+                outfile = bld.env.tests_basepath + "/libs/" + tgt
+                bld.shlib(
+                    source=src,
+                    target=outfile,
+                    defines=defines_tests,
+                    includes=os.path.abspath(
+                        os.path.join(bld.path.abspath(), bld.env.src_basepath)
+                    ),
+                )
 
 
 def build_win32(bld):
@@ -1191,20 +1161,13 @@ def build_solaris(bld):
 
     if bld.env.include_tests:
         bld.path.get_bld().make_node(bld.env.tests_basepath + "/libs/P1").mkdir()
-        for tst_src in bld.env.test_sources:
-            outfile = re.match(".*?([0-9]+.c)$", tst_src).group(1).split(".")[0]
-            outfile = bld.env.tests_basepath + "/libs/" + outfile
+        for src, tgt in bld.env.library_test:
+            outfile = bld.env.tests_basepath + "/libs/" + tgt
             bld.shlib(
-                source=tst_src,
+                source=src,
                 target=outfile,
                 defines=defines_tests,
                 includes=os.path.abspath(
                     os.path.join(bld.path.abspath(), bld.env.src_basepath)
                 ),
             )
-        bld(
-            features="subst",
-            source=bld.env.tests_basepath + "/libs/lib2.so",
-            target=bld.env.tests_basepath + "/libs/lib2-v2.so",
-            is_copy=True,
-        )
