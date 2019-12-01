@@ -728,17 +728,7 @@ def build_generic(bld):
     )
 
     if bld.env.include_tests:
-        bld.path.get_bld().make_node(bld.env.tests_basepath + "/libs/P1").mkdir()
-        for src, tgt in bld.env.library_test:
-            outfile = bld.env.tests_basepath + "/libs/" + tgt
-            bld.shlib(
-                source=src,
-                target=outfile,
-                defines=defines_tests,
-                includes=os.path.abspath(
-                    os.path.join(bld.path.abspath(), bld.env.src_basepath)
-                ),
-            )
+        build_lib_tests(bld, defines_tests)
 
 
 def build_aix(bld):
@@ -812,17 +802,7 @@ def build_freebsd(bld):
     )
 
     if bld.env.include_tests:
-        bld.path.get_bld().make_node(bld.env.tests_basepath + "/libs/P1").mkdir()
-        for src, tgt in bld.env.library_test:
-            outfile = bld.env.tests_basepath + "/libs/" + tgt
-            bld.shlib(
-                source=src,
-                target=outfile,
-                defines=defines_tests,
-                includes=os.path.abspath(
-                    os.path.join(bld.path.abspath(), bld.env.src_basepath)
-                ),
-            )
+        build_lib_tests(bld, defines_tests)
 
 
 def build_linux(bld):
@@ -876,17 +856,7 @@ def build_linux(bld):
     )
 
     if bld.env.include_tests:
-        bld.path.get_bld().make_node(bld.env.tests_basepath + "/libs/P1").mkdir()
-        for src, tgt in bld.env.library_test:
-            outfile = bld.env.tests_basepath + "/libs/" + tgt
-            bld.shlib(
-                source=src,
-                target=outfile,
-                defines=defines_tests,
-                includes=os.path.abspath(
-                    os.path.join(bld.path.abspath(), bld.env.src_basepath)
-                ),
-            )
+        build_lib_tests(bld, defines_tests)
 
 
 def build_darwin(bld):
@@ -939,20 +909,9 @@ def build_darwin(bld):
         use=["static-lua-library"] + use + use_ltests,
     )
 
-    if bld.env.include_tests and bld.env.CC_NAME == "gcc":
+    if bld.env.include_tests and 0:
         # https://github.com/swaldhoer/native-lua/issues/44
-        if bld.env.include_tests:
-            bld.path.get_bld().make_node(bld.env.tests_basepath + "/libs/P1").mkdir()
-            for src, tgt in bld.env.library_test:
-                outfile = bld.env.tests_basepath + "/libs/" + tgt
-                bld.shlib(
-                    source=src,
-                    target=outfile,
-                    defines=defines_tests,
-                    includes=os.path.abspath(
-                        os.path.join(bld.path.abspath(), bld.env.src_basepath)
-                    ),
-                )
+        build_lib_tests(bld, defines_tests)
 
 
 def build_win32(bld):
@@ -1066,9 +1025,9 @@ def build_win32(bld):
             use=["static-lua-library"] + use,
         )
 
-        if bld.env.include_tests:
-            pass
+        if bld.env.include_tests and 0:
             # https://github.com/swaldhoer/native-lua/issues/46
+            build_lib_tests(bld, defines_tests)
 
     if bld.env.CC_NAME == "msvc":
         build_win32_msvc()
@@ -1159,14 +1118,18 @@ def build_solaris(bld):
     )
 
     if bld.env.include_tests:
-        bld.path.get_bld().make_node(bld.env.tests_basepath + "/libs/P1").mkdir()
-        for src, tgt in bld.env.library_test:
-            outfile = bld.env.tests_basepath + "/libs/" + tgt
-            bld.shlib(
-                source=src,
-                target=outfile,
-                defines=defines_tests,
-                includes=os.path.abspath(
-                    os.path.join(bld.path.abspath(), bld.env.src_basepath)
-                ),
-            )
+        build_lib_tests(bld, defines_tests)
+
+
+def build_lib_tests(bld, defines_tests):
+    bld.path.get_bld().make_node(bld.env.tests_basepath + "/libs/P1").mkdir()
+    for src, tgt in bld.env.library_test:
+        outfile = bld.env.tests_basepath + "/libs/" + tgt
+        bld.shlib(
+            source=src,
+            target=outfile,
+            defines=defines_tests,
+            includes=os.path.abspath(
+                os.path.join(bld.path.abspath(), bld.env.src_basepath)
+            ),
+        )
