@@ -134,10 +134,10 @@ jobs:
           pip install sphinx pyyaml -q
         displayName: installing dependencies
 
-      - script: python scripts\run_test.py -c msvc --simple-test
+      - script: python scripts\run_test.py -c msvc -c gcc --simple-test -v
         displayName: test script (msvc) with --simple-test
 
-      - script: python scripts\run_test.py -c msvc --simple-test --ltests
+      - script: python scripts\run_test.py -c msvc -c gcc --simple-test --ltests -v
         displayName: test script (msvc) with --simple-test and ltests
 
   - job: OSXBuild
