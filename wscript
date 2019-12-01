@@ -939,8 +939,7 @@ def build_darwin(bld):
         use=["static-lua-library"] + use + use_ltests,
     )
 
-    if bld.env.include_tests:
-        pass
+    if bld.env.include_tests and bld.env.CC_NAME == "gcc":
         # https://github.com/swaldhoer/native-lua/issues/44
         if bld.env.include_tests:
             bld.path.get_bld().make_node(bld.env.tests_basepath + "/libs/P1").mkdir()
