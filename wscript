@@ -1122,9 +1122,11 @@ def build_solaris(bld):
 
 
 def build_lib_tests(bld, defines_tests):
-    bld.path.get_bld().make_node(bld.env.tests_basepath + "/libs/P1").mkdir()
+    bld.path.get_bld().make_node(
+        os.path.join(bld.env.tests_basepath, "libs", "P1")
+    ).mkdir()
     for src, tgt in bld.env.library_test:
-        outfile = bld.env.tests_basepath + "/libs/" + tgt
+        outfile = os.path.join(bld.env.tests_basepath, "libs", tgt)
         bld.shlib(
             source=src,
             target=outfile,
