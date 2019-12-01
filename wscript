@@ -637,11 +637,11 @@ def build(bld):
     bld.env.test_files = [t.path_from(bld.path) for t in test_files]
     bld.env.libs_path = os.path.join(bld.env.tests_basepath, "libs")
     bld.env.library_test = [
-        (os.path.join(bld.env.libs_path, "lib1.c"), "lib1"),
-        (os.path.join(bld.env.libs_path, "lib11.c"), "lib11"),
-        (os.path.join(bld.env.libs_path, "lib2.c"), "lib2"),
-        (os.path.join(bld.env.libs_path, "lib2.c"), "lib2-v2"),
-        (os.path.join(bld.env.libs_path, "lib21.c"), "lib21"),
+        (os.path.join(bld.env.libs_path, "lib1.c"), "1"),
+        (os.path.join(bld.env.libs_path, "lib11.c"), "11"),
+        (os.path.join(bld.env.libs_path, "lib2.c"), "2"),
+        (os.path.join(bld.env.libs_path, "lib2.c"), "2-v2"),
+        (os.path.join(bld.env.libs_path, "lib21.c"), "21"),
     ]
     if bld.variant == "docs":
         source = bld.path.ant_glob("*.rst docs/**/*.rst")
