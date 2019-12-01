@@ -122,7 +122,7 @@ project:
 .. code-block:: sh
 
    $ build/gcc/lua -v
-   Lua 5.3.5  Copyright (C) 1994-2017 Lua.org, PUC-Rio [based on native Lua (0.2.0-development), https://github.com/swaldhoer/native-lua]
+   Lua 5.3.5  Copyright (C) 1994-2017 Lua.org, PUC-Rio [based on native Lua (0.2.1), https://github.com/swaldhoer/native-lua]
 
 ``tests`` Directory
 ===================

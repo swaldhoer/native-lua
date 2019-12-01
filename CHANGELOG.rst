@@ -8,6 +8,15 @@ The format is based on `Keep a Changelog`_ v1.0.0, and this project adheres to
 `Semantic Versioning`_ v2.0.0.
 
 ********************
+[0.2.1] - 2019-12-01
+********************
+
+Changed
+=======
+
+- ``lua -v`` showed the wrong version information.
+
+********************
 [0.2.0] - 2019-11-23
 ********************
 
