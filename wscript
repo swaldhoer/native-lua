@@ -136,6 +136,7 @@ def configure(cnf):  # pylint: disable=R0912
     """Basic configuration of the project based on the operating system and
     the available compilers.
     """
+    cnf.msg("Prefix", cnf.env.PREFIX)
     print("-" * (Context.Context.line_just + 1) + ":")
     cnf.load("python")
     cnf.check_python_version((3, 5))

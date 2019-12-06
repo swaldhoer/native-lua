@@ -182,8 +182,8 @@ On AppVeyor's Windows build we also run |black|_ and |pylint|_.
 .. |cirrus-badge| image:: https://api.cirrus-ci.com/github/swaldhoer/native-lua.svg
 .. _cirrus-badge: https://cirrus-ci.com/github/swaldhoer/native-lua
 
-.. |azure-badge| image:: https://dev.azure.com/stefanwaldhoer/stefanwaldhoer/_apis/build/status/swaldhoer.native-lua?branchName=master
-.. _azure-badge: https://dev.azure.com/stefanwaldhoer/stefanwaldhoer/
+.. |azure-badge| image:: https://dev.azure.com/stefanwaldhoer/native-lua/_apis/build/status/swaldhoer.native-lua?branchName=master
+.. _azure-badge: https://dev.azure.com/stefanwaldhoer/native-lua/
 
 .. |readthedocs-badge| image:: https://readthedocs.org/projects/native-lua/badge/?version=latest
 .. _readthedocs-badge: https://native-lua.readthedocs.io/en/latest/?badge=latest
