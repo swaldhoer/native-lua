@@ -2,7 +2,7 @@
 The ``native Lua`` Project
 ##########################
 
-|appveyor-badge|_ |travis-badge|_ |cirrus-badge|_ |azure-badge|_ |readthedocs-badge|_ |license-badge|_ |code-style-black-badge|_
+|version-badge|_ |appveyor-badge|_ |travis-badge|_ |cirrus-badge|_ |azure-badge|_ |readthedocs-badge|_ |license-badge|_ |code-style-black-badge|_
 
 **Lua on the platform you use with the compiler you choose**
 
@@ -172,6 +172,9 @@ On AppVeyor's Windows build we also run |black|_ and |pylint|_.
 
 .. |pylint| replace:: ``pylint``
 .. _pylint: https://www.pylint.org/
+
+.. |version-badge| image:: https://img.shields.io/github/v/tag/swaldhoer/native-lua
+.. _version-badge: https://github.com/swaldhoer/native-lua/releases/latest
 
 .. |appveyor-badge| image:: https://ci.appveyor.com/api/projects/status/1gtcdi6wslxx3d6u/branch/master?svg=true
 .. _appveyor-badge: https://ci.appveyor.com/project/swaldhoer/native-lua/branch/master
