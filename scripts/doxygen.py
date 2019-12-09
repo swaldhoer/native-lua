@@ -13,6 +13,7 @@ class doxygen(Task.Task):
 
         cmd = Utils.subst_vars("${DOXYGEN}", self.env)
         cmd = [cmd, self.inputs[0].abspath()]
+        print(cmd)
         proc = Utils.subprocess.Popen(
             cmd,
             shell=True,

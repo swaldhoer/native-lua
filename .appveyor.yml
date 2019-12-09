@@ -23,7 +23,7 @@ install:
         $rmpath += "nodejs", "nunit", "nuget", "java", "xunit", "go", "python"
         $rmpath += "Amazon", "ruby", "perl", "Azur", "Webdriver", "Coverity"
         $rmpath += "Octopus", "erl9", "dotnet", "iojs", "Yarn"
-        $rmpath += "chocolatey", "npm", "Windows Performance Toolkit"
+        $rmpath += "npm", "Windows Performance Toolkit"
         $rmpath += "Microsoft Service Fabric", "Microsoft DNX"
         $rmpath += "Microsoft Visual Studio"
         $rmpath += "ServiceFabricLocalClusterManager"
@@ -81,8 +81,8 @@ build_script:
   - cmd: python waf configure
   - sh: python3 waf configure
   # check documentation build
-  - cmd: python waf build_docs
-  - sh: python3 waf build_docs
+  - cmd: python waf build_docs -v
+  - sh: python3 waf build_docs -v
   - cmd: python waf clean_docs
   - sh: python3 waf clean_docs
   - cmd: python waf distclean
