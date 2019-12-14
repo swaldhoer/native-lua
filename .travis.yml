@@ -4,6 +4,13 @@ branches:
   - /^azure.*$/
   - /^cirrus-ci.*$/
 
+addons:
+  apt:
+    update: true
+    packages:
+      - doxygen
+
+
 matrix:
   fast_finish: true
   include:
@@ -15,11 +22,6 @@ matrix:
       dist: bionic
       language: python
       sudo: required
-  addons:
-    apt:
-      update: true
-      packages:
-        - doxygen
 
 install:
   - pip3 install sphinx pyyaml -q
