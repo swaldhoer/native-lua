@@ -6,7 +6,6 @@ branches:
 
 addons:
   apt:
-    update: true
     packages:
       - doxygen
       - graphviz
