@@ -24,9 +24,7 @@ task:
         - pkg update -f
         - env ASSUME_ALWAYS_YES=YES pkg bootstrap -f
         - env ASSUME_ALWAYS_YES=YES pkg upgrade pkg
-        - env ASSUME_ALWAYS_YES=YES pkg install lang/gcc
-        - env ASSUME_ALWAYS_YES=YES pkg install bash
-        - env ASSUME_ALWAYS_YES=YES pkg install py36-pip
+        - env ASSUME_ALWAYS_YES=YES pkg install lang/gcc bash py36-pip doxygen
         - pip-3.6 install sphinx pathlib pyyaml -q
       freebsd_setup_script:
         - chsh -s /usr/local/bin/bash
