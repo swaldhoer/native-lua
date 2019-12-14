@@ -33,7 +33,7 @@ jobs:
           set -euxo pipefail
           wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
           sudo apt-get update
-          sudo apt-get install -y dialog apt-utils software-properties-common libreadline7 libreadline-dev
+          sudo apt-get install -y dialog apt-utils software-properties-common libreadline7 libreadline-dev doxygen graphviz
           sudo apt-add-repository "deb http://apt.llvm.org/stretch/ llvm-toolchain-stretch-8 main"
           sudo apt-get install -y build-essential
           sudo apt-get update
