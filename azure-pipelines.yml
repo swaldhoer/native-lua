@@ -168,7 +168,7 @@ jobs:
           greadlink -f `which gcc`
           gcc --version
           echo | gcc -E -Wp,-v -
-          brew install python3 doxygen
+          brew install python3 doxygen graphviz
           pip install --upgrade pip -q
           pip install sphinx pyyaml -q
         displayName: Install dependencies
