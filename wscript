@@ -646,8 +646,8 @@ def build(bld):
         (os.path.join(bld.env.libs_path, "lib21.c"), "21"),
     ]
     if bld.variant == "docs":
-        #source = bld.path.ant_glob("*.rst docs/**/*.rst")
-        #bld(features="sphinx", source=source, confpy="conf.py", buildername="html")
+        source = bld.path.ant_glob("*.rst docs/**/*.rst")
+        bld(features="sphinx", source=source, confpy="conf.py", buildername="html")
         bld(features="doxygen", conf="doxygen.conf")
     else:
         if bld.env.generic:

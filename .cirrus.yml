@@ -5,10 +5,11 @@ task:
       install_script:
         - export RUNLEVEL=1
         - wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
-        - apt-add-repository "deb http://apt.llvm.org/buster/ llvm-toolchain-buster-8 main"
         - apt-get update
+        - apt-get install -y software-properties-common
+        - apt-add-repository "deb http://apt.llvm.org/buster/ llvm-toolchain-buster-8 main"
         - apt-get -y upgrade
-        - apt-get install -y apt-utils lsb-release dialog software-properties-common build-essential clang-8 lld-8 doxygen graphviz
+        - apt-get install -y apt-utils lsb-release dialog build-essential clang-8 lld-8 doxygen graphviz
         - lsb_release -a
         - update-alternatives --install /usr/bin/clang clang /usr/bin/clang-8 100
         - pip install sphinx pathlib pyyaml -q
