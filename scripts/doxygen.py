@@ -16,14 +16,13 @@ class doxygen(Task.Task):
         print(cmd)
         proc = Utils.subprocess.Popen(
             cmd,
-            shell=True,
             stdout=Utils.subprocess.PIPE,
             stderr=Utils.subprocess.PIPE,
             cwd=self.inputs[0].parent.abspath(),
         )
         out, err = proc.communicate()
         print("out", out.decode("utf-8"))
-        print("err", err)
+        print("err", err.decode("utf-8"))
         return err or proc.returncode
 
 
