@@ -9,7 +9,7 @@ addons:
     update: true
     packages:
       - doxygen
-
+      - graphviz
 
 matrix:
   fast_finish: true
