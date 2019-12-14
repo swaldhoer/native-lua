@@ -175,6 +175,14 @@ jobs:
 
       - script: |
           set -euxo pipefail
+          python waf configure -v
+          python waf build_docs
+          python waf clean_docs
+          python waf distclean
+        displayName: Documentation build
+
+      - script: |
+          set -euxo pipefail
           python waf configure --include-tests --prefix=/opt/lua -v
         displayName: configure with tests
 
