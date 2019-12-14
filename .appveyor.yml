@@ -46,7 +46,7 @@ install:
   - sh: sudo python3 -m pip install sphinx -q
   - cmd: mkdir C:\download && mkdir C:\download\doxygen
   - cmd: cd C:\download\doxygen && curl -o doxygen-x64.zip http://doxygen.nl/files/doxygen-1.8.16.windows.x64.bin.zip
-  - cmd: cd C:\download\doxygen && tar -xvzf doxygen-x64.zip
+  - cmd: cd C:\download\doxygen && 7z e doxygen-x64.zip
   - cmd: set PATH=C:\download\doxygen;%PATH%
   - sh: sudo apt-get install doxygen graphviz -y
   - doxygen -v
