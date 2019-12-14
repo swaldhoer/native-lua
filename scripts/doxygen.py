@@ -3,7 +3,7 @@
 
 # SPDX-License-Identifier: MIT
 
-from waflib import Task, TaskGen, Utils
+from waflib import Task, TaskGen, Utils, Logs
 
 
 class doxygen(Task.Task):
@@ -22,8 +22,8 @@ class doxygen(Task.Task):
         )
         out, err = proc.communicate()
         print("out", out.decode("utf-8"))
-        print("err", err.decode("utf-8"))
-        return err or proc.returncode
+        Logs.warn(err.decode("utf-8"))
+        return proc.returncode
 
 
 @TaskGen.feature("doxygen")
