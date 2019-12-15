@@ -23,7 +23,7 @@ install:
         $rmpath += "nodejs", "nunit", "nuget", "java", "xunit", "go", "python"
         $rmpath += "Amazon", "ruby", "perl", "Azur", "Webdriver", "Coverity"
         $rmpath += "Octopus", "erl9", "dotnet", "iojs", "Yarn"
-        $rmpath += "chocolatey", "npm", "Windows Performance Toolkit"
+        $rmpath += "npm", "Windows Performance Toolkit"
         $rmpath += "Microsoft Service Fabric", "Microsoft DNX"
         $rmpath += "Microsoft Visual Studio"
         $rmpath += "ServiceFabricLocalClusterManager"
@@ -44,6 +44,17 @@ install:
   - sh: sudo apt-get update
   - sh: sudo apt-get install python3-pip -y
   - sh: sudo python3 -m pip install sphinx -q
+  - cmd: mkdir C:\download && mkdir C:\download\doxygen && mkdir C:\download\graphviz
+  - cmd: cd C:\download\doxygen && curl -o doxygen-x64.zip http://doxygen.nl/files/doxygen-1.8.16.windows.x64.bin.zip
+  - cmd: cd C:\download\doxygen && 7z e doxygen-x64.zip
+  - cmd: set PATH=C:\download\doxygen;%PATH%
+  - cmd: cd C:\download\graphviz && curl -o graphviz.zip https://graphviz.gitlab.io/_pages/Download/windows/graphviz-2.38.zip
+  - cmd: cd C:\download\graphviz && 7z x graphviz.zip
+  - cmd: set PATH=C:\download\graphviz\release\bin;%PATH%
+  - cmd: cd %APPVEYOR_BUILD_FOLDER%
+  - sh: sudo apt-get install doxygen graphviz -y
+  - doxygen -v
+  - dot -V
   - cmd: python --version
   - sh: python3 --version
   - cmd: black --version
@@ -54,11 +65,11 @@ install:
 
   # setup cygwin64
   - cmd: curl -o setup-x86_64.exe http://www.cygwin.com/setup-x86_64.exe
-  - cmd: setup-x86_64.exe --no-desktop --no-shortcuts --no-startmenu --quiet-mode --packages wget python37 python37-pip
+  - cmd: setup-x86_64.exe --no-desktop --no-shortcuts --no-startmenu --quiet-mode --packages wget,python37,python37-pip,doxygen,graphviz
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 --version"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 -m ensurepip --upgrade"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "git clone https://github.com/sphinx-doc/sphinx && cd sphinx && pip3 install ."
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "wget https://github.com/yaml/pyyaml/archive/5.1.2.tar.gz && tar -xvf 5.1.2.tar.gz && cd pyyaml-5.1.2 && python3 setup.py install"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "git clone https://github.com/sphinx-doc/sphinx && cd sphinx && pip3 install . -q"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "wget https://github.com/yaml/pyyaml/archive/5.1.2.tar.gz && tar -xf 5.1.2.tar.gz && cd pyyaml-5.1.2 && python3 setup.py install"
   # for testing
   - cmd: set PATH=%PATH%;%userprofile%\AppData\Local\Programs\lua\bin
 
@@ -78,8 +89,8 @@ build_script:
   - cmd: python waf configure
   - sh: python3 waf configure
   # check documentation build
-  - cmd: python waf build_docs
-  - sh: python3 waf build_docs
+  - cmd: python waf build_docs -v
+  - sh: python3 waf build_docs -v
   - cmd: python waf clean_docs
   - sh: python3 waf clean_docs
   - cmd: python waf distclean

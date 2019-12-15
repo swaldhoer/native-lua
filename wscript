@@ -128,7 +128,7 @@ def options(opt):
         dest="generic",
         default=False,
         action="store_true",
-        help="Build generic on the host " "platform. This is not supported on win32.",
+        help="Build generic on the host platform. This is not supported on win32.",
     )
 
 
@@ -142,6 +142,7 @@ def configure(cnf):  # pylint: disable=R0912
     cnf.check_python_version((3, 5))
 
     cnf.load("sphinx", tooldir="scripts")
+    cnf.load("doxygen", tooldir="scripts")
     if not cnf.env.SPHINX_BUILD:
         Logs.warn("Documentation build will not be available.")
     else:
@@ -647,6 +648,7 @@ def build(bld):
     if bld.variant == "docs":
         source = bld.path.ant_glob("*.rst docs/**/*.rst")
         bld(features="sphinx", source=source, confpy="conf.py", buildername="html")
+        bld(features="doxygen", conf="doxygen.conf")
     else:
         if bld.env.generic:
             build_generic(bld)

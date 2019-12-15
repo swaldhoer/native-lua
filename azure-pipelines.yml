@@ -12,13 +12,13 @@ trigger:
 jobs:
   - job: Linux
     pool:
-      vmImage: 'ubuntu-18.04'
+      vmImage: "ubuntu-18.04"
     displayName: "Linux Build"
     steps:
       - task: UsePythonVersion@0
         inputs:
-          versionSpec: '3.6'
-          architecture: 'x64'
+          versionSpec: "3.6"
+          architecture: "x64"
 
       - script: lsb_release -a
         displayName: Ubuntu details
@@ -33,7 +33,7 @@ jobs:
           set -euxo pipefail
           wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
           sudo apt-get update
-          sudo apt-get install -y dialog apt-utils software-properties-common libreadline7 libreadline-dev
+          sudo apt-get install -y dialog apt-utils software-properties-common libreadline7 libreadline-dev doxygen graphviz
           sudo apt-add-repository "deb http://apt.llvm.org/stretch/ llvm-toolchain-stretch-8 main"
           sudo apt-get install -y build-essential
           sudo apt-get update
@@ -120,14 +120,35 @@ jobs:
 
   - job: Windows
     pool:
-      vmImage: 'windows-2019'
+      vmImage: "windows-2019"
     displayName: "Windows Build"
     steps:
       - task: UsePythonVersion@0
         inputs:
-          versionSpec: '3.6'
+          versionSpec: "3.6"
           addToPath: true
-          architecture: 'x64'
+          architecture: "x64"
+
+      - script: |
+          curl.exe -o $(Agent.TempDirectory)\doxygen-x64.zip http://doxygen.nl/files/doxygen-1.8.16.windows.x64.bin.zip
+          curl.exe -o $(Agent.TempDirectory)\graphviz.zip https://graphviz.gitlab.io/_pages/Download/windows/graphviz-2.38.zip
+        displayName: Downloading doxygen and graphviz
+
+      - task: ExtractFiles@1
+        inputs:
+          archiveFilePatterns: "$(Agent.TempDirectory)/*.zip"
+          destinationFolder: "$(Agent.TempDirectory)"
+          cleanDestinationFolder: false
+        displayName: Extracting doxygen and graphviz
+
+      - script: echo "##vso[task.prependpath]$(Agent.TempDirectory)
+        displayName: Add doxygen to path
+      - script: echo "##vso[task.prependpath]$(Agent.TempDirectory)\release\bin
+        displayName: Add graphviz to path
+      - script: dir $(Agent.TempDirectory)
+        displayName: Download
+      - script: echo %PATH%
+        displayName: echo PATH
 
       - script: |
           pip install --upgrade pip -q
@@ -142,7 +163,7 @@ jobs:
 
   - job: OSXBuild
     pool:
-      vmImage: 'macOS-10.14'
+      vmImage: "macOS-10.14"
     displayName: "MacOSX Build"
     steps:
       - script: echo "##vso[task.prependpath]/usr/local/opt/python/libexec/bin"
@@ -158,8 +179,7 @@ jobs:
 
       - script: |
           set -euxo pipefail
-          brew install --force gcc
-          brew install coreutils
+          brew install --force gcc coreutils
           brew ls --verbose gcc
           brew unlink gcc
           brew link gcc --dry-run
@@ -169,10 +189,18 @@ jobs:
           greadlink -f `which gcc`
           gcc --version
           echo | gcc -E -Wp,-v -
-          brew install python3
+          brew install python3 doxygen graphviz
           pip install --upgrade pip -q
           pip install sphinx pyyaml -q
         displayName: Install dependencies
+
+      - script: |
+          set -euxo pipefail
+          python waf configure -v
+          python waf build_docs
+          python waf clean_docs
+          python waf distclean
+        displayName: Documentation build
 
       - script: |
           set -euxo pipefail

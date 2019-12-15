@@ -2,7 +2,7 @@
 The ``native Lua`` Project
 ##########################
 
-|appveyor-badge|_ |travis-badge|_ |cirrus-badge|_ |azure-badge|_ |readthedocs-badge|_ |license-badge|_ |code-style-black-badge|_
+|version-badge|_ |appveyor-badge|_ |travis-badge|_ |cirrus-badge|_ |azure-badge|_ |readthedocs-badge|_ |license-badge|_ |code-style-black-badge|_
 
 **Lua on the platform you use with the compiler you choose**
 
@@ -21,10 +21,10 @@ As default `Lua` requires ``gcc`` and ``make`` to be installed to build the
 ``gcc`` and ``make`` are natively available is easy. Building `Lua` on Windows
 with MinGWs' ``gcc`` and some sort of ``make`` is also straight forward.
 
-But this does not allow a good platform and compiler independent way of building
-and testing `Lua`. Especially testing is not that simple as it should be.
-Therefore this project tries to implement a platform and compiler independent
-way of building **and** testing `Lua`.
+But this does not allow a good platform and compiler independent way of
+building and testing `Lua`. Especially testing is not that simple as it should
+be. Therefore this project tries to implement a platform and compiler
+independent way of building **and** testing `Lua`.
 
 ******
 How-To
@@ -84,7 +84,7 @@ Root Directory
 The root directory contains the
 
 - general project documentation and a changelog (``README.rst``, ``index.rst``
-  ``conf.py``, ``CHANGELOG.rst``)
+  ``conf.py``, ``doxygen.conf``, ``CHANGELOG.rst``)
 - build script and build toolchain (``wscript``, ``waf``, ``waf.bat``),
 - CI scripts (``.appveyor.yml``, ``.cirrus.yml``, ``.travis.yml``,
   ``azure-pipelines.yml``),
@@ -111,9 +111,9 @@ documentation.
 ``src`` Directory
 =================
 
-This directory contains the source files as they are downloaded from `Lua.org`_,
-except that trailing whitespace and additional newlines at the end of the files
-are removed.
+This directory contains the source files as they are downloaded from
+`Lua.org`_, except that trailing whitespace and additional newlines at the end
+of the files are removed.
 
 The lua interpreter (``lua.c``) as well as the lua compiler (``luac.c``) have
 been changed, to indicate, that they were build based on the ``native Lua``
@@ -172,6 +172,9 @@ On AppVeyor's Windows build we also run |black|_ and |pylint|_.
 
 .. |pylint| replace:: ``pylint``
 .. _pylint: https://www.pylint.org/
+
+.. |version-badge| image:: https://img.shields.io/github/v/tag/swaldhoer/native-lua
+.. _version-badge: https://github.com/swaldhoer/native-lua/releases/latest
 
 .. |appveyor-badge| image:: https://ci.appveyor.com/api/projects/status/1gtcdi6wslxx3d6u/branch/master?svg=true
 .. _appveyor-badge: https://ci.appveyor.com/project/swaldhoer/native-lua/branch/master
