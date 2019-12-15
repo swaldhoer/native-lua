@@ -11,6 +11,11 @@ The format is based on `Keep a Changelog`_ v1.0.0, and this project adheres to
 [Unreleased]
 ************
 
+Added
+=====
+
+- Added doxygen configuration (see ``doxygen.conf``, ``docs/_doxygen/*``).
+
 Changed
 =======
 
