@@ -47,10 +47,10 @@ install:
   - cmd: mkdir C:\download && mkdir C:\download\doxygen && mkdir C:\download\graphviz
   - cmd: cd C:\download\doxygen && curl -o doxygen-x64.zip http://doxygen.nl/files/doxygen-1.8.16.windows.x64.bin.zip
   - cmd: cd C:\download\doxygen && 7z e doxygen-x64.zip
-  - cmd: set PATH=C:\download\doxygen;%PATH%
+  - cmd: set PATH=%PATH%;C:\download\doxygen
   - cmd: cd C:\download\graphviz && curl -o graphviz.zip https://graphviz.gitlab.io/_pages/Download/windows/graphviz-2.38.zip
   - cmd: cd C:\download\graphviz && 7z x graphviz.zip
-  - cmd: set PATH=C:\download\graphviz\release\bin;%PATH%
+  - cmd: set PATH=%PATH%;C:\download\graphviz\release\bin
   - cmd: cd %APPVEYOR_BUILD_FOLDER%
   - sh: sudo apt-get install doxygen graphviz -y
   - doxygen -v
