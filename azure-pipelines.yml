@@ -129,6 +129,27 @@ jobs:
           addToPath: true
           architecture: 'x64'
 
+      - task: PowerShell@2
+        inputs:
+            targetType: 'inline'
+            script: |
+                curl.exe -o $(Agent.TempDirectory)\doxygen-x64.zip http://doxygen.nl/files/doxygen-1.8.16.windows.x64.bin.zip
+                curl.exe -o $(Agent.TempDirectory)\graphviz.zip https://graphviz.gitlab.io/_pages/Download/windows/graphviz-2.38.zip
+                dir
+        displayName: Downloading doxygen and graphviz
+
+      - task: ExtractFiles@1
+        inputs:
+          archiveFilePatterns: '$(Agent.TempDirectory)/*.zip'
+          destinationFolder: '$(Agent.TempDirectory)'
+          cleanDestinationFolder: false
+        displayName: Extracting doxygen and graphviz
+
+      - script: |
+          echo "##vso[task.prependpath]$(Agent.TempDirectory)"
+          echo "##vso[task.prependpath]$(Agent.TempDirectory)\release\bin"
+        displayName: Add doxygen and graphviz to path
+
       - script: |
           pip install --upgrade pip -q
           pip install sphinx pyyaml -q
