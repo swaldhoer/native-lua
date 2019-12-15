@@ -129,13 +129,10 @@ jobs:
           addToPath: true
           architecture: 'x64'
 
-      - task: PowerShell@2
-        inputs:
-            targetType: 'inline'
-            script: |
-                curl.exe -o $(Agent.TempDirectory)\doxygen-x64.zip http://doxygen.nl/files/doxygen-1.8.16.windows.x64.bin.zip
-                curl.exe -o $(Agent.TempDirectory)\graphviz.zip https://graphviz.gitlab.io/_pages/Download/windows/graphviz-2.38.zip
-                dir
+      - script: |
+          curl.exe -o $(Agent.TempDirectory)\doxygen-x64.zip http://doxygen.nl/files/doxygen-1.8.16.windows.x64.bin.zip
+          curl.exe -o $(Agent.TempDirectory)\graphviz.zip https://graphviz.gitlab.io/_pages/Download/windows/graphviz-2.38.zip
+          dir
         displayName: Downloading doxygen and graphviz
 
       - task: ExtractFiles@1
