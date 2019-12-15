@@ -128,7 +128,7 @@ def options(opt):
         dest="generic",
         default=False,
         action="store_true",
-        help="Build generic on the host " "platform. This is not supported on win32.",
+        help="Build generic on the host platform. This is not supported on win32.",
     )
 
 
