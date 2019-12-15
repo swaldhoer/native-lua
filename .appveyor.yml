@@ -47,10 +47,10 @@ install:
   - cmd: mkdir C:\download && mkdir C:\download\doxygen && mkdir C:\download\graphviz
   - cmd: cd C:\download\doxygen && curl -o doxygen-x64.zip http://doxygen.nl/files/doxygen-1.8.16.windows.x64.bin.zip
   - cmd: cd C:\download\doxygen && 7z e doxygen-x64.zip
-  - cmd: set PATH=%PATH%;C:\download\doxygen
+  - cmd: set PATH=C:\download\doxygen;%PATH%
   - cmd: cd C:\download\graphviz && curl -o graphviz.zip https://graphviz.gitlab.io/_pages/Download/windows/graphviz-2.38.zip
   - cmd: cd C:\download\graphviz && 7z x graphviz.zip
-  - cmd: set PATH=%PATH%;C:\download\graphviz\release\bin
+  - cmd: set PATH=C:\download\graphviz\release\bin;%PATH%
   - cmd: cd %APPVEYOR_BUILD_FOLDER%
   - sh: sudo apt-get install doxygen graphviz -y
   - doxygen -v
@@ -65,11 +65,11 @@ install:
 
   # setup cygwin64
   - cmd: curl -o setup-x86_64.exe http://www.cygwin.com/setup-x86_64.exe
-  - cmd: setup-x86_64.exe --no-desktop --no-shortcuts --no-startmenu --quiet-mode --packages wget python37 python37-pip doxygen graphviz
+  - cmd: setup-x86_64.exe --no-desktop --no-shortcuts --no-startmenu --quiet-mode --packages wget,python37,python37-pip,doxygen,graphviz
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 --version"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 -m ensurepip --upgrade"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "git clone https://github.com/sphinx-doc/sphinx && cd sphinx && pip3 install . -q"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "wget https://github.com/yaml/pyyaml/archive/5.1.2.tar.gz && tar -xvf 5.1.2.tar.gz && cd pyyaml-5.1.2 && python3 setup.py install"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "wget https://github.com/yaml/pyyaml/archive/5.1.2.tar.gz && tar -xf 5.1.2.tar.gz && cd pyyaml-5.1.2 && python3 setup.py install"
   # for testing
   - cmd: set PATH=%PATH%;%userprofile%\AppData\Local\Programs\lua\bin
 
