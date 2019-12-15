@@ -141,9 +141,9 @@ jobs:
           cleanDestinationFolder: false
         displayName: Extracting doxygen and graphviz
 
-      - script: echo "##vso[task.prependpath]$(Agent.TempDirectory)"
+      - script: echo "##vso[task.prependpath]$(Agent.TempDirectory)
         displayName: Add doxygen to path
-      - script: echo "##vso[task.prependpath]$(Agent.TempDirectory)\release\bin"
+      - script: echo "##vso[task.prependpath]$(Agent.TempDirectory)\release\bin
         displayName: Add graphviz to path
       - script: dir $(Agent.TempDirectory)
         displayName: Download
