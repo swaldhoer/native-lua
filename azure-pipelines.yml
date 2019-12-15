@@ -147,6 +147,9 @@ jobs:
           echo "##vso[task.prependpath]$(Agent.TempDirectory)\release\bin"
         displayName: Add doxygen and graphviz to path
 
+      - script: echo %PATH%
+        displayName: echo PATH
+
       - script: |
           pip install --upgrade pip -q
           pip install sphinx pyyaml -q
