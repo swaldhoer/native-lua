@@ -40,6 +40,7 @@ install:
         }
       }
   - cmd: |
+      echo %APPVEYOR_BUILD_WORKER_IMAGE%
       if %APPVEYOR_BUILD_WORKER_IMAGE%=="Visual Studio 2017" (
         pushd "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\" && call "VC\Auxiliary\Build\vcvars64.bat" && popd
       )
