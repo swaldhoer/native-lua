@@ -2,6 +2,7 @@ version: 5.3.5.{build}
 
 image:
   - Visual Studio 2017
+  - Visual Studio 2019
   - Ubuntu
 
 cache:
@@ -60,7 +61,7 @@ install:
   - cmd: set PATH=C:\download\graphviz\release\bin;%PATH%
   - cmd: cd %APPVEYOR_BUILD_FOLDER%
   - sh: sudo apt-get install doxygen graphviz -y
-  - doxygen -v
+  - doxygen --version
   - dot -V
   - cmd: python --version
   - sh: python3 --version

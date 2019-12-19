@@ -28,7 +28,6 @@ task:
 
     - container:
         image: fedora:30
-      #only_if: "$CIRRUS_PR != ''"
       install_script:
         - export RUNLEVEL=1
         - dnf -y update
@@ -68,9 +67,14 @@ task:
 #      freebsd_setup_script:
 #        - chsh -s /usr/local/bin/bash
 
-
-  script:
+  version_script:
     - python3 --version
+    - gcc --version
+    - clang --version
+    - doxygen --version
+    - dot -V
+    - sphinx-build --version
+  script:
     # basic configuration
     - python3 waf configure -v
     # documentation build
