@@ -30,10 +30,13 @@ install:
 
 before_script:
   - which gcc
-  - gcc --version
   - which clang
-  - clang --version
   - echo $PATH
+  - python3 --version
+  - gcc --version
+  - clang --version
+  - doxygen --version
+  - sphinx-build --version
 
 script:
   - python3 waf configure -vv
