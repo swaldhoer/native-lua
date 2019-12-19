@@ -31,7 +31,7 @@ task:
       install_script:
         - export RUNLEVEL=1
         - dnf -y update
-        - dnf -y install redhat-lsb-core gcc clang python3-pip
+        - dnf -y install redhat-lsb-core gcc clang python3-pip doxygen graphviz
         - lsb_release -a
         - pip3 install sphinx pathlib pyyaml -q
 
@@ -40,8 +40,8 @@ task:
       install_script:
         - export RUNLEVEL=1
         - apt-get update
-        - apt-get install -y gnupg
-        - wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
+#        - apt-get install -y gnupg
+        - curl https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
         - apt-get update
         - apt-get install -y apt-utils lsb-release
         - lsb_release -a
@@ -55,16 +55,16 @@ task:
         - update-alternatives --install /usr/bin/clang clang /usr/bin/clang-9 100
         - pip install sphinx pathlib pyyaml -q
 
-    - freebsd_instance:
-        image_family: freebsd-12-1
-      freebsd_install_script:
-        - pkg update -f
-        - env ASSUME_ALWAYS_YES=YES pkg bootstrap -f
-        - env ASSUME_ALWAYS_YES=YES pkg upgrade pkg
-        - env ASSUME_ALWAYS_YES=YES pkg install lang/gcc bash py36-pip doxygen
-        - pip-3.6 install sphinx pathlib pyyaml -q
-      freebsd_setup_script:
-        - chsh -s /usr/local/bin/bash
+#    - freebsd_instance:
+#        image_family: freebsd-12-1
+#      freebsd_install_script:
+#        - pkg update -f
+#        - env ASSUME_ALWAYS_YES=YES pkg bootstrap -f
+#        - env ASSUME_ALWAYS_YES=YES pkg upgrade pkg
+#        - env ASSUME_ALWAYS_YES=YES pkg install lang/gcc bash py36-pip doxygen
+#        - pip-3.6 install sphinx pathlib pyyaml -q
+#      freebsd_setup_script:
+#        - chsh -s /usr/local/bin/bash
 
 
   script:
