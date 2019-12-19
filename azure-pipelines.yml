@@ -7,7 +7,11 @@ trigger:
       - .appveyor.yml
       - .cirrus.yml
       - .editorconfig
+      - .gitattributes
+      - .gitignore
+      - .pylintrc
       - .travis.yml
+      - pyproject.toml
 
 jobs:
   - job: Linux
@@ -34,17 +38,23 @@ jobs:
           wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
           sudo apt-get update
           sudo apt-get install -y dialog apt-utils software-properties-common libreadline7 libreadline-dev doxygen graphviz
-          sudo apt-add-repository "deb http://apt.llvm.org/stretch/ llvm-toolchain-stretch-8 main"
+          sudo apt-add-repository "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-9 main"
           sudo apt-get install -y build-essential
           sudo apt-get update
-          sudo apt-get install -y clang-8 lld-8
-          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-8 100
+          sudo apt-get install -y clang-9 lld-9
+          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-9 100
           pip install --upgrade pip -q
           pip install sphinx pathlib pyyaml -q
         displayName: Install dependencies
 
-      - script: python --version
-        displayName: Python version
+      - script: |
+          python --version
+          gcc --version
+          clang --version
+          doxygen --version
+          dot -V
+          sphinx-build --version
+        displayName: Compiler and Tools versions
 
       - script: |
           set -euxo pipefail
@@ -129,6 +139,9 @@ jobs:
           addToPath: true
           architecture: "x64"
 
+      - script: choco install llvm -y --version 9.0.0
+        displayName: Install LLVM
+
       - script: |
           curl.exe -o $(Agent.TempDirectory)\doxygen-x64.zip http://doxygen.nl/files/doxygen-1.8.16.windows.x64.bin.zip
           curl.exe -o $(Agent.TempDirectory)\graphviz.zip https://graphviz.gitlab.io/_pages/Download/windows/graphviz-2.38.zip
@@ -145,8 +158,8 @@ jobs:
         displayName: Add doxygen to path
       - script: echo "##vso[task.prependpath]$(Agent.TempDirectory)\release\bin
         displayName: Add graphviz to path
-      - script: dir $(Agent.TempDirectory)
-        displayName: Download
+      - script: echo "##vso[task.prependpath]C:\Program Files\LLVM\bin\
+        displayName: Add clang to path
       - script: echo %PATH%
         displayName: echo PATH
 
@@ -155,11 +168,21 @@ jobs:
           pip install sphinx pyyaml -q
         displayName: installing dependencies
 
-      - script: python scripts\run_test.py -c msvc -c gcc --simple-test -v
-        displayName: test script (msvc) with --simple-test
+      - script: |
+          python --version
+          gcc --version
+          clang --version
+          "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.24.28314\bin\HostX64\x64\CL.exe"
+          doxygen --version
+          dot -V
+          sphinx-build --version
+        displayName: Compiler and Tools versions
 
-      - script: python scripts\run_test.py -c msvc -c gcc --simple-test --ltests -v
-        displayName: test script (msvc) with --simple-test and ltests
+      - script: python scripts\run_test.py -c msvc -c gcc -c clang --simple-test -vv
+        displayName: test script (msvc, gcc, clang) with --simple-test
+
+      - script: python scripts\run_test.py -c msvc -c gcc -c clang --simple-test --ltests -vv
+        displayName: test script (msvc, gcc, clang) with --simple-test and ltests
 
   - job: OSXBuild
     pool:
@@ -187,12 +210,20 @@ jobs:
           ln -s /usr/local/bin/gcc-9 /usr/local/bin/gcc
           which gcc
           greadlink -f `which gcc`
-          gcc --version
           echo | gcc -E -Wp,-v -
           brew install python3 doxygen graphviz
           pip install --upgrade pip -q
           pip install sphinx pyyaml -q
         displayName: Install dependencies
+
+      - script: |
+          python --version
+          gcc --version
+          clang --version
+          doxygen --version
+          dot -V
+          sphinx-build --version
+        displayName: Compiler and Tools versions
 
       - script: |
           set -euxo pipefail
