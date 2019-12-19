@@ -158,8 +158,8 @@ jobs:
         displayName: Add doxygen to path
       - script: echo "##vso[task.prependpath]$(Agent.TempDirectory)\release\bin
         displayName: Add graphviz to path
-      - script: dir $(Agent.TempDirectory)
-        displayName: Download
+      - script: echo "##vso[task.prependpath]C:\Program Files\LLVM\bin\
+        displayName: Add clang to path
       - script: echo %PATH%
         displayName: echo PATH
 

@@ -2,8 +2,8 @@ version: 5.3.5.{build}
 
 image:
   - Visual Studio 2017
-  - Visual Studio 2019
-  #- Ubuntu
+#  - Visual Studio 2019
+  - Ubuntu
 
 cache:
   - C:\Users\appveyor\AppData\Local\pip\cache
@@ -79,8 +79,7 @@ install:
   - cmd: setup-x86_64.exe --no-desktop --no-shortcuts --no-startmenu --quiet-mode --packages wget,python37,python37-pip,doxygen,graphviz
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 --version"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 -m ensurepip --upgrade"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "git clone https://github.com/sphinx-doc/sphinx && cd sphinx && pip3 install . -q"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "wget https://github.com/yaml/pyyaml/archive/5.1.2.tar.gz && tar -xf 5.1.2.tar.gz && cd pyyaml-5.1.2 && python3 setup.py install"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "pip3 install sphinx pyyaml -q"
   # for testing
   - cmd: set PATH=%PATH%;%userprofile%\AppData\Local\Programs\lua\bin
 
