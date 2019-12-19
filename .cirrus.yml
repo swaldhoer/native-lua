@@ -10,20 +10,21 @@ task:
       install_script:
         - export RUNLEVEL=1
         - apt-get update
-        - apt-get install -y gnupg
-        - wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
+        - apt-get install -y apt-utils lsb-release curl gnupg
+        - curl -o llvm-snapshot.gpg.key https://apt.llvm.org/llvm-snapshot.gpg.key
+        - cat llvm-snapshot.gpg.key
+        - apt-key add llvm-snapshot.gpg.key
         - apt-get update
-        - apt-get install -y apt-utils lsb-release
         - lsb_release -a
         - apt-get install -y dialog
         - apt-get install -y software-properties-common
         - apt-add-repository "deb http://apt.llvm.org/buster/ llvm-toolchain-buster-9 main"
         - apt-get update
         - apt-get -y upgrade
-        - apt-get install -y build-essential doxygen graphviz
+        - apt-get install -y build-essential doxygen graphviz python3-pip
         - apt-get install -y clang-9 lld-9
         - update-alternatives --install /usr/bin/clang clang /usr/bin/clang-9 100
-        - pip install sphinx pathlib pyyaml -q
+        - pip3 install sphinx pathlib pyyaml -q
 
     - container:
         image: fedora:30
@@ -46,7 +47,7 @@ task:
         - apt-key add llvm-snapshot.gpg.key
         - apt-get update
         - lsb_release -a
-        - apt-get install -y dialog
+        - apt-get install -y dialog python3-pip
         - apt-get install -y software-properties-common
         - apt-add-repository "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-9 main"
         - apt-get update
@@ -54,7 +55,7 @@ task:
         - apt-get install -y build-essential doxygen graphviz
         - apt-get install -y clang-9 lld-9
         - update-alternatives --install /usr/bin/clang clang /usr/bin/clang-9 100
-        - pip install sphinx pathlib pyyaml -q
+        - pip3 install sphinx pathlib pyyaml -q
 
 #    - freebsd_instance:
 #        image_family: freebsd-12-1
