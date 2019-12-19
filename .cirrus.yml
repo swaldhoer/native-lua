@@ -9,6 +9,7 @@ task:
       #only_if: "$CIRRUS_PR != ''"
       install_script:
         - export RUNLEVEL=1
+        - apt-get update
         - apt-get install -y gnupg
         - wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
         - apt-get update
@@ -29,8 +30,8 @@ task:
       #only_if: "$CIRRUS_PR != ''"
       install_script:
         - export RUNLEVEL=1
-        - dnf update
-        - dnf install redhat-lsb-core gcc clang python3-pip
+        - dnf -y update
+        - dnf -y install redhat-lsb-core gcc clang python3-pip
         - lsb_release -a
         - pip3 install sphinx pathlib pyyaml -q
 
@@ -38,6 +39,8 @@ task:
         image: ubuntu:bionic
       install_script:
         - export RUNLEVEL=1
+        - apt-get update
+        - apt-get install -y gnupg
         - wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
         - apt-get update
         - apt-get install -y apt-utils lsb-release
