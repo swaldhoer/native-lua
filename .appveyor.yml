@@ -41,16 +41,8 @@ install:
       }
   - cmd: |
       echo %APPVEYOR_BUILD_WORKER_IMAGE%
-      if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2017" (
-        pushd "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\"
-        call "VC\Auxiliary\Build\vcvars64.bat"
-        popd
-      )
-      if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2019" (
-        pushd "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\"
-        call "VC\Auxiliary\Build\vcvars64.bat"
-        popd
-      )
+      if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2017" (pushd "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\" && call "VC\Auxiliary\Build\vcvars64.bat" && popd)
+      if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2019" (pushd "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\" && call "VC\Auxiliary\Build\vcvars64.bat" && popd)
   - cmd: set PATH=C:\mingw-w64\x86_64-8.1.0-posix-seh-rt_v6-rev0\mingw64\bin;%PATH%
   - cmd: set PATH=C:\Python37-x64;C:\Python37-x64\Scripts;%PATH%
   - ps: |
