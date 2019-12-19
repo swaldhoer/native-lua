@@ -172,7 +172,7 @@ jobs:
           python --version
           gcc --version
           clang --version
-          cl
+          "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Tools\MSVC\14.24.28314\bin\HostX64\x64\CL.exe"
           doxygen --version
           dot -V
           sphinx-build --version

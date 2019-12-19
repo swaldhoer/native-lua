@@ -1,6 +1,6 @@
-##
-CI
-##
+######################
+Continuous Integration
+######################
 
 To test the project the continuous integration tools
 
@@ -18,13 +18,13 @@ Project Status
 +--------------------+-----------------------+----------------------------------------------+
 | CI Service         | Build Status          | Platform/compiler                            |
 +====================+=======================+==============================================+
-| AppVeyor           | |AppVeyorBUILD|       | - Windows (Server 2016 and Server 2019)      |
+| AppVeyor           | |AppVeyorBUILD|       | - Windows (Server 2016)                      |
 |                    |                       |                                              |
-|                    |                       |   - msvc (2017 and 2019)                     |
+|                    |                       |   - msvc (2017)                              |
 |                    |                       |   - gcc (8.1.0-posix-seh-rt_v6-rev0          |
 |                    |                       |   - clang (9.0.0 x64)                        |
 |                    |                       |                                              |
-|                    |                       | - Ubuntu (18.04)                             |
+|                    |                       | - Linux (Ubuntu 18.04)                       |
 |                    |                       |                                              |
 |                    |                       |   - gcc (7.4.0)                              |
 |                    |                       |   - clang (6.0.1)                            |
@@ -32,37 +32,33 @@ Project Status
 | Azure Pipelines    | |AzurePipelinesBUILD| | - Windows (Server 2019)                      |
 |                    |                       |                                              |
 |                    |                       |   - msvc (2019)                              |
-|                    |                       |   - gcc                                      |
+|                    |                       |   - gcc (8.1.0)                              |
 |                    |                       |   - clang (9.0.0)                            |
-|                    |                       |                   |
-|                    |                       | - Ubuntu          |
-|                    |                       |                   |
-|                    |                       |   - gcc           |
-|                    |                       |   - clang         |
-|                    |                       |                   |
-|                    |                       | - macOS           |
-|                    |                       |                   |
-|                    |                       |   - gcc           |
-|                    |                       |   - clang         |
+|                    |                       |                                              |
+|                    |                       | - Linux (Ubuntu 18.04)                       |
+|                    |                       |                                              |
+|                    |                       |   - gcc (7.4.0)                              |
+|                    |                       |   - clang (6.0.1)                            |
+|                    |                       |                                              |
+|                    |                       | - Unix (macOS 10.14)                         |
+|                    |                       |                                              |
+|                    |                       |   - gcc (9.2.0)                              |
+|                    |                       |   - clang (11.0.0)                           |
 +--------------------+-----------------------+----------------------------------------------+
-| Travis-CI          | |TravisBUILD|         | - Ubuntu          |
-|                    |                       |                   |
-|                    |                       |   - gcc           |
-|                    |                       |   - clang         |
-|                    |                       |                   |
-|                    |                       | - macOS           |
-|                    |                       |                   |
-|                    |                       |   - clang         |
+| Travis-CI          | |TravisBUILD|         | - Linux (Ubuntu 16.04, Ubuntu 18.04)         |
+|                    |                       |                                              |
+|                    |                       |   - gcc (5.4.0, 7.4.0)                       |
+|                    |                       |   - clang (7.0.0, 7.0.0)                     |
 +--------------------+-----------------------+----------------------------------------------+
-| Cirrus-CI          | |CirrusBUILD|         | - Linux           |
-|                    |                       |                   |
-|                    |                       |   - gcc           |
-|                    |                       |   - clang         |
-|                    |                       |                   |
-|                    |                       | - FreeBSD         |
-|                    |                       |                   |
-|                    |                       |   - gcc           |
-|                    |                       |   - clang         |
+| Cirrus-CI          | |CirrusBUILD|         | - Linux (Ubuntu 18.04, Fedora 30, Debian 10) |
+|                    |                       |                                              |
+|                    |                       |   - gcc (7.4.0, 9.2.1, 8.3.0)                |
+|                    |                       |   - clang (9.0.1, 8.0.0, 9.0.1)              |
+|                    |                       |                                              |
+|                    |                       | - Unix (FreeBSD 12.1)                        |
+|                    |                       |                                              |
+|                    |                       |   - gcc (9.2.0)                              |
+|                    |                       |   - clang (8.0.1)                            |
 +--------------------+-----------------------+----------------------------------------------+
 
 *********************
