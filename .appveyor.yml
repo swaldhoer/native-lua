@@ -80,6 +80,7 @@ before_build:
   # ensure that only well formated wscripts are checked in
   - cmd: black . --config=pyproject.toml --check -v
   - cmd: pylint wscript
+  - cmd: pylint conf.py
   - cmd: pylint scripts\\run_test.py
   - cmd: pylint scripts\\sphinx.py
   - cmd: pylint scripts\\utils.py

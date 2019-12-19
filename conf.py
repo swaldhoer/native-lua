@@ -1,13 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# pylint: skip-file
+# pylint: disable=invalid-name
 
 import os
-import sys
-
-sys.path.insert(0, os.path.abspath("."))
-sys.path.insert(0, os.path.abspath(".."))
+import subprocess
 
 extensions = [
     "sphinx.ext.autodoc",
@@ -25,12 +22,18 @@ templates_path = [os.path.join("docs", "_templates")]
 
 html_static_path = [os.path.join("docs", "_static")]
 
+ON_RTD = os.environ.get("READTHEDOCS", None) == "True"
+if ON_RTD:
+    subprocess.call("doxygen", shell=True)
+else:
+    html_static_path.append(os.path.join("docs", "_doxygen"))
+
 source_suffix = ".rst"
 
 master_doc = "index"
 
 project = "native Lua"
-copyright = "2018-2019, Stefan Waldhör"
+copyright = "2018-2019, Stefan Waldhör"  # pylint: disable=redefined-builtin
 author = "Stefan Waldhör"
 
 version = "0.2.1"

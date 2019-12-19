@@ -10,10 +10,8 @@ class doxygen(Task.Task):
     color = "BLUE"
 
     def run(self):
-
         cmd = Utils.subst_vars("${DOXYGEN}", self.env)
         cmd = [cmd, self.inputs[0].abspath()]
-        print(cmd)
         proc = Utils.subprocess.Popen(
             cmd,
             stdout=Utils.subprocess.PIPE,

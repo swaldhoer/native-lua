@@ -3,13 +3,31 @@
 
 # SPDX-License-Identifier: MIT
 
+from waflib import Utils, Logs
 from waflib.Task import Task
 from waflib.TaskGen import feature, extension
 
 
 class SphinxTask(Task):
     color = "BLUE"
-    run_str = "${SPHINX_BUILD} -b ${BUILDERNAME} -c ${CONFIG} ${INPUTDIR} ${OUTDIR}"
+    run_str = ""
+    always_run = True
+
+    def run(self):
+        cmd = Utils.subst_vars(
+            "${SPHINX_BUILD} -b ${BUILDERNAME} -c ${CONFIG} ${INPUTDIR} ${OUTDIR}",
+            self.env,
+        )
+        proc = Utils.subprocess.Popen(
+            cmd,
+            stdout=Utils.subprocess.PIPE,
+            stderr=Utils.subprocess.PIPE,
+            cwd=self.env.CONFIG,
+        )
+        out, err = proc.communicate()
+        print("out", out.decode("utf-8"))
+        Logs.warn(err.decode("utf-8"))
+        return proc.returncode
 
     def keyword(self):
         return "Compiling {} -> {}".format(self.env.CONFIG, self.env.OUTDIR)

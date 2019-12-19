@@ -16,6 +16,7 @@ The ``native Lua`` Documentation
    ./docs/install.rst
    ./docs/test.rst
    ./docs/manual.rst
+   ./docs/api.rst
    ./docs/demos.rst
    ./docs/ci.rst
    ./docs/sources.rst
