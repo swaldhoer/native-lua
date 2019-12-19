@@ -6,7 +6,6 @@ task:
   matrix:
     - container:
         image: debian:10
-      #only_if: "$CIRRUS_PR != ''"
       install_script:
         - export RUNLEVEL=1
         - apt-get update
@@ -56,16 +55,16 @@ task:
         - update-alternatives --install /usr/bin/clang clang /usr/bin/clang-9 100
         - pip3 install sphinx pathlib pyyaml -q
 
-#    - freebsd_instance:
-#        image_family: freebsd-12-1
-#      freebsd_install_script:
-#        - pkg update -f
-#        - env ASSUME_ALWAYS_YES=YES pkg bootstrap -f
-#        - env ASSUME_ALWAYS_YES=YES pkg upgrade pkg
-#        - env ASSUME_ALWAYS_YES=YES pkg install lang/gcc bash py36-pip doxygen
-#        - pip-3.6 install sphinx pathlib pyyaml -q
-#      freebsd_setup_script:
-#        - chsh -s /usr/local/bin/bash
+    - freebsd_instance:
+        image_family: freebsd-12-1
+      freebsd_install_script:
+        - pkg update -f
+        - env ASSUME_ALWAYS_YES=YES pkg bootstrap -f
+        - env ASSUME_ALWAYS_YES=YES pkg upgrade pkg
+        - env ASSUME_ALWAYS_YES=YES pkg install lang/gcc bash py36-pip doxygen
+        - pip-3.6 install sphinx pathlib pyyaml -q
+      freebsd_setup_script:
+        - chsh -s /usr/local/bin/bash
 
   version_script:
     - python3 --version
