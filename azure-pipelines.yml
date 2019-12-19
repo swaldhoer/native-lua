@@ -7,7 +7,11 @@ trigger:
       - .appveyor.yml
       - .cirrus.yml
       - .editorconfig
+      - .gitattributes
+      - .gitignore
+      - .pylintrc
       - .travis.yml
+      - pyproject.toml
 
 jobs:
   - job: Linux

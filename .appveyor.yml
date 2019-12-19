@@ -4,12 +4,19 @@ image:
   - Visual Studio 2017
   - Ubuntu
 
+cache:
+  - C:\Users\appveyor\AppData\Local\pip\cache
+  - C:\cygwin64\var\cache
+  - C:\cygwin64\home\appveyor\.cache\pip
+
 skip_commits:
   files:
     - .vscode/*
     - .github/*
     - .cirrus.yml
     - .editorconfig
+    - .gitattributes
+    - .gitignore
     - .travis.yml
     - azure-pipelines.yml
 

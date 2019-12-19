@@ -12,8 +12,6 @@ addons:
       - graphviz
 
 cache: pip
-before_cache:
-  - rm -f $HOME/.cache/pip/log/debug.log
 
 matrix:
   fast_finish: true
