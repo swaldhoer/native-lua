@@ -9,6 +9,7 @@ task:
       #only_if: "$CIRRUS_PR != ''"
       install_script:
         - export RUNLEVEL=1
+        - apt-get install -y gnupg
         - wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
         - apt-get update
         - apt-get install -y apt-utils lsb-release
@@ -24,7 +25,17 @@ task:
         - pip install sphinx pathlib pyyaml -q
 
     - container:
-        image: ubuntu:1804-lts
+        image: fedora:30
+      #only_if: "$CIRRUS_PR != ''"
+      install_script:
+        - export RUNLEVEL=1
+        - dnf update
+        - dnf install redhat-lsb-core gcc clang python3-pip
+        - lsb_release -a
+        - pip3 install sphinx pathlib pyyaml -q
+
+    - container:
+        image: ubuntu:bionic
       install_script:
         - export RUNLEVEL=1
         - wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add -
