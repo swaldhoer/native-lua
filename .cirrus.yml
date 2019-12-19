@@ -17,7 +17,7 @@ task:
         - apt-get update
         - lsb_release -a
         - apt-get install -y dialog
-        - apt-get install -y software-properties-common
+        - apt-get install -y software-properties-common libreadline7 libreadline-dev
         - apt-add-repository "deb http://apt.llvm.org/buster/ llvm-toolchain-buster-9 main"
         - apt-get update
         - apt-get -y upgrade
@@ -32,7 +32,7 @@ task:
       install_script:
         - export RUNLEVEL=1
         - dnf -y update
-        - dnf -y install redhat-lsb-core gcc clang python3-pip doxygen graphviz readline
+        - dnf -y install redhat-lsb-core gcc clang python3-pip doxygen graphviz readline readline-devel
         - lsb_release -a
         - pip3 install sphinx pathlib pyyaml -q
 
@@ -48,7 +48,7 @@ task:
         - apt-get update
         - lsb_release -a
         - apt-get install -y dialog python3-pip
-        - apt-get install -y software-properties-common
+        - apt-get install -y software-properties-common libreadline7 libreadline-dev
         - apt-add-repository "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-9 main"
         - apt-get update
         - apt-get -y upgrade
