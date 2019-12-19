@@ -139,7 +139,7 @@ jobs:
           addToPath: true
           architecture: "x64"
 
-      - script: choco install llvm --version 9.0.0
+      - script: choco install llvm -y --version 9.0.0
         displayName: Install LLVM
 
       - script: |
@@ -178,10 +178,10 @@ jobs:
           sphinx-build --version
         displayName: Compiler and Tools versions
 
-      - script: python scripts\run_test.py -c msvc -c gcc -c clang --simple-test -v
+      - script: python scripts\run_test.py -c msvc -c gcc -c clang --simple-test -vv
         displayName: test script (msvc, gcc, clang) with --simple-test
 
-      - script: python scripts\run_test.py -c msvc -c gcc -c clang --simple-test --ltests -v
+      - script: python scripts\run_test.py -c msvc -c gcc -c clang --simple-test --ltests -vv
         displayName: test script (msvc, gcc, clang) with --simple-test and ltests
 
   - job: OSXBuild
