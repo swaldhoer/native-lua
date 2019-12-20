@@ -18,6 +18,7 @@ class SphinxTask(Task):
             "${SPHINX_BUILD} -b ${BUILDERNAME} -c ${CONFIG} ${INPUTDIR} ${OUTDIR}",
             self.env,
         )
+        cmd = cmd.split()
         proc = Utils.subprocess.Popen(
             cmd,
             stdout=Utils.subprocess.PIPE,
