@@ -1,4 +1,6 @@
 @FOR /F "tokens=* USEBACKQ" %%F IN (`where python`) DO @(
-    @SET PYTHON=%%F
+    @IF "%%F" neq "%LOCALAPPDATA%\Microsoft\WindowsApps\python.exe" @(
+        @SET PYTHON=%%F
+    )
 )
 @"%PYTHON%" -x "%~dp0waf" %*

@@ -65,5 +65,5 @@ def build_sphinx(self):
 
 
 @extension(".rst")
-def rst_hook(self, node):  # pylint: disable=W0613
+def rst_hook(self, node):  # pylint: disable=unused-argument
     pass

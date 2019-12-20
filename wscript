@@ -11,7 +11,7 @@ import yaml
 
 from waflib import Logs, Utils, Options, Context, Task
 from waflib.Tools.compiler_c import c_compiler
-from waflib.Tools.c import c  # pylint: disable=W0611
+from waflib.Tools.c import c  # pylint: disable=unused-import
 from waflib.Tools import c_preproc
 from waflib.Build import BuildContext, CleanContext, ListContext, StepContext
 from waflib.Build import InstallContext, UninstallContext
@@ -19,14 +19,14 @@ from waflib.Build import InstallContext, UninstallContext
 
 VERSION = "0.2.1"
 APPNAME = "lua"
-top = "."  # pylint: disable=C0103
-out = "build"  # pylint: disable=C0103
+top = "."  # pylint: disable=invalid-name
+out = "build"  # pylint: disable=invalid-name
 
 Context.Context.line_just = 45
 
 
 # we overwrite c class, as absolute paths can be parsed by VS Code error parser
-class c(Task.Task):  # pylint: disable=C0103,E0102
+class c(Task.Task):  # pylint: disable=function-redefined,invalid-name
     run_str = (
         "${CC} ${ARCH_ST:ARCH} ${CFLAGS} ${FRAMEWORKPATH_ST:FRAMEWORKPATH} "
         "${CPPPATH_ST:INCPATHS} ${DEFINES_ST:DEFINES} "
@@ -38,11 +38,11 @@ class c(Task.Task):  # pylint: disable=C0103,E0102
     scan = c_preproc.scan
 
 
-host_os = Utils.unversioned_sys_platform()  # pylint: disable=C0103
+host_os = Utils.unversioned_sys_platform()  # pylint: disable=invalid-name
 
-plat_comp = c_compiler["default"]  # pylint: disable=C0103
+plat_comp = c_compiler["default"]  # pylint: disable=invalid-name
 if c_compiler.get(host_os):
-    plat_comp = c_compiler[host_os]  # pylint: disable=C0103
+    plat_comp = c_compiler[host_os]  # pylint: disable=invalid-name
 else:
     # add host compilers to compiler list. We need to do this, in order that we
     # use c_compiler[host_os] everywhere we need it.
@@ -132,7 +132,7 @@ def options(opt):
     )
 
 
-def configure(cnf):  # pylint: disable=R0912
+def configure(cnf):  # pylint: disable=too-many-branches
     """Basic configuration of the project based on the operating system and
     the available compilers.
     """
