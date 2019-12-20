@@ -24,7 +24,11 @@ html_static_path = [os.path.join("docs", "_static")]
 
 ON_RTD = os.environ.get("READTHEDOCS", None) == "True"
 if ON_RTD:
-    subprocess.call("( cat doxygen.conf ; echo \"OUTPUT_DIRECTORY=_build/html/_doxygen\" ) | doxygen -", shell=True)
+    os.makedirs("_build/html/_doxygen")
+    subprocess.call(
+        '( cat doxygen.conf ; echo "OUTPUT_DIRECTORY=_build/html/_doxygen" ) | doxygen -',
+        shell=True,
+    )
 else:
     html_static_path.append(os.path.join("docs", "_doxygen"))
 
