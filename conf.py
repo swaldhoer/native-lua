@@ -20,7 +20,7 @@ extensions = [
 
 templates_path = [os.path.join("docs", "_templates")]
 
-html_static_path = [os.path.join("docs", "_static")]
+html_static_path = [os.path.join("docs", "_static"), os.path.join("docs", "_doxygen")]
 
 ON_RTD = os.environ.get("READTHEDOCS", None) == "True"
 if ON_RTD:
@@ -29,8 +29,6 @@ if ON_RTD:
         '( cat doxygen.conf ; echo "OUTPUT_DIRECTORY=_build/html/_doxygen" ) | doxygen -',
         shell=True,
     )
-else:
-    html_static_path.append(os.path.join("docs", "_doxygen"))
 
 source_suffix = ".rst"
 
