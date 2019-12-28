@@ -24,19 +24,23 @@ matrix:
       dist: bionic
       language: python
       sudo: required
+    # - os: linux
+    #   arch: ppc64le
+    #   language: python
+    #   sudo: required
+    # - os: linux
+    #   arch: s390x
+    #   language: python
+    #   sudo: required
     - os: linux
-      arch: ppc64le
-      language: python
-      sudo: required
-    - os: linux
-      arch: s390x
+      arch: arm64
       language: python
       sudo: required
 
 install:
   - python3 -m pip install sphinx pyyaml -q
-  - sudo apt-get install python3-pip
-  - sudo python3 -m pip install sphinx pyyaml -q  # for ppc64le and s390x
+  # - sudo apt-get install python3-pip
+  # - sudo python3 -m pip install sphinx pyyaml -q  # for ppc64le and s390x
 
 before_script:
   - which gcc
