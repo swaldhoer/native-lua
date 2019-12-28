@@ -10,8 +10,6 @@ from waflib.TaskGen import feature, extension
 
 class SphinxTask(Task):
     color = "BLUE"
-    run_str = ""
-    always_run = True
 
     def run(self):
         cmd = Utils.subst_vars(
