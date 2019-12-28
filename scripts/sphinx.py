@@ -40,6 +40,7 @@ class SphinxTask(Task):
 
 def configure(cnf):
     cnf.find_program("sphinx-build", var="SPHINX_BUILD")
+    cnf.find_program("dot", var="DOT")
 
 
 @feature("sphinx")
@@ -58,6 +59,8 @@ def build_sphinx(self):
 
     self.env.INPUTDIR = self.source[0].parent.abspath()
     self.env.OUTDIR = self.path.get_bld().abspath()
+    for src in self.source:
+        self.bld.add_manual_dependency(src.change_ext(".html"), src)
 
     self.create_task("SphinxTask")
 

@@ -107,6 +107,7 @@
         "unversioned",
         "waflib",
         "wscript",
+        "wscript's",
         "cflags",
         "Popen",
         "nopyc",
@@ -239,9 +240,9 @@
         "CPPPATH",
         "LOCALAPPDATA",
         "intelli",
-        "sigs"
+        "sigs",
+        "toolchain",
+        "devel"
     ],
-    "cSpell.words": [
-        "toolchain"
-    ],
+    "cSpell.words": [],
 }

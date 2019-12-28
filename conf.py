@@ -38,7 +38,7 @@ project = "native Lua"
 copyright = "2018-2019, Stefan Waldhör"  # pylint: disable=redefined-builtin
 author = "Stefan Waldhör"
 
-version = "0.2.1"
+version = "0.3.0-devel"
 release = version
 
 language = "en"

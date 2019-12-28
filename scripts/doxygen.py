@@ -6,7 +6,7 @@
 from waflib import Task, TaskGen, Utils, Logs
 
 
-class doxygen(Task.Task):
+class DoxygenTask(Task.Task):
     color = "BLUE"
 
     def run(self):
@@ -26,7 +26,7 @@ class doxygen(Task.Task):
 
 @TaskGen.feature("doxygen")
 def process_doxy(self):
-    self.create_task("doxygen", self.path.find_resource(self.conf))
+    self.create_task("DoxygenTask", self.path.find_resource(self.conf))
 
 
 def configure(conf):
