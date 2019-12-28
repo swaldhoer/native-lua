@@ -34,7 +34,8 @@ matrix:
       sudo: required
 
 install:
-  - pip3 install sphinx pyyaml -q
+  - python3 -m pip install sphinx pyyaml -q
+  - sudo python3 -m pip install sphinx pyyaml -q  # for ppc64le and s390x
 
 before_script:
   - which gcc
