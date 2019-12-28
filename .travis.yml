@@ -39,8 +39,8 @@ matrix:
 
 install:
   - pip3 install sphinx pyyaml -q
-  - if ["$TRAVIS_CPU_ARCH" != "amd64" ]; then sudo apt-get install python3-pip; fi  # for s390x and arm64
-  - if ["$TRAVIS_CPU_ARCH" != "amd64" ]; then sudo python3 -m pip install sphinx pyyaml -q; fi  # for s390x and arm64
+  - if [ "$TRAVIS_CPU_ARCH" != "amd64" ]; then sudo apt-get install python3-pip -y; fi
+  - if [ "$TRAVIS_CPU_ARCH" != "amd64" ]; then sudo python3 -m pip install sphinx pyyaml -q; fi
 
 before_script:
   - which gcc
