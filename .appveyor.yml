@@ -9,6 +9,7 @@ cache:
   - C:\Users\appveyor\AppData\Local\pip\cache
   - C:\cygwin64\var\cache
   - C:\cygwin64\home\appveyor\.cache\pip
+  - ~/.cache/pip
 
 skip_commits:
   files:
