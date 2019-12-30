@@ -18,6 +18,13 @@ extensions = [
     "sphinx.ext.viewcode",
 ]
 
+nitpicky = True
+
+
+def setup(app):
+    app.add_css_file("custom.css")
+
+
 templates_path = [os.path.join("docs", "_templates")]
 
 html_static_path = [os.path.join("docs", "_static"), os.path.join("docs", "_doxygen")]
