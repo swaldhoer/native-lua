@@ -92,10 +92,10 @@ before_build:
   - cmd: black . --config=pyproject.toml --check -v
   - cmd: pylint wscript
   - cmd: pylint conf.py
-  - cmd: pylint scripts\\run_test.py
+  - cmd: pylint scripts\\dot.py
   - cmd: pylint scripts\\doxygen.py
+  - cmd: pylint scripts\\run_test.py
   - cmd: pylint scripts\\sphinx.py
-  - cmd: pylint scripts\\utils.py
 
 build_script:
   # basic configuration

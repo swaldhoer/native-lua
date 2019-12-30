@@ -3,6 +3,8 @@
 
 # SPDX-License-Identifier: MIT
 
+import os
+
 from waflib import Utils, Logs
 from waflib.Task import Task
 from waflib.TaskGen import feature, extension
@@ -40,7 +42,12 @@ class SphinxTask(Task):
 
 def configure(cnf):
     cnf.find_program("sphinx-build", var="SPHINX_BUILD")
-    cnf.find_program("dot", var="DOT")
+    cmd = Utils.subst_vars("${SPHINX_BUILD} --version", cnf.env).split()
+    try:
+        cnf.env.SPHINX_BUILD_VERSION = cnf.cmd_and_log(cmd).strip().split(" ")[1]
+    except IndexError:
+        cnf.env.SPHINX_BUILD_VERSION = "unknown"
+    cnf.load("dot", tooldir=os.path.dirname(os.path.realpath(__file__)))
 
 
 @feature("sphinx")

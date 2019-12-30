@@ -140,6 +140,8 @@ def configure(cnf):  # pylint: disable=too-many-branches
     print("-" * (Context.Context.line_just + 1) + ":")
     cnf.load("python")
     cnf.check_python_version((3, 5))
+    cnf.env.define_key.remove("PYTHONDIR")
+    cnf.env.define_key.remove("PYTHONARCHDIR")
 
     cnf.load("sphinx", tooldir="scripts")
     cnf.load("doxygen", tooldir="scripts")
@@ -147,7 +149,8 @@ def configure(cnf):  # pylint: disable=too-many-branches
     print("-" * (Context.Context.line_just + 1) + ":")
 
     # check that all version numbers match and the the version number adheres
-    # to Semantic Versioning
+    # to Semantic Versioning 2.0.0
+    # https://semver.org/spec/v2.0.0.html#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
     sem_ver_re = re.compile(
         r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*"
         r"[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))"
@@ -157,7 +160,8 @@ def configure(cnf):  # pylint: disable=too-many-branches
     is_sem_ver = re.match(sem_ver_re, VERSION)
     if not is_sem_ver:
         cnf.fatal(
-            "Version information does not follow sematic versioning ({})".format(
+            "Version information does not follow sematic versioning 2.0.0 ({})\n"
+            "See https://semver.org/spec/v2.0.0.html for details.".format(
                 VERSION
             )
         )

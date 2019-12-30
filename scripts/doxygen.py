@@ -3,6 +3,8 @@
 
 # SPDX-License-Identifier: MIT
 
+import os
+
 from waflib import Task, TaskGen, Utils, Logs
 
 
@@ -29,6 +31,6 @@ def process_doxy(self):
     self.create_task("DoxygenTask", self.path.find_resource(self.conf))
 
 
-def configure(conf):
-    conf.find_program("doxygen", var="DOXYGEN")
-    conf.find_program("dot", var="DOT")
+def configure(cnf):
+    cnf.find_program("doxygen", var="DOXYGEN")
+    cnf.load("dot", os.path.dirname(os.path.realpath(__file__)))
