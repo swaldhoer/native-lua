@@ -33,4 +33,9 @@ def process_doxy(self):
 
 def configure(cnf):
     cnf.find_program("doxygen", var="DOXYGEN")
+    cmd = Utils.subst_vars("${DOXYGEN} --version", cnf.env).split()
+    try:
+        cnf.env.DOXYGEN_VERSION = cnf.cmd_and_log(cmd).strip()
+    except IndexError:
+        cnf.env.DOXYGEN_VERSION = "unknown"
     cnf.load("dot", os.path.dirname(os.path.realpath(__file__)))

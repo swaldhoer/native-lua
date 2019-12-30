@@ -161,9 +161,7 @@ def configure(cnf):  # pylint: disable=too-many-branches
     if not is_sem_ver:
         cnf.fatal(
             "Version information does not follow sematic versioning 2.0.0 ({})\n"
-            "See https://semver.org/spec/v2.0.0.html for details.".format(
-                VERSION
-            )
+            "See https://semver.org/spec/v2.0.0.html for details.".format(VERSION)
         )
 
     base_err_msg = (
