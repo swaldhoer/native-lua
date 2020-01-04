@@ -15,11 +15,12 @@ Added
 =====
 
 - Added doxygen configuration (see ``doxygen.conf``, ``docs/_doxygen/*``).
+- Added support for **OpenBSD** and **NetBSD** (``wscript``).
 
 Changed
 =======
 
-- simplified the library build test (``wscript``).
+- Simplified the library build test (``wscript``).
 
 ********************
 [0.2.1] - 2019-12-01

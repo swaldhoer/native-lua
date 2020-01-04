@@ -751,7 +751,51 @@ def build_netbsd_or_openbsd(bld):
     defines_tests = []
     cflags = []
     includes = []
-    bld.fatal("TODO")
+    if bld.env.c_standard.endswith("89"):
+        defines_c89 = ["LUA_USE_C89"]
+        defines_tests += defines_c89
+        defines += defines_c89
+    if bld.env.ltests:
+        use_ltests += ["LTESTS"]
+        cflags += ["-g"]
+        defines += ['LUA_USER_H="ltests.h"']
+        includes += [bld.env.ltests_dir]
+        bld.objects(
+            source=bld.env.ltests_sources,
+            defines=defines,
+            cflags=cflags,
+            includes=[bld.env.ltests_dir, bld.env.src_basepath],
+            name="LTESTS",
+        )
+
+    bld.stlib(
+        source=bld.env.sources,
+        target="lua",
+        defines=defines,
+        cflags=cflags,
+        use=use_ltests,
+        includes=includes,
+        name="static-lua-library",
+    )
+    bld.program(
+        source=bld.env.source_interpreter,
+        target="lua",
+        defines=defines,
+        cflags=cflags,
+        includes=includes,
+        use=["static-lua-library"] + use + use_ltests,
+    )
+    bld.program(
+        source=bld.env.source_compiler,
+        target="luac",
+        defines=defines,
+        cflags=cflags,
+        includes=includes,
+        use=["static-lua-library"] + use + use_ltests,
+    )
+
+    if bld.env.include_tests:
+        build_lib_tests(bld, defines_tests)
 
 
 def build_freebsd(bld):
