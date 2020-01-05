@@ -875,7 +875,6 @@ def build_netbsd(bld):
         build_lib_tests(bld, defines_tests)
 
 
-
 def build_freebsd(bld):
     use = ["M", "DL", "EDIT"]
     use_ltests = []
