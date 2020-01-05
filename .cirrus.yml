@@ -62,7 +62,7 @@ task:
         - env ASSUME_ALWAYS_YES=YES pkg bootstrap -f
         - env ASSUME_ALWAYS_YES=YES pkg upgrade pkg
         - env ASSUME_ALWAYS_YES=YES pkg install lang/gcc bash python37 py37-pip doxygen
-        - ln -fs /usr/local/bin/python3 /usr/local/bin/python37
+        - ln -fs /usr/local/bin/python37 /usr/local/bin/python3
         - pip-3.7 install sphinx pathlib pyyaml -q
       freebsd_setup_script:
         - chsh -s /usr/local/bin/bash

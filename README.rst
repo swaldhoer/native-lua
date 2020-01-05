@@ -7,8 +7,8 @@ The ``native Lua`` Project
 **Lua on the platform you use with the compiler you choose**
 
 `Lua` is multi-paradigm programming language. `Lua` is cross-platform as it is
-written in ANSI C. Lua is licensed under `MIT`_ license. ``native Lua`` goal is
-to deliver a framework to build `Lua` on any platform with any compiler:
+written in ANSI C. `Lua` is licensed under `MIT`_ license. `native Lua`\ s goal
+is to deliver a framework to build `Lua` on any platform with any compiler.
 
 For information on `Lua` see `Lua.org`_.
 
@@ -43,7 +43,7 @@ Supported Platforms And Compilers
 The current release supports the following platform/compiler combinations:
 
 +----------+-----------------------+-------------------------------+
-| Platform | Official Lua Releases | ``native Lua`` Releases       |
+| Platform | Official Lua Releases | `native Lua` Releases         |
 +==========+=======================+===============================+
 | aix      | gcc                   | xlc*, gcc*, clang*            |
 +----------+-----------------------+-------------------------------+
@@ -120,7 +120,7 @@ This directory contains the source files as they are downloaded from
 of the files are removed.
 
 The lua interpreter (``lua.c``) as well as the lua compiler (``luac.c``) have
-been changed, to indicate, that they were build based on the ``native Lua``
+been changed, to indicate, that they were build based on the `native Lua`
 project:
 
 .. code-block:: sh
@@ -141,7 +141,7 @@ following comment:
 
 .. code-block:: lua
 
-   -- native-lua
+   -- native Lua
 
 Test files for the build toolchain have been added in ``build``.
 
@@ -149,11 +149,13 @@ Test files for the build toolchain have been added in ``build``.
 Links
 *****
 
+Documentation
+=============
+
 The documentation can be found on `readthedocs.io`_.
 
-**
-CI
-**
+Continuous Integration
+======================
 
 - Azure Pipelines: Linux, MacOS, Windows
 - AppVeyor: Linux, Windows
@@ -162,6 +164,16 @@ CI
 - ReadTheDocs.org: Documentation
 
 On AppVeyor's Windows build we also run |black|_ and |pylint|_.
+
+********
+Licenses
+********
+
+- `Lua` is licensed under `MIT`_ license.
+- `native Lua` is licensed under :download:`MIT <LICENSE>` license.
+- `sphinx_rtd_theme <https://github.com/readthedocs/sphinx_rtd_theme>`_
+  is licensed under
+  :download:`MIT <docs/_themes/sphinx_rtd_theme/LICENSE>` license.
 
 ----
 
