@@ -325,7 +325,28 @@ def configure(cnf):  # pylint: disable=R0912
             platform_compilers.append(cnf.env.env_name)
         except BaseException:
             failed_platform_compilers.append(cnf.env.env_name)
-    elif host_os in ("netbsd", "openbsd"):
+    elif host_os == "openbsd":
+        try:  # gcc
+            set_new_basic_env("gcc")
+            cnf.load("compiler_c")
+            cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            cnf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
+            cnf.check_cc(fragment=min_c, execute=True)
+            check_libs("m")
+            platform_compilers.append(cnf.env.env_name)
+        except BaseException:
+            failed_platform_compilers.append(cnf.env.env_name)
+        try:  # clang
+            set_new_basic_env("clang")
+            cnf.load("compiler_c")
+            cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            cnf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
+            cnf.check_cc(fragment=min_c, execute=True)
+            check_libs("m")
+            platform_compilers.append(cnf.env.env_name)
+        except BaseException:
+            failed_platform_compilers.append(cnf.env.env_name)
+    elif host_os == "netbsd":
         try:  # gcc
             set_new_basic_env("gcc")
             cnf.load("compiler_c")
@@ -654,8 +675,10 @@ def build(bld):
             build_generic(bld)
         elif bld.env.host_os == "aix":
             build_aix(bld)
-        elif bld.env.host_os in ("netbsd", "openbsd"):
-            build_netbsd_or_openbsd(bld)
+        elif bld.env.host_os == "openbsd":
+            build_openbsd(bld)
+        elif bld.env.host_os == "netbsd":
+            build_netbsd(bld)
         elif bld.env.host_os == "freebsd":
             build_freebsd(bld)
         elif bld.env.host_os == "linux":
@@ -667,7 +690,7 @@ def build(bld):
         elif bld.env.host_os == "cygwin":
             build_cygwin(bld)
         elif bld.env.host_os == "solaris":
-            bld.cygwin(bld)
+            build_solaris(bld)
         else:
             bld.fatal("currently not supported platform")
 
@@ -744,7 +767,7 @@ def build_aix(bld):
     bld.fatal("TODO")
 
 
-def build_netbsd_or_openbsd(bld):
+def build_openbsd(bld):
     use = ["M"]
     use_ltests = []
     defines = ["LUA_COMPAT_5_2", "LUA_USE_POSIX", "LUA_USE_DLOPEN"]
@@ -796,6 +819,61 @@ def build_netbsd_or_openbsd(bld):
 
     if bld.env.include_tests:
         build_lib_tests(bld, defines_tests)
+
+
+def build_netbsd(bld):
+    use = ["M"]
+    use_ltests = []
+    defines = ["LUA_COMPAT_5_2", "LUA_USE_POSIX", "LUA_USE_DLOPEN"]
+    defines_tests = []
+    cflags = []
+    includes = []
+    if bld.env.c_standard.endswith("89"):
+        defines_c89 = ["LUA_USE_C89"]
+        defines_tests += defines_c89
+        defines += defines_c89
+    if bld.env.ltests:
+        use_ltests += ["LTESTS"]
+        cflags += ["-g"]
+        defines += ['LUA_USER_H="ltests.h"']
+        includes += [bld.env.ltests_dir]
+        bld.objects(
+            source=bld.env.ltests_sources,
+            defines=defines,
+            cflags=cflags,
+            includes=[bld.env.ltests_dir, bld.env.src_basepath],
+            name="LTESTS",
+        )
+
+    bld.stlib(
+        source=bld.env.sources,
+        target="lua",
+        defines=defines,
+        cflags=cflags,
+        use=use_ltests,
+        includes=includes,
+        name="static-lua-library",
+    )
+    bld.program(
+        source=bld.env.source_interpreter,
+        target="lua",
+        defines=defines,
+        cflags=cflags,
+        includes=includes,
+        use=["static-lua-library"] + use + use_ltests,
+    )
+    bld.program(
+        source=bld.env.source_compiler,
+        target="luac",
+        defines=defines,
+        cflags=cflags,
+        includes=includes,
+        use=["static-lua-library"] + use + use_ltests,
+    )
+
+    if bld.env.include_tests:
+        build_lib_tests(bld, defines_tests)
+
 
 
 def build_freebsd(bld):

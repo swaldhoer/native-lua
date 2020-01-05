@@ -22,6 +22,11 @@ Changed
 
 - Simplified the library build test (``wscript``).
 
+Fixed
+=====
+
+- Build function for **Solaris** was wrong (``wscript``).
+
 ********************
 [0.2.1] - 2019-12-01
 ********************
