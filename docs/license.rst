@@ -2,6 +2,8 @@
 License
 #######
 
+This page list the license information for files included in this repository.
+
 ***********
 Lua License
 ***********
@@ -19,11 +21,41 @@ The MIT license is also found at end of file :ref:`lua.h <LUA>`:
 `native Lua` License
 ********************
 
-`native Lua` is distributed under the terms of the `MIT`_ license.
+`native Lua` is distributed under the terms of the
+`MIT <https://opensource.org/licenses/MIT>`__ license.
 
-The license information file (``LICENSE``) is found at the root of the
-repository.
+The license information is found in the file ``LICENSE``.
 
 .. literalinclude:: ./../LICENSE
+   :language: none
+
+**************************
+`sphinx_rtd_theme` License
+**************************
+
+`sphinx_rtd_theme` is distributed under the terms of the MIT license.
+
+The license information is found in the file
+``docs/_themes/sphinx_rtd_theme/LICENSE``.
+
+.. literalinclude:: ./../docs/_themes/sphinx_rtd_theme/LICENSE
+   :language: none
+
+.. _MIT: https://www.lua.org/manual/5.3/readme.html#license
+
+**************************
+`waf` License
+**************************
+
+`waf` is distributed under the terms of a
+`BSD license <https://waf.io/book/#_license_and_redistribution>`_.
+
+The license information is found in the file
+``waf``.
+
+.. literalinclude:: ./../waf
+   :language: python
+   :lines: 5-31
+   :encoding: latin-1
 
 .. _MIT: https://www.lua.org/manual/5.3/readme.html#license

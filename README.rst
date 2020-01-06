@@ -2,7 +2,8 @@
 The ``native Lua`` Project
 ##########################
 
-|version-badge|_ |appveyor-badge|_ |travis-badge|_ |cirrus-badge|_ |azure-badge|_ |readthedocs-badge|_ |license-badge|_ |code-style-black-badge|_
+|version-badge|_ |appveyor-badge|_ |travis-badge|_ |cirrus-badge|_ \
+|azure-badge|_ |readthedocs-badge|_ |license-badge|_ |code-style-black-badge|_
 
 **Lua on the platform you use with the compiler you choose**
 
@@ -98,6 +99,8 @@ The root directory contains the
 - licensing information (``LICENSE``, ``CONTRIBUTING.rst``),
 - and information on the project and the lua version (``VERSION``).
 
+For details on the build toolchain see `waf.io`_.
+
 ``demos`` Directory
 ===================
 
@@ -109,8 +112,12 @@ use libraries that do not come with the `Lua` interpreter.
 
 This directory contains the `native Lua` project documentation as well as the
 official `Lua` documentation. The official `Lua` documentation is found in
-`docs/_static/doc`. This documentation is also linked into the project
+``docs/_static/doc``. This documentation is also linked into the project
 documentation.
+
+`native Lua` uses the `ReadTheDocs Sphinx theme`_ ``sphinx_rtd_theme`` as
+layout theme for the documentation. It is included in
+``docs/_themes/sphinx_rtd_theme``.
 
 ``src`` Directory
 =================
@@ -123,10 +130,10 @@ The lua interpreter (``lua.c``) as well as the lua compiler (``luac.c``) have
 been changed, to indicate, that they were build based on the `native Lua`
 project:
 
-.. code-block:: sh
+.. code-block:: bash
 
    $ build/gcc/lua -v
-   Lua 5.3.5  Copyright (C) 1994-2017 Lua.org, PUC-Rio [based on native Lua (0.2.1), https://github.com/swaldhoer/native-lua]
+   Lua 5.3.5  Copyright (C) 1994-2017 Lua.org, PUC-Rio [based on native Lua (0.3.0), https://github.com/swaldhoer/native-lua]
 
 ``tests`` Directory
 ===================
@@ -143,7 +150,7 @@ following comment:
 
    -- native Lua
 
-Test files for the build toolchain have been added in ``build``.
+Test files for the build toolchain have been added in ``tests/build``.
 
 *****
 Links
@@ -165,15 +172,11 @@ Continuous Integration
 
 On AppVeyor's Windows build we also run |black|_ and |pylint|_.
 
-********
-Licenses
-********
+*******
+License
+*******
 
-- `Lua` is licensed under `MIT`_ license.
-- `native Lua` is licensed under :download:`MIT <LICENSE>` license.
-- `sphinx_rtd_theme <https://github.com/readthedocs/sphinx_rtd_theme>`_
-  is licensed under
-  :download:`MIT <docs/_themes/sphinx_rtd_theme/LICENSE>` license.
+`native Lua` is licensed under the terms of the MIT license.
 
 ----
 
@@ -181,7 +184,11 @@ Licenses
 .. _MIT: https://www.lua.org/manual/5.3/readme.html#license
 .. _lua_readme: https://www.lua.org/manual/5.3/readme.html
 
+.. _waf.io: https://www.waf.io
+
 .. _readthedocs.io: https://native-lua.readthedocs.io/en/latest/
+
+.. _ReadTheDocs Sphinx theme: https://github.com/readthedocs/sphinx_rtd_theme
 
 .. |black| replace:: ``black``
 .. _black: https://black.readthedocs.io/en/stable/

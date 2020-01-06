@@ -7,15 +7,16 @@ All notable changes to this project will be documented in this file.
 The format is based on `Keep a Changelog`_ v1.0.0, and this project adheres to
 `Semantic Versioning`_ v2.0.0.
 
-************
-[Unreleased]
-************
+********************
+[0.3.0] - 2020-01-06
+********************
 
 Added
 =====
 
 - Added doxygen configuration (see ``doxygen.conf``, ``docs/_doxygen/*``).
 - Added support for **OpenBSD** and **NetBSD** (``wscript``).
+- Added documentation for third party sources
 
 Changed
 =======

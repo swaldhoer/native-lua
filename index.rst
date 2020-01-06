@@ -1,6 +1,10 @@
-################################
-The ``native Lua`` Documentation
-################################
+##############################
+The `native Lua` Documentation
+##############################
+
+Welcome to the `native Lua` project documentation.
+
+`native Lua` is framework to build and test `Lua` on different platforms.
 
 .. toctree::
    :titlesonly:
