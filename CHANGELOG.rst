@@ -16,6 +16,7 @@ Added
 
 - Added doxygen configuration (see ``doxygen.conf``, ``docs/_doxygen/*``).
 - Added support for **OpenBSD** and **NetBSD** (``wscript``).
+- Added documentation for third party sources
 
 Changed
 =======
