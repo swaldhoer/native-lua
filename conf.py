@@ -31,12 +31,19 @@ html_static_path = [os.path.join("docs", "_static"), os.path.join("docs", "_doxy
 
 ON_RTD = os.environ.get("READTHEDOCS", None) == "True"
 if ON_RTD:
-    os.makedirs("_build/html/_doxygen", exist_ok=True)
+    import shutil  # pylint: disable=import-outside-toplevel
+
     subprocess.call(
-        '( cat doxygen.conf ; echo "OUTPUT_DIRECTORY=_build/html/_doxygen" ) | doxygen -',
+        "curl -o doxygen.tar.gz http://doxygen.nl/files/doxygen-1.8.17.linux.bin.tar.gz",
         shell=True,
     )
-
+    subprocess.call("tar -xzf doxygen.tar.gz", shell=True)
+    os.makedirs("_build/html/_doxygen", exist_ok=True)
+    subprocess.call(
+        'export PATH=$PATH:$(pwd)/doxygen-1.8.17/bin & ( cat doxygen.conf ; echo "OUTPUT_DIRECTORY=_build/html/_doxygen" ) | doxygen -',
+        shell=True,
+    )
+    shutil.rmtree("doxygen-1.8.17")
 source_suffix = ".rst"
 
 master_doc = "index"
