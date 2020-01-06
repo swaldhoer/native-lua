@@ -30,7 +30,7 @@ source_suffix = ".rst"
 master_doc = "index"
 
 project = "native Lua"
-copyright = "2018-2019, Stefan Waldhör"
+copyright = "2018-2020, Stefan Waldhör"
 author = "Stefan Waldhör"
 
 version = "0.2.1"
