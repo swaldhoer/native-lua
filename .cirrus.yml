@@ -58,15 +58,13 @@ task:
     - freebsd_instance:
         image_family: freebsd-12-1
       freebsd_install_script:
-        # - pkg update -f
-        # - env ASSUME_ALWAYS_YES=YES pkg bootstrap -f
-        # - env ASSUME_ALWAYS_YES=YES pkg upgrade pkg
-        # - env ASSUME_ALWAYS_YES=YES pkg install lang/gcc bash python37 py37-pip doxygen
-        # - ln -fs /usr/local/bin/python37 /usr/local/bin/python3
-        # - pip-3.7 install sphinx pathlib pyyaml -q
+        - pkg update -f
+        - env ASSUME_ALWAYS_YES=YES pkg bootstrap -f
+        - env ASSUME_ALWAYS_YES=YES pkg upgrade pkg
+        - env ASSUME_ALWAYS_YES=YES pkg install lang/gcc bash doxygen
         - python3 -m ensurepip --default-pip
+        - python3 -m pip install --upgrade pip
         - python3 -m pip install sphinx pathlib pyyaml -q
-        - python3 -c "import yaml"
       freebsd_setup_script:
         - chsh -s /usr/local/bin/bash
 
