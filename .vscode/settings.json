@@ -239,7 +239,8 @@
         "CPPPATH",
         "LOCALAPPDATA",
         "intelli",
-        "sigs"
+        "sigs",
+        "doxygen"
     ],
     "cSpell.words": [
         "toolchain"

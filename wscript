@@ -17,7 +17,7 @@ from waflib.Build import BuildContext, CleanContext, ListContext, StepContext
 from waflib.Build import InstallContext, UninstallContext
 
 
-VERSION = "0.2.1"
+VERSION = "0.3.0"
 APPNAME = "lua"
 top = "."  # pylint: disable=C0103
 out = "build"  # pylint: disable=C0103
