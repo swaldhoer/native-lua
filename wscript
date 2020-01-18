@@ -503,6 +503,17 @@ def configure(cnf):  # pylint: disable=R0912
             platform_compilers.append(cnf.env.env_name)
         except BaseException:
             failed_platform_compilers.append(cnf.env.env_name)
+        try:  # clang
+            set_new_basic_env("clang")
+            cnf.load("compiler_c")
+            cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            cnf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
+            cnf.check_cc(fragment=min_c, execute=True)
+            check_libs("m")
+            platform_compilers.append(cnf.env.env_name)
+        except BaseException:
+            failed_platform_compilers.append(cnf.env.env_name)
+
     elif host_os == "solaris":
         try:  # gcc
             set_new_basic_env("gcc")

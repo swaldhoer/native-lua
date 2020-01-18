@@ -64,22 +64,35 @@ install:
   - cmd: set PATH=C:\download\graphviz\release\bin;%PATH%
   - cmd: cd %APPVEYOR_BUILD_FOLDER%
   - sh: sudo apt-get install doxygen graphviz -y
-  - doxygen --version
-  - dot -V
-  - cmd: python --version
-  - sh: python3 --version
-  - cmd: black --version
-  - cmd: pylint --version
-  - clang --version
-  - gcc --version
-  - cmd: cl
-
   # setup cygwin64
   - cmd: curl -o setup-x86_64.exe http://www.cygwin.com/setup-x86_64.exe
-  - cmd: setup-x86_64.exe --no-desktop --no-shortcuts --no-startmenu --quiet-mode --packages wget,python37,python37-pip,doxygen,graphviz
+  - cmd: setup-x86_64.exe --no-desktop --no-shortcuts --no-startmenu --quiet-mode --packages wget,python37,python37-pip,doxygen,graphviz,llvm,clang
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 --version"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 -m ensurepip --upgrade"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "pip3 install sphinx pyyaml -q"
+  # python linting tools, only used on Windows (no cygwin)
+  - cmd: black --version
+  - cmd: pylint --version
+  # print program versions that are build relevant
+  # doxygen
+  - doxygen --version
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "doxygen --version"
+  # dot
+  - dot -V
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "dot -V"
+  # python
+  - cmd: python --version
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "python3"
+  - sh: python3 --version
+  # clang
+  - clang --version
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "clang --version"
+    # gcc
+  - gcc --version
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "gcc --version"
+    # MSVC
+  - cmd: cl
+
   # for testing
   - cmd: set PATH=%PATH%;%userprofile%\AppData\Local\Programs\lua\bin
 
@@ -154,8 +167,13 @@ build_script:
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/tests && which lua && lua -v && lua -e\"_U=true\" all.lua"
   #- cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/tests && which lua && lua -v && lua all.lua"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf uninstall_gcc"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf build_clang"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf install_clang"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/clang/tests && which lua && lua -v && lua -e\"_U=true\" all.lua"
+  #- cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/clang/tests && which lua && lua -v && lua all.lua"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf uninstall_clang"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf distclean"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 scripts/run_test.py -c gcc --simple-test"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 scripts/run_test.py -c gcc -c clang --simple-test"
   # configure including the test files and the ltests
   - cmd: python waf configure --include-tests --ltests
   - sh: python3 waf configure --include-tests --ltests
@@ -210,5 +228,10 @@ build_script:
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/tests && which lua && lua -v && lua -e\"_U=true\" all.lua"
   #- cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/tests && which lua && lua -v && lua all.lua"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf uninstall_gcc"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf build_clang"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf install_clang"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/clang/tests && which lua && lua -v && lua -e\"_U=true\" all.lua"
+  #- cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/tests && which lua && lua -v && lua all.lua"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf uninstall_clang"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf distclean"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 scripts/run_test.py -c gcc --simple-test"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 scripts/run_test.py -c gcc -c clang --simple-test"

@@ -72,7 +72,7 @@ The current release supports the following platform/compiler combinations:
 +----------+-----------------------+-------------------------------+
 | win32    | see MinGw             | msvc, gcc, clang              |
 +----------+-----------------------+-------------------------------+
-| cygwin   | no                    | gcc                           |
+| cygwin   | no                    | gcc, clang                    |
 +----------+-----------------------+-------------------------------+
 
 \* means not or not fully tested.

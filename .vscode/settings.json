@@ -1,4 +1,5 @@
 {
+    "python.pythonPath": "python3",
     "terminal.integrated.shell.linux": "bash",
     "terminal.integrated.shell.osx": "bash",
     "terminal.integrated.shell.windows": "C:\\Windows\\sysnative\\cmd.exe",
