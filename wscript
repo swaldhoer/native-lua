@@ -516,7 +516,6 @@ def configure(cnf):  # pylint: disable=R0912
             platform_compilers.append(cnf.env.env_name)
         except BaseException:
             failed_platform_compilers.append(cnf.env.env_name)
-
     elif host_os == "solaris":
         try:  # gcc
             set_new_basic_env("gcc")

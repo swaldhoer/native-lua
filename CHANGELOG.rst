@@ -7,6 +7,27 @@ All notable changes to this project will be documented in this file.
 The format is based on `Keep a Changelog`_ v1.0.0, and this project adheres to
 `Semantic Versioning`_ v2.0.0.
 
+************
+[Unreleased]
+************
+
+Added
+=====
+
+- Added support for clang on **Cygwin** (see ``wscript``).
+
+Changed
+=======
+
+- Updated documentation on supported platforms and compilers (``README.rst``).
+- Updated documentation on Continuous Integration infrastructure
+  (``docs/ci.rst``).
+
+Fixed
+=====
+
+- waf help showed wrong build commands (``wscript``).
+
 ********************
 [0.3.0] - 2020-01-06
 ********************
