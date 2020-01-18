@@ -40,6 +40,9 @@ class c(Task.Task):  # pylint: disable=C0103,E0102
 
 host_os = Utils.unversioned_sys_platform()  # pylint: disable=C0103
 
+if host_os == "cygwin":
+    c_compiler["cygwin"].append("clang")
+
 plat_comp = c_compiler["default"]  # pylint: disable=C0103
 if c_compiler.get(host_os):
     plat_comp = c_compiler[host_os]  # pylint: disable=C0103
@@ -1050,13 +1053,6 @@ def build_darwin(bld):
 
 
 def build_win32(bld):
-    """Building on win32 platform
-    Useable compilers are:
-    - msvc
-    - gcc
-    - clang
-    """
-
     def build_win32_msvc():
         """Building on win32 with msvc"""
         defines = ["LUA_COMPAT_5_2", "_WIN32"]
@@ -1093,7 +1089,6 @@ def build_win32(bld):
             # https://github.com/swaldhoer/native-lua/issues/46
 
     def build_win32_gcc():
-        """Building on win32 with gcc"""
         use = ["M"]
         use_ltests = []
         defines = ["LUA_COMPAT_5_2", "_WIN32"]
@@ -1129,7 +1124,6 @@ def build_win32(bld):
             # https://github.com/swaldhoer/native-lua/issues/46
 
     def build_win32_clang():
-        """Building on win32 with clang"""
         use = ["M"]
         use_ltests = []
         defines = ["LUA_COMPAT_5_2", "_WIN32"]
@@ -1173,7 +1167,6 @@ def build_win32(bld):
 
 
 def build_cygwin(bld):
-    """Building on win32-cygwin with gcc"""
     use = ["M"]
     use_ltests = []
     defines = ["LUA_COMPAT_5_2", "LUA_USE_LINUX"]
