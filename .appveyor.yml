@@ -2,7 +2,7 @@ version: 5.3.5.{build}
 
 image:
   - Visual Studio 2017
-#  - Visual Studio 2019
+  - Visual Studio 2019
   - Ubuntu
 
 cache:
