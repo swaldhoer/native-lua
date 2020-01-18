@@ -82,7 +82,7 @@ install:
   - cmd: C:\cygwin64\bin\bash.exe -l -c "dot -V"
   # python
   - cmd: python --version
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "python3"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 --version"
   - sh: python3 --version
   # clang
   - clang --version
