@@ -27,15 +27,15 @@ init:
 install:
   - ps: |
       if ($isWindows) {
-        $rmpath = "Docker", "SQL", "Mercurial", "Subversion", "Maven", "CMake"
-        $rmpath += "nodejs", "nunit", "nuget", "java", "xunit", "go", "python"
-        $rmpath += "Amazon", "ruby", "perl", "Azur", "Webdriver", "Coverity"
-        $rmpath += "Octopus", "erl9", "dotnet", "iojs", "Yarn"
-        $rmpath += "npm", "Windows Performance Toolkit"
-        $rmpath += "Microsoft Service Fabric", "Microsoft DNX"
-        $rmpath += "Microsoft Visual Studio"
-        $rmpath += "ServiceFabricLocalClusterManager"
-        foreach ($i in $rmpath) {
+        $rmfp = "Docker", "SQL", "Mercurial", "Subversion", "Maven", "CMake"
+        $rmfp += "nodejs", "nunit", "nuget", "java", "xunit", "go", "python"
+        $rmfp += "Amazon", "ruby", "perl", "Azure", "Webdriver", "Coverity"
+        $rmfp += "Octopus", "erl9", "dotnet", "iojs", "Yarn"
+        $rmfp += "npm", "Windows Performance Toolkit"
+        $rmfp += "Microsoft Service Fabric", "Microsoft DNX"
+        $rmfp += "Microsoft Visual Studio"
+        $rmfp += "ServiceFabricLocalClusterManager"
+        foreach ($i in $rmfp) {
           $env:path = ($env:path -split ";").Where({!($_ -like "*$i*")}) -join ";"
         }
       }
@@ -63,7 +63,6 @@ install:
   - cmd: cd C:\download\graphviz && 7z x graphviz.zip
   - cmd: set PATH=C:\download\graphviz\release\bin;%PATH%
   - cmd: cd %APPVEYOR_BUILD_FOLDER%
-  - sh: sudo apt-get install doxygen graphviz -y
   # setup cygwin64
   - cmd: curl -o setup-x86_64.exe http://www.cygwin.com/setup-x86_64.exe
   - cmd: setup-x86_64.exe --no-desktop --no-shortcuts --no-startmenu --quiet-mode --packages wget,python37,python37-pip,doxygen,graphviz,llvm,clang
