@@ -2,13 +2,14 @@
 The ``native Lua`` Project
 ##########################
 
-|version-badge|_ |appveyor-badge|_ |travis-badge|_ |cirrus-badge|_ |azure-badge|_ |readthedocs-badge|_ |license-badge|_ |code-style-black-badge|_
+|version-badge|_ |appveyor-badge|_ |travis-badge|_ |cirrus-badge|_ \
+|azure-badge|_ |readthedocs-badge|_ |license-badge|_ |code-style-black-badge|_
 
 **Lua on the platform you use with the compiler you choose**
 
 `Lua` is multi-paradigm programming language. `Lua` is cross-platform as it is
-written in ANSI C. Lua is licensed under `MIT`_ license. ``native Lua`` goal is
-to deliver a framework to build `Lua` on any platform with any compiler:
+written in ANSI C. `Lua` is licensed under `MIT`_ license. `native Lua`\ s goal
+is to deliver a framework to build `Lua` on any platform with any compiler.
 
 For information on `Lua` see `Lua.org`_.
 
@@ -43,11 +44,15 @@ Supported Platforms And Compilers
 The current release supports the following platform/compiler combinations:
 
 +----------+-----------------------+-------------------------------+
-| Platform | Official Lua Releases | ``native Lua`` Releases       |
+| Platform | Official Lua Releases | `native Lua` Releases         |
 +==========+=======================+===============================+
 | aix      | gcc                   | xlc*, gcc*, clang*            |
 +----------+-----------------------+-------------------------------+
-| bsd      | gcc                   | gcc*, clang*                  |
+| bsd      | gcc                   | see OpenBSD and NetBSD        |
++----------+-----------------------+-------------------------------+
+| OpenBSD  | see bsd               | gcc, clang                    |
++----------+-----------------------+-------------------------------+
+| NetBSD   | see bsd               | gcc*, clang*                  |
 +----------+-----------------------+-------------------------------+
 | c89      | gcc                   | all compilers*                |
 +----------+-----------------------+-------------------------------+
@@ -67,7 +72,7 @@ The current release supports the following platform/compiler combinations:
 +----------+-----------------------+-------------------------------+
 | win32    | see MinGw             | msvc, gcc, clang              |
 +----------+-----------------------+-------------------------------+
-| cygwin   | no                    | gcc                           |
+| cygwin   | no                    | gcc, clang                    |
 +----------+-----------------------+-------------------------------+
 
 \* means not or not fully tested.
@@ -94,6 +99,8 @@ The root directory contains the
 - licensing information (``LICENSE``, ``CONTRIBUTING.rst``),
 - and information on the project and the lua version (``VERSION``).
 
+For details on the build toolchain see `waf.io`_.
+
 ``demos`` Directory
 ===================
 
@@ -105,8 +112,12 @@ use libraries that do not come with the `Lua` interpreter.
 
 This directory contains the `native Lua` project documentation as well as the
 official `Lua` documentation. The official `Lua` documentation is found in
-`docs/_static/doc`. This documentation is also linked into the project
+``docs/_static/doc``. This documentation is also linked into the project
 documentation.
+
+`native Lua` uses the `ReadTheDocs Sphinx theme`_ ``sphinx_rtd_theme`` as
+layout theme for the documentation. It is included in
+``docs/_themes/sphinx_rtd_theme``.
 
 ``src`` Directory
 =================
@@ -116,13 +127,13 @@ This directory contains the source files as they are downloaded from
 of the files are removed.
 
 The lua interpreter (``lua.c``) as well as the lua compiler (``luac.c``) have
-been changed, to indicate, that they were build based on the ``native Lua``
+been changed, to indicate, that they were build based on the `native Lua`
 project:
 
-.. code-block:: sh
+.. code-block:: bash
 
    $ build/gcc/lua -v
-   Lua 5.3.5  Copyright (C) 1994-2017 Lua.org, PUC-Rio [based on native Lua (0.3.0-devel), https://github.com/swaldhoer/native-lua]
+   Lua 5.3.5  Copyright (C) 1994-2017 Lua.org, PUC-Rio [based on native Lua (0.3.x-devel), https://github.com/swaldhoer/native-lua]
 
 ``tests`` Directory
 ===================
@@ -137,19 +148,21 @@ following comment:
 
 .. code-block:: lua
 
-   -- native-lua
+   -- native Lua
 
-Test files for the build toolchain have been added in ``build``.
+Test files for the build toolchain have been added in ``tests/build``.
 
 *****
 Links
 *****
 
+Documentation
+=============
+
 The documentation can be found on `readthedocs.io`_.
 
-**
-CI
-**
+Continuous Integration
+======================
 
 - Azure Pipelines: Linux, MacOS, Windows
 - AppVeyor: Linux, Windows
@@ -159,13 +172,23 @@ CI
 
 On AppVeyor's Windows build we also run |black|_ and |pylint|_.
 
+*******
+License
+*******
+
+`native Lua` is licensed under the terms of the MIT license.
+
 ----
 
 .. _lua.org: https://www.lua.org/
 .. _MIT: https://www.lua.org/manual/5.3/readme.html#license
 .. _lua_readme: https://www.lua.org/manual/5.3/readme.html
 
+.. _waf.io: https://www.waf.io
+
 .. _readthedocs.io: https://native-lua.readthedocs.io/en/latest/
+
+.. _ReadTheDocs Sphinx theme: https://github.com/readthedocs/sphinx_rtd_theme
 
 .. |black| replace:: ``black``
 .. _black: https://black.readthedocs.io/en/stable/

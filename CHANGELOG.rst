@@ -14,12 +14,40 @@ The format is based on `Keep a Changelog`_ v1.0.0, and this project adheres to
 Added
 =====
 
-- Added doxygen configuration (see ``doxygen.conf``, ``docs/_doxygen/*``).
+- Added support for clang on **Cygwin** (see ``wscript``).
 
 Changed
 =======
 
-- simplified the library build test (``wscript``).
+- Updated documentation on supported platforms and compilers (``README.rst``).
+- Updated documentation on Continuous Integration infrastructure
+  (``docs/ci.rst``).
+
+Fixed
+=====
+
+- waf help showed wrong build commands (``wscript``).
+
+********************
+[0.3.0] - 2020-01-06
+********************
+
+Added
+=====
+
+- Added doxygen configuration (see ``doxygen.conf``, ``docs/_doxygen/*``).
+- Added support for **OpenBSD** and **NetBSD** (``wscript``).
+- Added documentation for third party sources
+
+Changed
+=======
+
+- Simplified the library build test (``wscript``).
+
+Fixed
+=====
+
+- Build function for **Solaris** was wrong (``wscript``).
 
 ********************
 [0.2.1] - 2019-12-01

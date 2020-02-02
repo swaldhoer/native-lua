@@ -18,11 +18,15 @@ Project Status
 +--------------------+-----------------------+--------------------------------------------------------------+
 | CI Service         | Build Status          | Platform on Architecture with compiler                       |
 +====================+=======================+==============================================================+
-| AppVeyor           | |AppVeyorBUILD|       | - Windows (Server 2016) on AMD64                             |
+| AppVeyor           | |AppVeyorBUILD|       | - Windows (Server 2016, Server 2019) on AMD64                |
 |                    |                       |                                                              |
-|                    |                       |   - msvc (2017)                                              |
+|                    |                       |   - msvc (2017, 2019)                                        |
 |                    |                       |   - gcc (8.1.0-posix-seh-rt_v6-rev0                          |
 |                    |                       |   - clang (9.0.0 x64)                                        |
+|                    |                       |   - Cygwin                                                   |
+|                    |                       |                                                              |
+|                    |                       |     - gcc                                                    |
+|                    |                       |     - clang                                                  |
 |                    |                       |                                                              |
 |                    |                       | - Linux (Ubuntu 18.04) on AMD64                              |
 |                    |                       |                                                              |

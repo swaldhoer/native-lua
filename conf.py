@@ -42,10 +42,10 @@ source_suffix = ".rst"
 master_doc = "index"
 
 project = "native Lua"
-copyright = "2018-2019, Stefan Waldhör"  # pylint: disable=redefined-builtin
+copyright = "2018-2020, Stefan Waldhör"  # pylint: disable=redefined-builtin
 author = "Stefan Waldhör"
 
-version = "0.3.0-devel"
+version = "0.3.x-devel"
 release = version
 
 language = "en"
