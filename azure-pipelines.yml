@@ -11,6 +11,8 @@ trigger:
       - .gitignore
       - .pylintrc
       - .travis.yml
+      - .readthedocs.yml
+      - docs/environment.yml
       - pyproject.toml
 
 jobs:

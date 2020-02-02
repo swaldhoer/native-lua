@@ -13,5 +13,5 @@ formats:
 python:
   version: 3.7
 
-conda:
-  file: docs/environment.yml
+#conda:
+#  file: docs/environment.yml
