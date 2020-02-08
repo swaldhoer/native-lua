@@ -15,18 +15,28 @@ Added
 =====
 
 - Added support for clang on **Cygwin** (see ``wscript``).
+- Added doxygen API documentation (``.readthedocs.yml``, ``conf.py``,
+  ``docs/environment.yml``).
+- Added waf tool to configure DOT (``scripts/dot.py``).
 
 Changed
 =======
 
 - Updated documentation on supported platforms and compilers (``README.rst``).
-- Updated documentation on Continuous Integration infrastructure
-  (``docs/ci.rst``).
+- Updated documentation on Continuous Integration infrastructure. Now tests are
+  also performed on Linux on s390x and arm64 (```.travis.yml``,
+  ``docs/ci.rst``).
+- Default Python is longer automatically detected on Windows when using
+  ``waf.bat`` (``waf.bat``).
 
 Fixed
 =====
 
 - waf help showed wrong build commands (``wscript``).
+- Table width are now correctly handled in the documentation
+  (``conf.py``, ``docs/_static/custom.css``).
+- Rewrote waf tools for Sphinx and doxygen (``scripts/doxygen.py``,
+  ``scripts/sphinx.py``).
 
 ********************
 [0.3.0] - 2020-01-06
