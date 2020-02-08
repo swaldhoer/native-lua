@@ -583,7 +583,7 @@ def build(bld):
     if bld.cmd == "build":
         bld.fatal(
             "Use a build variant: {}".format(
-                " ".join("build_" + t_cc for t_cc in c_compiler[host_os])
+                " ".join("build_" + t_cc for t_cc in c_compiler[host_os] + ["docs"])
             )
         )
 

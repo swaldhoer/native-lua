@@ -37,6 +37,8 @@ Fixed
   (``conf.py``, ``docs/_static/custom.css``).
 - Rewrote waf tools for Sphinx and doxygen (``scripts/doxygen.py``,
   ``scripts/sphinx.py``).
+- waf did no show all available commands if no build variant is given
+  (``wscript``).
 
 ********************
 [0.3.0] - 2020-01-06
