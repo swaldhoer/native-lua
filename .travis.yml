@@ -24,9 +24,23 @@ matrix:
       dist: bionic
       language: python
       sudo: required
+    # - os: linux
+    #   arch: ppc64le
+    #   language: python
+    #   sudo: required
+    - os: linux
+      arch: s390x
+      language: python
+      sudo: required
+    - os: linux
+      arch: arm64
+      language: python
+      sudo: required
 
 install:
   - pip3 install sphinx pyyaml -q
+  - if [ "$TRAVIS_CPU_ARCH" != "amd64" ]; then sudo apt-get install python3-pip -y; fi
+  - if [ "$TRAVIS_CPU_ARCH" != "amd64" ]; then sudo python3 -m pip install sphinx pyyaml -q; fi
 
 before_script:
   - which gcc

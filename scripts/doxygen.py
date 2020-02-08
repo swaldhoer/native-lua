@@ -3,17 +3,17 @@
 
 # SPDX-License-Identifier: MIT
 
+import os
+
 from waflib import Task, TaskGen, Utils, Logs
 
 
-class doxygen(Task.Task):
+class DoxygenTask(Task.Task):
     color = "BLUE"
 
     def run(self):
-
         cmd = Utils.subst_vars("${DOXYGEN}", self.env)
         cmd = [cmd, self.inputs[0].abspath()]
-        print(cmd)
         proc = Utils.subprocess.Popen(
             cmd,
             stdout=Utils.subprocess.PIPE,
@@ -28,9 +28,14 @@ class doxygen(Task.Task):
 
 @TaskGen.feature("doxygen")
 def process_doxy(self):
-    self.create_task("doxygen", self.path.find_resource(self.conf))
+    self.create_task("DoxygenTask", self.path.find_resource(self.conf))
 
 
-def configure(conf):
-    conf.find_program("doxygen", var="DOXYGEN")
-    conf.find_program("dot", var="DOT")
+def configure(cnf):
+    cnf.find_program("doxygen", var="DOXYGEN")
+    cmd = Utils.subst_vars("${DOXYGEN} --version", cnf.env).split()
+    try:
+        cnf.env.DOXYGEN_VERSION = cnf.cmd_and_log(cmd).strip()
+    except IndexError:
+        cnf.env.DOXYGEN_VERSION = "unknown"
+    cnf.load("dot", os.path.dirname(os.path.realpath(__file__)))

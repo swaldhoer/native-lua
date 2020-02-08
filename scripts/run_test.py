@@ -77,7 +77,7 @@ def main():
         try:
             lua_exe = shutil.which("lua", path=os.path.join(repo_root, prefix, "bin"))
         except AttributeError:
-            import distutils.spawn  # pylint: disable=C0415
+            import distutils.spawn  # pylint: disable=import-outside-toplevel
 
             logging.warning("Falling back to distutils (instead of using shutil).")
             lua_exe = distutils.spawn.find_executable(

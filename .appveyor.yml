@@ -19,7 +19,9 @@ skip_commits:
     - .gitattributes
     - .gitignore
     - .travis.yml
+    - .readthedocs.yml
     - azure-pipelines.yml
+    - docs/environment.yml
 
 init:
   - git config --global core.autocrlf input
@@ -102,9 +104,11 @@ before_build:
   # ensure that only well formated wscripts are checked in
   - cmd: black . --config=pyproject.toml --check -v
   - cmd: pylint wscript
+  - cmd: pylint conf.py
+  - cmd: pylint scripts\\dot.py
+  - cmd: pylint scripts\\doxygen.py
   - cmd: pylint scripts\\run_test.py
   - cmd: pylint scripts\\sphinx.py
-  - cmd: pylint scripts\\utils.py
 
 build_script:
   # basic configuration

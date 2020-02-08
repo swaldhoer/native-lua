@@ -11,22 +11,22 @@ import yaml
 
 from waflib import Logs, Utils, Options, Context, Task
 from waflib.Tools.compiler_c import c_compiler
-from waflib.Tools.c import c  # pylint: disable=W0611
+from waflib.Tools.c import c  # pylint: disable=unused-import
 from waflib.Tools import c_preproc
 from waflib.Build import BuildContext, CleanContext, ListContext, StepContext
 from waflib.Build import InstallContext, UninstallContext
 
 
-VERSION = "0.3.x-devel"
+VERSION = "0.4.0-devel"
 APPNAME = "lua"
-top = "."  # pylint: disable=C0103
-out = "build"  # pylint: disable=C0103
+top = "."  # pylint: disable=invalid-name
+out = "build"  # pylint: disable=invalid-name
 
 Context.Context.line_just = 45
 
 
 # we overwrite c class, as absolute paths can be parsed by VS Code error parser
-class c(Task.Task):  # pylint: disable=C0103,E0102
+class c(Task.Task):  # pylint: disable=function-redefined,invalid-name
     run_str = (
         "${CC} ${ARCH_ST:ARCH} ${CFLAGS} ${FRAMEWORKPATH_ST:FRAMEWORKPATH} "
         "${CPPPATH_ST:INCPATHS} ${DEFINES_ST:DEFINES} "
@@ -38,14 +38,14 @@ class c(Task.Task):  # pylint: disable=C0103,E0102
     scan = c_preproc.scan
 
 
-host_os = Utils.unversioned_sys_platform()  # pylint: disable=C0103
+host_os = Utils.unversioned_sys_platform()  # pylint: disable=invalid-name
 
 if host_os == "cygwin":
     c_compiler["cygwin"].append("clang")
 
-plat_comp = c_compiler["default"]  # pylint: disable=C0103
+plat_comp = c_compiler["default"]  # pylint: disable=invalid-name
 if c_compiler.get(host_os):
-    plat_comp = c_compiler[host_os]  # pylint: disable=C0103
+    plat_comp = c_compiler[host_os]  # pylint: disable=invalid-name
 else:
     # add host compilers to compiler list. We need to do this, in order that we
     # use c_compiler[host_os] everywhere we need it.
@@ -135,7 +135,7 @@ def options(opt):
     )
 
 
-def configure(cnf):  # pylint: disable=R0912
+def configure(cnf):  # pylint: disable=too-many-branches
     """Basic configuration of the project based on the operating system and
     the available compilers.
     """
@@ -143,55 +143,66 @@ def configure(cnf):  # pylint: disable=R0912
     print("-" * (Context.Context.line_just + 1) + ":")
     cnf.load("python")
     cnf.check_python_version((3, 5))
+    cnf.env.define_key.remove("PYTHONDIR")
+    cnf.env.define_key.remove("PYTHONARCHDIR")
 
     cnf.load("sphinx", tooldir="scripts")
     cnf.load("doxygen", tooldir="scripts")
-    if not cnf.env.SPHINX_BUILD:
-        Logs.warn("Documentation build will not be available.")
-    else:
-        cnf.env.docs_out = os.path.join(out, "docs")
 
     print("-" * (Context.Context.line_just + 1) + ":")
 
-    # check that all version numbers match and the the version number adheres to
-    # Semantic Versioning
+    # check that all version numbers match and the the version number adheres
+    # to Semantic Versioning 2.0.0
+    # https://semver.org/spec/v2.0.0.html#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
     sem_ver_re = re.compile(
         r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*"
         r"[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))"
         r"*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$"
     )
 
-    version_info = yaml.load(
-        cnf.path.find_node("VERSION").read(), Loader=yaml.SafeLoader
-    )
-    cnf.env.project_version = version_info["native Lua"]
-    err_msg = "wscript VERSION ({}) and VERSION's native Lua attribute ({}) do not match".format(
-        VERSION, cnf.env.project_version
-    )
-    assert cnf.env.project_version == VERSION, err_msg
+    is_sem_ver = re.match(sem_ver_re, VERSION)
+    if not is_sem_ver:
+        cnf.fatal(
+            "Version information does not follow sematic versioning 2.0.0 ({})\n"
+            "See https://semver.org/spec/v2.0.0.html for details.".format(VERSION)
+        )
 
-    confpy_version = cnf.path.find_node("conf.py").read(encoding="utf-8")
-    ver = ""
-    for i in confpy_version.split("\n"):
-        if i.startswith("version"):
-            ver = i.split("=")[1].replace('"', "").strip()
-            break
-    err_msg = "wscript VERSION ({}) and conf.py version ({}) do not match".format(
-        VERSION, ver
+    base_err_msg = (
+        "wscript's VERSION attribute ({}) and version information in file {} "
+        "({}) do not match."
     )
-    assert ver == VERSION, err_msg
-    ver = ""
 
-    readme = cnf.path.find_node("README.rst").read()
-    ver = readme.find("based on native Lua ({})".format(VERSION))
-    err_msg = "wscript VERSION ({}) and README.rst 'lua -v version' ({}) do not match".format(
-        VERSION, ver
+    version_file = cnf.path.find_node("VERSION")
+    version_info = yaml.load(version_file.read(), Loader=yaml.SafeLoader)
+    version_file_ver = version_info["native Lua"]
+    if not VERSION == version_file_ver:
+        cnf.fatal(base_err_msg.format(VERSION, version_file, version_file_ver))
+
+    confpy_file = cnf.path.find_node("conf.py")
+    confpy_txt = confpy_file.read(encoding="utf-8")
+    confpy_file_ver = re.search(r'(version)( = )"(.{0,})"', confpy_txt).group(3)
+    if not VERSION == confpy_file_ver:
+        cnf.fatal(base_err_msg.format(VERSION, confpy_file, confpy_file_ver))
+
+    readme_file = cnf.path.find_node("README.rst")
+    readme_txt = readme_file.read(encoding="utf-8")
+    readme_file_ver = re.search(r"(based on native Lua )\((.{0,})\)", readme_txt).group(
+        2
     )
-    assert ver > 0, err_msg
+    if not VERSION == readme_file_ver:
+        cnf.fatal(base_err_msg.format(VERSION, readme_file, readme_file_ver))
+
+    doxygen_file = cnf.path.find_node("doxygen.conf")
+    doxygen_txt = doxygen_file.read(encoding="utf-8")
+    doxygen_file_ver = re.search(
+        r'(PROJECT_NUMBER)(         = )"(.{0,})"', doxygen_txt
+    ).group(3)
+    if not VERSION == doxygen_file_ver:
+        cnf.fatal(base_err_msg.format(VERSION, doxygen_file, doxygen_file_ver))
 
     cnf.env.lua_src_version = version_info["lua"]
     cnf.env.lua_tests_version = version_info["tests"]
-    cnf.msg("native Lua version", cnf.env.project_version)
+    cnf.msg("native Lua version", VERSION)
     cnf.msg("Lua version", cnf.env.lua_src_version)
     cnf.msg("Lua tests version", cnf.env.lua_tests_version)
     cnf.msg("Including tests", cnf.options.include_tests)
