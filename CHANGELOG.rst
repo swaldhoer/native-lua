@@ -7,9 +7,9 @@ All notable changes to this project will be documented in this file.
 The format is based on `Keep a Changelog`_ v1.0.0, and this project adheres to
 `Semantic Versioning`_ v2.0.0.
 
-************
-[Unreleased]
-************
+********************
+[0.4.0] - 2020-03-05
+********************
 
 Added
 =====
