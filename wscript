@@ -17,7 +17,7 @@ from waflib.Build import BuildContext, CleanContext, ListContext, StepContext
 from waflib.Build import InstallContext, UninstallContext
 
 
-VERSION = "0.4.0-devel"
+VERSION = "0.4.0"
 APPNAME = "lua"
 top = "."  # pylint: disable=invalid-name
 out = "build"  # pylint: disable=invalid-name
@@ -521,7 +521,7 @@ def configure(cnf):  # pylint: disable=too-many-branches
             set_new_basic_env("clang")
             cnf.load("compiler_c")
             cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            cnf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
+            cnf.env.LINKFLAGS = ["-Wl,--export-all-symbols"]
             cnf.check_cc(fragment=min_c, execute=True)
             check_libs("m")
             platform_compilers.append(cnf.env.env_name)
