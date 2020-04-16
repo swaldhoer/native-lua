@@ -16,10 +16,8 @@ ignore-patterns=waf*-*.*.*-*
 # Python code to execute, usually for sys.path manipulation such as
 # pygtk.require().
 init-hook='import sys;
-      sys.path.insert(0, "waf-2.0.18-96675f149f50dab16c9e2e6aaf5e787b");
-      sys.path.insert(0, ".waf-2.0.18-96675f149f50dab16c9e2e6aaf5e787b");
-      sys.path.insert(0, "waf3-2.0.18-96675f149f50dab16c9e2e6aaf5e787b");
-      sys.path.insert(0, ".waf3-2.0.18-96675f149f50dab16c9e2e6aaf5e787b");'
+      sys.path.insert(0, "waf3-2.0.20-36f5354d605298f6a89c09e0c7ef6c1d");
+      sys.path.insert(0, ".waf3-2.0.20-36f5354d605298f6a89c09e0c7ef6c1d");'
 
 # Use multiple processes to speed up Pylint. Specifying 0 will auto-detect the
 # number of processors available to use.
