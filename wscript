@@ -17,7 +17,7 @@ from waflib.Build import BuildContext, CleanContext, ListContext, StepContext
 from waflib.Build import InstallContext, UninstallContext
 
 
-VERSION = "0.4.0"
+VERSION = "0.4.1-devel"
 APPNAME = "lua"
 top = "."  # pylint: disable=invalid-name
 out = "build"  # pylint: disable=invalid-name
@@ -39,10 +39,6 @@ class c(Task.Task):  # pylint: disable=function-redefined,invalid-name
 
 
 host_os = Utils.unversioned_sys_platform()  # pylint: disable=invalid-name
-
-if host_os == "cygwin":
-    c_compiler["cygwin"].append("clang")
-
 plat_comp = c_compiler["default"]  # pylint: disable=invalid-name
 if c_compiler.get(host_os):
     plat_comp = c_compiler[host_os]  # pylint: disable=invalid-name

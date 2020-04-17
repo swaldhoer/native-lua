@@ -7,6 +7,20 @@ All notable changes to this project will be documented in this file.
 The format is based on `Keep a Changelog`_ v1.0.0, and this project adheres to
 `Semantic Versioning`_ v2.0.0.
 
+************
+[Unreleased]
+************
+
+Changed
+=======
+
+- Updated to waf version 2.0.20 (``waf``, ``wscript``).
+
+Fixed
+=====
+
+- Fixed typos in changelog (``CHANGELOG.rst``).
+
 ********************
 [0.4.0] - 2020-03-05
 ********************
@@ -24,7 +38,7 @@ Changed
 
 - Updated documentation on supported platforms and compilers (``README.rst``).
 - Updated documentation on Continuous Integration infrastructure. Now tests are
-  also performed on Linux on s390x and arm64 (```.travis.yml``,
+  also performed on Linux on s390x and arm64 (``.travis.yml``,
   ``docs/ci.rst``).
 - Default Python is longer automatically detected on Windows when using
   ``waf.bat`` (``waf.bat``).
@@ -49,7 +63,7 @@ Added
 
 - Added doxygen configuration (see ``doxygen.conf``, ``docs/_doxygen/*``).
 - Added support for **OpenBSD** and **NetBSD** (``wscript``).
-- Added documentation for third party sources
+- Added documentation for third party sources.
 
 Changed
 =======
@@ -109,7 +123,7 @@ Fixed
   ``native-lua``).
 - man files were installed into $PREFIX. Now they are correctly installed into
   man/man1.
-- Fixed linker flags on macOS when using GCC
+- Fixed linker flags on macOS when using GCC.
 
 ********************
 [0.1.0] - 2019-10-15
@@ -130,7 +144,8 @@ Added
 - Added a batch wrapper script for waf on Windows (``waf.bat``)
 - Added test files for Windows and Cygwin to test the build tools
 - For Linux (clang, gcc), macOS (clang), FreeBSD (clang, gcc) and Windows
-  (clang, gcc, msvc) the lua test suite passes with ``lua -e"_U=true" all.lua``
+  (clang, gcc, msvc) the lua test suite passes with
+  ``lua -e"_U=true" all.lua``.
 
 Changed
 =======
@@ -154,8 +169,8 @@ Fixed
 - Use correct `rpath` on FreeBSD when using gcc.
 - Fixed clang linker flag on OSX.
 - Fixed clang linker flags on Windows.
-- Fix name (``LICENSE``)
-- Fixed typos
+- Fixed license file name (``LICENSE``).
+- Fixed typos.
 
 .. _Keep a Changelog : https://keepachangelog.com/en/1.0.0/
 
