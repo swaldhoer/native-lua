@@ -1,4 +1,4 @@
--- $Id: tpack.lua,v 1.13 2016/11/07 13:11:28 roberto Exp $
+-- $Id: testes/tpack.lua $
 -- See Copyright Notice in file all.lua
 
 local pack = string.pack
@@ -173,7 +173,7 @@ else
   assert(pack("f", 24) == pack(">f", 24))
 end
 
-print "testing pack/unpack of floating-point numbers"
+print "testing pack/unpack of floating-point numbers" 
 
 for _, n in ipairs{0, -1.1, 1.9, 1/0, -1/0, 1e20, -1e20, 0.1, 2000.7} do
     assert(unpack("n", pack("n", n)) == n)
@@ -203,6 +203,8 @@ do
   checkerror("does not fit", pack, "s1", s)
 
   checkerror("contains zeros", pack, "z", "alo\0");
+
+  checkerror("unfinished string", unpack, "zc10000000", "alo")
 
   for i = 2, NB do
     local s1 = pack("s" .. i, s)
@@ -241,7 +243,7 @@ do
   assert(#x == packsize("<b h b f d f n i"))
   local a, b, c, d, e, f, g, h = unpack("<b h b f d f n i", x)
   assert(a == 1 and b == 2 and c == 3 and d == 4 and e == 5 and f == 6 and
-         g == 7 and h == 8)
+         g == 7 and h == 8) 
 end
 
 print "testing alignment"
@@ -251,7 +253,7 @@ do
   assert(#x == packsize(">!8 b Xh i4 i8 c1 Xi8"))
   assert(x == "\xf4" .. "\0\0\0" ..
               "\0\0\0\100" ..
-              "\0\0\0\0\0\0\0\xC8" ..
+              "\0\0\0\0\0\0\0\xC8" .. 
               "\xEC" .. "\0\0\0\0\0\0\0")
   local a, b, c, d, pos = unpack(">!8 c1 Xh i4 i8 b Xi8 XI XH", x)
   assert(a == "\xF4" and b == 100 and c == 200 and d == -20 and (pos - 1) == #x)
@@ -312,10 +314,9 @@ do    -- testing initial position
   for i = 1, #x + 1 do
     assert(unpack("c0", x, i) == "")
   end
-  checkerror("out of string", unpack, "c0", x, 0)
   checkerror("out of string", unpack, "c0", x, #x + 2)
-  checkerror("out of string", unpack, "c0", x, -(#x + 1))
-
+ 
 end
 
 print "OK"
+

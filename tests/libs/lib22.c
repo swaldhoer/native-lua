@@ -2,6 +2,8 @@
 #include "lauxlib.h"
 
 static int id (lua_State *L) {
+  lua_pushboolean(L, 1);
+  lua_insert(L, 1);
   return lua_gettop(L);
 }
 

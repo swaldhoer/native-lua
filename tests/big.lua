@@ -1,4 +1,4 @@
--- $Id: big.lua,v 1.32 2016/11/07 13:11:28 roberto Exp $
+-- $Id: testes/big.lua $
 -- See Copyright Notice in file all.lua
 
 if _soft then
@@ -7,7 +7,7 @@ end
 
 print "testing large tables"
 
-local debug = require"debug"
+local debug = require"debug" 
 
 local lim = 2^18 + 1000
 local prog = { "local y = {0" }
@@ -23,7 +23,7 @@ local f = assert(load(prog, nil, nil, env))
 
 f()
 assert(env.X[lim] == lim - 1 and env.X[lim + 1] == lim)
-for k in pairs(env) do env[k] = nil end
+for k in pairs(env) do env[k] = undef end
 
 -- yields during accesses larger than K (in RK)
 setmetatable(env, {
@@ -46,16 +46,16 @@ getmetatable(env).__newindex = function () end
 local e, m = pcall(f)
 assert(not e and m:find("global 'X'"))
 
--- errors in metamethods
+-- errors in metamethods 
 getmetatable(env).__newindex = function () error("hi") end
 local e, m = xpcall(f, debug.traceback)
-assert(not e and m:find("'__newindex'"))
+assert(not e and m:find("'newindex'"))
 
 f, X = nil
 
 coroutine.yield'b'
 
-if 2^32 == 0 then   -- (small integers) {
+if 2^32 == 0 then   -- (small integers) {   
 
 print "testing string length overflow"
 
@@ -66,7 +66,7 @@ assert(repstrings * ssize > 2.0^32)  -- it should be larger than maximum size
 
 local longs = string.rep("\0", ssize)   -- create one long string
 
--- create function to concatentate 'repstrings' copies of its argument
+-- create function to concatenate 'repstrings' copies of its argument
 local rep = assert(load(
   "local a = ...; return " .. string.rep("a", repstrings, "..")))
 
