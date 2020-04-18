@@ -15,6 +15,14 @@ Changed
 =======
 
 - Updated to waf version 2.0.20 (``waf``, ``wscript``).
+- Use absolute include paths for ``Microsoft Visual Studio`` and
+  ``Windows Kits`` paths (``wscript``).
+- Updated to Lua version to 5.4.0 (see ``src/*``).
+- Updated to Lua test version to 5.4.0 (see ``tests/*``).
+- On Linux Lua can be built without readline support # TODO
+- Since Lua 5.4.0 compiler modules are compiled with ``-Os`` to reduce code
+  size. Compiler modules are *lex*, *parser* and *code* (see
+  ``src/llex.c``, ``src/lparser.c``, ``lcode`` and ``wscript``).
 
 Fixed
 =====

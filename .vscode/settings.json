@@ -20,6 +20,8 @@
         "VERSION": "yaml"
     },
     "python.linting.enabled": true,
+    "python.linting.pylintEnabled": true,
+    "pyright.typeCheckingMode": "off",
     "python.formatting.blackPath": "black",
     "python.formatting.provider": "black",
     "python.formatting.blackArgs": [
@@ -46,7 +48,6 @@
         },
         {
             "languageId": "python",
-            "enableCompoundWords": true,
             "allowCompoundWords": true,
             "dictionaries": [
                 "python",
@@ -55,7 +56,6 @@
         },
         {
             "languageId": "c,cpp",
-            "enableCompoundWords": true,
             "allowCompoundWords": true,
             "dictionaries": [
                 "c",
@@ -108,7 +108,8 @@
         "unversioned",
         "waflib",
         "wscript",
-        "cflags",
+        "wscript's",
+        "wscripts",
         "Popen",
         "nopyc",
         "nopyo",
@@ -117,6 +118,7 @@
         "literalinclude",
         "ltests",
         "cflags",
+        "cmcflags",
         "luac",
         "luadll",
         "hdlr",
@@ -265,7 +267,6 @@
         "toolchain",
         "userprofile",
         "vcvars",
-        "wscripts",
         "xunit",
         "RUNLEVEL",
         "chsh",
