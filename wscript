@@ -855,6 +855,7 @@ def build_openbsd(bld):
         target="cm_objects",
         defines=defines,
         cflags=bld.env.CMCFLAGS,
+        includes=includes,
     )
     bld.stlib(
         source=bld.env.sources,
@@ -915,13 +916,14 @@ def build_netbsd(bld):
         target="cm_objects",
         defines=defines,
         cflags=bld.env.CMCFLAGS,
+        includes=includes,
     )
     bld.stlib(
         source=bld.env.sources,
         target="lua",
         defines=defines,
         cflags=cflags,
-        use=use_ltests + ["ccm_objets"],
+        use=use_ltests + ["cm_objects"],
         includes=includes,
         name="static-lua-library",
     )
@@ -975,6 +977,7 @@ def build_freebsd(bld):
         target="cm_objects",
         defines=defines,
         cflags=bld.env.CMCFLAGS,
+        includes=includes,
     )
     bld.stlib(
         source=bld.env.sources,
@@ -1034,6 +1037,7 @@ def build_linux(bld):
         target="cm_objects",
         defines=defines,
         cflags=bld.env.CMCFLAGS,
+        includes=includes,
     )
     bld.stlib(
         source=bld.env.sources,
@@ -1093,6 +1097,7 @@ def build_darwin(bld):
         target="cm_objects",
         defines=defines,
         cflags=bld.env.CMCFLAGS,
+        includes=includes,
     )
     bld.stlib(
         source=bld.env.sources,
@@ -1336,6 +1341,7 @@ def build_solaris(bld):
         target="cm_objects",
         defines=defines,
         cflags=bld.env.CMCFLAGS,
+        includes=includes,
     )
     bld.stlib(
         source=bld.env.sources,
