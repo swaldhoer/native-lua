@@ -20,6 +20,7 @@
 #include "lauxlib.h"
 #include "lualib.h"
 
+#include "config.h" /* native Lua */
 
 #if !defined(LUA_PROGNAME)
 #define LUA_PROGNAME		"lua"
@@ -632,4 +633,3 @@ int main (int argc, char **argv) {
   lua_close(L);
   return (result && status == LUA_OK) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
-

@@ -25,6 +25,8 @@
 #include "lstate.h"
 #include "lundump.h"
 
+#include "config.h" /* native Lua */
+
 static void PrintFunction(const Proto* f, int full);
 #define luaU_print	PrintFunction
 
