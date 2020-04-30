@@ -150,7 +150,7 @@ do
 
   -- running with an empty environment
   -- native Lua: Do not run this test on Travis CI/...
-  if os.getenv("CI") != "true" and os.getenv("TRAVIS") != "true" os.getenv("USER") != "travis" then
+  if os.getenv("CI") ~= "true" and os.getenv("TRAVIS") ~= "true" os.getenv("USER") ~= "travis" then
     RUN('env -i lua %s > %s', prog, out)
     local out = getoutput()
     assert(defaultpath == string.match(output, "^(.-)\t"))
