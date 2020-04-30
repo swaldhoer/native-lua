@@ -53,7 +53,7 @@ install:
         Write-Host ($env:Path).Replace(';',"`n")
         }
   - cmd: python -m pip install --upgrade pip -q
-  - cmd: python -m pip install pylint black sphinx pyyaml -q
+  - cmd: python -m pip install pylint==2.5.0 black==19.10b0 sphinx pyyaml -q
   - sh: sudo apt-get update
   - sh: sudo apt-get install python3-pip -y
   - sh: sudo python3 -m pip install sphinx -q

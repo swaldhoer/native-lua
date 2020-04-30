@@ -63,20 +63,20 @@ else:
 
 for x in plat_comp + ["docs"]:
     for y in (BuildContext, CleanContext):
-        name = y.__name__.replace("Context", "").lower()
+        NAME = y.__name__.replace("Context", "").lower()
 
         class Tmp1(y):
             __doc__ = y.__doc__ + " ({})".format(x)
-            cmd = name + "_" + x
+            cmd = NAME + "_" + x
             variant = x
 
     if x != "docs":
         for y in (ListContext, StepContext, InstallContext, UninstallContext):
-            name = y.__name__.replace("Context", "").lower()
+            NAME = y.__name__.replace("Context", "").lower()
 
             class Tmp2(y):
                 __doc__ = y.__doc__ + " ({})".format(x)
-                cmd = name + "_" + x
+                cmd = NAME + "_" + x
                 variant = x
 
 
