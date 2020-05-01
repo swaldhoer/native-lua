@@ -15,6 +15,9 @@ trigger:
       - docs/environment.yml
       - pyproject.toml
 
+variables:
+  NATIVE_LUA_CI_BUILD: "TRUE"
+
 jobs:
   - job: Linux
     pool:

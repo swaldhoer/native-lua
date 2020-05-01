@@ -4,6 +4,9 @@ branches:
   - /^azure.*$/
   - /^cirrus-ci.*$/
 
+env:
+  - NATIVE_LUA_CI_BUILD="TRUE"
+
 addons:
   apt:
     update: true
