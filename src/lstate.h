@@ -361,4 +361,3 @@ LUAI_FUNC void luaE_warnerror (lua_State *L, const char *where);
 #define luaE_exitCcall(L)	((L)->nCcalls++)
 
 #endif
-
