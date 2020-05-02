@@ -20,7 +20,7 @@
 #include "lauxlib.h"
 #include "lualib.h"
 
-#include "config.h" /* native Lua */
+#include "waf_build_config.h" /* native Lua */
 
 #if !defined(LUA_PROGNAME)
 #define LUA_PROGNAME		"lua"

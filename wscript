@@ -280,7 +280,7 @@ def configure(cnf):  # pylint: disable=too-many-branches
     )
     platform_compilers = []
     failed_platform_compilers = []
-    cnf.write_config_header()
+    cnf.write_config_header(configfile="waf_build_config.h")
     if cnf.options.generic:
         if host_os == "win32":
             Logs.info("Generic build uses msvc on win32")
