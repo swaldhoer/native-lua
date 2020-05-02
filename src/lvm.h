@@ -12,6 +12,8 @@
 #include "lobject.h"
 #include "ltm.h"
 
+#include "_native_lua_config.h"  /* native Lua */
+
 
 #if !defined(LUA_NOCVTN2S)
 #define cvt2str(o)	ttisnumber(o)

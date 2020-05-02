@@ -13,6 +13,8 @@
 #include "ltm.h"
 #include "lzio.h"
 
+#include "_native_lua_config.h"  /* native Lua */
+
 
 /*
 ** Some notes about garbage-collected objects: All objects in Lua must

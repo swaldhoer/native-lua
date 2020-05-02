@@ -7,6 +7,8 @@
 #ifndef lprefix_h
 #define lprefix_h
 
+#include "_native_lua_config.h"  /* native Lua */
+
 
 /*
 ** Allows POSIX/XSI stuff

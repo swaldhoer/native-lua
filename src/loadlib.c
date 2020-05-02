@@ -23,6 +23,8 @@
 #include "lauxlib.h"
 #include "lualib.h"
 
+#include "_native_lua_config.h"  /* native Lua */
+
 
 /*
 ** LUA_IGMARK is a mark to ignore all before it when building the

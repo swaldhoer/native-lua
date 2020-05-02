@@ -75,4 +75,3 @@ smt.__bnot = function (x)
   local x, y = checkargs(x, x, "__bnot")
   return y and ~x or x
 end
-

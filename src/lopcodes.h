@@ -9,6 +9,8 @@
 
 #include "llimits.h"
 
+#include "_native_lua_config.h"  /* native Lua */
+
 
 /*===========================================================================
   We assume that instructions are unsigned 32-bit integers.

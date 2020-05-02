@@ -11,6 +11,8 @@
 #include <limits.h>
 #include <stddef.h>
 
+#include "_native_lua_config.h"  /* native Lua */
+
 
 /*
 ** ===================================================================

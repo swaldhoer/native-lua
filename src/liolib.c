@@ -22,6 +22,7 @@
 #include "lauxlib.h"
 #include "lualib.h"
 
+#include "_native_lua_config.h"  /* native Lua */
 
 
 

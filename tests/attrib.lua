@@ -435,7 +435,7 @@ a.aVeryLongName012345678901234567890123456789012345678901234567890123456789 ==
 
 
 
--- test of large float/integer indices 
+-- test of large float/integer indices
 
 -- compute maximum integer where all bits fit in a float
 local maxint = math.maxinteger
@@ -512,4 +512,3 @@ assert(a == 3 and b == 14)
 print('OK')
 
 return res
-

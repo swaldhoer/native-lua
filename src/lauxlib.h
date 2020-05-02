@@ -14,6 +14,8 @@
 
 #include "lua.h"
 
+#include "_native_lua_config.h"  /* native Lua */
+
 
 /* global table */
 #define LUA_GNAME	"_G"

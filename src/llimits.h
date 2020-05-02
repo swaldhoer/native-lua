@@ -14,6 +14,8 @@
 
 #include "lua.h"
 
+#include "_native_lua_config.h"  /* native Lua */
+
 
 /*
 ** 'lu_mem' and 'l_mem' are unsigned/signed integers big enough to count

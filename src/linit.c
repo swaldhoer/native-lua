@@ -34,6 +34,8 @@
 #include "lualib.h"
 #include "lauxlib.h"
 
+#include "_native_lua_config.h"  /* native Lua */
+
 
 /*
 ** these libs are loaded by lua.c and are readily available to any Lua

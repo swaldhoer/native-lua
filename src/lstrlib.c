@@ -25,6 +25,8 @@
 #include "lauxlib.h"
 #include "lualib.h"
 
+#include "_native_lua_config.h"  /* native Lua */
+
 
 /*
 ** maximum number of captures that a pattern can do during

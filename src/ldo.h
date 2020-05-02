@@ -12,6 +12,8 @@
 #include "lstate.h"
 #include "lzio.h"
 
+#include "_native_lua_config.h"  /* native Lua */
+
 
 /*
 ** Macro to check stack size and grow stack if needed.  Parameters

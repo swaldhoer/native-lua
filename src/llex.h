@@ -10,6 +10,8 @@
 #include "lobject.h"
 #include "lzio.h"
 
+#include "_native_lua_config.h"  /* native Lua */
+
 
 #define FIRST_RESERVED	257
 

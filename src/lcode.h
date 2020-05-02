@@ -12,6 +12,8 @@
 #include "lopcodes.h"
 #include "lparser.h"
 
+#include "_native_lua_config.h"  /* native Lua */
+
 
 /*
 ** Marks the end of a patch list. It is an invalid value both as an absolute

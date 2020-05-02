@@ -9,6 +9,8 @@
 
 #include "lobject.h"
 
+#include "_native_lua_config.h"  /* native Lua */
+
 
 #define gnode(t,i)	(&(t)->node[i])
 #define gval(n)		(&(n)->i_val)

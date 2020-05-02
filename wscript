@@ -271,12 +271,6 @@ def configure(cnf):  # pylint: disable=too-many-branches
         '#define NATIVE_LUA_VERSION "{}"\n'.format(VERSION) + ""
         '#define NATIVE_LUA_REPO "https://github.com/swaldhoer/native-lua"\n'
         '#define NATIVE_LUA_MSG " [" NATIVE_LUA_PRE_MSG " (" NATIVE_LUA_VERSION"), " NATIVE_LUA_REPO"]"\n\n'
-        "#if defined(_MSC_VER) && defined(_MSC_FULL_VER)\n"
-        "#pragma warning(disable: 4242 4820 4668 4710 4711 5045)\n"
-        "/* Disable C5045 (see "
-        "https://docs.microsoft.com/de-de/cpp/error-messages/compiler-warnings/c5045) */\n"
-        "/* we are compiling with /Qspectre */\n"
-        "#endif\n"
     )
     platform_compilers = []
     failed_platform_compilers = []

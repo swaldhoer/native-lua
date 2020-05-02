@@ -11,6 +11,8 @@
 #include "lobject.h"
 #include "lzio.h"
 
+#include "_native_lua_config.h"  /* native Lua */
+
 
 /* data to catch conversion errors */
 #define LUAC_DATA	"\x19\x93\r\n\x1a\n"

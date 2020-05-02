@@ -19,6 +19,8 @@
 #include "lauxlib.h"
 #include "lualib.h"
 
+#include "_native_lua_config.h"  /* native Lua */
+
 
 /*
 ** Operations that an object must define to mimic a table

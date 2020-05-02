@@ -17,6 +17,8 @@
 #include "lauxlib.h"
 #include "lualib.h"
 
+#include "_native_lua_config.h"  /* native Lua */
+
 
 static lua_State *getco (lua_State *L) {
   lua_State *co = lua_tothread(L, 1);

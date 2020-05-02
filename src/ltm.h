@@ -10,6 +10,8 @@
 
 #include "lobject.h"
 
+#include "_native_lua_config.h"  /* native Lua */
+
 
 /*
 * WARNING: if you change the order of this enumeration,

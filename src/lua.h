@@ -15,6 +15,8 @@
 
 #include "luaconf.h"
 
+#include "_native_lua_config.h"  /* native Lua */
+
 
 #define LUA_VERSION_MAJOR	"5"
 #define LUA_VERSION_MINOR	"4"

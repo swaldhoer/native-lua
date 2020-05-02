@@ -10,6 +10,8 @@
 
 #include "lua.h"
 
+#include "_native_lua_config.h"  /* native Lua */
+
 
 /* version suffix for environment variable names */
 #define LUA_VERSUFFIX          "_" LUA_VERSION_MAJOR "_" LUA_VERSION_MINOR

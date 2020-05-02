@@ -122,9 +122,16 @@ layout theme for the documentation. It is included in
 ``src`` Directory
 =================
 
-This directory contains the source files as they are downloaded from
-`Lua.org`_, except that trailing whitespace and additional newlines at the end
-of the files are removed.
+This directory contains the source files downloaded from `Lua.org`_. Trailing
+whitespace and additional newlines at the end of the files are removed.
+Furthermore the native Lua header is included (see
+`_native_lua_config.h <src/_native_lua_config.h>`_).
+
+Changes are indicated by the following comment:
+
+.. code-block:: C
+
+   /* native Lua */
 
 The lua interpreter (``lua.c``) as well as the lua compiler (``luac.c``) have
 been changed, to indicate, that they were build based on the `native Lua`
@@ -138,13 +145,15 @@ project:
 ``tests`` Directory
 ===================
 
-This directory contains the test files as they are downloaded from `Lua.org`_,
-except that trailing whitespace and additional newlines at the end of the files
-are removed.
+This directory contains the source files downloaded from `Lua.org`_. Trailing
+whitespace and additional newlines at the end of the files are removed.
 
-Furthermore for some tests, require changes to the test files in order to work
-on platforms. The changes made to these files are indicated by the
-following comment:
+..  note::
+
+   The encoding of test files **must not** be changed.
+
+Some tests require changes to the test files in order to work on platforms.
+Changes are indicated by the following comment:
 
 .. code-block:: lua
 

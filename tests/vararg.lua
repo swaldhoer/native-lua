@@ -148,4 +148,3 @@ do
   assert(a == nil and b == 2)
 end
 print('OK')
-

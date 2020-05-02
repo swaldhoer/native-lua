@@ -473,5 +473,3 @@ assert(T == parent and K == "foo" and V == 10)
 print 'OK'
 
 return 12
-
-

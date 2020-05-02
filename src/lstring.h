@@ -11,6 +11,8 @@
 #include "lobject.h"
 #include "lstate.h"
 
+#include "_native_lua_config.h"  /* native Lua */
+
 
 /*
 ** Memory-allocation error message must be preallocated (it cannot

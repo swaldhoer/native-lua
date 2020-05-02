@@ -11,6 +11,8 @@
 #include "lobject.h"
 #include "lzio.h"
 
+#include "_native_lua_config.h"  /* native Lua */
+
 
 /*
 ** Expression and variable descriptor.

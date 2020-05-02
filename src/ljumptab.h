@@ -4,6 +4,12 @@
 ** See Copyright Notice in lua.h
 */
 
+#ifndef ljumptab_h /* native Lua */
+#define ljumptab_h /* native Lua */
+
+#ifdef LUA_USE_JUMPTABLE /* native Lua */
+#include "_native_lua_config.h"  /* native Lua */
+
 
 #undef vmdispatch
 #undef vmcase
@@ -110,3 +116,5 @@ static void *disptab[NUM_OPCODES] = {
 &&L_OP_EXTRAARG
 
 };
+#endif /* native Lua */
+#endif /* ljumptab_h */ /* native Lua */

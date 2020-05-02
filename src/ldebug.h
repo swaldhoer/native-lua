@@ -10,6 +10,8 @@
 
 #include "lstate.h"
 
+#include "_native_lua_config.h"  /* native Lua */
+
 
 #define pcRel(pc, p)	(cast_int((pc) - (p)->code) - 1)
 

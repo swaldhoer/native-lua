@@ -6,4 +6,6 @@ extern "C" {
 #include "lua.h"
 #include "lualib.h"
 #include "lauxlib.h"
+
+#include "_native_lua_config.h" /* native Lua */
 }

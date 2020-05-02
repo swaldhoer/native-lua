@@ -10,6 +10,8 @@
 
 #include "lobject.h"
 
+#include "_native_lua_config.h"  /* native Lua */
+
 
 #define sizeCclosure(n)	(cast_int(offsetof(CClosure, upvalue)) + \
                          cast_int(sizeof(TValue)) * (n))

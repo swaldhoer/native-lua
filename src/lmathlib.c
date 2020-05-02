@@ -21,6 +21,8 @@
 #include "lauxlib.h"
 #include "lualib.h"
 
+#include "_native_lua_config.h"  /* native Lua */
+
 
 #undef PI
 #define PI	(l_mathop(3.141592653589793238462643383279502884))

@@ -15,6 +15,8 @@
 #include "llimits.h"
 #include "lua.h"
 
+#include "_native_lua_config.h"  /* native Lua */
+
 
 /*
 ** Extra types for collectable non-values

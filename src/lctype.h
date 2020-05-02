@@ -9,6 +9,8 @@
 
 #include "lua.h"
 
+#include "_native_lua_config.h"  /* native Lua */
+
 
 /*
 ** WARNING: the functions defined here do not necessarily correspond

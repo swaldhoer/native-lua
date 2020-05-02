@@ -11,6 +11,8 @@
 #include "llimits.h"
 #include "lstate.h"
 
+#include "_native_lua_config.h"  /* native Lua */
+
 
 /* Increments 'L->top', checking for stack overflows */
 #define api_incr_top(L)   {L->top++; api_check(L, L->top <= L->ci->top, \

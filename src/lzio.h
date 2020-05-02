@@ -12,6 +12,8 @@
 
 #include "lmem.h"
 
+#include "_native_lua_config.h"  /* native Lua */
+
 
 #define EOZ	(-1)			/* end of stream */
 

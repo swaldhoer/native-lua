@@ -13,6 +13,8 @@
 #include "llimits.h"
 #include "lua.h"
 
+#include "_native_lua_config.h"  /* native Lua */
+
 
 #define luaM_error(L)	luaD_throw(L, LUA_ERRMEM)
 

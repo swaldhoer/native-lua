@@ -18,6 +18,8 @@
 #include "lstate.h"
 #include "lundump.h"
 
+#include "_native_lua_config.h"  /* native Lua */
+
 
 typedef struct {
   lua_State *L;
