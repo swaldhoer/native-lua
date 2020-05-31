@@ -358,8 +358,7 @@ typedef struct GCObject {
 
 
 /*
-** Header for string value; string bytes follow the end of this structure
-** (aligned according to 'UTString'; see next).
+** Header for string value; string bytes follow the end of this structure.
 */
 typedef struct TString {
   CommonHeader;

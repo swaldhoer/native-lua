@@ -334,7 +334,7 @@ static void PrintConstant(const Proto* f, int i)
 
 #define COMMENT		"\t; "
 #define EXTRAARG	GETARG_Ax(code[pc+1])
-#define EXTRAARGC	EXTRAARG*(MAXARG_C+1)
+#define EXTRAARGC	(EXTRAARG*(MAXARG_C+1))
 #define ISK		(isk ? "k" : "")
 
 static void PrintCode(const Proto* f)
@@ -434,7 +434,7 @@ static void PrintCode(const Proto* f)
 	break;
    case OP_NEWTABLE:
 	printf("%d %d %d",a,b,c);
-	printf(COMMENT "%d",c+EXTRAARG);
+	printf(COMMENT "%d",c+EXTRAARGC);
 	break;
    case OP_SELF:
 	printf("%d %d %d%s",a,b,c,ISK);
@@ -639,7 +639,7 @@ static void PrintCode(const Proto* f)
 	break;
    case OP_SETLIST:
 	printf("%d %d %d",a,b,c);
-	if (isk) printf(COMMENT "%d",c+EXTRAARG);
+	if (isk) printf(COMMENT "%d",c+EXTRAARGC);
 	break;
    case OP_CLOSURE:
 	printf("%d %d",a,bx);

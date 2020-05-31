@@ -93,7 +93,7 @@
 
 /* ISO C definitions */
 #define l_gmtime(t,r)		((void)(r)->tm_sec, gmtime(t))
-#define l_localtime(t,r)  	((void)(r)->tm_sec, localtime(t))
+#define l_localtime(t,r)	((void)(r)->tm_sec, localtime(t))
 
 #endif				/* } */
 

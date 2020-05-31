@@ -7,6 +7,8 @@
 #if !defined(lopnames_h)
 #define lopnames_h
 
+#include <stddef.h>
+
 #include "_native_lua_config.h"  /* native Lua */
 
 /* ORDER OP */
