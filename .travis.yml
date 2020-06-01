@@ -1,8 +1,8 @@
 branches:
   except:
-  - /^appveyor-.*$/
-  - /^azure.*$/
-  - /^cirrus-ci.*$/
+    - /^appveyor-.*$/
+    - /^azure.*$/
+    - /^cirrus-ci.*$/
 
 env:
   - NATIVE_LUA_CI_BUILD="TRUE"
@@ -31,14 +31,14 @@ matrix:
     #   arch: ppc64le
     #   language: python
     #   sudo: required
-    - os: linux
-      arch: s390x
-      language: python
-      sudo: required
-    - os: linux
-      arch: arm64
-      language: python
-      sudo: required
+    # - os: linux
+    #   arch: s390x
+    #   language: python
+    #   sudo: required
+    # - os: linux
+    #   arch: arm64
+    #   language: python
+    #   sudo: required
 
 install:
   - pip3 install sphinx pyyaml -q
