@@ -21,5 +21,3 @@ LUAMOD_API int luaopen_lib2 (lua_State *L) {
   luaL_newlib(L, funcs);
   return 1;
 }
-
-

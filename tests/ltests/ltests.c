@@ -73,8 +73,10 @@ static void badexit (const char *fmt, const char *s1, const char *s2) {
 
 
 static int tpanic (lua_State *L) {
+  const char *msg = lua_tostring(L, -1);
+  if (msg == NULL) msg = "error object is not a string";
   return (badexit("PANIC: unprotected error in call to Lua API (%s)\n",
-                   lua_tostring(L, -1), NULL),
+                   msg, NULL),
           0);  /* do not return to Lua */
 }
 
@@ -517,6 +519,10 @@ static void checkgraylist (global_State *g, GCObject *o) {
       case LUA_VCCL: o = gco2ccl(o)->gclist; break;
       case LUA_VTHREAD: o = gco2th(o)->gclist; break;
       case LUA_VPROTO: o = gco2p(o)->gclist; break;
+      case LUA_VUSERDATA:
+        lua_assert(gco2u(o)->nuvalue > 0);
+        o = gco2u(o)->gclist;
+        break;
       default: lua_assert(0);  /* other objects cannot be in a gray list */
     }
   }
@@ -1868,4 +1874,3 @@ int luaB_opentests (lua_State *L) {
 }
 
 #endif
-

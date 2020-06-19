@@ -41,4 +41,3 @@ LUAMOD_API int luaopen_lib1_sub (lua_State *L) {
   luaL_newlib(L, funcs);
   return 1;
 }
-
