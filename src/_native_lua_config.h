@@ -13,6 +13,8 @@
 #ifndef NATIVE_LUA_CONFIG_H_
 #define NATIVE_LUA_CONFIG_H_
 
+#include "waf_build_config.h"
+
 #define NATIVE_LUA_MSG " [" NATIVE_LUA_PRE_MSG " (" NATIVE_LUA_VERSION"), " NATIVE_LUA_REPO"]"
 
 #if defined(_MSC_VER) && defined(_MSC_FULL_VER)

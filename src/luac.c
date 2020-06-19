@@ -25,7 +25,6 @@
 #include "lstate.h"
 #include "lundump.h"
 
-#include "waf_build_config.h" /* native Lua */
 #include "_native_lua_config.h"  /* native Lua */
 
 
