@@ -685,7 +685,6 @@ def build(bld):
             os.path.join(bld.env.src_basepath, "lzio.c"),
             os.path.join(bld.env.src_basepath, "lauxlib.c"),
             os.path.join(bld.env.src_basepath, "lbaselib.c"),
-            os.path.join(bld.env.src_basepath, "lbitlib.c"),
             os.path.join(bld.env.src_basepath, "lcorolib.c"),
             os.path.join(bld.env.src_basepath, "ldblib.c"),
             os.path.join(bld.env.src_basepath, "liolib.c"),

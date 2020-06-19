@@ -44,7 +44,6 @@ This means:
   - ``lzio.c``
   - ``lauxlib.c``
   - ``lbaselib.c``
-  - ``lbitlib.c``
   - ``lcorolib.c``
   - ``ldblib.c``
   - ``liolib.c``
