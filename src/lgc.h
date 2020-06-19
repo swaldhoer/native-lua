@@ -13,6 +13,7 @@
 
 #include "_native_lua_config.h"  /* native Lua */
 
+
 /*
 ** Collectable objects may have one of three colors: white, which
 ** means the object is not marked; gray, which means the
