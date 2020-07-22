@@ -53,7 +53,7 @@ install:
         Write-Host ($env:Path).Replace(';',"`n")
         }
   - cmd: python -m pip install --upgrade pip -q
-  - cmd: python -m pip install pylint==2.5.0 black==19.10b0 sphinx pyyaml -q
+  - cmd: python -m pip install pylint==2.5.3 black==19.10b0 sphinx pyyaml -q
   - sh: sudo apt-get update
   - sh: sudo apt-get install python3-pip -y
   - sh: sudo python3 -m pip install sphinx -q
@@ -103,12 +103,12 @@ before_build:
   - sh: python3 waf --help
   # ensure that only well formated wscripts are checked in
   - cmd: black . --config=pyproject.toml --check -v
-  - cmd: pylint wscript
-  - cmd: pylint conf.py
-  - cmd: pylint scripts\\dot.py
-  - cmd: pylint scripts\\doxygen.py
-  - cmd: pylint scripts\\run_test.py
-  - cmd: pylint scripts\\sphinx.py
+  - cmd: pylint --rcfile=pyproject.toml wscript
+  - cmd: pylint --rcfile=pyproject.toml conf.py
+  - cmd: pylint --rcfile=pyproject.toml scripts\\dot.py
+  - cmd: pylint --rcfile=pyproject.toml scripts\\doxygen.py
+  - cmd: pylint --rcfile=pyproject.toml scripts\\run_test.py
+  - cmd: pylint --rcfile=pyproject.toml scripts\\sphinx.py
 
 build_script:
   # basic configuration
