@@ -1,4 +1,4 @@
-version: 5.3.5.{build}
+version: 5.4.0.{build}
 
 image:
   - Visual Studio 2017
@@ -53,12 +53,12 @@ install:
         Write-Host ($env:Path).Replace(';',"`n")
         }
   - cmd: python -m pip install --upgrade pip -q
-  - cmd: python -m pip install pylint black sphinx pyyaml -q
+  - cmd: python -m pip install pylint==2.5.0 black==19.10b0 sphinx pyyaml -q
   - sh: sudo apt-get update
   - sh: sudo apt-get install python3-pip -y
   - sh: sudo python3 -m pip install sphinx -q
   - cmd: mkdir C:\download && mkdir C:\download\doxygen && mkdir C:\download\graphviz
-  - cmd: cd C:\download\doxygen && curl -o doxygen-x64.zip http://doxygen.nl/files/doxygen-1.8.18.windows.x64.bin.zip
+  - cmd: cd C:\download\doxygen && curl -o doxygen-x64.zip https://www.doxygen.nl/files/doxygen-1.8.18.windows.x64.bin.zip
   - cmd: cd C:\download\doxygen && 7z e doxygen-x64.zip
   - cmd: set PATH=C:\download\doxygen;%PATH%
   - cmd: cd C:\download\graphviz && curl -o graphviz.zip https://graphviz.gitlab.io/_pages/Download/windows/graphviz-2.38.zip

@@ -1,5 +1,5 @@
 /*
-** $Id: lzio.h,v 1.31.1.1 2017/04/19 17:20:42 roberto Exp $
+** $Id: lzio.h $
 ** Buffered streams
 ** See Copyright Notice in lua.h
 */
@@ -11,6 +11,8 @@
 #include "lua.h"
 
 #include "lmem.h"
+
+#include "_native_lua_config.h"  /* native Lua */
 
 
 #define EOZ	(-1)			/* end of stream */

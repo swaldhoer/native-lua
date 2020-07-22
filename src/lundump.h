@@ -1,5 +1,5 @@
 /*
-** $Id: lundump.h,v 1.45.1.1 2017/04/19 17:20:42 roberto Exp $
+** $Id: lundump.h $
 ** load precompiled Lua chunks
 ** See Copyright Notice in lua.h
 */
@@ -11,6 +11,8 @@
 #include "lobject.h"
 #include "lzio.h"
 
+#include "_native_lua_config.h"  /* native Lua */
+
 
 /* data to catch conversion errors */
 #define LUAC_DATA	"\x19\x93\r\n\x1a\n"
@@ -18,8 +20,12 @@
 #define LUAC_INT	0x5678
 #define LUAC_NUM	cast_num(370.5)
 
-#define MYINT(s)	(s[0]-'0')
+/*
+** Encode major-minor version in one byte, one nibble for each
+*/
+#define MYINT(s)	(s[0]-'0')  /* assume one-digit numerals */
 #define LUAC_VERSION	(MYINT(LUA_VERSION_MAJOR)*16+MYINT(LUA_VERSION_MINOR))
+
 #define LUAC_FORMAT	0	/* this is the official format */
 
 /* load one chunk; from lundump.c */

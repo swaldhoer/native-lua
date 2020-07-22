@@ -38,7 +38,6 @@ Lua Implementation
    ./src/lapi.rst
    ./src/lauxlib.rst
    ./src/lbaselib.rst
-   ./src/lbitlib.rst
    ./src/lcode.rst
    ./src/lcorolib.rst
    ./src/lctype.rst

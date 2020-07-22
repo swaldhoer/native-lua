@@ -9,7 +9,7 @@ import os
 import re
 import yaml
 
-from waflib import Logs, Utils, Options, Context, Task
+from waflib import Logs, Utils, Options, Context, Task, TaskGen
 from waflib.Tools.compiler_c import c_compiler
 from waflib.Tools.c import c  # pylint: disable=unused-import
 from waflib.Tools import c_preproc
@@ -17,12 +17,14 @@ from waflib.Build import BuildContext, CleanContext, ListContext, StepContext
 from waflib.Build import InstallContext, UninstallContext
 
 
-VERSION = "0.4.1-devel"
+VERSION = "0.5.0-devel"
 APPNAME = "lua"
 top = "."  # pylint: disable=invalid-name
 out = "build"  # pylint: disable=invalid-name
 
 Context.Context.line_just = 45
+
+USE_ABSOLUTE_INCPATHS = ["\\Microsoft Visual Studio\\", "\\Windows Kits\\"]
 
 
 # we overwrite c class, as absolute paths can be parsed by VS Code error parser
@@ -38,6 +40,18 @@ class c(Task.Task):  # pylint: disable=function-redefined,invalid-name
     scan = c_preproc.scan
 
 
+@TaskGen.feature("c")
+@TaskGen.after_method("apply_incpaths")
+def make_msvc_and_win_paths_absolute(self):
+    incpaths_fixed = []
+    for inc_path in self.env.INCPATHS:
+        if any(i in inc_path for i in USE_ABSOLUTE_INCPATHS):
+            incpaths_fixed.append(os.path.abspath(inc_path))
+        else:
+            incpaths_fixed.append(inc_path)
+    self.env.INCPATHS = incpaths_fixed
+
+
 host_os = Utils.unversioned_sys_platform()  # pylint: disable=invalid-name
 plat_comp = c_compiler["default"]  # pylint: disable=invalid-name
 if c_compiler.get(host_os):
@@ -49,20 +63,20 @@ else:
 
 for x in plat_comp + ["docs"]:
     for y in (BuildContext, CleanContext):
-        name = y.__name__.replace("Context", "").lower()
+        NAME = y.__name__.replace("Context", "").lower()
 
         class Tmp1(y):
             __doc__ = y.__doc__ + " ({})".format(x)
-            cmd = name + "_" + x
+            cmd = NAME + "_" + x
             variant = x
 
     if x != "docs":
         for y in (ListContext, StepContext, InstallContext, UninstallContext):
-            name = y.__name__.replace("Context", "").lower()
+            NAME = y.__name__.replace("Context", "").lower()
 
             class Tmp2(y):
                 __doc__ = y.__doc__ + " ({})".format(x)
-                cmd = name + "_" + x
+                cmd = NAME + "_" + x
                 variant = x
 
 
@@ -257,16 +271,10 @@ def configure(cnf):  # pylint: disable=too-many-branches
         '#define NATIVE_LUA_VERSION "{}"\n'.format(VERSION) + ""
         '#define NATIVE_LUA_REPO "https://github.com/swaldhoer/native-lua"\n'
         '#define NATIVE_LUA_MSG " [" NATIVE_LUA_PRE_MSG " (" NATIVE_LUA_VERSION"), " NATIVE_LUA_REPO"]"\n\n'
-        "#if defined(_MSC_VER) && defined(_MSC_FULL_VER)\n"
-        "#pragma warning(disable: 4242 4820 4668 4710 4711 5045)\n"
-        "/* Disable C5045 (see "
-        "https://docs.microsoft.com/de-de/cpp/error-messages/compiler-warnings/c5045) */\n"
-        "/* we are compiling with /Qspectre */\n"
-        "#endif\n"
     )
     platform_compilers = []
     failed_platform_compilers = []
-    cnf.write_config_header()
+    cnf.write_config_header(configfile="waf_build_config.h")
     if cnf.options.generic:
         if host_os == "win32":
             Logs.info("Generic build uses msvc on win32")
@@ -281,6 +289,7 @@ def configure(cnf):  # pylint: disable=too-many-branches
                     "/Qspectre",
                 ]
                 cnf.env.CFLAGS += ["/FI" + cnf.env.cfg_files[0]]
+                cnf.env.CMCFLAGS = ["/Os"]
                 cnf.check_cc(fragment=min_c, execute=True)
                 platform_compilers.append(cnf.env.env_name)
                 cnf.msg("Manifest", cnf.env.MSVC_MANIFEST)
@@ -297,6 +306,7 @@ def configure(cnf):  # pylint: disable=too-many-branches
                 set_new_basic_env("gcc")
                 cnf.load("compiler_c")
                 cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+                cnf.env.CMCFLAGS = ["-Os"]
                 cnf.check_cc(fragment=min_c, execute=True)
                 check_libs("m")
                 platform_compilers.append(cnf.env.env_name)
@@ -307,6 +317,7 @@ def configure(cnf):  # pylint: disable=too-many-branches
             set_new_basic_env("xlc")
             cnf.load("compiler_c")
             cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            cnf.env.CMCFLAGS = ["-Os"]
             cnf.env.LINKFLAGS = ["-Wl,-brtl,-bexpall"]
             cnf.check_cc(fragment=min_c, execute=True)
             check_libs("m", "dl")
@@ -319,6 +330,7 @@ def configure(cnf):  # pylint: disable=too-many-branches
             cnf.env.LINK_CC = "xlc"
             cnf.load("compiler_c")
             cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            cnf.env.CMCFLAGS = ["-Os"]
             cnf.env.LINKFLAGS = ["-Wl,-brtl,-bexpall"]
             cnf.check_cc(fragment=min_c, execute=True)
             check_libs("m", "dl")
@@ -329,6 +341,7 @@ def configure(cnf):  # pylint: disable=too-many-branches
             set_new_basic_env("gcc")
             cnf.load("compiler_c")
             cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            cnf.env.CMCFLAGS = ["-Os"]
             cnf.env.LINKFLAGS = ["-Wl,-brtl,-bexpall"]
             cnf.check_cc(fragment=min_c, execute=True)
             check_libs("m", "dl")
@@ -340,6 +353,7 @@ def configure(cnf):  # pylint: disable=too-many-branches
             set_new_basic_env("gcc")
             cnf.load("compiler_c")
             cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            cnf.env.CMCFLAGS = ["-Os"]
             cnf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
             cnf.check_cc(fragment=min_c, execute=True)
             check_libs("m")
@@ -350,6 +364,7 @@ def configure(cnf):  # pylint: disable=too-many-branches
             set_new_basic_env("clang")
             cnf.load("compiler_c")
             cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            cnf.env.CMCFLAGS = ["-Os"]
             cnf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
             cnf.check_cc(fragment=min_c, execute=True)
             check_libs("m")
@@ -361,6 +376,7 @@ def configure(cnf):  # pylint: disable=too-many-branches
             set_new_basic_env("gcc")
             cnf.load("compiler_c")
             cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            cnf.env.CMCFLAGS = ["-Os"]
             cnf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
             cnf.check_cc(fragment=min_c, execute=True)
             check_libs("m")
@@ -371,6 +387,7 @@ def configure(cnf):  # pylint: disable=too-many-branches
             set_new_basic_env("clang")
             cnf.load("compiler_c")
             cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            cnf.env.CMCFLAGS = ["-Os"]
             cnf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
             cnf.check_cc(fragment=min_c, execute=True)
             check_libs("m")
@@ -392,6 +409,7 @@ def configure(cnf):  # pylint: disable=too-many-branches
                 cnf.env.append_unique("RPATH", rpath)
                 cnf.msg("RPATH", cnf.env.RPATH[0])
             cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            cnf.env.CMCFLAGS = ["-Os"]
             cnf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
             cnf.check_cc(fragment=min_c, execute=True)
             check_libs("m", "dl", "edit")
@@ -402,6 +420,7 @@ def configure(cnf):  # pylint: disable=too-many-branches
             set_new_basic_env("clang")
             cnf.load("compiler_c")
             cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            cnf.env.CMCFLAGS = ["-Os"]
             cnf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
             cnf.check_cc(fragment=min_c, execute=True)
             cnf.env.append_unique("INCLUDES", "/usr/include/edit")
@@ -415,6 +434,7 @@ def configure(cnf):  # pylint: disable=too-many-branches
             set_new_basic_env("gcc")
             cnf.load("compiler_c")
             cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            cnf.env.CMCFLAGS = ["-Os"]
             cnf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
             cnf.check_cc(fragment=min_c, execute=True)
             check_libs("m", "dl", "readline")
@@ -425,6 +445,7 @@ def configure(cnf):  # pylint: disable=too-many-branches
             set_new_basic_env("clang")
             cnf.load("compiler_c")
             cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            cnf.env.CMCFLAGS = ["-Os"]
             cnf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
             cnf.check_cc(fragment=min_c, execute=True)
             check_libs("m", "dl", "readline")
@@ -435,6 +456,7 @@ def configure(cnf):  # pylint: disable=too-many-branches
             set_new_basic_env("icc")
             cnf.load("compiler_c")
             cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            cnf.env.CMCFLAGS = ["-Os"]
             cnf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
             cnf.check_cc(fragment=min_c, execute=True)
             check_libs("m", "dl", "readline")
@@ -446,6 +468,7 @@ def configure(cnf):  # pylint: disable=too-many-branches
             set_new_basic_env("gcc")
             cnf.load("compiler_c")
             cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            cnf.env.CMCFLAGS = ["-Os"]
             cnf.check_cc(fragment=min_c, execute=True)
             check_libs("m", "readline")
             platform_compilers.append(cnf.env.env_name)
@@ -455,6 +478,7 @@ def configure(cnf):  # pylint: disable=too-many-branches
             set_new_basic_env("clang")
             cnf.load("compiler_c")
             cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            cnf.env.CMCFLAGS = ["-Os"]
             cnf.check_cc(fragment=min_c, execute=True)
             check_libs("m", "readline")
             platform_compilers.append(cnf.env.env_name)
@@ -472,6 +496,7 @@ def configure(cnf):  # pylint: disable=too-many-branches
                 "/Qspectre",
             ]
             cnf.env.CFLAGS += ["/FI" + cnf.env.cfg_files[0]]
+            cnf.env.CMCFLAGS = ["/Os"]
             cnf.check_cc(fragment=min_c, execute=True)
             platform_compilers.append(cnf.env.env_name)
             cnf.msg("Manifest", cnf.env.MSVC_MANIFEST)
@@ -481,6 +506,7 @@ def configure(cnf):  # pylint: disable=too-many-branches
             set_new_basic_env("gcc")
             cnf.load("compiler_c")
             cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            cnf.env.CMCFLAGS = ["-Os"]
             cnf.check_cc(fragment=min_c, execute=True)
             check_libs("m")
             platform_compilers.append(cnf.env.env_name)
@@ -490,6 +516,7 @@ def configure(cnf):  # pylint: disable=too-many-branches
             set_new_basic_env("clang")
             cnf.load("compiler_c")
             cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            cnf.env.CMCFLAGS = ["-Os"]
             # these vars fix the luac build
             cnf.env.cstlib_PATTERN = "%s.lib"
             cnf.env.LINKFLAGS = []
@@ -507,6 +534,7 @@ def configure(cnf):  # pylint: disable=too-many-branches
             set_new_basic_env("gcc")
             cnf.load("compiler_c")
             cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            cnf.env.CMCFLAGS = ["-Os"]
             cnf.env.LINKFLAGS = ["-Wl,--export-all-symbols"]
             cnf.check_cc(fragment=min_c, execute=True)
             check_libs("m")
@@ -517,6 +545,7 @@ def configure(cnf):  # pylint: disable=too-many-branches
             set_new_basic_env("clang")
             cnf.load("compiler_c")
             cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            cnf.env.CMCFLAGS = ["-Os"]
             cnf.env.LINKFLAGS = ["-Wl,--export-all-symbols"]
             cnf.check_cc(fragment=min_c, execute=True)
             check_libs("m")
@@ -528,6 +557,7 @@ def configure(cnf):  # pylint: disable=too-many-branches
             set_new_basic_env("gcc")
             cnf.load("compiler_c")
             cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            cnf.env.CMCFLAGS = ["-Os"]
             cnf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
             cnf.check_cc(fragment=min_c, execute=True)
             check_libs("m", "dl")
@@ -538,6 +568,7 @@ def configure(cnf):  # pylint: disable=too-many-branches
             set_new_basic_env("clang")
             cnf.load("compiler_c")
             cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            cnf.env.CMCFLAGS = ["-Os"]
             cnf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
             cnf.check_cc(fragment=min_c, execute=True)
             check_libs("m", "dl")
@@ -636,18 +667,15 @@ def build(bld):
     bld.env.sources = " ".join(
         [
             os.path.join(bld.env.src_basepath, "lapi.c"),
-            os.path.join(bld.env.src_basepath, "lcode.c"),
             os.path.join(bld.env.src_basepath, "ldo.c"),
             os.path.join(bld.env.src_basepath, "lctype.c"),
             os.path.join(bld.env.src_basepath, "ldebug.c"),
             os.path.join(bld.env.src_basepath, "ldump.c"),
             os.path.join(bld.env.src_basepath, "lfunc.c"),
             os.path.join(bld.env.src_basepath, "lgc.c"),
-            os.path.join(bld.env.src_basepath, "llex.c"),
             os.path.join(bld.env.src_basepath, "lmem.c"),
             os.path.join(bld.env.src_basepath, "lobject.c"),
             os.path.join(bld.env.src_basepath, "lopcodes.c"),
-            os.path.join(bld.env.src_basepath, "lparser.c"),
             os.path.join(bld.env.src_basepath, "lstate.c"),
             os.path.join(bld.env.src_basepath, "lstring.c"),
             os.path.join(bld.env.src_basepath, "ltable.c"),
@@ -657,7 +685,6 @@ def build(bld):
             os.path.join(bld.env.src_basepath, "lzio.c"),
             os.path.join(bld.env.src_basepath, "lauxlib.c"),
             os.path.join(bld.env.src_basepath, "lbaselib.c"),
-            os.path.join(bld.env.src_basepath, "lbitlib.c"),
             os.path.join(bld.env.src_basepath, "lcorolib.c"),
             os.path.join(bld.env.src_basepath, "ldblib.c"),
             os.path.join(bld.env.src_basepath, "liolib.c"),
@@ -670,6 +697,11 @@ def build(bld):
             os.path.join(bld.env.src_basepath, "linit.c"),
         ]
     )
+    bld.env.compiler_module_sources = [
+        os.path.join(bld.env.src_basepath, "lcode.c"),
+        os.path.join(bld.env.src_basepath, "llex.c"),
+        os.path.join(bld.env.src_basepath, "lparser.c"),
+    ]
     bld.env.source_interpreter = os.path.join(bld.env.src_basepath, "lua.c")
     bld.env.source_compiler = os.path.join(bld.env.src_basepath, "luac.c")
 
@@ -683,7 +715,7 @@ def build(bld):
         (os.path.join(bld.env.libs_path, "lib1.c"), "1"),
         (os.path.join(bld.env.libs_path, "lib11.c"), "11"),
         (os.path.join(bld.env.libs_path, "lib2.c"), "2"),
-        (os.path.join(bld.env.libs_path, "lib2.c"), "2-v2"),
+        (os.path.join(bld.env.libs_path, "lib22.c"), "2-v2"),
         (os.path.join(bld.env.libs_path, "lib21.c"), "21"),
     ]
     if bld.variant == "docs":
@@ -811,12 +843,19 @@ def build_openbsd(bld):
             name="LTESTS",
         )
 
+    bld.objects(
+        source=bld.env.compiler_module_sources,
+        target="cm_objects",
+        defines=defines,
+        cflags=bld.env.CMCFLAGS,
+        includes=includes,
+    )
     bld.stlib(
         source=bld.env.sources,
         target="lua",
         defines=defines,
         cflags=cflags,
-        use=use_ltests,
+        use=use_ltests + ["cm_objects"],
         includes=includes,
         name="static-lua-library",
     )
@@ -865,12 +904,19 @@ def build_netbsd(bld):
             name="LTESTS",
         )
 
+    bld.objects(
+        source=bld.env.compiler_module_sources,
+        target="cm_objects",
+        defines=defines,
+        cflags=bld.env.CMCFLAGS,
+        includes=includes,
+    )
     bld.stlib(
         source=bld.env.sources,
         target="lua",
         defines=defines,
         cflags=cflags,
-        use=use_ltests,
+        use=use_ltests + ["cm_objects"],
         includes=includes,
         name="static-lua-library",
     )
@@ -919,12 +965,19 @@ def build_freebsd(bld):
             name="LTESTS",
         )
 
+    bld.objects(
+        source=bld.env.compiler_module_sources,
+        target="cm_objects",
+        defines=defines,
+        cflags=bld.env.CMCFLAGS,
+        includes=includes,
+    )
     bld.stlib(
         source=bld.env.sources,
         target="lua",
         defines=defines,
         cflags=cflags,
-        use=use_ltests,
+        use=use_ltests + ["cm_objects"],
         includes=includes,
         name="static-lua-library",
     )
@@ -972,13 +1025,19 @@ def build_linux(bld):
             includes=[bld.env.ltests_dir, bld.env.src_basepath],
             name="LTESTS",
         )
-
+    bld.objects(
+        source=bld.env.compiler_module_sources,
+        target="cm_objects",
+        defines=defines,
+        cflags=bld.env.CMCFLAGS,
+        includes=includes,
+    )
     bld.stlib(
         source=bld.env.sources,
         target="lua",
         defines=defines,
         cflags=cflags,
-        use=use_ltests,
+        use=use_ltests + ["cm_objects"],
         includes=includes,
         name="static-lua-library",
     )
@@ -1026,13 +1085,19 @@ def build_darwin(bld):
             includes=[bld.env.ltests_dir, bld.env.src_basepath],
             name="LTESTS",
         )
-
+    bld.objects(
+        source=bld.env.compiler_module_sources,
+        target="cm_objects",
+        defines=defines,
+        cflags=bld.env.CMCFLAGS,
+        includes=includes,
+    )
     bld.stlib(
         source=bld.env.sources,
         target="lua",
         defines=defines,
         cflags=cflags,
-        use=use_ltests,
+        use=use_ltests + ["cm_objects"],
         includes=includes,
         name="static-lua-library",
     )
@@ -1062,27 +1127,33 @@ def build_win32(bld):
     def build_win32_msvc():
         """Building on win32 with msvc"""
         defines = ["LUA_COMPAT_5_2", "_WIN32"]
+        bld(
+            features="c",
+            source=bld.env.compiler_module_sources,
+            target="cm_objects",
+            defines=defines,
+            cflags=bld.env.CMCFLAGS,
+        )
         bld.stlib(
             source=bld.env.sources,
             target="lua",
             defines=defines,
+            use=["cm_objects"],
             name="static-lua-library",
         )
-
         bld.shlib(
             source=bld.env.sources,
             target="luadll",
             defines=defines + ["LUA_BUILD_AS_DLL"],
+            use=["cm_objects"],
             name="shared-lua-library",
         )
-
         bld.program(
             source=bld.env.source_interpreter,
             target="lua",
             defines=defines,
             use=["shared-lua-library"],
         )
-
         bld.program(
             source=bld.env.source_compiler,
             target="luac",
@@ -1101,16 +1172,28 @@ def build_win32(bld):
         defines_tests = []
         cflags = []
         includes = []
+
+        bld(
+            features="c",
+            source=bld.env.compiler_module_sources,
+            target="cm_objects",
+            defines=defines,
+            cflags=cflags + bld.env.CMCFLAGS,
+            use=use_ltests,
+            includes=includes,
+        )
         bld.stlib(
             source=bld.env.sources,
             target="lua",
             defines=defines,
+            use=["cm_objects"],
             name="static-lua-library",
         )
         bld.shlib(
             source=bld.env.sources,
             target="luadll",
             defines=defines + ["LUA_BUILD_AS_DLL"],
+            use=["cm_objects"],
             name="shared-lua-library",
         )
         bld.program(
@@ -1136,16 +1219,27 @@ def build_win32(bld):
         defines_tests = []
         cflags = []
         includes = []
+        bld(
+            features="c",
+            source=bld.env.compiler_module_sources,
+            target="cm_objects",
+            defines=defines,
+            cflags=cflags + bld.env.CMCFLAGS,
+            use=use_ltests,
+            includes=includes,
+        )
         bld.stlib(
             source=bld.env.sources,
             target="lua",
             defines=defines,
+            use=["cm_objects"],
             name="static-lua-library",
         )
         bld.shlib(
             source=bld.env.sources,
             target="luadll",
             defines=defines + ["LUA_BUILD_AS_DLL"],
+            use=["cm_objects"],
             name="shared-lua-library",
         )
         bld.program(
@@ -1179,13 +1273,24 @@ def build_cygwin(bld):
     defines_tests = []
     cflags = []
     includes = []
+    bld.objects(
+        source=bld.env.compiler_module_sources,
+        target="cm_objects",
+        defines=defines,
+        cflags=bld.env.CMCFLAGS,
+    )
     bld.stlib(
-        source=bld.env.sources, target="lua", defines=defines, name="static-lua-library"
+        source=bld.env.sources,
+        target="lua",
+        defines=defines,
+        use=["cm_objects"],
+        name="static-lua-library",
     )
     bld.shlib(
         source=bld.env.sources,
         target="luadll",
         defines=defines + ["LUA_BUILD_AS_DLL"],
+        use=["cm_objects"],
         name="shared-lua-library",
     )
     bld.program(
@@ -1224,13 +1329,19 @@ def build_solaris(bld):
             includes=[bld.env.ltests_dir, bld.env.src_basepath],
             name="LTESTS",
         )
-
+    bld.objects(
+        source=bld.env.compiler_module_sources,
+        target="cm_objects",
+        defines=defines,
+        cflags=bld.env.CMCFLAGS,
+        includes=includes,
+    )
     bld.stlib(
         source=bld.env.sources,
         target="lua",
         defines=defines,
         cflags=cflags,
-        use=use_ltests,
+        use=use_ltests + ["cm_objects"],
         includes=includes,
         name="static-lua-library",
     )
