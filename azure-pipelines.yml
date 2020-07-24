@@ -9,7 +9,6 @@ trigger:
       - .editorconfig
       - .gitattributes
       - .gitignore
-      - .pylintrc
       - .travis.yml
       - .readthedocs.yml
       - docs/environment.yml
