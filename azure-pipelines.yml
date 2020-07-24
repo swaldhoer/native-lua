@@ -145,7 +145,7 @@ jobs:
 
       - script: python -m pip install --upgrade pip setuptools wheel
         displayName: "Upgrad pip and friends"
-      - script: python -m pip install --upgrade pylint==2.5.0 black==19.10b0 sphinx -q
+      - script: python -m pip install --upgrade pylint==2.5.3 black==19.10b0 sphinx -q
 
         displayName: "Upgrad pip and friends"
       - script: choco install llvm -y --version 10.0.0
