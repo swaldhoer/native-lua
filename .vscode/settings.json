@@ -17,7 +17,7 @@
     "files.associations": {
         "wscript": "python",
         "*.h": "c",
-        "VERSION": "yaml"
+        "VERSION": "json"
     },
     "python.linting.enabled": true,
     "python.linting.pylintEnabled": true,

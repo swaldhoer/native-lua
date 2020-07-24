@@ -1,3 +1,5 @@
-native Lua: "0.5.0-devel"
-lua: "5.4.0"
-tests: "5.4.0"
+{
+    "native Lua": "0.5.0-devel",
+    "lua": "5.4.0",
+    "tests": "5.4.0"
+}
