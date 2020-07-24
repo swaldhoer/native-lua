@@ -23,6 +23,8 @@ Changed
 - Since Lua 5.4.0 compiler modules are compiled with ``-Os`` to reduce code
   size. Compiler modules are *lex*, *parser* and *code* (see
   ``src/llex.c``, ``src/lparser.c``, ``lcode`` and ``wscript``).
+- The ``pylint`` configuration was moved from ``.pylintrc` `to
+  ``pyproject.toml`` (see ``pyproject.toml``).
 
 Fixed
 =====
