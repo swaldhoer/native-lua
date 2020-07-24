@@ -94,8 +94,7 @@ The root directory contains the
 - CI scripts (``.appveyor.yml``, ``.cirrus.yml``, ``.travis.yml``,
   ``azure-pipelines.yml``),
 - editor configurations (``.vscode``, ``.editorconfig``),
-- coding and general guidelines (``pyproject.toml``, ``.pylintrc``,
-  ``CONTRIBUTING.rst``),
+- coding and general guidelines (``pyproject.toml``, ``CONTRIBUTING.rst``),
 - licensing information (``LICENSE``, ``CONTRIBUTING.rst``),
 - and information on the project and the lua version (``VERSION``).
 
