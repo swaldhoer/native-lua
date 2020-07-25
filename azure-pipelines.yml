@@ -185,6 +185,7 @@ jobs:
         displayName: Compiler and Tools versions
 
       - script: |
+          python waf --help
           black . --config=pyproject.toml --check -v
           pylint wscript
           pylint conf.py
