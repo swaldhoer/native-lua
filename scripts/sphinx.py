@@ -28,17 +28,6 @@ class SphinxTask(Task):
         return Task.post_run(self)
 
 
-def configure(conf):
-    conf.find_program("sphinx-build", var="SPHINX_BUILD")
-    cmd = Utils.subst_vars("${SPHINX_BUILD} --version", conf.env).split()
-    try:
-        conf.env.SPHINX_BUILD_VERSION = conf.cmd_and_log(cmd).strip().split(" ")[1]
-    except IndexError:
-        conf.env.SPHINX_BUILD_VERSION = "unknown"
-    conf.load("dot", tooldir=os.path.dirname(os.path.realpath(__file__)))
-    conf.env.append_unique("SPHINX_OPTIONS", ["-W"])
-
-
 @feature("sphinx")
 def build_sphinx(self):
     if not getattr(self, "buildername", None):
@@ -64,3 +53,15 @@ def build_sphinx(self):
 @extension(".rst")
 def rst_hook(self, node):  # pylint: disable=unused-argument
     pass
+
+
+def configure(conf):
+    conf.find_program("sphinx-build", var="SPHINX_BUILD")
+    cmd = Utils.subst_vars("${SPHINX_BUILD} --version", conf.env).split()
+    try:
+        conf.env.SPHINX_BUILD_VERSION = conf.cmd_and_log(cmd).strip().split(" ")[1]
+    except IndexError:
+        conf.env.SPHINX_BUILD_VERSION = "unknown"
+    conf.env.append_unique("SPHINX_OPTIONS", ["-W"])
+
+    conf.load("dot", tooldir=os.path.dirname(os.path.realpath(__file__)))
