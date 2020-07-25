@@ -3,7 +3,6 @@ version: 5.4.0.{build}
 image: Visual Studio 2019
 
 cache:
-  - C:\Users\appveyor\AppData\Local\pip\cache
   - C:\cygwin64\var\cache
   - C:\cygwin64\home\appveyor\.cache\pip
 

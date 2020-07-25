@@ -134,6 +134,7 @@ def configure(cnf):  # pylint: disable=too-many-branches
     """Basic configuration of the project based on the operating system and
     the available compilers.
     """
+
     cnf.msg("Prefix", cnf.env.PREFIX)
     cnf.load("python")
     cnf.check_python_version((3, 5))
