@@ -187,12 +187,12 @@ jobs:
       - script: |
           python waf --help
           black . --config=pyproject.toml --check -v
-          pylint wscript
-          pylint conf.py
-          pylint scripts\dot.py
-          pylint scripts\doxygen.py
-          pylint scripts\run_test.py
-          pylint scripts\sphinx.py
+          pylint --rcfile=pyproject.toml wscript
+          pylint --rcfile=pyproject.toml conf.py
+          pylint --rcfile=pyproject.toml scripts\dot.py
+          pylint --rcfile=pyproject.toml scripts\doxygen.py
+          pylint --rcfile=pyproject.toml scripts\run_test.py
+          pylint --rcfile=pyproject.toml scripts\sphinx.py
         displayName: Formatting and Static Program Analysis checks
 
       - script: python scripts\run_test.py -c msvc -c gcc -c clang --simple-test -vv
