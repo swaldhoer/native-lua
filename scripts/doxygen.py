@@ -31,11 +31,13 @@ def process_doxy(self):
     self.create_task("DoxygenTask", self.path.find_resource(self.conf))
 
 
-def configure(cnf):
-    cnf.find_program("doxygen", var="DOXYGEN")
-    cmd = Utils.subst_vars("${DOXYGEN} --version", cnf.env).split()
+def configure(conf):
+    conf.find_program("doxygen", var="DOXYGEN")
     try:
-        cnf.env.DOXYGEN_VERSION = cnf.cmd_and_log(cmd).strip()
+        conf.env.DOXYGEN_VERSION = conf.cmd_and_log(
+            Utils.subst_vars("${DOXYGEN} --version", conf.env).split()
+        ).strip()
     except IndexError:
-        cnf.env.DOXYGEN_VERSION = "unknown"
-    cnf.load("dot", os.path.dirname(os.path.realpath(__file__)))
+        conf.env.DOXYGEN_VERSION = "unknown"
+
+    conf.load("dot", os.path.dirname(os.path.realpath(__file__)))

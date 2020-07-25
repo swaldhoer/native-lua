@@ -1,12 +1,8 @@
 version: 5.4.0.{build}
 
-image:
-  - Visual Studio 2017
-  - Visual Studio 2019
-  - Ubuntu
+image: Visual Studio 2019
 
 cache:
-  - C:\Users\appveyor\AppData\Local\pip\cache
   - C:\cygwin64\var\cache
   - C:\cygwin64\home\appveyor\.cache\pip
 
@@ -27,144 +23,27 @@ init:
   - git config --global core.autocrlf input
 
 install:
-  - ps: |
-      if ($isWindows) {
-        $rmfp = "Docker", "SQL", "Mercurial", "Subversion", "Maven", "CMake"
-        $rmfp += "nodejs", "nunit", "nuget", "java", "xunit", "go", "python"
-        $rmfp += "Amazon", "ruby", "perl", "Azure", "Webdriver", "Coverity"
-        $rmfp += "Octopus", "erl9", "dotnet", "iojs", "Yarn"
-        $rmfp += "npm", "Windows Performance Toolkit"
-        $rmfp += "Microsoft Service Fabric", "Microsoft DNX"
-        $rmfp += "Microsoft Visual Studio"
-        $rmfp += "ServiceFabricLocalClusterManager"
-        foreach ($i in $rmfp) {
-          $env:path = ($env:path -split ";").Where({!($_ -like "*$i*")}) -join ";"
-        }
-      }
-  - cmd: |
-      echo %APPVEYOR_BUILD_WORKER_IMAGE%
-      if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2017" (pushd "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\" && call "VC\Auxiliary\Build\vcvars64.bat" && popd)
-      if "%APPVEYOR_BUILD_WORKER_IMAGE%"=="Visual Studio 2019" (pushd "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\" && call "VC\Auxiliary\Build\vcvars64.bat" && popd)
-  - cmd: set PATH=C:\mingw-w64\x86_64-8.1.0-posix-seh-rt_v6-rev0\mingw64\bin;%PATH%
-  - cmd: set PATH=C:\Python37-x64;C:\Python37-x64\Scripts;%PATH%
-  - ps: |
-      if ($isWindows) {
-        Write-Host New `$env:Path
-        Write-Host ($env:Path).Replace(';',"`n")
-        }
-  - cmd: python -m pip install --upgrade pip -q
-  - cmd: python -m pip install pylint==2.5.3 black==19.10b0 sphinx pyyaml -q
-  - sh: sudo apt-get update
-  - sh: sudo apt-get install python3-pip -y
-  - sh: sudo python3 -m pip install sphinx -q
-  - cmd: mkdir C:\download && mkdir C:\download\doxygen && mkdir C:\download\graphviz
-  - cmd: cd C:\download\doxygen && curl -o doxygen-x64.zip https://www.doxygen.nl/files/doxygen-1.8.18.windows.x64.bin.zip
-  - cmd: cd C:\download\doxygen && 7z e doxygen-x64.zip
-  - cmd: set PATH=C:\download\doxygen;%PATH%
-  - cmd: cd C:\download\graphviz && curl -o graphviz.zip https://graphviz.gitlab.io/_pages/Download/windows/graphviz-2.38.zip
-  - cmd: cd C:\download\graphviz && 7z x graphviz.zip
-  - cmd: set PATH=C:\download\graphviz\release\bin;%PATH%
-  - cmd: cd %APPVEYOR_BUILD_FOLDER%
-  # setup cygwin64
-  - cmd: curl -o setup-x86_64.exe http://www.cygwin.com/setup-x86_64.exe
+  - cmd: curl.exe -o setup-x86_64.exe http://www.cygwin.com/setup-x86_64.exe
   - cmd: setup-x86_64.exe --no-desktop --no-shortcuts --no-startmenu --quiet-mode --packages wget,python37,python37-pip,doxygen,graphviz,llvm,clang
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 --version"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 -m ensurepip --upgrade"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "pip3 install sphinx pyyaml -q"
-  # python linting tools, only used on Windows (no cygwin)
-  - cmd: black --version
-  - cmd: pylint --version
-  # print program versions that are build relevant
-  # doxygen
-  - doxygen --version
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "pip3 install sphinx -q"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "doxygen --version"
-  # dot
-  - dot -V
   - cmd: C:\cygwin64\bin\bash.exe -l -c "dot -V"
-  # python
-  - cmd: python --version
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 --version"
-  - sh: python3 --version
-  # clang
-  - clang --version
   - cmd: C:\cygwin64\bin\bash.exe -l -c "clang --version"
-    # gcc
-  - gcc --version
   - cmd: C:\cygwin64\bin\bash.exe -l -c "gcc --version"
-    # MSVC
-  - cmd: cl
-
-  # for testing
   - cmd: set PATH=%PATH%;%userprofile%\AppData\Local\Programs\lua\bin
 
 before_build:
   # check that the correct python versions are used
-  - cmd: python waf --help
-  - sh: python3 waf --help
-  # ensure that only well formated wscripts are checked in
-  - cmd: black . --config=pyproject.toml --check -v
-  - cmd: pylint --rcfile=pyproject.toml wscript
-  - cmd: pylint --rcfile=pyproject.toml conf.py
-  - cmd: pylint --rcfile=pyproject.toml scripts\\dot.py
-  - cmd: pylint --rcfile=pyproject.toml scripts\\doxygen.py
-  - cmd: pylint --rcfile=pyproject.toml scripts\\run_test.py
-  - cmd: pylint --rcfile=pyproject.toml scripts\\sphinx.py
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf configure"
 
 build_script:
-  # basic configuration
-  - cmd: python waf configure
-  - sh: python3 waf configure
-  # check documentation build
-  - cmd: python waf build_docs -v
-  - sh: python3 waf build_docs -v
-  - cmd: python waf clean_docs
-  - sh: python3 waf clean_docs
-  - cmd: python waf distclean
-  - sh: python3 waf distclean
-  # configure including the test files
-  - cmd: python waf configure --include-tests
-  - sh: python3 waf configure --include-tests
-  # msvc
-  - cmd: python waf build_msvc
-  - cmd: python waf install_msvc
-  - cmd: cd build/msvc/tests
-  - cmd: lua -e"_U=true" all.lua
-  # - cmd: lua all.lua
-  - cmd: cd ../../..
-  - cmd: python waf uninstall_msvc
-  - cmd: python waf clean_msvc
-  # gcc
-  - cmd: python waf build_gcc
-  - sh: python3 waf build_gcc
-  - cmd: python waf install_gcc
-  - sh: sudo python3 waf install_gcc
-  - cd build/gcc/tests
-  - lua -e"_U=true" all.lua
-  #- sh: lua all.lua
-  - cd ../../..
-  - cmd: python waf uninstall_gcc
-  - sh: sudo python3 waf uninstall_gcc
-  - cmd: python waf clean_gcc
-  - sh: python3 waf clean_gcc
-  # clang
-  - cmd: python waf build_clang
-  - sh: python3 waf build_clang
-  - cmd: python waf install_clang
-  - sh: sudo python3 waf install_clang
-  - cd build/clang/tests
-  - lua -e"_U=true" all.lua
-  #- sh: lua all.lua
-  - cd ../../..
-  - cmd: python waf uninstall_clang
-  - sh: sudo python3 waf uninstall_clang
-  - cmd: python waf clean_clang
-  - sh: python3 waf clean_clang
-  - cmd: python waf distclean
-  - sh: python3 waf distclean
-  - git clean -xdf
-  # cygwin gcc
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf distclean configure --include-tests"
+  # build documentation
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf build_docs"
+  # --include-tests
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf distclean configure --include-tests"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf build_gcc"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf install_gcc"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/tests && which lua && lua -v && lua -e\"_U=true\" all.lua"
@@ -177,55 +56,8 @@ build_script:
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf uninstall_clang"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf distclean"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 scripts/run_test.py -c gcc -c clang --simple-test"
-  # configure including the test files and the ltests
-  - cmd: python waf configure --include-tests --ltests
-  - sh: python3 waf configure --include-tests --ltests
-  # msvc
-  - cmd: python waf build_msvc
-  - cmd: python waf install_msvc
-  - cmd: cd build/msvc/tests
-  - cmd: lua -e"_U=true" all.lua
-  # - cmd: lua all.lua
-  - cmd: cd ../../..
-  - cmd: python waf uninstall_msvc
-  - cmd: python waf clean_msvc
-  # gcc
-  - cmd: python waf build_gcc
-  - sh: python3 waf build_gcc
-  - cmd: python waf install_gcc
-  - sh: sudo python3 waf install_gcc
-  - cd build/gcc/tests
-  - lua -e"_U=true" all.lua
-  #- sh: lua all.lua
-  - cd ../../..
-  - cmd: python waf uninstall_gcc
-  - sh: sudo python3 waf uninstall_gcc
-  - cmd: python waf clean_gcc
-  - sh: python3 waf clean_gcc
-  # clang
-  - cmd: python waf build_clang
-  - sh: python3 waf build_clang
-  - cmd: python waf install_clang
-  - sh: sudo python3 waf install_clang
-  - cd build/clang/tests
-  - lua -e"_U=true" all.lua
-  #- sh: lua all.lua
-  - cd ../../..
-  - cmd: python waf uninstall_clang
-  - sh: sudo python3 waf uninstall_clang
-  - cmd: python waf clean_clang
-  - sh: python3 waf clean_clang
-  - cmd: python waf distclean
-  - sh: python3 waf distclean
-  - git clean -xdf
-  - cmd: python scripts\run_test.py -c msvc -c gcc -c clang --simple-test
-  - sh: python3 scripts/run_test.py -c gcc -c clang --simple-test
-  - cmd: python scripts\run_test.py -c msvc -c gcc -c clang --simple-test --ltests
-  - sh: python3 scripts/run_test.py -c gcc -c clang --simple-test --ltests
-  - git clean -xdf
-  # cygwin gcc
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf distclean configure --include-tests"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf build_docs"
+  # --ltests --include-tests
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf distclean configure --ltests --include-tests"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf build_gcc"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf install_gcc"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/tests && which lua && lua -v && lua -e\"_U=true\" all.lua"

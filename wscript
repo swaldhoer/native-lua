@@ -7,12 +7,10 @@
 
 import os
 import re
-import yaml
+import json
 
 from waflib import Logs, Utils, Options, Context, Task, TaskGen
 from waflib.Tools.compiler_c import c_compiler
-from waflib.Tools.c import c  # pylint: disable=unused-import
-from waflib.Tools import c_preproc
 from waflib.Build import BuildContext, CleanContext, ListContext, StepContext
 from waflib.Build import InstallContext, UninstallContext
 
@@ -25,19 +23,6 @@ out = "build"  # pylint: disable=invalid-name
 Context.Context.line_just = 45
 
 USE_ABSOLUTE_INCPATHS = ["\\Microsoft Visual Studio\\", "\\Windows Kits\\"]
-
-
-# we overwrite c class, as absolute paths can be parsed by VS Code error parser
-class c(Task.Task):  # pylint: disable=function-redefined,invalid-name
-    run_str = (
-        "${CC} ${ARCH_ST:ARCH} ${CFLAGS} ${FRAMEWORKPATH_ST:FRAMEWORKPATH} "
-        "${CPPPATH_ST:INCPATHS} ${DEFINES_ST:DEFINES} "
-        "${CC_SRC_F}${SRC[0].abspath()} ${CC_TGT_F}${TGT[0].abspath()} "
-        "${CPPFLAGS}"
-    )
-    vars = ["CCDEPS"]
-    ext_in = [".h"]
-    scan = c_preproc.scan
 
 
 @TaskGen.feature("c")
@@ -149,8 +134,8 @@ def configure(cnf):  # pylint: disable=too-many-branches
     """Basic configuration of the project based on the operating system and
     the available compilers.
     """
+
     cnf.msg("Prefix", cnf.env.PREFIX)
-    print("-" * (Context.Context.line_just + 1) + ":")
     cnf.load("python")
     cnf.check_python_version((3, 5))
     cnf.env.define_key.remove("PYTHONDIR")
@@ -158,8 +143,6 @@ def configure(cnf):  # pylint: disable=too-many-branches
 
     cnf.load("sphinx", tooldir="scripts")
     cnf.load("doxygen", tooldir="scripts")
-
-    print("-" * (Context.Context.line_just + 1) + ":")
 
     # check that all version numbers match and the the version number adheres
     # to Semantic Versioning 2.0.0
@@ -183,7 +166,7 @@ def configure(cnf):  # pylint: disable=too-many-branches
     )
 
     version_file = cnf.path.find_node("VERSION")
-    version_info = yaml.load(version_file.read(), Loader=yaml.SafeLoader)
+    version_info = json.loads(version_file.read(encoding="utf-8"))
     version_file_ver = version_info["native Lua"]
     if not VERSION == version_file_ver:
         cnf.fatal(base_err_msg.format(VERSION, version_file, version_file_ver))

@@ -3,17 +3,18 @@
 
 # SPDX-License-Identifier: MIT
 
-from waflib import Utils
+from waflib import Context, Utils
 
 
-def configure(cnf):
-    if not cnf.env.DOT:
-        cnf.find_program("dot", var="DOT")
-        cmd = Utils.subst_vars("${DOT} -V", cnf.env).split()
-        proc = Utils.subprocess.Popen(cmd, stderr=Utils.subprocess.PIPE)
+def configure(conf):
+    if not conf.env.DOT:
+        conf.find_program("dot", var="DOT")
+        cmd_out = conf.cmd_and_log(
+            Utils.subst_vars("${DOT} -V", conf.env).split(),
+            output=Context.STDOUT,
+            quiet=Context.BOTH,
+        )
         try:
-            cnf.env.DOT_VERSION = " ".join(
-                proc.communicate()[1].decode("utf-8").split()[4:]
-            )
+            conf.env.DOT_VERSION = " ".join(cmd_out[1].decode("utf-8").split()[4:])
         except IndexError:
-            cnf.env.DOT_VERSION = "unknown"
+            conf.env.DOT_VERSION = "unknown"

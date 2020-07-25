@@ -5,7 +5,7 @@
 
 import os
 
-from waflib import Utils, Logs
+from waflib import Utils
 from waflib.Task import Task
 from waflib.TaskGen import feature, extension
 
@@ -13,22 +13,10 @@ from waflib.TaskGen import feature, extension
 class SphinxTask(Task):
     color = "BLUE"
 
-    def run(self):
-        cmd = Utils.subst_vars(
-            "${SPHINX_BUILD} -b ${BUILDERNAME} -c ${CONFIG} ${INPUTDIR} ${OUTDIR}",
-            self.env,
-        )
-        cmd = cmd.split()
-        proc = Utils.subprocess.Popen(
-            cmd,
-            stdout=Utils.subprocess.PIPE,
-            stderr=Utils.subprocess.PIPE,
-            cwd=self.env.CONFIG,
-        )
-        out, err = proc.communicate()
-        print("out", out.decode("utf-8"))
-        Logs.warn(err.decode("utf-8"))
-        return proc.returncode
+    run_str = (
+        "${SPHINX_BUILD} -b ${BUILDERNAME} ${SPHINX_OPTIONS} -c ${CONFIG} "
+        "${INPUTDIR} ${OUTDIR}"
+    )
 
     def keyword(self):
         return "Compiling {} -> {}".format(self.env.CONFIG, self.env.OUTDIR)
@@ -38,16 +26,6 @@ class SphinxTask(Task):
         for i in nodes:
             self.generator.bld.node_sigs[i] = self.uid()
         return Task.post_run(self)
-
-
-def configure(cnf):
-    cnf.find_program("sphinx-build", var="SPHINX_BUILD")
-    cmd = Utils.subst_vars("${SPHINX_BUILD} --version", cnf.env).split()
-    try:
-        cnf.env.SPHINX_BUILD_VERSION = cnf.cmd_and_log(cmd).strip().split(" ")[1]
-    except IndexError:
-        cnf.env.SPHINX_BUILD_VERSION = "unknown"
-    cnf.load("dot", tooldir=os.path.dirname(os.path.realpath(__file__)))
 
 
 @feature("sphinx")
@@ -75,3 +53,15 @@ def build_sphinx(self):
 @extension(".rst")
 def rst_hook(self, node):  # pylint: disable=unused-argument
     pass
+
+
+def configure(conf):
+    conf.find_program("sphinx-build", var="SPHINX_BUILD")
+    cmd = Utils.subst_vars("${SPHINX_BUILD} --version", conf.env).split()
+    try:
+        conf.env.SPHINX_BUILD_VERSION = conf.cmd_and_log(cmd).strip().split(" ")[1]
+    except IndexError:
+        conf.env.SPHINX_BUILD_VERSION = "unknown"
+    conf.env.append_unique("SPHINX_OPTIONS", ["-W"])
+
+    conf.load("dot", tooldir=os.path.dirname(os.path.realpath(__file__)))

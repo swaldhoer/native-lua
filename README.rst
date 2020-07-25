@@ -172,13 +172,13 @@ The documentation can be found on `readthedocs.io`_.
 Continuous Integration
 ======================
 
-- Azure Pipelines: Linux, MacOS, Windows
-- AppVeyor: Linux, Windows
-- Cirrus CI: Linux, FreeBSD
-- Travis CI: Linux
+- Azure Pipelines: Linux (GCC, Clang), MacOS (Clang, GCC), Windows (MSVC, GCC, Clang)
+- AppVeyor: Windows (Cygwin GCC, Cygwin Clang)
+- Cirrus CI: Linux (GCC, Clang), FreeBSD(Clang, GCC)
+- Travis CI: Linux (GCC, Clang)
 - ReadTheDocs.org: Documentation
 
-On AppVeyor's Windows build we also run |black|_ and |pylint|_.
+On Azure Pipelines' Windows build we also run |black|_ and |pylint|_.
 
 *******
 License

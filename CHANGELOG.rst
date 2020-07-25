@@ -25,6 +25,8 @@ Changed
   ``src/llex.c``, ``src/lparser.c``, ``lcode`` and ``wscript``).
 - The ``pylint`` configuration was moved from ``.pylintrc` `to
   ``pyproject.toml`` (see ``pyproject.toml``).
+- Use json to load the version information from ``VERSION`` file and removed
+  ``pyyaml`` dependency (``VERSION``, ``wscript``).
 
 Fixed
 =====

@@ -23,7 +23,7 @@ task:
         - apt-get install -y build-essential doxygen graphviz python3-pip
         - apt-get install -y clang-9 lld-9
         - update-alternatives --install /usr/bin/clang clang /usr/bin/clang-9 100
-        - pip3 install sphinx pathlib pyyaml -q
+        - pip3 install sphinx -q
 
     - container:
         image: fedora:30
@@ -32,7 +32,7 @@ task:
         - dnf -y update
         - dnf -y install redhat-lsb-core gcc clang python3-pip doxygen graphviz readline readline-devel
         - lsb_release -a
-        - pip3 install sphinx pathlib pyyaml -q
+        - pip3 install sphinx -q
 
     - container:
         image: ubuntu:bionic
@@ -53,7 +53,7 @@ task:
         - apt-get install -y build-essential doxygen graphviz
         - apt-get install -y clang-9 lld-9
         - update-alternatives --install /usr/bin/clang clang /usr/bin/clang-9 100
-        - pip3 install sphinx pathlib pyyaml -q
+        - pip3 install sphinx -q
 
     - freebsd_instance:
         image_family: freebsd-12-1
@@ -64,7 +64,7 @@ task:
         - env ASSUME_ALWAYS_YES=YES pkg install lang/gcc bash doxygen
         - python3 -m ensurepip --default-pip
         - python3 -m pip install --upgrade pip
-        - python3 -m pip install sphinx pathlib pyyaml -q
+        - python3 -m pip install sphinx -q
       freebsd_setup_script:
         - chsh -s /usr/local/bin/bash
 

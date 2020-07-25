@@ -17,11 +17,13 @@
     "files.associations": {
         "wscript": "python",
         "*.h": "c",
-        "VERSION": "yaml"
+        "VERSION": "json"
     },
     "python.linting.enabled": true,
     "python.linting.pylintEnabled": true,
-    "pyright.typeCheckingMode": "off",
+    "python.linting.pylintArgs": [
+        "--rcfile=pyproject.toml"
+    ],
     "python.formatting.blackPath": "black",
     "python.formatting.provider": "black",
     "python.formatting.blackArgs": [

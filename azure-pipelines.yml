@@ -48,7 +48,7 @@ jobs:
           sudo apt-get install -y clang-9 lld-9
           sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-9 100
           pip install --upgrade pip -q
-          pip install sphinx pathlib pyyaml -q
+          pip install sphinx -q
         displayName: Install dependencies
 
       - script: |
@@ -143,7 +143,12 @@ jobs:
           addToPath: true
           architecture: "x64"
 
-      - script: choco install llvm -y --version 9.0.0
+      - script: python -m pip install --upgrade pip setuptools wheel
+        displayName: "Upgrad pip and friends"
+      - script: python -m pip install --upgrade pylint==2.5.3 black==19.10b0 sphinx -q
+
+        displayName: "Upgrad pip and friends"
+      - script: choco install llvm -y --version 10.0.0
         displayName: Install LLVM
 
       - script: |
@@ -168,11 +173,6 @@ jobs:
         displayName: echo PATH
 
       - script: |
-          pip install --upgrade pip -q
-          pip install sphinx pyyaml -q
-        displayName: installing dependencies
-
-      - script: |
           python --version
           gcc --version
           clang --version
@@ -180,7 +180,20 @@ jobs:
           doxygen --version
           dot -V
           sphinx-build --version
+          black --version
+          pylint --version
         displayName: Compiler and Tools versions
+
+      - script: |
+          python waf --help
+          black . --config=pyproject.toml --check -v
+          pylint --rcfile=pyproject.toml wscript
+          pylint --rcfile=pyproject.toml conf.py
+          pylint --rcfile=pyproject.toml scripts\dot.py
+          pylint --rcfile=pyproject.toml scripts\doxygen.py
+          pylint --rcfile=pyproject.toml scripts\run_test.py
+          pylint --rcfile=pyproject.toml scripts\sphinx.py
+        displayName: Formatting and Static Program Analysis checks
 
       - script: python scripts\run_test.py -c msvc -c gcc -c clang --simple-test -vv
         displayName: test script (msvc, gcc, clang) with --simple-test
@@ -218,7 +231,7 @@ jobs:
           echo | gcc -E -Wp,-v -
           brew install doxygen graphviz
           pip3 install --upgrade pip -q
-          pip3 install sphinx pyyaml -q
+          pip3 install sphinx -q
         displayName: Install dependencies
 
       - script: |
