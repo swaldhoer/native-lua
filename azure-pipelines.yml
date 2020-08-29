@@ -194,6 +194,7 @@ jobs:
           pylint --rcfile=pyproject.toml scripts\run_test.py
           pylint --rcfile=pyproject.toml scripts\sphinx.py
         displayName: Formatting and Static Program Analysis checks
+        failOnStderr: "true"
 
       - script: python scripts\run_test.py -c msvc -c gcc -c clang --simple-test -vv
         displayName: test script (msvc, gcc, clang) with --simple-test

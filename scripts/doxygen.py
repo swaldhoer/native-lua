@@ -36,20 +36,20 @@ def process_doxy(self):
     setting = {}
     current_key = None
     while cfg_lines:
-        n = cfg_lines.pop(0)
-        if n.startswith("#") or n == "":
+        cfg = cfg_lines.pop(0)
+        if cfg.startswith("#") or cfg == "":
             continue
-        p = [i.strip() for i in n.split("=")]
-        if len(p) > 1:
-            current_key = p[0]
+        d_set = [i.strip() for i in cfg.split("=")]
+        if len(d_set) > 1:
+            current_key = d_set[0]
         if not current_key:
             continue
         if current_key not in setting:
             setting[current_key] = []
         try:
-            setting[current_key].append(p[1].replace("\\", "").strip())
+            setting[current_key].append(d_set[1].replace("\\", "").strip())
         except IndexError:
-            setting[current_key].append(p[0].replace("\\", "").strip())
+            setting[current_key].append(d_set[0].replace("\\", "").strip())
     self.env.append_unique("DOXYGEN_CONFIGURATION", [setting])
     self.create_task("DoxygenTask", src=source_files)
 
