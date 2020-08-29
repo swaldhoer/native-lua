@@ -9,7 +9,7 @@ import os
 import re
 import json
 
-from waflib import Logs, Utils, Options, Context, Task, TaskGen
+from waflib import Logs, Utils, Options, Context, TaskGen
 from waflib.Tools.compiler_c import c_compiler
 from waflib.Build import BuildContext, CleanContext, ListContext, StepContext
 from waflib.Build import InstallContext, UninstallContext
