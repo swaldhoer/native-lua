@@ -10,10 +10,15 @@
                 "panel": "shared"
             },
             "command": "./waf",
-            "args": ["build_clang"],
+            "args": [
+                "build_clang"
+            ],
             "windows": {
                 "command": "python",
-                "args": ["waf", "build_clang"],
+                "args": [
+                    "waf",
+                    "build_clang"
+                ],
             },
         },
         {
@@ -24,11 +29,18 @@
                 "reveal": "always",
                 "panel": "shared"
             },
-            "command": ["./waf"],
-            "args": ["build_gcc"],
+            "command": [
+                "./waf"
+            ],
+            "args": [
+                "build_gcc"
+            ],
             "windows": {
                 "command": "python",
-                "args": ["waf", "build_gcc"],
+                "args": [
+                    "waf",
+                    "build_gcc"
+                ],
             },
         },
         {
@@ -40,10 +52,15 @@
                 "panel": "shared"
             },
             "command": "echo",
-            "args": ["build_msvc not supported on this platform."],
+            "args": [
+                "build_msvc not supported on this platform."
+            ],
             "windows": {
                 "command": "python",
-                "args": ["waf", "build_msvc"],
+                "args": [
+                    "waf",
+                    "build_msvc"
+                ],
             },
         },
         {
@@ -54,11 +71,18 @@
                 "reveal": "always",
                 "panel": "shared"
             },
-            "command": ["./waf"],
-            "args": ["clean"],
+            "command": [
+                "./waf"
+            ],
+            "args": [
+                "clean"
+            ],
             "windows": {
                 "command": "python",
-                "args": ["waf", "clean"],
+                "args": [
+                    "waf",
+                    "clean"
+                ],
             },
         },
         {
@@ -66,10 +90,15 @@
             "type": "shell",
             "group": "build",
             "command": "./waf",
-            "args": ["clean_clang"],
+            "args": [
+                "clean_clang"
+            ],
             "windows": {
                 "command": "python",
-                "args": ["waf", "clean_clang"],
+                "args": [
+                    "waf",
+                    "clean_clang"
+                ],
             },
         },
         {
@@ -77,10 +106,15 @@
             "type": "shell",
             "group": "build",
             "command": "./waf",
-            "args": ["clean_gcc"],
+            "args": [
+                "clean_gcc"
+            ],
             "windows": {
                 "command": "python",
-                "args": ["waf", "clean_gcc"],
+                "args": [
+                    "waf",
+                    "clean_gcc"
+                ],
             },
         },
         {
@@ -88,10 +122,15 @@
             "type": "shell",
             "group": "build",
             "command": "echo",
-            "args": ["clean_msvc not supported on this platform."],
+            "args": [
+                "clean_msvc not supported on this platform."
+            ],
             "windows": {
                 "command": "python",
-                "args": ["waf", "clean_msvc"],
+                "args": [
+                    "waf",
+                    "clean_msvc"
+                ],
             },
         },
         {
@@ -99,10 +138,15 @@
             "type": "shell",
             "group": "build",
             "command": "./waf",
-            "args": ["configure"],
+            "args": [
+                "configure"
+            ],
             "windows": {
                 "command": "python",
-                "args": ["waf", "configure"],
+                "args": [
+                    "waf",
+                    "configure"
+                ],
             },
         },
         {
@@ -110,10 +154,15 @@
             "type": "shell",
             "group": "build",
             "command": "./waf",
-            "args": ["dist"],
+            "args": [
+                "dist"
+            ],
             "windows": {
                 "command": "python",
-                "args": ["waf", "dist"],
+                "args": [
+                    "waf",
+                    "dist"
+                ],
             },
         },
         {
@@ -121,10 +170,15 @@
             "type": "shell",
             "group": "build",
             "command": "./waf",
-            "args": ["distcheck"],
+            "args": [
+                "distcheck"
+            ],
             "windows": {
                 "command": "python",
-                "args": ["waf", "distcheck"],
+                "args": [
+                    "waf",
+                    "distcheck"
+                ],
             },
         },
         {
@@ -132,10 +186,15 @@
             "type": "shell",
             "group": "build",
             "command": "./waf",
-            "args": ["distclean"],
+            "args": [
+                "distclean"
+            ],
             "windows": {
                 "command": "python",
-                "args": ["waf", "distclean"],
+                "args": [
+                    "waf",
+                    "distclean"
+                ],
             },
         },
         {
@@ -146,11 +205,18 @@
                 "reveal": "always",
                 "panel": "shared"
             },
-            "command": ["./waf"],
-            "args": ["install_clang"],
+            "command": [
+                "./waf"
+            ],
+            "args": [
+                "install_clang"
+            ],
             "windows": {
                 "command": "python",
-                "args": ["waf", "install_clang"],
+                "args": [
+                    "waf",
+                    "install_clang"
+                ],
             },
         },
         {
@@ -161,11 +227,18 @@
                 "reveal": "always",
                 "panel": "shared"
             },
-            "command": ["./waf"],
-            "args": ["install_gcc"],
+            "command": [
+                "./waf"
+            ],
+            "args": [
+                "install_gcc"
+            ],
             "windows": {
                 "command": "python",
-                "args": ["waf", "install_gcc"],
+                "args": [
+                    "waf",
+                    "install_gcc"
+                ],
             },
         },
         {
@@ -173,10 +246,15 @@
             "type": "shell",
             "group": "build",
             "command": "echo",
-            "args": ["install_msvc not supported on this platform."],
+            "args": [
+                "install_msvc not supported on this platform."
+            ],
             "windows": {
                 "command": "python",
-                "args": ["waf", "install_msvc"],
+                "args": [
+                    "waf",
+                    "install_msvc"
+                ],
             },
         },
         {
@@ -187,11 +265,18 @@
                 "reveal": "always",
                 "panel": "shared"
             },
-            "command": ["./waf"],
-            "args": ["list_clang"],
+            "command": [
+                "./waf"
+            ],
+            "args": [
+                "list_clang"
+            ],
             "windows": {
                 "command": "python",
-                "args": ["waf", "list_clang"],
+                "args": [
+                    "waf",
+                    "list_clang"
+                ],
             },
         },
         {
@@ -202,11 +287,18 @@
                 "reveal": "always",
                 "panel": "shared"
             },
-            "command": ["./waf"],
-            "args": ["list_gcc"],
+            "command": [
+                "./waf"
+            ],
+            "args": [
+                "list_gcc"
+            ],
             "windows": {
                 "command": "python",
-                "args": ["waf", "list_gcc"],
+                "args": [
+                    "waf",
+                    "list_gcc"
+                ],
             },
         },
         {
@@ -214,10 +306,15 @@
             "type": "shell",
             "group": "build",
             "command": "echo",
-            "args": ["list_msvc not supported on this platform."],
+            "args": [
+                "list_msvc not supported on this platform."
+            ],
             "windows": {
                 "command": "python",
-                "args": ["waf", "list_msvc"],
+                "args": [
+                    "waf",
+                    "list_msvc"
+                ],
             },
         },
         {
@@ -228,11 +325,18 @@
                 "reveal": "always",
                 "panel": "shared"
             },
-            "command": ["./waf"],
-            "args": ["uninstall_clang"],
+            "command": [
+                "./waf"
+            ],
+            "args": [
+                "uninstall_clang"
+            ],
             "windows": {
                 "command": "python",
-                "args": ["waf", "uninstall_clang"],
+                "args": [
+                    "waf",
+                    "uninstall_clang"
+                ],
             },
         },
         {
@@ -243,11 +347,18 @@
                 "reveal": "always",
                 "panel": "shared"
             },
-            "command": ["./waf"],
-            "args": ["uninstall_gcc"],
+            "command": [
+                "./waf"
+            ],
+            "args": [
+                "uninstall_gcc"
+            ],
             "windows": {
                 "command": "python",
-                "args": ["waf", "uninstall_gcc"],
+                "args": [
+                    "waf",
+                    "uninstall_gcc"
+                ],
             },
         },
         {
@@ -255,40 +366,59 @@
             "type": "shell",
             "group": "build",
             "command": "echo",
-            "args": ["uninstall_msvc not supported on this platform."],
+            "args": [
+                "uninstall_msvc not supported on this platform."
+            ],
             "windows": {
                 "command": "python",
-                "args": ["waf", "uninstall_msvc"],
+                "args": [
+                    "waf",
+                    "uninstall_msvc"
+                ],
             },
         },
         {
-            "label": "build_doc",
+            "label": "build_docs",
             "type": "shell",
             "group": "build",
             "presentation": {
                 "reveal": "always",
                 "panel": "shared"
             },
-            "command": ["./waf"],
-            "args": ["build_doc"],
+            "command": [
+                "./waf"
+            ],
+            "args": [
+                "build_docs"
+            ],
             "windows": {
                 "command": "python",
-                "args": ["waf", "build_doc"],
+                "args": [
+                    "waf",
+                    "build_docs"
+                ],
             },
         },
         {
-            "label": "clean_doc",
+            "label": "clean_docs",
             "type": "shell",
             "group": "build",
             "presentation": {
                 "reveal": "always",
                 "panel": "shared"
             },
-            "command": ["./waf"],
-            "args": ["clean_doc"],
+            "command": [
+                "./waf"
+            ],
+            "args": [
+                "clean_docs"
+            ],
             "windows": {
                 "command": "python",
-                "args": ["waf", "clean_doc"],
+                "args": [
+                    "waf",
+                    "clean_docs"
+                ],
             },
         },
     ],
