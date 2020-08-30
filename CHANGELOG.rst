@@ -27,6 +27,10 @@ Changed
   ``pyproject.toml`` (see ``pyproject.toml``).
 - Use json to load the version information from ``VERSION`` file and removed
   ``pyyaml`` dependency (``VERSION``, ``wscript``).
+- Rewrote documentation build tools (``scripts/doxygen.py``,
+  ``scripts/sphinx.py``)
+- Updated doxygen configuration to doxygen 1.8.20 (``doxygen.conf``)
+- Updated sphinx_rtd_theme to 0.5.0 (``docs/_themes/sphinx_rtd_theme/**``)
 
 Fixed
 =====
