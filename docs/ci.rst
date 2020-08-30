@@ -34,7 +34,7 @@ Project Status
 |                    |                       | - Linux (Ubuntu 18.04) on AMD64                              |
 |                    |                       |                                                              |
 |                    |                       |   - gcc (7.4.0)                                              |
-|                    |                       |   - clang (6.0.1)                                            |
+|                    |                       |   - clang (10.0.0)                                           |
 |                    |                       |                                                              |
 |                    |                       | - Unix (macOS 10.14) on AMD64                                |
 |                    |                       |                                                              |
@@ -48,7 +48,7 @@ Project Status
 +--------------------+-----------------------+--------------------------------------------------------------+
 | Cirrus-CI          | |CirrusBUILD|         | - Linux (Ubuntu 18.04, Fedora 30, Debian 10) on AMD64        |
 |                    |                       |                                                              |
-|                    |                       |   - gcc (7.4.0, 9.2.1, 8.3.0)                                |
+|                    |                       |   - gcc (7.4.0, 9.2.1, 10.x.x)                                |
 |                    |                       |   - clang (9.0.1, 8.0.0, 9.0.1)                              |
 |                    |                       |                                                              |
 |                    |                       | - Unix (FreeBSD 12.1) on AMD64                               |
