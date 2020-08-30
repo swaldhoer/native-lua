@@ -184,17 +184,20 @@ jobs:
           pylint --version
         displayName: Compiler and Tools versions
 
-      - script: |
-          python waf --help
-          black . --config=pyproject.toml --check -v
-          pylint --rcfile=pyproject.toml wscript
-          pylint --rcfile=pyproject.toml conf.py
-          pylint --rcfile=pyproject.toml scripts\dot.py
-          pylint --rcfile=pyproject.toml scripts\doxygen.py
-          pylint --rcfile=pyproject.toml scripts\run_test.py
-          pylint --rcfile=pyproject.toml scripts\sphinx.py
-        displayName: Formatting and Static Program Analysis checks
-        failOnStderr: "true"
+      - script: python waf --help
+        displayName: Unpack waf
+      - script: black . --config=pyproject.toml --check -v
+        displayName: Run black
+      - script: pylint --rcfile=pyproject.toml wscript
+        displayName: Run pylint wscript
+      - script: pylint --rcfile=pyproject.toml conf.py
+        displayName: Run pylint conf.py
+      - script: pylint --rcfile=pyproject.toml scripts\dot.py
+        displayName: Run pylint scripts\dot.py
+      - script: pylint --rcfile=pyproject.toml scripts\doxygen.py
+        displayName: Run pylint scripts\doxygen.py
+      - script: pylint --rcfile=pyproject.toml scripts\sphinx.py
+        displayName: Run pylint scripts\sphinx.py
 
       - script: python scripts\run_test.py -c msvc -c gcc -c clang --simple-test -vv
         displayName: test script (msvc, gcc, clang) with --simple-test
