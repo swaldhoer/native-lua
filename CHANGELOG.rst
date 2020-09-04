@@ -14,7 +14,7 @@ The format is based on `Keep a Changelog`_ v1.0.0, and this project adheres to
 Added
 =====
 
-- Added pip requirements file to simplify build setup (see
+- Added pip requirements file to simplify dependency management (see
   ``requirements.txt``).
 
 Changed
