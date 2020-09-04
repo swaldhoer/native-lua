@@ -41,7 +41,7 @@ matrix:
     #   sudo: required
 
 install:
-  - pip3 install sphinx -q
+  - python3 -m pip install --upgrade --requirement requirements.txt
   # - if [ "$TRAVIS_CPU_ARCH" != "amd64" ]; then sudo apt-get install python3-pip -y; fi
   # - if [ "$TRAVIS_CPU_ARCH" != "amd64" ]; then sudo python3 -m pip install sphinx -q; fi
 
