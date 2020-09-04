@@ -22,7 +22,7 @@ task:
         - apt-get -y upgrade
         - apt-get install -y build-essential doxygen graphviz python3-pip
         - apt-get install -y clang-10 lld-10
-        - update-alternatives --install /usr/bin/clang clang /usr/bin/clang-9 100
+        - update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 100
         - python3 -m pip install --upgrade --requirement requirements.txt
 
     - container:
