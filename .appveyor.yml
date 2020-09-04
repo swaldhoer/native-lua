@@ -24,7 +24,12 @@ init:
 
 install:
   - cmd: curl.exe -o setup-x86_64.exe http://www.cygwin.com/setup-x86_64.exe
-  - cmd: setup-x86_64.exe --no-desktop --no-shortcuts --no-startmenu --quiet-mode --packages wget,python37,python37-devel,python37-pip,doxygen,graphviz,llvm,clang
+  - cmd: setup-x86_64.exe --no-desktop --no-shortcuts --no-startmenu --quiet-mode --packages alternatives,wget,python37,python37-devel,python37-pip,doxygen,graphviz,llvm,clang
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "/usr/bin/update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 0 --slave /usr/bin/pip3 pip3 /usr/bin/pip3.6"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "/usr/bin/update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.7 10 --slave /usr/bin/pip3 pip3 /usr/bin/pip3.7"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "/usr/bin/update-alternatives --install /usr/bin/python python /usr/bin/python3 10 --slave /usr/bin/pip pip /usr/bin/pip3"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "/usr/bin/update-alternatives --set python3 /usr/bin/python3.7"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "/usr/bin/update-alternatives --set python /usr/bin/python3"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 --version"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 -m ensurepip --upgrade"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 -m pip install --upgrade pip"
