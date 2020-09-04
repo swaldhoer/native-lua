@@ -219,7 +219,8 @@ jobs:
           greadlink -f `which gcc`
           echo | gcc -E -Wp,-v -
           gcc -dM -E - < /dev/null
-          brew install doxygen@1.8.20 graphviz@2.44.1
+          brew install https://github.com/Homebrew/homebrew-core/blob/14df83f8cc2f5d8aaff8596e818f0dcf9e736018/Formula/doxygen.rb
+          brew install https://github.com/Homebrew/homebrew-core/blob/14df83f8cc2f5d8aaff8596e818f0dcf9e736018/Formula/graphviz.rb
           python -m pip install --upgrade pip
           python -m pip install --upgrade --requirement requirements.txt
         displayName: Install dependencies

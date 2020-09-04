@@ -11,6 +11,12 @@ The format is based on `Keep a Changelog`_ v1.0.0, and this project adheres to
 [Unreleased]
 ************
 
+Added
+=====
+
+- Added pip requirements file to simplify build setup (see
+  ``requirements.txt``).
+
 Changed
 =======
 
@@ -30,7 +36,12 @@ Changed
 - Rewrote documentation build tools (``scripts/doxygen.py``,
   ``scripts/sphinx.py``)
 - Updated doxygen configuration to doxygen 1.8.20 (``doxygen.conf``)
-- Updated sphinx_rtd_theme to 0.5.0 (``docs/_themes/sphinx_rtd_theme/**``)
+
+Removed
+=======
+
+- Removed copy of the *sphinx_rtd_theme* theme
+  (``docs/_themes/sphinx_rtd_theme/**``)
 
 Fixed
 =====
