@@ -13,6 +13,8 @@ from waflib.TaskGen import feature, extension
 class SphinxTask(Task):
     color = "BLUE"
 
+    vars = ["CONFIG_HASH"]
+
     run_str = (
         "${SPHINX_BUILD} -b ${BUILDERNAME} ${SPHINX_OPTIONS} -c ${CONFIG} "
         "${INPUTDIR} ${OUTDIR}"
@@ -22,7 +24,9 @@ class SphinxTask(Task):
         return "Compiling {} -> {}".format(self.env.CONFIG, self.env.OUTDIR)
 
     def post_run(self):
-        nodes = self.generator.bld.path.get_bld().ant_glob("**/*", quiet=True)
+        nodes = self.generator.bld.path.get_bld().ant_glob(
+            "**/*", excl=["**/_doxygen/**/*"], quiet=True
+        )
         for i in nodes:
             self.generator.bld.node_sigs[i] = self.uid()
         return Task.post_run(self)
@@ -39,7 +43,7 @@ def build_sphinx(self):
         confpy = self.path.find_node("conf.py")
     else:
         confpy = self.path.find_node(self.confpy)
-
+    self.env.CONFIG_HASH = Utils.h_file(confpy.abspath())
     self.env.CONFIG = confpy.parent.abspath()
 
     self.env.INPUTDIR = self.source[0].parent.abspath()

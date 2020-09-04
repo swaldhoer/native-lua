@@ -6,6 +6,8 @@
 import os
 import subprocess
 
+import sphinx_rtd_theme  # pylint: disable=unused-import
+
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.doctest",
@@ -16,6 +18,7 @@ extensions = [
     "sphinx.ext.graphviz",
     "sphinx.ext.mathjax",
     "sphinx.ext.viewcode",
+    "sphinx_rtd_theme",
 ]
 
 nitpicky = True
@@ -57,7 +60,6 @@ pygments_style = "sphinx"
 todo_include_todos = False
 
 html_theme = "sphinx_rtd_theme"
-html_theme_path = ["docs/_themes"]
 html_theme_options = {}
 
 htmlhelp_basename = "{}doc".format(project)

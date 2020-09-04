@@ -42,13 +42,13 @@ jobs:
           wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
           sudo apt-get update
           sudo apt-get install -y dialog apt-utils software-properties-common libreadline7 libreadline-dev doxygen graphviz
-          sudo apt-add-repository "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-9 main"
+          sudo apt-add-repository "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
           sudo apt-get install -y build-essential
           sudo apt-get update
-          sudo apt-get install -y clang-9 lld-9
-          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-9 100
-          pip install --upgrade pip -q
-          pip install sphinx -q
+          sudo apt-get install -y clang-10 lld-10
+          sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 100
+          python -m pip install --upgrade pip
+          python -m pip install --upgrade --requirement requirements.txt
         displayName: Install dependencies
 
       - script: |
@@ -143,16 +143,16 @@ jobs:
           addToPath: true
           architecture: "x64"
 
-      - script: python -m pip install --upgrade pip setuptools wheel
+      - script: python -m pip install --upgrade pip
         displayName: "Upgrad pip and friends"
-      - script: python -m pip install --upgrade pylint==2.5.3 black==19.10b0 sphinx -q
+      - script: python -m pip install --upgrade --requirement requirements.txt
+        displayName: "Install requirements.txt"
 
-        displayName: "Upgrad pip and friends"
       - script: choco install llvm -y --version 10.0.0
         displayName: Install LLVM
 
       - script: |
-          curl.exe -o $(Agent.TempDirectory)\doxygen-x64.zip https://www.doxygen.nl/files/doxygen-1.8.18.windows.x64.bin.zip
+          curl.exe -o $(Agent.TempDirectory)\doxygen-x64.zip https://www.doxygen.nl/files/doxygen-1.8.20.windows.x64.bin.zip
           curl.exe -o $(Agent.TempDirectory)\graphviz.zip https://graphviz.gitlab.io/_pages/Download/windows/graphviz-2.38.zip
         displayName: Downloading doxygen and graphviz
 
@@ -167,7 +167,7 @@ jobs:
         displayName: Add doxygen to path
       - script: echo "##vso[task.prependpath]$(Agent.TempDirectory)\release\bin
         displayName: Add graphviz to path
-      - script: echo "##vso[task.prependpath]C:\Program Files\LLVM\bin\
+      - script: echo "##vso[task.prependpath]C:\Program Files\LLVM\bin
         displayName: Add clang to path
       - script: echo %PATH%
         displayName: echo PATH
@@ -183,17 +183,6 @@ jobs:
           black --version
           pylint --version
         displayName: Compiler and Tools versions
-
-      - script: |
-          python waf --help
-          black . --config=pyproject.toml --check -v
-          pylint --rcfile=pyproject.toml wscript
-          pylint --rcfile=pyproject.toml conf.py
-          pylint --rcfile=pyproject.toml scripts\dot.py
-          pylint --rcfile=pyproject.toml scripts\doxygen.py
-          pylint --rcfile=pyproject.toml scripts\run_test.py
-          pylint --rcfile=pyproject.toml scripts\sphinx.py
-        displayName: Formatting and Static Program Analysis checks
 
       - script: python scripts\run_test.py -c msvc -c gcc -c clang --simple-test -vv
         displayName: test script (msvc, gcc, clang) with --simple-test
@@ -212,7 +201,7 @@ jobs:
 
       - script: echo "##vso[task.prependpath]/opt/lua/bin"
         displayName: Add lua install path to path
-      - script: echo "##vso[task.prependpath]/usr/local/Cellar/gcc/9.1.0/bin/"
+      - script: echo "##vso[task.prependpath]/usr/local/Cellar/gcc/10.2.0/bin/"
         displayName: Add gcc to path
 
       - script: echo $PATH
@@ -225,13 +214,15 @@ jobs:
           brew unlink gcc
           brew link gcc --dry-run
           brew link gcc
-          ln -s /usr/local/bin/gcc-9 /usr/local/bin/gcc
+          ln -s /usr/local/bin/gcc-10 /usr/local/bin/gcc
           which gcc
           greadlink -f `which gcc`
           echo | gcc -E -Wp,-v -
-          brew install doxygen graphviz
-          pip3 install --upgrade pip -q
-          pip3 install sphinx -q
+          gcc -dM -E - < /dev/null
+          brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/14df83f8cc2f5d8aaff8596e818f0dcf9e736018/Formula/doxygen.rb
+          brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/14df83f8cc2f5d8aaff8596e818f0dcf9e736018/Formula/graphviz.rb
+          python -m pip install --upgrade pip
+          python -m pip install --upgrade --requirement requirements.txt
         displayName: Install dependencies
 
       - script: |
@@ -318,3 +309,40 @@ jobs:
           set -euxo pipefail
           python waf distclean
         displayName: distclean
+
+  - job: Windows_Static_Program_Analysis
+    pool:
+      vmImage: "windows-2019"
+    displayName: "Static Program Analysis"
+    steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: "3.6"
+          addToPath: true
+          architecture: "x64"
+
+      - script: python -m pip install --upgrade pip
+        displayName: "Upgrad pip"
+      - script: python -m pip install --upgrade --requirement requirements.txt
+        displayName: "Install requirements.txt"
+
+      - script: |
+          python --version
+          black --version
+          pylint --version
+        displayName: Static Program Analysis Tools versions
+
+      - script: python waf --help
+        displayName: Unpack waf
+      - script: black . --config=pyproject.toml --check -v
+        displayName: Run black
+      - script: pylint --rcfile=pyproject.toml wscript
+        displayName: Run pylint wscript
+      - script: pylint --rcfile=pyproject.toml conf.py
+        displayName: Run pylint conf.py
+      - script: pylint --rcfile=pyproject.toml scripts\dot.py
+        displayName: Run pylint scripts\dot.py
+      - script: pylint --rcfile=pyproject.toml scripts\doxygen.py
+        displayName: Run pylint scripts\doxygen.py
+      - script: pylint --rcfile=pyproject.toml scripts\sphinx.py
+        displayName: Run pylint scripts\sphinx.py

@@ -11,6 +11,12 @@ The format is based on `Keep a Changelog`_ v1.0.0, and this project adheres to
 [Unreleased]
 ************
 
+Added
+=====
+
+- Added pip requirements file to simplify dependency management (see
+  ``requirements.txt``).
+
 Changed
 =======
 
@@ -27,6 +33,15 @@ Changed
   ``pyproject.toml`` (see ``pyproject.toml``).
 - Use json to load the version information from ``VERSION`` file and removed
   ``pyyaml`` dependency (``VERSION``, ``wscript``).
+- Rewrote documentation build tools (``scripts/doxygen.py``,
+  ``scripts/sphinx.py``)
+- Updated doxygen configuration to doxygen 1.8.20 (``doxygen.conf``)
+
+Removed
+=======
+
+- Removed copy of the *sphinx_rtd_theme* theme
+  (``docs/_themes/sphinx_rtd_theme/**``)
 
 Fixed
 =====
