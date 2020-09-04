@@ -47,8 +47,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y clang-10 lld-10
           sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 100
-          python -m pip install --upgrade pip -q
-          python -m pip install sphinx -q
+          python -m pip install --upgrade pip
+          python -m pip install --upgrade --requirement requirements.txt
         displayName: Install dependencies
 
       - script: |
@@ -143,10 +143,10 @@ jobs:
           addToPath: true
           architecture: "x64"
 
-      - script: python -m pip install --upgrade pip setuptools wheel
+      - script: python -m pip install --upgrade pip
         displayName: "Upgrad pip and friends"
-      - script: python -m pip install --upgrade sphinx -q
-        displayName: "Install sphinx"
+      - script: python -m pip install --upgrade --requirement requirements.txt
+        displayName: "Install requirements.txt"
 
       - script: choco install llvm -y --version 10.0.0
         displayName: Install LLVM
@@ -220,8 +220,8 @@ jobs:
           echo | gcc -E -Wp,-v -
           gcc -dM -E - < /dev/null
           brew install doxygen graphviz
-          pip3 install --upgrade pip -q
-          pip3 install sphinx -q
+          python -m pip install --upgrade pip
+          python -m pip install --upgrade --requirement requirements.txt
         displayName: Install dependencies
 
       - script: |
@@ -320,10 +320,10 @@ jobs:
           addToPath: true
           architecture: "x64"
 
-      - script: python -m pip install --upgrade pip setuptools wheel
-        displayName: "Upgrad pip and friends"
-      - script: python -m pip install --upgrade pylint==2.5.3 black==19.10b0 -q
-        displayName: "Install pylint and black"
+      - script: python -m pip install --upgrade pip
+        displayName: "Upgrad pip"
+      - script: python -m pip install --upgrade --requirement requirements.txt
+        displayName: "Install requirements.txt"
 
       - script: |
           python --version

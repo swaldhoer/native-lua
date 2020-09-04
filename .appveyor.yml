@@ -24,10 +24,11 @@ init:
 
 install:
   - cmd: curl.exe -o setup-x86_64.exe http://www.cygwin.com/setup-x86_64.exe
-  - cmd: setup-x86_64.exe --no-desktop --no-shortcuts --no-startmenu --quiet-mode --packages wget,python37,python37-pip,doxygen,graphviz,llvm,clang
+  - cmd: setup-x86_64.exe --no-desktop --no-shortcuts --no-startmenu --quiet-mode --packages wget,python37,python37-devel,python37-pip,doxygen,graphviz,llvm,clang
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 --version"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 -m ensurepip --upgrade"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "pip3 install sphinx -q"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 -m pip install --upgrade pip"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 -m pip install --upgrade --requirement requirements.txt"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "doxygen --version"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "dot -V"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 --version"
