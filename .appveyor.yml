@@ -28,7 +28,7 @@ install:
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 --version"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 -m ensurepip --upgrade"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 -m pip install --upgrade pip"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 -m pip install --upgrade --requirement requirements.txt"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 -m pip install --upgrade --requirement /cygdrive/c/projects/native-lua/requirements.txt"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "doxygen --version"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "dot -V"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 --version"

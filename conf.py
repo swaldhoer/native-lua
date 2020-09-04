@@ -6,7 +6,7 @@
 import os
 import subprocess
 
-import sphinx_rtd_theme
+import sphinx_rtd_theme  # pylint: disable=unused-import
 
 extensions = [
     "sphinx.ext.autodoc",

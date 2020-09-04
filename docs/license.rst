@@ -30,20 +30,6 @@ The license information is found in the file ``LICENSE``.
    :language: none
 
 **************************
-`sphinx_rtd_theme` License
-**************************
-
-`sphinx_rtd_theme` is distributed under the terms of the MIT license.
-
-The license information is found in the file
-``docs/_themes/sphinx_rtd_theme/LICENSE``.
-
-.. literalinclude:: ./../docs/_themes/sphinx_rtd_theme/LICENSE
-   :language: none
-
-.. _MIT: https://www.lua.org/manual/5.3/readme.html#license
-
-**************************
 `waf` License
 **************************
 
@@ -58,4 +44,4 @@ The license information is found in the file
    :lines: 5-31
    :encoding: latin-1
 
-.. _MIT: https://www.lua.org/manual/5.3/readme.html#license
+.. _MIT: https://www.lua.org/manual/5.3/readme.html#licensedo

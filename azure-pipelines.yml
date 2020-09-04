@@ -219,7 +219,7 @@ jobs:
           greadlink -f `which gcc`
           echo | gcc -E -Wp,-v -
           gcc -dM -E - < /dev/null
-          brew install doxygen graphviz
+          brew install doxygen@1.8.20 graphviz@2.44.1
           python -m pip install --upgrade pip
           python -m pip install --upgrade --requirement requirements.txt
         displayName: Install dependencies
