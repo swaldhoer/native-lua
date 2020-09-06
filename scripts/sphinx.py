@@ -43,15 +43,76 @@ def build_sphinx(self):
         confpy = self.path.find_node("conf.py")
     else:
         confpy = self.path.find_node(self.confpy)
+    if not confpy:
+        self.bld.fatal("No valid conf.py found or found.")
     self.env.CONFIG_HASH = Utils.h_file(confpy.abspath())
     self.env.CONFIG = confpy.parent.abspath()
 
     self.env.INPUTDIR = self.source[0].parent.abspath()
     self.env.OUTDIR = self.path.get_bld().abspath()
+    tgt = []
     for src in self.source:
-        self.bld.add_manual_dependency(src.change_ext(".html"), src)
-
-    self.create_task("SphinxTask")
+        tgt.append(
+            self.path.find_or_declare(
+                os.path.join(
+                    self.path.get_bld().abspath(),
+                    os.sep.join(
+                        list(
+                            filter(
+                                None,
+                                src.relpath().replace(".rst", ".html").split(os.sep),
+                            )
+                        )[1:]
+                    ),
+                )
+            )
+        )
+        tgt.append(
+            self.path.find_or_declare(
+                os.path.join(
+                    self.path.get_bld().abspath(),
+                    ".doctrees",
+                    os.sep.join(
+                        list(
+                            filter(
+                                None,
+                                src.relpath().replace(".rst", ".doctree").split(os.sep),
+                            )
+                        )[1:]
+                    ),
+                )
+            )
+        )
+        tgt.append(
+            self.path.find_or_declare(
+                os.path.join(
+                    self.path.get_bld().abspath(),
+                    "_sources",
+                    os.sep.join(
+                        list(
+                            filter(
+                                None,
+                                src.relpath().replace(".rst", ".rst.txt").split(os.sep),
+                            )
+                        )[1:]
+                    ),
+                )
+            )
+        )
+    tgt.extend(
+        [
+            self.path.find_or_declare(
+                os.path.join(self.path.get_bld().abspath(), ".buildinfo")
+            ),
+            self.path.find_or_declare(
+                os.path.join(self.path.get_bld().abspath(), "objects.inv")
+            ),
+            self.path.find_or_declare(
+                os.path.join(self.path.get_bld().abspath(), "searchindex.js")
+            ),
+        ]
+    )
+    self.create_task("SphinxTask", src=self.source, tgt=tgt)
 
 
 @extension(".rst")

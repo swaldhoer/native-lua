@@ -130,19 +130,19 @@ def options(opt):
     )
 
 
-def configure(cnf):  # pylint: disable=too-many-branches
+def configure(conf):  # pylint: disable=too-many-branches,too-many-locals
     """Basic configuration of the project based on the operating system and
     the available compilers.
     """
 
-    cnf.msg("Prefix", cnf.env.PREFIX)
-    cnf.load("python")
-    cnf.check_python_version((3, 5))
-    cnf.env.define_key.remove("PYTHONDIR")
-    cnf.env.define_key.remove("PYTHONARCHDIR")
+    conf.msg("Prefix", conf.env.PREFIX)
+    conf.load("python")
+    conf.check_python_version((3, 5))
+    conf.env.define_key.remove("PYTHONDIR")
+    conf.env.define_key.remove("PYTHONARCHDIR")
 
-    cnf.load("sphinx", tooldir="scripts")
-    cnf.load("doxygen", tooldir="scripts")
+    conf.load("sphinx", tooldir="scripts")
+    conf.load("doxygen", tooldir="scripts")
 
     # check that all version numbers match and the the version number adheres
     # to Semantic Versioning 2.0.0
@@ -155,7 +155,7 @@ def configure(cnf):  # pylint: disable=too-many-branches
 
     is_sem_ver = re.match(sem_ver_re, VERSION)
     if not is_sem_ver:
-        cnf.fatal(
+        conf.fatal(
             "Version information does not follow sematic versioning 2.0.0 ({})\n"
             "See https://semver.org/spec/v2.0.0.html for details.".format(VERSION)
         )
@@ -165,43 +165,49 @@ def configure(cnf):  # pylint: disable=too-many-branches
         "({}) do not match."
     )
 
-    version_file = cnf.path.find_node("VERSION")
+    version_file = conf.path.find_node("VERSION")
     version_info = json.loads(version_file.read(encoding="utf-8"))
     version_file_ver = version_info["native Lua"]
     if not VERSION == version_file_ver:
-        cnf.fatal(base_err_msg.format(VERSION, version_file, version_file_ver))
+        conf.fatal(base_err_msg.format(VERSION, version_file, version_file_ver))
 
-    confpy_file = cnf.path.find_node("conf.py")
+    confpy_file = conf.path.find_node("docs/conf.py")
     confpy_txt = confpy_file.read(encoding="utf-8")
     confpy_file_ver = re.search(r'(version)( = )"(.{0,})"', confpy_txt).group(3)
     if not VERSION == confpy_file_ver:
-        cnf.fatal(base_err_msg.format(VERSION, confpy_file, confpy_file_ver))
+        conf.fatal(base_err_msg.format(VERSION, confpy_file, confpy_file_ver))
 
-    readme_file = cnf.path.find_node("README.rst")
+    readme_file = conf.path.find_node("README.md")
     readme_txt = readme_file.read(encoding="utf-8")
     readme_file_ver = re.search(r"(based on native Lua )\((.{0,})\)", readme_txt).group(
         2
     )
     if not VERSION == readme_file_ver:
-        cnf.fatal(base_err_msg.format(VERSION, readme_file, readme_file_ver))
+        conf.fatal(base_err_msg.format(VERSION, readme_file, readme_file_ver))
 
-    doxygen_file = cnf.path.find_node("doxygen.conf")
+    start_file = conf.path.find_node("docs/start.rst")
+    start_txt = start_file.read(encoding="utf-8")
+    start_file_ver = re.search(r"(based on native Lua )\((.{0,})\)", start_txt).group(2)
+    if not VERSION == readme_file_ver:
+        conf.fatal(base_err_msg.format(VERSION, readme_file, readme_file_ver))
+
+    doxygen_file = conf.path.find_node("docs/doxygen.conf")
     doxygen_txt = doxygen_file.read(encoding="utf-8")
     doxygen_file_ver = re.search(
         r'(PROJECT_NUMBER)(         = )"(.{0,})"', doxygen_txt
     ).group(3)
     if not VERSION == doxygen_file_ver:
-        cnf.fatal(base_err_msg.format(VERSION, doxygen_file, doxygen_file_ver))
+        conf.fatal(base_err_msg.format(VERSION, doxygen_file, doxygen_file_ver))
 
-    cnf.env.lua_src_version = version_info["lua"]
-    cnf.env.lua_tests_version = version_info["tests"]
-    cnf.msg("native Lua version", VERSION)
-    cnf.msg("Lua version", cnf.env.lua_src_version)
-    cnf.msg("Lua tests version", cnf.env.lua_tests_version)
-    cnf.msg("Including tests", cnf.options.include_tests)
-    cnf.msg("Using ltests", cnf.options.ltests)
-    cnf.env.generic = cnf.options.generic
-    cnf.msg("Generic", cnf.env.generic)
+    conf.env.lua_src_version = version_info["lua"]
+    conf.env.lua_tests_version = version_info["tests"]
+    conf.msg("native Lua version", VERSION)
+    conf.msg("Lua version", conf.env.lua_src_version)
+    conf.msg("Lua tests version", conf.env.lua_tests_version)
+    conf.msg("Including tests", conf.options.include_tests)
+    conf.msg("Using ltests", conf.options.ltests)
+    conf.env.generic = conf.options.generic
+    conf.msg("Generic", conf.env.generic)
 
     def get_c_standard(env_name, c_std):
         """Define C standard for each compiler"""
@@ -216,40 +222,40 @@ def configure(cnf):  # pylint: disable=too-many-branches
             c_std_string = "-std={}".format(c_std)
         elif env_name == "msvc":
             c_std_string = "/std:c++14"
-        return c_std_string or (cnf.fatal("Could not set C-standard"))
+        return c_std_string or (conf.fatal("Could not set C-standard"))
 
     def set_new_basic_env(env_name):
         """Create a new environment based on the base environment"""
-        cnf.setenv("")
-        tmp_env = cnf.env.derive()
+        conf.setenv("")
+        tmp_env = conf.env.derive()
         tmp_env.detach()
-        cnf.setenv(env_name, tmp_env)
-        cnf.env.env_name = env_name
-        c_compiler[host_os] = [cnf.env.env_name]
-        cnf.env.c_standard = get_c_standard(cnf.env.env_name, cnf.env.c_standard)
-        cnf.path.get_bld().make_node(env_name).mkdir()
+        conf.setenv(env_name, tmp_env)
+        conf.env.env_name = env_name
+        c_compiler[host_os] = [conf.env.env_name]
+        conf.env.c_standard = get_c_standard(conf.env.env_name, conf.env.c_standard)
+        conf.path.get_bld().make_node(env_name).mkdir()
 
     def check_libs(*libs):
         for lib in libs:
-            cnf.check(lib=lib, uselib_store=lib.upper())
+            conf.check(lib=lib, uselib_store=lib.upper())
 
-    cnf.setenv("")
-    cnf.env.host_os = host_os
-    cnf.env.c_standard = cnf.options.c_standard
-    cnf.env.include_tests = cnf.options.include_tests
-    cnf.env.ltests = cnf.options.ltests
-    cnf.load("gnu_dirs")
+    conf.setenv("")
+    conf.env.host_os = host_os
+    conf.env.c_standard = conf.options.c_standard
+    conf.env.include_tests = conf.options.include_tests
+    conf.env.ltests = conf.options.ltests
+    conf.load("gnu_dirs")
 
     min_c = "#include<stdio.h>\nint main() {\n    return 0;\n}\n"
 
-    if cnf.options.c_standard == "c89":
+    if conf.options.c_standard == "c89":
         Logs.warn("C89 does not guarantee 64-bit integers for Lua.")
         Logs.warn("Adding define: LUA_USE_C89")  # TODO
         if host_os == "win32":
             Logs.warn("This will NOT effect msvc-builds on win32.")
-    cnf.msg("C standard", cnf.options.c_standard)
+    conf.msg("C standard", conf.options.c_standard)
 
-    cnf.env.WAF_CONFIG_H_PRELUDE = (
+    conf.env.WAF_CONFIG_H_PRELUDE = (
         '#define NATIVE_LUA_PRE_MSG "based on native Lua"\n'
         '#define NATIVE_LUA_VERSION "{}"\n'.format(VERSION) + ""
         '#define NATIVE_LUA_REPO "https://github.com/swaldhoer/native-lua"\n'
@@ -257,27 +263,27 @@ def configure(cnf):  # pylint: disable=too-many-branches
     )
     platform_compilers = []
     failed_platform_compilers = []
-    cnf.write_config_header(configfile="waf_build_config.h")
-    if cnf.options.generic:
+    conf.write_config_header(configfile="waf_build_config.h")
+    if conf.options.generic:
         if host_os == "win32":
             Logs.info("Generic build uses msvc on win32")
             try:  # msvc
                 set_new_basic_env("msvc")
-                cnf.load("compiler_c")
-                cnf.env.CFLAGS = [
+                conf.load("compiler_c")
+                conf.env.CFLAGS = [
                     "/nologo",
-                    cnf.env.c_standard,
+                    conf.env.c_standard,
                     "/O2",
                     "/Wall",
                     "/Qspectre",
                 ]
-                cnf.env.CFLAGS += ["/FI" + cnf.env.cfg_files[0]]
-                cnf.env.CMCFLAGS = ["/Os"]
-                cnf.check_cc(fragment=min_c, execute=True)
-                platform_compilers.append(cnf.env.env_name)
-                cnf.msg("Manifest", cnf.env.MSVC_MANIFEST)
+                conf.env.CFLAGS += ["/FI" + conf.env.cfg_files[0]]
+                conf.env.CMCFLAGS = ["/Os"]
+                conf.check_cc(fragment=min_c, execute=True)
+                platform_compilers.append(conf.env.env_name)
+                conf.msg("Manifest", conf.env.MSVC_MANIFEST)
             except BaseException:
-                failed_platform_compilers.append(cnf.env.env_name)
+                failed_platform_compilers.append(conf.env.env_name)
         else:
             try:
                 # generic build only for gcc
@@ -287,282 +293,282 @@ def configure(cnf):  # pylint: disable=too-many-branches
                     )
                 )
                 set_new_basic_env("gcc")
-                cnf.load("compiler_c")
-                cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-                cnf.env.CMCFLAGS = ["-Os"]
-                cnf.check_cc(fragment=min_c, execute=True)
+                conf.load("compiler_c")
+                conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+                conf.env.CMCFLAGS = ["-Os"]
+                conf.check_cc(fragment=min_c, execute=True)
                 check_libs("m")
-                platform_compilers.append(cnf.env.env_name)
+                platform_compilers.append(conf.env.env_name)
             except BaseException:
-                failed_platform_compilers.append(cnf.env.env_name)
+                failed_platform_compilers.append(conf.env.env_name)
     elif host_os == "aix":
         try:  # xlc
             set_new_basic_env("xlc")
-            cnf.load("compiler_c")
-            cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            cnf.env.CMCFLAGS = ["-Os"]
-            cnf.env.LINKFLAGS = ["-Wl,-brtl,-bexpall"]
-            cnf.check_cc(fragment=min_c, execute=True)
+            conf.load("compiler_c")
+            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            conf.env.CMCFLAGS = ["-Os"]
+            conf.env.LINKFLAGS = ["-Wl,-brtl,-bexpall"]
+            conf.check_cc(fragment=min_c, execute=True)
             check_libs("m", "dl")
-            platform_compilers.append(cnf.env.env_name)
+            platform_compilers.append(conf.env.env_name)
         except BaseException:
-            failed_platform_compilers.append(cnf.env.env_name)
+            failed_platform_compilers.append(conf.env.env_name)
         try:  # gcc
             # when compling with gcc, the xlc linker must still be used
             set_new_basic_env("gcc")
-            cnf.env.LINK_CC = "xlc"
-            cnf.load("compiler_c")
-            cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            cnf.env.CMCFLAGS = ["-Os"]
-            cnf.env.LINKFLAGS = ["-Wl,-brtl,-bexpall"]
-            cnf.check_cc(fragment=min_c, execute=True)
+            conf.env.LINK_CC = "xlc"
+            conf.load("compiler_c")
+            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            conf.env.CMCFLAGS = ["-Os"]
+            conf.env.LINKFLAGS = ["-Wl,-brtl,-bexpall"]
+            conf.check_cc(fragment=min_c, execute=True)
             check_libs("m", "dl")
-            platform_compilers.append(cnf.env.env_name)
+            platform_compilers.append(conf.env.env_name)
         except BaseException:
-            failed_platform_compilers.append(cnf.env.env_name)
+            failed_platform_compilers.append(conf.env.env_name)
         try:  # clang
             set_new_basic_env("gcc")
-            cnf.load("compiler_c")
-            cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            cnf.env.CMCFLAGS = ["-Os"]
-            cnf.env.LINKFLAGS = ["-Wl,-brtl,-bexpall"]
-            cnf.check_cc(fragment=min_c, execute=True)
+            conf.load("compiler_c")
+            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            conf.env.CMCFLAGS = ["-Os"]
+            conf.env.LINKFLAGS = ["-Wl,-brtl,-bexpall"]
+            conf.check_cc(fragment=min_c, execute=True)
             check_libs("m", "dl")
-            platform_compilers.append(cnf.env.env_name)
+            platform_compilers.append(conf.env.env_name)
         except BaseException:
-            failed_platform_compilers.append(cnf.env.env_name)
+            failed_platform_compilers.append(conf.env.env_name)
     elif host_os == "openbsd":
         try:  # gcc
             set_new_basic_env("gcc")
-            cnf.load("compiler_c")
-            cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            cnf.env.CMCFLAGS = ["-Os"]
-            cnf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
-            cnf.check_cc(fragment=min_c, execute=True)
+            conf.load("compiler_c")
+            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            conf.env.CMCFLAGS = ["-Os"]
+            conf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
+            conf.check_cc(fragment=min_c, execute=True)
             check_libs("m")
-            platform_compilers.append(cnf.env.env_name)
+            platform_compilers.append(conf.env.env_name)
         except BaseException:
-            failed_platform_compilers.append(cnf.env.env_name)
+            failed_platform_compilers.append(conf.env.env_name)
         try:  # clang
             set_new_basic_env("clang")
-            cnf.load("compiler_c")
-            cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            cnf.env.CMCFLAGS = ["-Os"]
-            cnf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
-            cnf.check_cc(fragment=min_c, execute=True)
+            conf.load("compiler_c")
+            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            conf.env.CMCFLAGS = ["-Os"]
+            conf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
+            conf.check_cc(fragment=min_c, execute=True)
             check_libs("m")
-            platform_compilers.append(cnf.env.env_name)
+            platform_compilers.append(conf.env.env_name)
         except BaseException:
-            failed_platform_compilers.append(cnf.env.env_name)
+            failed_platform_compilers.append(conf.env.env_name)
     elif host_os == "netbsd":
         try:  # gcc
             set_new_basic_env("gcc")
-            cnf.load("compiler_c")
-            cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            cnf.env.CMCFLAGS = ["-Os"]
-            cnf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
-            cnf.check_cc(fragment=min_c, execute=True)
+            conf.load("compiler_c")
+            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            conf.env.CMCFLAGS = ["-Os"]
+            conf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
+            conf.check_cc(fragment=min_c, execute=True)
             check_libs("m")
-            platform_compilers.append(cnf.env.env_name)
+            platform_compilers.append(conf.env.env_name)
         except BaseException:
-            failed_platform_compilers.append(cnf.env.env_name)
+            failed_platform_compilers.append(conf.env.env_name)
         try:  # clang
             set_new_basic_env("clang")
-            cnf.load("compiler_c")
-            cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            cnf.env.CMCFLAGS = ["-Os"]
-            cnf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
-            cnf.check_cc(fragment=min_c, execute=True)
+            conf.load("compiler_c")
+            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            conf.env.CMCFLAGS = ["-Os"]
+            conf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
+            conf.check_cc(fragment=min_c, execute=True)
             check_libs("m")
-            platform_compilers.append(cnf.env.env_name)
+            platform_compilers.append(conf.env.env_name)
         except BaseException:
-            failed_platform_compilers.append(cnf.env.env_name)
+            failed_platform_compilers.append(conf.env.env_name)
     elif host_os == "freebsd":
         try:  # gcc
             set_new_basic_env("gcc")
-            cnf.load("compiler_c")
-            cnf.env.CC_VERSION_MAJOR = cnf.env.CC_VERSION[0]
-            rpath = "/usr/local/lib/gcc" + cnf.env.CC_VERSION_MAJOR
+            conf.load("compiler_c")
+            conf.env.CC_VERSION_MAJOR = conf.env.CC_VERSION[0]
+            rpath = "/usr/local/lib/gcc" + conf.env.CC_VERSION_MAJOR
             if not os.path.isdir(rpath):
                 Logs.warn(
                     "Could not validate rpath, as path {} "
                     "does not exist".format(rpath)
                 )
             else:
-                cnf.env.append_unique("RPATH", rpath)
-                cnf.msg("RPATH", cnf.env.RPATH[0])
-            cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            cnf.env.CMCFLAGS = ["-Os"]
-            cnf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
-            cnf.check_cc(fragment=min_c, execute=True)
+                conf.env.append_unique("RPATH", rpath)
+                conf.msg("RPATH", conf.env.RPATH[0])
+            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            conf.env.CMCFLAGS = ["-Os"]
+            conf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
+            conf.check_cc(fragment=min_c, execute=True)
             check_libs("m", "dl", "edit")
-            platform_compilers.append(cnf.env.env_name)
+            platform_compilers.append(conf.env.env_name)
         except BaseException:
-            failed_platform_compilers.append(cnf.env.env_name)
+            failed_platform_compilers.append(conf.env.env_name)
         try:  # clang
             set_new_basic_env("clang")
-            cnf.load("compiler_c")
-            cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            cnf.env.CMCFLAGS = ["-Os"]
-            cnf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
-            cnf.check_cc(fragment=min_c, execute=True)
-            cnf.env.append_unique("INCLUDES", "/usr/include/edit")
-            cnf.env.append_unique("LIBPATH", "/usr/local/lib")
+            conf.load("compiler_c")
+            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            conf.env.CMCFLAGS = ["-Os"]
+            conf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
+            conf.check_cc(fragment=min_c, execute=True)
+            conf.env.append_unique("INCLUDES", "/usr/include/edit")
+            conf.env.append_unique("LIBPATH", "/usr/local/lib")
             check_libs("m", "dl", "edit")
-            platform_compilers.append(cnf.env.env_name)
+            platform_compilers.append(conf.env.env_name)
         except BaseException:
-            failed_platform_compilers.append(cnf.env.env_name)
+            failed_platform_compilers.append(conf.env.env_name)
     elif host_os == "linux":
         try:  # gcc
             set_new_basic_env("gcc")
-            cnf.load("compiler_c")
-            cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            cnf.env.CMCFLAGS = ["-Os"]
-            cnf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
-            cnf.check_cc(fragment=min_c, execute=True)
+            conf.load("compiler_c")
+            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            conf.env.CMCFLAGS = ["-Os"]
+            conf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
+            conf.check_cc(fragment=min_c, execute=True)
             check_libs("m", "dl", "readline")
-            platform_compilers.append(cnf.env.env_name)
+            platform_compilers.append(conf.env.env_name)
         except BaseException:
-            failed_platform_compilers.append(cnf.env.env_name)
+            failed_platform_compilers.append(conf.env.env_name)
         try:  # clang
             set_new_basic_env("clang")
-            cnf.load("compiler_c")
-            cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            cnf.env.CMCFLAGS = ["-Os"]
-            cnf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
-            cnf.check_cc(fragment=min_c, execute=True)
+            conf.load("compiler_c")
+            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            conf.env.CMCFLAGS = ["-Os"]
+            conf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
+            conf.check_cc(fragment=min_c, execute=True)
             check_libs("m", "dl", "readline")
-            platform_compilers.append(cnf.env.env_name)
+            platform_compilers.append(conf.env.env_name)
         except BaseException:
-            failed_platform_compilers.append(cnf.env.env_name)
+            failed_platform_compilers.append(conf.env.env_name)
         try:  # icc
             set_new_basic_env("icc")
-            cnf.load("compiler_c")
-            cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            cnf.env.CMCFLAGS = ["-Os"]
-            cnf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
-            cnf.check_cc(fragment=min_c, execute=True)
+            conf.load("compiler_c")
+            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            conf.env.CMCFLAGS = ["-Os"]
+            conf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
+            conf.check_cc(fragment=min_c, execute=True)
             check_libs("m", "dl", "readline")
-            platform_compilers.append(cnf.env.env_name)
+            platform_compilers.append(conf.env.env_name)
         except BaseException:
-            failed_platform_compilers.append(cnf.env.env_name)
+            failed_platform_compilers.append(conf.env.env_name)
     elif host_os == "darwin":
         try:  # gcc
             set_new_basic_env("gcc")
-            cnf.load("compiler_c")
-            cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            cnf.env.CMCFLAGS = ["-Os"]
-            cnf.check_cc(fragment=min_c, execute=True)
+            conf.load("compiler_c")
+            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            conf.env.CMCFLAGS = ["-Os"]
+            conf.check_cc(fragment=min_c, execute=True)
             check_libs("m", "readline")
-            platform_compilers.append(cnf.env.env_name)
+            platform_compilers.append(conf.env.env_name)
         except BaseException:
-            failed_platform_compilers.append(cnf.env.env_name)
+            failed_platform_compilers.append(conf.env.env_name)
         try:  # clang
             set_new_basic_env("clang")
-            cnf.load("compiler_c")
-            cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            cnf.env.CMCFLAGS = ["-Os"]
-            cnf.check_cc(fragment=min_c, execute=True)
+            conf.load("compiler_c")
+            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            conf.env.CMCFLAGS = ["-Os"]
+            conf.check_cc(fragment=min_c, execute=True)
             check_libs("m", "readline")
-            platform_compilers.append(cnf.env.env_name)
+            platform_compilers.append(conf.env.env_name)
         except BaseException:
-            failed_platform_compilers.append(cnf.env.env_name)
+            failed_platform_compilers.append(conf.env.env_name)
     elif host_os == "win32":
         try:  # msvc
             set_new_basic_env("msvc")
-            cnf.load("compiler_c")
-            cnf.env.CFLAGS = [
+            conf.load("compiler_c")
+            conf.env.CFLAGS = [
                 "/nologo",
-                cnf.env.c_standard,
+                conf.env.c_standard,
                 "/O2",
                 "/Wall",
                 "/Qspectre",
             ]
-            cnf.env.CFLAGS += ["/FI" + cnf.env.cfg_files[0]]
-            cnf.env.CMCFLAGS = ["/Os"]
-            cnf.check_cc(fragment=min_c, execute=True)
-            platform_compilers.append(cnf.env.env_name)
-            cnf.msg("Manifest", cnf.env.MSVC_MANIFEST)
+            conf.env.CFLAGS += ["/FI" + conf.env.cfg_files[0]]
+            conf.env.CMCFLAGS = ["/Os"]
+            conf.check_cc(fragment=min_c, execute=True)
+            platform_compilers.append(conf.env.env_name)
+            conf.msg("Manifest", conf.env.MSVC_MANIFEST)
         except BaseException:
-            failed_platform_compilers.append(cnf.env.env_name)
+            failed_platform_compilers.append(conf.env.env_name)
         try:  # gcc
             set_new_basic_env("gcc")
-            cnf.load("compiler_c")
-            cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            cnf.env.CMCFLAGS = ["-Os"]
-            cnf.check_cc(fragment=min_c, execute=True)
+            conf.load("compiler_c")
+            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            conf.env.CMCFLAGS = ["-Os"]
+            conf.check_cc(fragment=min_c, execute=True)
             check_libs("m")
-            platform_compilers.append(cnf.env.env_name)
+            platform_compilers.append(conf.env.env_name)
         except BaseException:
-            failed_platform_compilers.append(cnf.env.env_name)
+            failed_platform_compilers.append(conf.env.env_name)
         try:  # clang
             set_new_basic_env("clang")
-            cnf.load("compiler_c")
-            cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            cnf.env.CMCFLAGS = ["-Os"]
+            conf.load("compiler_c")
+            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            conf.env.CMCFLAGS = ["-Os"]
             # these vars fix the luac build
-            cnf.env.cstlib_PATTERN = "%s.lib"
-            cnf.env.LINKFLAGS = []
-            cnf.env.STLIB_MARKER = ""
-            cnf.env.SHLIB_MARKER = ""
+            conf.env.cstlib_PATTERN = "%s.lib"
+            conf.env.LINKFLAGS = []
+            conf.env.STLIB_MARKER = ""
+            conf.env.SHLIB_MARKER = ""
             # these vars fix the lua build
-            cnf.env.IMPLIB_ST = "-IMPLIB:%s"
-            cnf.env.implib_PATTERN = "%s.dll"
-            cnf.check_cc(fragment=min_c, execute=True)
-            platform_compilers.append(cnf.env.env_name)
+            conf.env.IMPLIB_ST = "-IMPLIB:%s"
+            conf.env.implib_PATTERN = "%s.dll"
+            conf.check_cc(fragment=min_c, execute=True)
+            platform_compilers.append(conf.env.env_name)
         except BaseException:
-            failed_platform_compilers.append(cnf.env.env_name)
+            failed_platform_compilers.append(conf.env.env_name)
     elif host_os == "cygwin":
         try:  # gcc
             set_new_basic_env("gcc")
-            cnf.load("compiler_c")
-            cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            cnf.env.CMCFLAGS = ["-Os"]
-            cnf.env.LINKFLAGS = ["-Wl,--export-all-symbols"]
-            cnf.check_cc(fragment=min_c, execute=True)
+            conf.load("compiler_c")
+            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            conf.env.CMCFLAGS = ["-Os"]
+            conf.env.LINKFLAGS = ["-Wl,--export-all-symbols"]
+            conf.check_cc(fragment=min_c, execute=True)
             check_libs("m")
-            platform_compilers.append(cnf.env.env_name)
+            platform_compilers.append(conf.env.env_name)
         except BaseException:
-            failed_platform_compilers.append(cnf.env.env_name)
+            failed_platform_compilers.append(conf.env.env_name)
         try:  # clang
             set_new_basic_env("clang")
-            cnf.load("compiler_c")
-            cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            cnf.env.CMCFLAGS = ["-Os"]
-            cnf.env.LINKFLAGS = ["-Wl,--export-all-symbols"]
-            cnf.check_cc(fragment=min_c, execute=True)
+            conf.load("compiler_c")
+            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            conf.env.CMCFLAGS = ["-Os"]
+            conf.env.LINKFLAGS = ["-Wl,--export-all-symbols"]
+            conf.check_cc(fragment=min_c, execute=True)
             check_libs("m")
-            platform_compilers.append(cnf.env.env_name)
+            platform_compilers.append(conf.env.env_name)
         except BaseException:
-            failed_platform_compilers.append(cnf.env.env_name)
+            failed_platform_compilers.append(conf.env.env_name)
     elif host_os == "solaris":
         try:  # gcc
             set_new_basic_env("gcc")
-            cnf.load("compiler_c")
-            cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            cnf.env.CMCFLAGS = ["-Os"]
-            cnf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
-            cnf.check_cc(fragment=min_c, execute=True)
+            conf.load("compiler_c")
+            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            conf.env.CMCFLAGS = ["-Os"]
+            conf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
+            conf.check_cc(fragment=min_c, execute=True)
             check_libs("m", "dl")
-            platform_compilers.append(cnf.env.env_name)
+            platform_compilers.append(conf.env.env_name)
         except BaseException:
-            failed_platform_compilers.append(cnf.env.env_name)
+            failed_platform_compilers.append(conf.env.env_name)
         try:  # gcc
             set_new_basic_env("clang")
-            cnf.load("compiler_c")
-            cnf.env.CFLAGS = [cnf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            cnf.env.CMCFLAGS = ["-Os"]
-            cnf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
-            cnf.check_cc(fragment=min_c, execute=True)
+            conf.load("compiler_c")
+            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
+            conf.env.CMCFLAGS = ["-Os"]
+            conf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
+            conf.check_cc(fragment=min_c, execute=True)
             check_libs("m", "dl")
-            platform_compilers.append(cnf.env.env_name)
+            platform_compilers.append(conf.env.env_name)
         except BaseException:
-            failed_platform_compilers.append(cnf.env.env_name)
+            failed_platform_compilers.append(conf.env.env_name)
     else:
         Logs.warn("Building generic for platform: {}".format(host_os))
 
     if not platform_compilers:
-        cnf.fatal(
+        conf.fatal(
             "Could not configure a single C compiler (tried: {}).\
             ".format(
                 failed_platform_compilers
@@ -576,7 +582,7 @@ def configure(cnf):  # pylint: disable=too-many-branches
         )
 
     c_compiler[host_os] = platform_compilers
-    cnf.msg("Configured compilers", ", ".join(c_compiler[host_os]))
+    conf.msg("Configured compilers", ", ".join(c_compiler[host_os]))
 
 
 def build(bld):
@@ -702,9 +708,97 @@ def build(bld):
         (os.path.join(bld.env.libs_path, "lib21.c"), "21"),
     ]
     if bld.variant == "docs":
-        source = bld.path.ant_glob("*.rst docs/**/*.rst")
-        bld(features="sphinx", source=source, confpy="conf.py", buildername="html")
-        bld(features="doxygen", conf="doxygen.conf")
+        source = [
+            bld.path.find_node("docs/CHANGELOG.rst"),
+            bld.path.find_node("docs/api.rst"),
+            bld.path.find_node("docs/build/wscript.rst"),
+            bld.path.find_node("docs/build.rst"),
+            bld.path.find_node("docs/ci.rst"),
+            bld.path.find_node("docs/contributing.rst"),
+            bld.path.find_node("docs/demos.rst"),
+            bld.path.find_node("docs/install.rst"),
+            bld.path.find_node("docs/license.rst"),
+            bld.path.find_node("docs/manual.rst"),
+            bld.path.find_node("docs/sources.rst"),
+            bld.path.find_node("docs/start.rst"),
+            bld.path.find_node("docs/test.rst"),
+            bld.path.find_node("docs/src/lapi.rst"),
+            bld.path.find_node("docs/src/lauxlib.rst"),
+            bld.path.find_node("docs/src/lbaselib.rst"),
+            bld.path.find_node("docs/src/lcode.rst"),
+            bld.path.find_node("docs/src/lcorolib.rst"),
+            bld.path.find_node("docs/src/lctype.rst"),
+            bld.path.find_node("docs/src/ldblib.rst"),
+            bld.path.find_node("docs/src/ldebug.rst"),
+            bld.path.find_node("docs/src/ldo.rst"),
+            bld.path.find_node("docs/src/ldump.rst"),
+            bld.path.find_node("docs/src/lfunc.rst"),
+            bld.path.find_node("docs/src/lgc.rst"),
+            bld.path.find_node("docs/src/linit.rst"),
+            bld.path.find_node("docs/src/liolib.rst"),
+            bld.path.find_node("docs/src/llex.rst"),
+            bld.path.find_node("docs/src/llimits.rst"),
+            bld.path.find_node("docs/src/lmathlib.rst"),
+            bld.path.find_node("docs/src/lmem.rst"),
+            bld.path.find_node("docs/src/loadlib.rst"),
+            bld.path.find_node("docs/src/lobject.rst"),
+            bld.path.find_node("docs/src/lopcodes.rst"),
+            bld.path.find_node("docs/src/loslib.rst"),
+            bld.path.find_node("docs/src/lparser.rst"),
+            bld.path.find_node("docs/src/lprefix.rst"),
+            bld.path.find_node("docs/src/lstate.rst"),
+            bld.path.find_node("docs/src/lstring.rst"),
+            bld.path.find_node("docs/src/lstrlib.rst"),
+            bld.path.find_node("docs/src/ltable.rst"),
+            bld.path.find_node("docs/src/ltablib.rst"),
+            bld.path.find_node("docs/src/ltm.rst"),
+            bld.path.find_node("docs/src/lua.rst"),
+            bld.path.find_node("docs/src/luac.rst"),
+            bld.path.find_node("docs/src/luaconf.rst"),
+            bld.path.find_node("docs/src/lualib.rst"),
+            bld.path.find_node("docs/src/lundump.rst"),
+            bld.path.find_node("docs/src/lutf8lib.rst"),
+            bld.path.find_node("docs/src/lvm.rst"),
+            bld.path.find_node("docs/src/lzio.rst"),
+            bld.path.find_node("docs/tests/all.rst"),
+            bld.path.find_node("docs/tests/api.rst"),
+            bld.path.find_node("docs/tests/attrib.rst"),
+            bld.path.find_node("docs/tests/big.rst"),
+            bld.path.find_node("docs/tests/bitwise.rst"),
+            bld.path.find_node("docs/tests/calls.rst"),
+            bld.path.find_node("docs/tests/closure.rst"),
+            bld.path.find_node("docs/tests/code.rst"),
+            bld.path.find_node("docs/tests/constructs.rst"),
+            bld.path.find_node("docs/tests/coroutine.rst"),
+            bld.path.find_node("docs/tests/db.rst"),
+            bld.path.find_node("docs/tests/errors.rst"),
+            bld.path.find_node("docs/tests/events.rst"),
+            bld.path.find_node("docs/tests/files.rst"),
+            bld.path.find_node("docs/tests/gc.rst"),
+            bld.path.find_node("docs/tests/goto.rst"),
+            bld.path.find_node("docs/tests/libs/lib1.rst"),
+            bld.path.find_node("docs/tests/libs/lib11.rst"),
+            bld.path.find_node("docs/tests/libs/lib2.rst"),
+            bld.path.find_node("docs/tests/libs/lib21.rst"),
+            bld.path.find_node("docs/tests/libs.rst"),
+            bld.path.find_node("docs/tests/literals.rst"),
+            bld.path.find_node("docs/tests/locals.rst"),
+            bld.path.find_node("docs/tests/ltests/ltests.rst"),
+            bld.path.find_node("docs/tests/ltests.rst"),
+            bld.path.find_node("docs/tests/main.rst"),
+            bld.path.find_node("docs/tests/math.rst"),
+            bld.path.find_node("docs/tests/nextvar.rst"),
+            bld.path.find_node("docs/tests/pm.rst"),
+            bld.path.find_node("docs/tests/sort.rst"),
+            bld.path.find_node("docs/tests/strings.rst"),
+            bld.path.find_node("docs/tests/tpack.rst"),
+            bld.path.find_node("docs/tests/utf8.rst"),
+            bld.path.find_node("docs/tests/vararg.rst"),
+            bld.path.find_node("docs/tests/verybig.rst"),
+            bld.path.find_node("docs/index.rst"),
+        ]
+        bld(features="sphinx", source=source, confpy="docs/conf.py", buildername="html")
+        bld(features="doxygen", conf="docs/doxygen.conf")
     else:
         if bld.env.generic:
             build_generic(bld)

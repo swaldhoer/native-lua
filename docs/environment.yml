@@ -2,4 +2,6 @@ name: doxygen
 channels:
   - conda-forge
 dependencies:
-  - doxygen
+  - doxygen=1.8.18
+  - pip:
+      - sphinx-copybutton==0.3.0

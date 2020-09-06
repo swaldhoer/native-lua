@@ -338,8 +338,8 @@ jobs:
         displayName: Run black
       - script: pylint --rcfile=pyproject.toml wscript
         displayName: Run pylint wscript
-      - script: pylint --rcfile=pyproject.toml conf.py
-        displayName: Run pylint conf.py
+      - script: pylint --rcfile=pyproject.toml docs\conf.py
+        displayName: Run pylint docs\conf.py
       - script: pylint --rcfile=pyproject.toml scripts\dot.py
         displayName: Run pylint scripts\dot.py
       - script: pylint --rcfile=pyproject.toml scripts\doxygen.py
