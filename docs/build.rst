@@ -55,6 +55,10 @@ This means:
   - ``loadlib.c``
   - ``linit.c``
 
+The files ``lcode.c``, ``llex.c`` and ``lparser`` are built as compiler module
+sources optimized for size (``-Os``, ``/Os``) in contrast to the other sources
+(``-02``, ``/O2``).
+
 - Windows only: Build a dynamically linked library based on the same files as
   the statically linked library.
 
