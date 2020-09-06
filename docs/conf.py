@@ -39,7 +39,6 @@ if ON_RTD:
     subprocess.call(
         '( cat doxygen.conf ; echo "OUTPUT_DIRECTORY=_build/html/_doxygen" ) | doxygen -',
         shell=True,
-        cwd="docs",
     )
 
 source_suffix = ".rst"
