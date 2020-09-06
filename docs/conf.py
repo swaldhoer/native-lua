@@ -28,9 +28,9 @@ def setup(app):
     app.add_css_file("custom.css")
 
 
-templates_path = [os.path.join("docs", "_templates")]
+templates_path = ["_templates"]
 
-html_static_path = [os.path.join("docs", "_static"), os.path.join("docs", "_doxygen")]
+html_static_path = ["_static", "_doxygen"]
 
 ON_RTD = os.environ.get("READTHEDOCS", None) == "True"
 if ON_RTD:
@@ -38,6 +38,7 @@ if ON_RTD:
     subprocess.call(
         '( cat doxygen.conf ; echo "OUTPUT_DIRECTORY=_build/html/_doxygen" ) | doxygen -',
         shell=True,
+        cwd="docs",
     )
 
 source_suffix = ".rst"

@@ -7,4 +7,4 @@ doxygen.
 
 .. raw:: html
 
-    <iframe src="../_doxygen/html/index.html" height="700px" width="120%"></iframe>
+    <iframe src="_doxygen/html/index.html" height="700px" width="120%"></iframe>

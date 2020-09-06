@@ -1,6 +1,7 @@
 # directories
 /build/
 /_build/
+/docs/_build/
 /.vs/
 /.vscode/
 /waf-*/

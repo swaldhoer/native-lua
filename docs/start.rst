@@ -34,7 +34,7 @@ How-To
 Building `Lua` with the `native Lua` project requires Python 3.5 or greater and
 some C compiler.
 
-.. image:: docs/_static/basic-cmds.gif
+.. image:: _static/basic-cmds.gif
    :alt: alternate text
 
 *********************************
@@ -91,6 +91,7 @@ The root directory contains the
 - general project documentation and a changelog (``README.rst``, ``index.rst``
   ``conf.py``, ``doxygen.conf``, ``CHANGELOG.rst``)
 - build script and build toolchain (``wscript``, ``waf``, ``waf.bat``),
+- required Python packages (``requirements.txt``),
 - CI scripts (``.appveyor.yml``, ``.cirrus.yml``, ``.travis.yml``,
   ``azure-pipelines.yml``),
 - editor configurations (``.vscode``, ``.editorconfig``),
@@ -115,8 +116,7 @@ official `Lua` documentation. The official `Lua` documentation is found in
 documentation.
 
 `native Lua` uses the `ReadTheDocs Sphinx theme`_ ``sphinx_rtd_theme`` as
-layout theme for the documentation. It is included in
-``docs/_themes/sphinx_rtd_theme``.
+layout theme for the documentation.
 
 ``src`` Directory
 =================

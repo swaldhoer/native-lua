@@ -12,15 +12,15 @@ Welcome to the `native Lua` project documentation.
    :maxdepth: 1
    :caption: Contents
 
-   ./README.rst
-   ./docs/license.rst
+   ./start.rst
+   ./license.rst
    ./CHANGELOG.rst
-   ./docs/contributing.rst
-   ./docs/build.rst
-   ./docs/install.rst
-   ./docs/test.rst
-   ./docs/manual.rst
-   ./docs/api.rst
-   ./docs/demos.rst
-   ./docs/ci.rst
-   ./docs/sources.rst
+   ./contributing.rst
+   ./build.rst
+   ./install.rst
+   ./test.rst
+   ./manual.rst
+   ./api.rst
+   ./demos.rst
+   ./ci.rst
+   ./sources.rst
