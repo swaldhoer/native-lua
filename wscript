@@ -130,7 +130,7 @@ def options(opt):
     )
 
 
-def configure(conf):  # pylint: disable=too-many-branches
+def configure(conf):  # pylint: disable=too-many-branches,too-many-locals
     """Basic configuration of the project based on the operating system and
     the available compilers.
     """
