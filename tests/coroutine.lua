@@ -184,7 +184,7 @@ do
   if not T then
     warn("@on")
   else   -- test library
-    assert(string.find(_WARN, "200")); _WARN = nil
+    assert(string.find(_WARN, "200")); _WARN = false
     warn("@normal")
   end
   assert(st == false and coroutine.status(co) == "dead" and msg == 111)
@@ -407,7 +407,8 @@ assert(_G.f() == 12)
 
 
 if not T then
-  (Message or print)('\n >>> testC not active: skipping yield/hook tests <<<\n')
+  (Message or print)
+      ('\n >>> testC not active: skipping coroutine API tests <<<\n')
 else
   print "testing yields inside hooks"
 
@@ -564,8 +565,17 @@ else
          c == "ERRRUN" and d == 4)
 
 
-  -- using a main thread as a coroutine
+  -- using a main thread as a coroutine  (dubious use!)
   local state = T.newstate()
+
+  -- check that yielddable is working correctly
+  assert(T.testC(state, "newthread; isyieldable -1; remove 1; return 1"))
+
+  -- main thread is not yieldable
+  assert(not T.testC(state, "rawgeti R 1; isyieldable -1; remove 1; return 1"))
+
+  T.testC(state, "settop 0")
+
   T.loadlib(state)
 
   assert(T.doremote(state, [[

@@ -15,6 +15,11 @@
 
 #define pcRel(pc, p)	(cast_int((pc) - (p)->code) - 1)
 
+
+/* Active Lua function (given call info) */
+#define ci_func(ci)		(clLvalue(s2v((ci)->func)))
+
+
 #define resethookcount(L)	(L->hookcount = L->basehookcount)
 
 /*
