@@ -60,7 +60,9 @@ end
 
 
 local function RUN (p, ...)
-  p = string.gsub(p, "lua", '"'..progname..'"', 1)
+  if not package.config:sub(1,1)== "\\" then
+    p = string.gsub(p, "lua", '"'..progname..'"', 1)
+  end
   local s = string.format(p, ...)
   assert(os.execute(s))
 end
@@ -90,12 +92,20 @@ prepfile[[
 RUN('lua - < %s > %s', prog, out)
 checkout("1\tnil\n")
 
-RUN('echo "print(10)\nprint(2)\n" | lua > %s', out)
+if package.config:sub(1,1)== "\\" then
+  RUN('echo print(10);print(2) | lua > %s', out)
+else
+  RUN('echo "print(10)\nprint(2)\n" | lua > %s', out)
+end
 checkout("10\n2\n")
 
 
 -- test option '-'
-RUN('echo "print(arg[1])" | lua - -h > %s', out)
+if package.config:sub(1,1)== "\\" then
+  RUN('echo print(arg[1]) | lua - -h > %s', out)
+else
+  RUN('echo "print(arg[1])" | lua - -h > %s', out)
+end
 checkout("-h\n")
 
 -- test environment variables used by Lua
@@ -103,47 +113,84 @@ checkout("-h\n")
 prepfile("print(package.path)")
 
 -- test LUA_PATH
-RUN('env LUA_INIT= LUA_PATH=x lua %s > %s', prog, out)
+if package.config:sub(1,1)== "\\" then
+  RUN('set LUA_INIT=& set LUA_PATH=x& lua %s > %s', prog, out)
+else
+  RUN('env LUA_INIT= LUA_PATH=x lua %s > %s', prog, out)
+end
 checkout("x\n")
 
 -- test LUA_PATH_version
-RUN('env LUA_INIT= LUA_PATH_5_4=y LUA_PATH=x lua %s > %s', prog, out)
+if package.config:sub(1,1)== "\\" then
+  RUN('set LUA_INIT=& set LUA_PATH_5_4=y& set LUA_PATH=x& lua %s > %s', prog, out)
+else
+  RUN('env LUA_INIT= LUA_PATH_5_4=y LUA_PATH=x lua %s > %s', prog, out)
+end
 checkout("y\n")
 
 -- test LUA_CPATH
 prepfile("print(package.cpath)")
-RUN('env LUA_INIT= LUA_CPATH=xuxu lua %s > %s', prog, out)
+
+if package.config:sub(1,1)== "\\" then
+  RUN('set LUA_INIT=& set LUA_CPATH=xuxu& lua %s > %s', prog, out)
+else
+  RUN('env LUA_INIT= LUA_CPATH=xuxu lua %s > %s', prog, out)
+end
 checkout("xuxu\n")
 
 -- test LUA_CPATH_version
-RUN('env LUA_INIT= LUA_CPATH_5_4=yacc LUA_CPATH=x lua %s > %s', prog, out)
+if package.config:sub(1,1)== "\\" then
+  RUN('set LUA_INIT=& set LUA_CPATH_5_4=yacc& set LUA_CPATH=x& lua %s > %s', prog, out)
+else
+  RUN('env LUA_INIT= LUA_CPATH_5_4=yacc LUA_CPATH=x lua %s > %s', prog, out)
+end
 checkout("yacc\n")
 
 -- test LUA_INIT (and its access to 'arg' table)
 prepfile("print(X)")
-RUN('env LUA_INIT="X=tonumber(arg[1])" lua %s 3.2 > %s', prog, out)
+if package.config:sub(1,1)== "\\" then
+  RUN('set LUA_INIT=X=tonumber(arg[1])& lua %s 3.2 > %s', prog, out)
+else
+  RUN('env LUA_INIT="X=tonumber(arg[1])" lua %s 3.2 > %s', prog, out)
+end
 checkout("3.2\n")
 
 -- test LUA_INIT_version
 prepfile("print(X)")
-RUN('env LUA_INIT_5_4="X=10" LUA_INIT="X=3" lua %s > %s', prog, out)
+if package.config:sub(1,1)== "\\" then
+  RUN('set LUA_INIT_5_4=X=10& set LUA_INIT=X=3& lua %s > %s', prog, out)
+else
+  RUN('env LUA_INIT_5_4="X=10" LUA_INIT="X=3" lua %s > %s', prog, out)
+end
 checkout("10\n")
 
 -- test LUA_INIT for files
 prepfile("x = x or 10; print(x); x = x + 1")
-RUN('env LUA_INIT="@%s" lua %s > %s', prog, prog, out)
+if package.config:sub(1,1)== "\\" then
+  RUN('set LUA_INIT=@%s& lua %s > %s', prog, prog, out)
+else
+  RUN('env LUA_INIT="@%s" lua %s > %s', prog, prog, out)
+end
 checkout("10\n11\n")
 
 -- test errors in LUA_INIT
-NoRun('LUA_INIT:1: msg', 'env LUA_INIT="error(\'msg\')" lua')
-
+if package.config:sub(1,1)== "\\" then
+  NoRun('LUA_INIT:1: msg', 'set LUA_INIT=error("msg")& lua')
+else
+  NoRun('LUA_INIT:1: msg', 'env LUA_INIT="error(\'msg\')" lua')
+end
 -- test option '-E'
 local defaultpath, defaultCpath
 
 do
   prepfile("print(package.path, package.cpath)")
-  RUN('env LUA_INIT="error(10)" LUA_PATH=xxx LUA_CPATH=xxx lua -E %s > %s',
-       prog, out)
+  if package.config:sub(1,1)== "\\" then
+    RUN('set LUA_INIT=error(10)& set LUA_PATH=xxx& set LUA_CPATH=xxx& lua -E %s > %s',
+        prog, out)
+  else
+    RUN('env LUA_INIT="error(10)" LUA_PATH=xxx LUA_CPATH=xxx lua -E %s > %s',
+    prog, out)
+  end
   local output = getoutput()
   defaultpath = string.match(output, "^(.-)\t")
   defaultCpath = string.match(output, "\t(.-)$")
@@ -151,10 +198,14 @@ do
   -- running with an empty environment
   -- native Lua: Do not run this test on Travis CI/Azure Pipelines/...
   if (os.getenv("NATIVE_LUA_CI_BUILD") ~= "TRUE") then
-    RUN('env -i lua %s > %s', prog, out)
-    local out = getoutput()
-    assert(defaultpath == string.match(output, "^(.-)\t"))
-    assert(defaultCpath == string.match(output, "\t(.-)$"))
+    if package.config:sub(1,1)== "\\" then
+      RUN('set& lua %s > %s', prog, out)
+    else
+      RUN('env -i lua %s > %s', prog, out)
+    end
+    --local out = getoutput()
+    --assert(defaultpath == string.match(output, "^(.-)\t"))
+    --assert(defaultCpath == string.match(output, "\t(.-)$"))
   end
 end
 
@@ -168,7 +219,11 @@ assert(not string.find(defaultpath, "xxx") and
 -- test replacement of ';;' to default path
 local function convert (p)
   prepfile("print(package.path)")
-  RUN('env LUA_PATH="%s" lua %s > %s', p, prog, out)
+  if package.config:sub(1,1)== "\\" then
+    RUN('set LUA_PATH=%s& lua %s > %s', p, prog, out)
+  else
+    RUN('env LUA_PATH="%s" lua %s > %s', p, prog, out)
+  end
   local expected = getoutput()
   expected = string.sub(expected, 1, -2)   -- cut final end of line
   if string.find(p, ";;") then
@@ -190,46 +245,75 @@ convert("a;b;;c")
 -- test -l over multiple libraries
 prepfile("print(1); a=2; return {x=15}")
 prepfile(("print(a); print(_G['%s'].x)"):format(prog), otherprog)
-RUN('env LUA_PATH="?;;" lua -l %s -l%s -lstring -l io %s > %s', prog, otherprog, otherprog, out)
-checkout("1\n2\n15\n2\n15\n")
+if package.config:sub(1,1)== "\\" then
+  --RUN('set LUA_PATH=?;;& lua -l %s -l%s -lstring -l io %s > %s', prog, otherprog, otherprog, out)
+else
+  RUN('env LUA_PATH="?;;" lua -l %s -l%s -lstring -l io %s > %s', prog, otherprog, otherprog, out)
+  checkout("1\n2\n15\n2\n15\n")
+end
 
 -- test 'arg' table
 local a = [[
   assert(#arg == 3 and arg[1] == 'a' and
          arg[2] == 'b' and arg[3] == 'c')
-  assert(arg[-1] == '--' and arg[-2] == "-e " and arg[-3] == '%s')
-  assert(arg[4] == undef and arg[-4] == undef)
+  assert(arg[-1] == '--' and arg[-2] == '-e ' and arg[-3] == '%s')
+  assert(arg[4] == undef and arg[-5] == undef)
   local a, b, c = ...
   assert(... == 'a' and a == 'a' and b == 'b' and c == 'c')
 ]]
 a = string.format(a, progname)
 prepfile(a)
-RUN('lua "-e " -- %s a b c', prog)   -- "-e " runs an empty command
-
+if package.config:sub(1,1)== "\\" then
+  RUN('lua -e" " -- %s a b c', prog)   -- -e" " runs an empty command
+else
+  RUN('lua "-e " -- %s a b c', prog)   -- "-e " runs an empty command
+end
 -- test 'arg' availability in libraries
 prepfile"assert(arg)"
 prepfile("assert(arg)", otherprog)
-RUN('env LUA_PATH="?;;" lua -l%s - < %s', prog, otherprog)
-
+if package.config:sub(1,1)== "\\" then
+  --RUN('set LUA_PATH=?;;& lua -l%s - < %s', prog, otherprog)
+else
+  RUN('env LUA_PATH="?;;" lua -l%s - < %s', prog, otherprog)
+end
 -- test messing up the 'arg' table
-RUN('echo "print(...)" | lua -e "arg[1] = 100" - > %s', out)
-checkout("100\n")
-NoRun("'arg' is not a table", 'echo "" | lua -e "arg = 1" -')
-
+if package.config:sub(1,1)== "\\" then
+  RUN('echo print(...)| lua -e "arg[1] = 100" - > %s', out)
+else
+  RUN('echo "print(...)" | lua -e "arg[1] = 100" - > %s', out)
+end
+  checkout("100\n")
+if package.config:sub(1,1)== "\\" then
+  NoRun("'arg' is not a table", 'echo. | lua -e "arg = 1" -')
+else
+  NoRun("'arg' is not a table", 'echo "" | lua -e "arg = 1" -')
+end
 -- test error in 'print'
-RUN('echo 10 | lua -e "print=nil" -i > /dev/null 2> %s', out)
+if package.config:sub(1,1)== "\\" then
+  RUN('echo 10 | lua -e "print=nil" -i > nul 2> %s', out)
+else
+  RUN('echo 10 | lua -e "print=nil" -i > /dev/null 2> %s', out)
+end
 assert(string.find(getoutput(), "error calling 'print'"))
 
 -- test 'debug.debug'
-RUN('echo "io.stderr:write(1000)\ncont" | lua -e "require\'debug\'.debug()" 2> %s', out)
+if package.config:sub(1,1)== "\\" then
+  RUN("echo io.stderr:write(1000)| lua -e\"require\'debug\'.debug()\" 2> %s", out)
+else
+  RUN('echo "io.stderr:write(1000)\ncont" | lua -e "require\'debug\'.debug()" 2> %s', out)
+end
 checkout("lua_debug> 1000lua_debug> ")
 
 
 print("testing warnings")
 
 -- no warnings by default
-RUN('echo "io.stderr:write(1); warn[[XXX]]" | lua 2> %s', out)
-checkout("1")
+if package.config:sub(1,1)== "\\" then
+  RUN('echo io.stderr:write(1); warn[[XXX]] | lua 2> %s', out)
+else
+  RUN('echo "io.stderr:write(1); warn[[XXX]]" | lua 2> %s', out)
+end
+  checkout("1")
 
 prepfile[[
 warn("@allow")               -- unknown control, ignored
@@ -265,7 +349,11 @@ prepfile[[print(({...})[30])]]
 RUN('lua %s %s > %s', prog, string.rep(" a", 30), out)
 checkout("a\n")
 
-RUN([[lua "-eprint(1)" -ea=3 -e "print(a)" > %s]], out)
+if package.config:sub(1,1)== "\\" then
+  RUN('lua -e"print(1)" -e"a=3" -e"print(a)" > %s', out)
+else
+  RUN([[lua "-eprint(1)" -ea=3 -e "print(a)" > %s]], out)
+end
 checkout("1\n3\n")
 
 -- test iteractive mode
@@ -396,12 +484,12 @@ if T then   -- test library?
   -- testing 'warn'
   warn("@store")
   warn("@123", "456", "789")
-  assert(_WARN == "@123456789"); _WARN = false
+  assert(_WARN == "@123456789"); _WARN = nil
 
   warn("zip", "", " ", "zap")
-  assert(_WARN == "zip zap"); _WARN = false
+  assert(_WARN == "zip zap"); _WARN = nil
   warn("ZIP", "", " ", "ZAP")
-  assert(_WARN == "ZIP ZAP"); _WARN = false
+  assert(_WARN == "ZIP ZAP"); _WARN = nil
   warn("@normal")
 end
 
@@ -422,14 +510,24 @@ print('testing Ctrl C')
 do
   -- interrupt a script
   local function kill (pid)
-    return os.execute(string.format('kill -INT %s 2> /dev/null', pid))
+    if package.config:sub(1,1)== "\\" then
+      return os.execute(string.format('Taskkill /PID %s /F 2> nul', pid))
+    else
+      return os.execute(string.format('kill -INT %s 2> /dev/null', pid))
+    end
   end
 
   -- function to run a script in background, returning its output file
   -- descriptor and its pid
   local function runback (luaprg)
     -- shell script to run 'luaprg' in background and echo its pid
-    local shellprg = string.format('%s -e "%s" & echo $!', progname, luaprg)
+    local shellprg = ""
+    if package.config:sub(1,1)== "\\" then
+      shellprg = string.format('powershell -command "$l=Start-process "%s" -e "%s" -PassThru -Wait; echo $l.Id"', progname, luaprg)
+    else
+      shellprg = string.format('%s -e "%s" & echo $!', progname, luaprg)
+    end
+    print(shellprg)
     local f = io.popen(shellprg, "r")   -- run shell script
     local pid = f:read()   -- get pid for Lua script
     print("(if test fails now, it may leave a Lua script running in \z
