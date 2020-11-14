@@ -71,7 +71,12 @@
     "cSpell.enabled": true,
     "cSpell.ignorePaths": [
         "build/**",
+        ".vscode/**",
         ".lock-waf*",
+        "pyproject.toml"
+    ],
+    "cSpell.words": [
+        "sbin"
     ],
     "cSpell.ignoreWords": [
         "Qspectre",
@@ -138,6 +143,7 @@
         "ldump",
         "lfunc",
         "lib",
+        "llimits",
         "linit",
         "liolib",
         "llex",
@@ -363,6 +369,5 @@
         "VARARG",
         "VARARGPREP",
         "EXTRAARG"
-    ],
-    "cSpell.words": []
+    ]
 }
