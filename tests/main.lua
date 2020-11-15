@@ -203,9 +203,9 @@ do
     else
       RUN('env -i lua %s > %s', prog, out)
     end
-    --local out = getoutput()
-    --assert(defaultpath == string.match(output, "^(.-)\t"))
-    --assert(defaultCpath == string.match(output, "\t(.-)$"))
+    local out = getoutput()
+    assert(defaultpath == string.match(output, "^(.-)\t"))
+    assert(defaultCpath == string.match(output, "\t(.-)$"))
   end
 end
 
@@ -253,14 +253,25 @@ else
 end
 
 -- test 'arg' table
-local a = [[
-  assert(#arg == 3 and arg[1] == 'a' and
-         arg[2] == 'b' and arg[3] == 'c')
-  assert(arg[-1] == '--' and arg[-2] == '-e ' and arg[-3] == '%s')
-  assert(arg[4] == undef and arg[-5] == undef)
-  local a, b, c = ...
-  assert(... == 'a' and a == 'a' and b == 'b' and c == 'c')
-]]
+if package.config:sub(1,1)== "\\" then
+  local a = [[
+    assert(#arg == 3 and arg[1] == 'a' and
+           arg[2] == 'b' and arg[3] == 'c')
+    assert(arg[-1] == '--' and arg[-2] == "-e " and arg[-3] == '%s')
+    assert(arg[4] == undef and arg[-4] == undef)
+    local a, b, c = ...
+    assert(... == 'a' and a == 'a' and b == 'b' and c == 'c')
+  ]]
+else
+  local a = [[
+    assert(#arg == 3 and arg[1] == 'a' and
+           arg[2] == 'b' and arg[3] == 'c')
+    assert(arg[-1] == '--' and arg[-2] == '-e ' and arg[-3] == '%s')
+    assert(arg[4] == undef and arg[-5] == undef)
+    local a, b, c = ...
+    assert(... == 'a' and a == 'a' and b == 'b' and c == 'c')
+  ]]
+end
 a = string.format(a, progname)
 prepfile(a)
 if package.config:sub(1,1)== "\\" then
@@ -378,6 +389,33 @@ RUN([[lua "-e_PROMPT='%s'" -i < %s > %s]], prompt, prog, out)
 local t = getoutput()
 assert(string.find(t, prompt .. ".*" .. prompt .. ".*" .. prompt))
 
+-- using the prompt default
+prepfile[[ --
+a = 2
+]]
+RUN([[lua -i < %s > %s]], prog, out)
+local t = getoutput()
+prompt = "> "    -- the default
+assert(string.find(t, prompt .. ".*" .. prompt .. ".*" .. prompt))
+
+
+-- non-string prompt
+prompt =
+  "local C = 0;\z
+   _PROMPT=setmetatable({},{__tostring = function () \z
+     C = C + 1; return C end})"
+prepfile[[ --
+a = 2
+]]
+RUN([[lua -e "%s" -i < %s > %s]], prompt, prog, out)
+local t = getoutput()
+assert(string.find(t, [[
+1 --
+2a = 2
+3
+]], 1, true))
+
+
 -- test for error objects
 prepfile[[
 debug = require "debug"
@@ -484,12 +522,12 @@ if T then   -- test library?
   -- testing 'warn'
   warn("@store")
   warn("@123", "456", "789")
-  assert(_WARN == "@123456789"); _WARN = nil
+  assert(_WARN == "@123456789"); _WARN = false
 
   warn("zip", "", " ", "zap")
-  assert(_WARN == "zip zap"); _WARN = nil
+  assert(_WARN == "zip zap"); _WARN = false
   warn("ZIP", "", " ", "ZAP")
-  assert(_WARN == "ZIP ZAP"); _WARN = nil
+  assert(_WARN == "ZIP ZAP"); _WARN = false
   warn("@normal")
 end
 
