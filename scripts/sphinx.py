@@ -127,6 +127,6 @@ def configure(conf):
         conf.env.SPHINX_BUILD_VERSION = conf.cmd_and_log(cmd).strip().split(" ")[1]
     except IndexError:
         conf.env.SPHINX_BUILD_VERSION = "unknown"
-    conf.env.append_unique("SPHINX_OPTIONS", ["-W"])
+    conf.env.append_unique("SPHINX_OPTIONS", [])
 
     conf.load("dot", tooldir=os.path.dirname(os.path.realpath(__file__)))
