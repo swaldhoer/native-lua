@@ -18,16 +18,16 @@ cross-platform as it is written in ANSI C. Lua is licensed under
 [MIT](https://www.lua.org/manual/5.4/readme.html#license) license. For more
 information on Lua see [lua.org](https://www.lua.org).
 
-`native Lua`'s delivers a framework to **build** and **test** Lua on **any**
+`native Lua` delivers a framework to **build** and **test** Lua on **any**
 platform with **any** compiler.
 
 ## Overview
 
-As default Lua requires [gcc](https://gcc.gnu.org/) and
+By default Lua requires [gcc](https://gcc.gnu.org/) and
 [make](https://www.gnu.org/software/make/) to be installed to build the
-Lua binaries, therefore building for e.g., Linux or other POSIX systems where
-gcc and make are natively available is easy. Building Lua on Windows
-with MinGWs' gcc and some sort of make is also straight forward.
+Lua binaries, therefore building for e.g., Linux or POSIX systems where gcc and
+make are natively available is easy. Building Lua on Windows with MinGWs' gcc
+and some sort of make is also straight forward.
 
 But this does not allow a good platform and compiler independent way of
 building and testing Lua. Especially testing is not that simple as it should
@@ -78,7 +78,7 @@ The root directory contains the
 
 - general project documentation (``README.md``, ``CHANGELOG.md``)
 - build script and build toolchain (``wscript``, ``waf``, ``waf.bat``),
-- required Python packages (``requirements.txt``),
+- required Python packages (``requirements.txt``, ``environment.yml``),
 - CI scripts (``.appveyor.yml``, ``.cirrus.yml``, ``.travis.yml``,
   ``azure-pipelines.yml``, ``readthedocs.yml``),
 - editor configurations (``.vscode``, ``.editorconfig``),
@@ -96,7 +96,7 @@ use libraries that do not come with the Lua interpreter.
 
 This directory contains the `native Lua` project documentation as well as the
 official Lua documentation. The official Lua documentation is found in
-``docs/_static/doc``. This documentation is also linked into the project
+``_static/doc``. This documentation is also linked into the project
 documentation. The main documentation files ``index.rst``, ``conf.py`` and
 ``doxygen.conf`` are found here. Contribution guidelines are found in
 ``contributing.rst``.
@@ -107,12 +107,13 @@ layout theme for the documentation.
 
 ### ``src`` Directory
 
-This directory contains the source files downloaded from `Lua.org`_. Trailing
-whitespace and additional newlines at the end of the files are removed.
-Furthermore the native Lua header is included (see
-`_native_lua_config.h <src/_native_lua_config.h>`_).
+This directory contains the source files downloaded from
+[lua.org/ftp](https://www.lua.org/ftp/#source). Trailing whitespace and
+additional newlines at the end of the files are removed. Furthermore the native
+Lua header is included
+(see [_native_lua_config.h](src/_native_lua_config.h)).
 
-Changes are indicated by the following comment:
+Changes to original Lua sources are indicated by the following comment:
 
 ```c
 /* native Lua */
@@ -136,7 +137,8 @@ newlines at the end of the files are removed.
 > **Note:** The encoding of test files **must not** be changed.
 
 Some tests require changes to the test files in order to work on platforms.
-Changes are indicated by the following comment:
+
+Changes to original Lua test sources are indicated by the following comment:
 
 ```lua
 -- native Lua

@@ -20,6 +20,7 @@ extensions = [
     "sphinx.ext.viewcode",
     "sphinx_rtd_theme",
     "sphinx_copybutton",
+    "sphinxcontrib.platformpicker",
 ]
 
 nitpicky = True

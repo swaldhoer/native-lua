@@ -14,4 +14,4 @@ python:
   version: 3.7
 
 conda:
-  environment: docs/environment.yml
+  environment: environment.yml
