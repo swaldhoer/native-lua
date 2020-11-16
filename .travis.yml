@@ -107,6 +107,7 @@ script:
   # clang ]
   - python3 waf distclean
   # test script
+  - export PATH=/home/travis/build/swaldhoer/native-lua/build/test/bin:$PATH
   - python3 scripts/run_test.py -c gcc -c clang --simple-test
   - python3 scripts/run_test.py -c gcc -c clang
   - python3 scripts/run_test.py -c gcc -c clang --simple-test --ltests
