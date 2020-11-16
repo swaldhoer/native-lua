@@ -253,8 +253,9 @@ else
 end
 
 -- test 'arg' table
+local a = ""
 if package.config:sub(1,1)== "\\" then
-  local a = [[
+  a = [[
     assert(#arg == 3 and arg[1] == 'a' and
            arg[2] == 'b' and arg[3] == 'c')
     assert(arg[-1] == '--' and arg[-2] == "-e " and arg[-3] == '%s')
@@ -263,7 +264,7 @@ if package.config:sub(1,1)== "\\" then
     assert(... == 'a' and a == 'a' and b == 'b' and c == 'c')
   ]]
 else
-  local a = [[
+  a = [[
     assert(#arg == 3 and arg[1] == 'a' and
            arg[2] == 'b' and arg[3] == 'c')
     assert(arg[-1] == '--' and arg[-2] == '-e ' and arg[-3] == '%s')
