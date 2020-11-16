@@ -60,7 +60,9 @@ end
 
 
 local function RUN (p, ...)
-  if not package.config:sub(1,1)== "\\" then
+  if package.config:sub(1,1)== "\\" then
+    p = p
+  else
     p = string.gsub(p, "lua", '"'..progname..'"', 1)
   end
   local s = string.format(p, ...)
