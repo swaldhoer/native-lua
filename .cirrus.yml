@@ -56,7 +56,7 @@ task:
         - python3 -m pip install --upgrade --requirement requirements.txt
 
     - freebsd_instance:
-        image_family: freebsd-12-1
+        image_family: freebsd-13-0-snap
       freebsd_install_script:
         - pkg update -f
         - env ASSUME_ALWAYS_YES=YES pkg bootstrap -f
