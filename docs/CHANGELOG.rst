@@ -42,6 +42,7 @@ Removed
 
 - Removed copy of the *sphinx_rtd_theme* theme
   (``docs/_themes/sphinx_rtd_theme/**``)
+- Removed testing on Travis-CI
 
 Fixed
 =====
