@@ -1,5 +1,4 @@
 task:
-  only_if: "changesInclude('.cirrus.yml', '*.rst', '*.py', '*.conf', 'LICENSE' 'VERSION', 'waf', 'wscript', 'demos/**', 'docs/**', 'scripts/**', 'src/**', 'tests/**')"
   pip_cache:
     folder: ~/.cache/pip
     fingerprint_script: echo $CIRRUS_OS

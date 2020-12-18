@@ -88,32 +88,32 @@ Root Directory
 
 The root directory contains the
 
-- general project documentation and a changelog (``README.rst``, ``index.rst``
-  ``conf.py``, ``doxygen.conf``, ``CHANGELOG.rst``)
+- general project documentation (``README.md``, ``CHANGELOG.md``)
 - build script and build toolchain (``wscript``, ``waf``, ``waf.bat``),
-- required Python packages (``requirements.txt``),
+- required Python packages (``requirements.txt``, ``environment.yml``),
 - CI scripts (``.appveyor.yml``, ``.cirrus.yml``, ``.travis.yml``,
-  ``azure-pipelines.yml``),
+  ``azure-pipelines.yml``, ``readthedocs.yml``),
 - editor configurations (``.vscode``, ``.editorconfig``),
-- coding and general guidelines (``pyproject.toml``, ``CONTRIBUTING.rst``),
-- licensing information (``LICENSE``, ``CONTRIBUTING.rst``),
-- and information on the project and the lua version (``VERSION``).
-
-For details on the build toolchain see `waf.io`_.
+- coding and general guidelines (``pyproject.toml``),
+- licensing information (``LICENSE``),
+- and information on the ``native Lua`` project and the lua version
+  (``VERSION``).
 
 ``demos`` Directory
 ===================
 
 Some scripts demonstrating what can be done with Lua. These demos should not
-use libraries that do not come with the `Lua` interpreter.
+use libraries that do not come with the Lua interpreter.
 
 ``docs`` Directory
 ==================
 
 This directory contains the `native Lua` project documentation as well as the
-official `Lua` documentation. The official `Lua` documentation is found in
-``docs/_static/doc``. This documentation is also linked into the project
-documentation.
+official Lua documentation. The official Lua documentation is found in
+``_static/doc``. This documentation is also linked into the project
+documentation. The main documentation files ``index.rst``, ``conf.py`` and
+``doxygen.conf`` are found here. Contribution guidelines are found in
+``contributing.rst``.
 
 `native Lua` uses the `ReadTheDocs Sphinx theme`_ ``sphinx_rtd_theme`` as
 layout theme for the documentation.

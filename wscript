@@ -707,7 +707,7 @@ def build(bld):
     ]
     if bld.variant == "docs":
         source = [
-            bld.path.find_node("docs/CHANGELOG.rst"),
+            bld.path.find_node("docs/changelog.rst"),
             bld.path.find_node("docs/api.rst"),
             bld.path.find_node("docs/build/wscript.rst"),
             bld.path.find_node("docs/build.rst"),
