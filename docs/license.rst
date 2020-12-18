@@ -14,7 +14,7 @@ The MIT license is also found at end of file :ref:`lua.h <LUA>`:
 
 .. literalinclude:: ./../src/lua.h
    :language: c
-   :lines: 462-483
+   :lines: 495-516
 
 
 ********************

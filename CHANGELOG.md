@@ -1,3 +1,3 @@
 # Changelog
 
-The project's changelog is found in [docs/CHANGELOG.rst](docs/CHANGELOG.rst).
+The project's changelog is found in [docs/changelog.rst](docs/changelog.rst).

@@ -259,7 +259,7 @@ def configure(conf):  # pylint: disable=too-many-branches,too-many-locals
         '#define NATIVE_LUA_PRE_MSG "based on native Lua"\n'
         '#define NATIVE_LUA_VERSION "{}"\n'.format(VERSION) + ""
         '#define NATIVE_LUA_REPO "https://github.com/swaldhoer/native-lua"\n'
-        '#define NATIVE_LUA_MSG " [" NATIVE_LUA_PRE_MSG " (" NATIVE_LUA_VERSION"), " NATIVE_LUA_REPO"]"\n\n'
+        '#define NATIVE_LUA_MSG " [" NATIVE_LUA_PRE_MSG " (" NATIVE_LUA_VERSION"), " NATIVE_LUA_REPO"]"'
     )
     platform_compilers = []
     failed_platform_compilers = []
@@ -277,7 +277,6 @@ def configure(conf):  # pylint: disable=too-many-branches,too-many-locals
                     "/Wall",
                     "/Qspectre",
                 ]
-                conf.env.CFLAGS += ["/FI" + conf.env.cfg_files[0]]
                 conf.env.CMCFLAGS = ["/Os"]
                 conf.check_cc(fragment=min_c, execute=True)
                 platform_compilers.append(conf.env.env_name)
@@ -484,7 +483,6 @@ def configure(conf):  # pylint: disable=too-many-branches,too-many-locals
                 "/Wall",
                 "/Qspectre",
             ]
-            conf.env.CFLAGS += ["/FI" + conf.env.cfg_files[0]]
             conf.env.CMCFLAGS = ["/Os"]
             conf.check_cc(fragment=min_c, execute=True)
             platform_compilers.append(conf.env.env_name)
@@ -709,7 +707,7 @@ def build(bld):
     ]
     if bld.variant == "docs":
         source = [
-            bld.path.find_node("docs/CHANGELOG.rst"),
+            bld.path.find_node("docs/changelog.rst"),
             bld.path.find_node("docs/api.rst"),
             bld.path.find_node("docs/build/wscript.rst"),
             bld.path.find_node("docs/build.rst"),
