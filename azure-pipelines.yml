@@ -143,33 +143,17 @@ jobs:
           architecture: "x64"
 
       - script: python -m pip install --upgrade pip
-        displayName: "Upgrad pip and friends"
+        displayName: "Upgrade pip and friends"
       - script: python -m pip install --upgrade --requirement requirements.txt
         displayName: "Install requirements.txt"
 
-      - script: choco install llvm -y --version 10.0.0
+      - script: choco install --no-progress llvm -y --version 10.0.0
         displayName: Install LLVM
 
       - script: |
-          curl.exe -fsSL -o $(Agent.TempDirectory)\doxygen-x64.zip https://doxygen.nl/files/doxygen-1.9.1.windows.x64.bin.zip
-          curl.exe -fsSL -o $(Agent.TempDirectory)\graphviz.zip https://graphviz.gitlab.io/_pages/Download/windows/graphviz-2.38.zip
-        displayName: Downloading doxygen and graphviz
-
-      - task: ExtractFiles@1
-        inputs:
-          archiveFilePatterns: "$(Agent.TempDirectory)/*.zip"
-          destinationFolder: "$(Agent.TempDirectory)"
-          cleanDestinationFolder: false
-        displayName: Extracting doxygen and graphviz
-
-      - script: echo "##vso[task.prependpath]$(Agent.TempDirectory)
-        displayName: Add doxygen to path
-      - script: echo "##vso[task.prependpath]$(Agent.TempDirectory)\release\bin
-        displayName: Add graphviz to path
-      - script: echo "##vso[task.prependpath]C:\Program Files\LLVM\bin
-        displayName: Add clang to path
-      - script: echo %PATH%
-        displayName: echo PATH
+          choco install --no-progress doxygen -y --version 1.9.1
+          choco install --no-progress graphviz -y --version 2.46.0
+        displayName: Install Doxygen and Graphviz
 
       - script: |
           python --version
@@ -321,7 +305,7 @@ jobs:
           architecture: "x64"
 
       - script: python -m pip install --upgrade pip
-        displayName: "Upgrad pip"
+        displayName: "Upgrade pip"
       - script: python -m pip install --upgrade --requirement requirements.txt
         displayName: "Install requirements.txt"
 
