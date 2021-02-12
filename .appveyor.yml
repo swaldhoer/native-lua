@@ -22,7 +22,7 @@ init:
   - git config --global core.autocrlf input
 
 install:
-  - cmd: curl.exe -o setup-x86_64.exe http://www.cygwin.com/setup-x86_64.exe
+  - cmd: curl.exe -fsSL -o setup-x86_64.exe http://www.cygwin.com/setup-x86_64.exe
   - cmd: setup-x86_64.exe --no-desktop --no-shortcuts --no-startmenu --quiet-mode --packages alternatives,wget,python37,python37-devel,python37-pip,doxygen,graphviz,llvm,clang
   - cmd: C:\cygwin64\bin\bash.exe -l -c "unlink /usr/bin/python3"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "/usr/sbin/update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 0 --slave /usr/bin/pip3 pip3 /usr/bin/pip3.6"

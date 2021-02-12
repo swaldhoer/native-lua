@@ -151,8 +151,8 @@ jobs:
         displayName: Install LLVM
 
       - script: |
-          curl.exe -o $(Agent.TempDirectory)\doxygen-x64.zip https://doxygen.nl/files/doxygen-1.9.1.windows.x64.bin.zip
-          curl.exe -o $(Agent.TempDirectory)\graphviz.zip https://graphviz.gitlab.io/_pages/Download/windows/graphviz-2.38.zip
+          curl.exe -fsSL -o $(Agent.TempDirectory)\doxygen-x64.zip https://doxygen.nl/files/doxygen-1.9.1.windows.x64.bin.zip
+          curl.exe -fsSL -o $(Agent.TempDirectory)\graphviz.zip https://graphviz.gitlab.io/_pages/Download/windows/graphviz-2.38.zip
         displayName: Downloading doxygen and graphviz
 
       - task: ExtractFiles@1
