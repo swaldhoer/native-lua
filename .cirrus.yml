@@ -47,12 +47,10 @@ task:
         - lsb_release -a
         - apt-get install -y dialog python3-pip
         - apt-get install -y software-properties-common libreadline8 libreadline-dev
-        - apt-add-repository "deb http://apt.llvm.org/focal/ llvm-toolchain-focal-11 main"
-        - apt-get update
-        - apt-get -y upgrade
         - apt-get install -y build-essential doxygen graphviz
-        - apt-get install -y clang-11 lld-11
-        - update-alternatives --install /usr/bin/clang clang /usr/bin/clang-11 100
+        - wget https://apt.llvm.org/llvm.sh
+        - chmod +x llvm.sh
+        - sudo ./llvm.sh 11.0.0
         - python3 -m pip install --upgrade --requirement requirements.txt
 
     - freebsd_instance:

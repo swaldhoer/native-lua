@@ -9,17 +9,14 @@
                 "reveal": "always",
                 "panel": "shared"
             },
-            "command": "./waf",
+            "command": "python3",
+            "windows": {
+                "command": "python"
+            },
             "args": [
+                "waf",
                 "build_clang"
             ],
-            "windows": {
-                "command": "python",
-                "args": [
-                    "waf",
-                    "build_clang"
-                ],
-            },
         },
         {
             "label": "build_gcc",
@@ -29,19 +26,14 @@
                 "reveal": "always",
                 "panel": "shared"
             },
-            "command": [
-                "./waf"
-            ],
-            "args": [
-                "build_gcc"
-            ],
+            "command": "python3",
             "windows": {
                 "command": "python",
-                "args": [
-                    "waf",
-                    "build_gcc"
-                ],
             },
+            "args": [
+                "waf",
+                "build_gcc"
+            ]
         },
         {
             "label": "build_msvc",
@@ -71,51 +63,40 @@
                 "reveal": "always",
                 "panel": "shared"
             },
-            "command": [
-                "./waf"
-            ],
-            "args": [
-                "clean"
-            ],
+            "command": "python3",
             "windows": {
                 "command": "python",
-                "args": [
-                    "waf",
-                    "clean"
-                ],
             },
+            "args": [
+                "waf",
+                "clean"
+            ]
         },
         {
             "label": "clean_clang",
             "type": "shell",
             "group": "build",
-            "command": "./waf",
-            "args": [
-                "clean_clang"
-            ],
+            "command": "python3",
             "windows": {
                 "command": "python",
-                "args": [
-                    "waf",
-                    "clean_clang"
-                ],
             },
+            "args": [
+                "waf",
+                "clean_clang"
+            ]
         },
         {
             "label": "clean_gcc",
             "type": "shell",
             "group": "build",
-            "command": "./waf",
-            "args": [
-                "clean_gcc"
-            ],
+            "command": "python3",
             "windows": {
                 "command": "python",
-                "args": [
-                    "waf",
-                    "clean_gcc"
-                ],
             },
+            "args": [
+                "waf",
+                "clean_gcc"
+            ]
         },
         {
             "label": "clean_msvc",
@@ -137,65 +118,53 @@
             "label": "configure",
             "type": "shell",
             "group": "build",
-            "command": "./waf",
-            "args": [
-                "configure"
-            ],
+            "command": "python3",
             "windows": {
                 "command": "python",
-                "args": [
-                    "waf",
-                    "configure"
-                ],
             },
+            "args": [
+                "waf",
+                "configure"
+            ]
         },
         {
             "label": "dist",
             "type": "shell",
             "group": "build",
-            "command": "./waf",
-            "args": [
-                "dist"
-            ],
+            "command": "python3",
             "windows": {
                 "command": "python",
-                "args": [
-                    "waf",
-                    "dist"
-                ],
             },
+            "args": [
+                "waf",
+                "dist"
+            ]
         },
         {
             "label": "distcheck",
             "type": "shell",
             "group": "build",
-            "command": "./waf",
-            "args": [
-                "distcheck"
-            ],
+            "command": "python3",
             "windows": {
                 "command": "python",
-                "args": [
-                    "waf",
-                    "distcheck"
-                ],
             },
+            "args": [
+                "waf",
+                "distcheck"
+            ]
         },
         {
             "label": "distclean",
             "type": "shell",
             "group": "build",
-            "command": "./waf",
-            "args": [
-                "distclean"
-            ],
+            "command": "python3",
             "windows": {
                 "command": "python",
-                "args": [
-                    "waf",
-                    "distclean"
-                ],
             },
+            "args": [
+                "waf",
+                "distclean"
+            ]
         },
         {
             "label": "install_clang",
@@ -205,19 +174,14 @@
                 "reveal": "always",
                 "panel": "shared"
             },
-            "command": [
-                "./waf"
-            ],
-            "args": [
-                "install_clang"
-            ],
+            "command": "python3",
             "windows": {
                 "command": "python",
-                "args": [
-                    "waf",
-                    "install_clang"
-                ],
             },
+            "args": [
+                "waf",
+                "install_clang"
+            ]
         },
         {
             "label": "install_gcc",
@@ -227,19 +191,14 @@
                 "reveal": "always",
                 "panel": "shared"
             },
-            "command": [
-                "./waf"
-            ],
-            "args": [
-                "install_gcc"
-            ],
+            "command": "python3",
             "windows": {
                 "command": "python",
-                "args": [
-                    "waf",
-                    "install_gcc"
-                ],
             },
+            "args": [
+                "waf",
+                "install_gcc"
+            ]
         },
         {
             "label": "install_msvc",
@@ -265,19 +224,14 @@
                 "reveal": "always",
                 "panel": "shared"
             },
-            "command": [
-                "./waf"
-            ],
-            "args": [
-                "list_clang"
-            ],
+            "command": "python3",
             "windows": {
                 "command": "python",
-                "args": [
-                    "waf",
-                    "list_clang"
-                ],
             },
+            "args": [
+                "waf",
+                "list_clang"
+            ]
         },
         {
             "label": "list_gcc",
@@ -287,19 +241,14 @@
                 "reveal": "always",
                 "panel": "shared"
             },
-            "command": [
-                "./waf"
-            ],
-            "args": [
-                "list_gcc"
-            ],
+            "command": "python3",
             "windows": {
                 "command": "python",
-                "args": [
-                    "waf",
-                    "list_gcc"
-                ],
             },
+            "args": [
+                "waf",
+                "list_gcc"
+            ],
         },
         {
             "label": "list_msvc",
