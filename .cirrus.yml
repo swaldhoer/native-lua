@@ -38,7 +38,6 @@ task:
         image: ubuntu:focal
       install_script:
         - export RUNLEVEL=1
-        - lsb_release -a
         - apt-get update
         - apt-get install -y apt-utils lsb-release curl gnupg
         - apt-get update
