@@ -9,9 +9,22 @@ Building
 To build `Lua` on your platform, check which compilers were successfully
 configured. If e.g., `gcc` was successfully configured, simply run:
 
-.. code-block:: sh
+.. platform-picker::
 
-   python waf build_gcc
+    .. platform-choice:: windows
+        :title: Windows
+
+        .. code-block:: batch
+
+           waf build_gcc
+
+    .. platform-choice:: linux
+        :title: Linux/Unix-like/macOS
+
+        .. code-block:: bash
+
+           $ python3 waf build_gcc
+
 
 *************************
 General Build Information

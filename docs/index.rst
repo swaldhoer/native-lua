@@ -14,7 +14,7 @@ Welcome to the `native Lua` project documentation.
 
    ./start.rst
    ./license.rst
-   ./CHANGELOG.rst
+   ./changelog.rst
    ./contributing.rst
    ./build.rst
    ./install.rst

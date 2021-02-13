@@ -2,53 +2,73 @@
 Installing Lua
 ##############
 
-After a successfully building with e.g. `gcc`, you can install lua by running:
+After a successfully building lua binaries with e.g. `gcc`, you can install lua
+by running:
 
-.. code-block:: sh
+.. platform-picker::
 
-   python waf install_gcc
+    .. platform-choice:: windows
+        :title: Windows
 
-On Unix-like systems the following files are installed:
+        .. code-block:: batch
 
-- /usr/local/bin/
+           waf install_gcc
 
-  - lua
-  - luac
+    .. platform-choice:: linux
+        :title: Linux/Unix/Unix-like/macOS
 
-- /usr/local/include/
+        .. code-block:: bash
 
-  - lua.h
-  - luaconf.h
-  - lualib.h
-  - lauxlib.h
-  - lua.hpp
+           $ python3 waf install_gcc
 
-- /usr/local/share/man/man1/
+The following files are installed:
 
-  - lua.1
-  - luac.1
+.. platform-picker::
 
-On Windows the following files are installed:
+    .. platform-choice:: windows
+        :title: Windows
 
-- %LOCALAPPDATA%\\Programs\\lua\\bin
+        - %LOCALAPPDATA%\\Programs\\lua\\bin
 
-  - lua.exe
-  - lua.exe.manifest (msvc only)
-  - luac.exe
-  - luac.exe.manifest (msvc only)
-  - luadll.dll
-  - luadll.dll.manifest (msvc only)
+          - lua.exe
+          - lua.exe.manifest (msvc only)
+          - luac.exe
+          - luac.exe.manifest (msvc only)
+          - luadll.dll
+          - luadll.dll.manifest (msvc only)
 
-- %LOCALAPPDATA%\\Programs\\lua\\include
+        - %LOCALAPPDATA%\\Programs\\lua\\include
 
-  - lauxlib.h
-  - lua.h
-  - lua.hpp
-  - luaconf.h
-  - lualib.h
+          - lauxlib.h
+          - lua.h
+          - lua.hpp
+          - luaconf.h
+          - lualib.h
 
-- %LOCALAPPDATA%\\Programs\\lua\\lib
-  - luadll.dll.a (gcc only)
-  - luadll.dll (clang, msvc only)
-  - luadll.dll.manifest (msvc only)
-  - luadll.lib (msvc only)
+        - %LOCALAPPDATA%\\Programs\\lua\\lib
+
+          - luadll.dll.a (gcc only)
+          - luadll.dll (clang, msvc only)
+          - luadll.dll.manifest (msvc only)
+          - luadll.lib (msvc only)
+
+    .. platform-choice:: linux
+        :title: Linux/Unix/Unix-like/macOS
+
+        - /usr/local/bin/
+
+          - lua
+          - luac
+
+        - /usr/local/include/
+
+          - lua.h
+          - luaconf.h
+          - lualib.h
+          - lauxlib.h
+          - lua.hpp
+
+        - /usr/local/share/man/man1/
+
+          - lua.1
+          - luac.1
