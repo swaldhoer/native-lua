@@ -14,7 +14,6 @@ skip_commits:
     - .editorconfig
     - .gitattributes
     - .gitignore
-    - .travis.yml
     - .readthedocs.yml
     - azure-pipelines.yml
     - docs/environment.yml
@@ -23,7 +22,7 @@ init:
   - git config --global core.autocrlf input
 
 install:
-  - cmd: curl.exe -o setup-x86_64.exe http://www.cygwin.com/setup-x86_64.exe
+  - cmd: curl.exe -fsSL -o setup-x86_64.exe http://www.cygwin.com/setup-x86_64.exe
   - cmd: setup-x86_64.exe --no-desktop --no-shortcuts --no-startmenu --quiet-mode --packages alternatives,wget,python37,python37-devel,python37-pip,doxygen,graphviz,llvm,clang
   - cmd: C:\cygwin64\bin\bash.exe -l -c "unlink /usr/bin/python3"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "/usr/sbin/update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 0 --slave /usr/bin/pip3 pip3 /usr/bin/pip3.6"
@@ -32,9 +31,8 @@ install:
   - cmd: C:\cygwin64\bin\bash.exe -l -c "/usr/sbin/update-alternatives --set python3 /usr/bin/python3.7"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "/usr/sbin/update-alternatives --set python /usr/bin/python3"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 --version"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 -m ensurepip --upgrade"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 -m pip install --upgrade pip"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "export C_INCLUDE_PATH=/usr/include/python3.7m && python3 -m pip install --upgrade --requirement /cygdrive/c/projects/native-lua/requirements.txt"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "pip3 install --upgrade pip"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "export C_INCLUDE_PATH=/usr/include/python3.7m && pip3 install --upgrade --requirement /cygdrive/c/projects/native-lua/requirements.txt"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "doxygen --version"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "dot -V"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 --version"

@@ -2,7 +2,6 @@
 
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/swaldhoer/native-lua)
 [![Build status](https://ci.appveyor.com/api/projects/status/1gtcdi6wslxx3d6u?svg=true)](https://ci.appveyor.com/project/swaldhoer/native-lua)
-[![Build Status](https://travis-ci.com/swaldhoer/native-lua.svg?branch=master)](https://travis-ci.com/swaldhoer/native-lua)
 [![Build Status](https://api.cirrus-ci.com/github/swaldhoer/native-lua.svg)](https://cirrus-ci.com/github/swaldhoer/native-lua)
 [![Build Status](https://dev.azure.com/stefanwaldhoer/native-lua/_apis/build/status/swaldhoer.native-lua?branchName=master)](https://dev.azure.com/stefanwaldhoer/native-lua/_build/latest?definitionId=1&branchName=master)
 [![Documentation Status](https://readthedocs.org/projects/native-lua/badge/?version=latest)](https://native-lua.readthedocs.io/en/latest/?badge=latest)
@@ -79,8 +78,8 @@ The root directory contains the
 - general project documentation (``README.md``, ``CHANGELOG.md``)
 - build script and build toolchain (``wscript``, ``waf``, ``waf.bat``),
 - required Python packages (``requirements.txt``, ``environment.yml``),
-- CI scripts (``.appveyor.yml``, ``.cirrus.yml``, ``.travis.yml``,
-  ``azure-pipelines.yml``, ``readthedocs.yml``),
+- CI scripts (``.appveyor.yml``, ``.cirrus.yml``, ``azure-pipelines.yml``,
+  ``readthedocs.yml``),
 - editor configurations (``.vscode``, ``.editorconfig``),
 - coding and general guidelines (``pyproject.toml``),
 - licensing information (``LICENSE``),

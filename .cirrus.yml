@@ -1,4 +1,5 @@
 task:
+  # only_if: "changesInclude('.cirrus.yml', '*.rst', '*.py', '*.conf', 'LICENSE' 'VERSION', 'waf', 'wscript', 'demos/**', 'docs/**', 'scripts/**', 'src/**', 'tests/**')"
   pip_cache:
     folder: ~/.cache/pip
     fingerprint_script: echo $CIRRUS_OS
@@ -16,16 +17,16 @@ task:
         - lsb_release -a
         - apt-get install -y dialog
         - apt-get install -y software-properties-common libreadline7 libreadline-dev
-        - apt-add-repository "deb http://apt.llvm.org/buster/ llvm-toolchain-buster-10 main"
+        - apt-add-repository "deb http://apt.llvm.org/buster/ llvm-toolchain-buster-11 main"
         - apt-get update
         - apt-get -y upgrade
         - apt-get install -y build-essential doxygen graphviz python3-pip
-        - apt-get install -y clang-10 lld-10
-        - update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 100
+        - apt-get install -y clang-11 lld-11
+        - update-alternatives --install /usr/bin/clang clang /usr/bin/clang-11 100
         - python3 -m pip install --upgrade --requirement requirements.txt
 
     - container:
-        image: fedora:30
+        image: fedora:33
       install_script:
         - export RUNLEVEL=1
         - dnf -y update
@@ -34,28 +35,23 @@ task:
         - python3 -m pip install --upgrade --requirement requirements.txt
 
     - container:
-        image: ubuntu:bionic
+        image: ubuntu:focal
+        cpu: 4
       install_script:
         - export RUNLEVEL=1
+        - export DEBIAN_FRONTEND=noninteractive
         - apt-get update
         - apt-get install -y apt-utils lsb-release curl gnupg
-        - curl -o llvm-snapshot.gpg.key https://apt.llvm.org/llvm-snapshot.gpg.key
-        - cat llvm-snapshot.gpg.key
-        - apt-key add llvm-snapshot.gpg.key
         - apt-get update
-        - lsb_release -a
-        - apt-get install -y dialog python3-pip
-        - apt-get install -y software-properties-common libreadline7 libreadline-dev
-        - apt-add-repository "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-9 main"
-        - apt-get update
-        - apt-get -y upgrade
-        - apt-get install -y build-essential doxygen graphviz
-        - apt-get install -y clang-9 lld-9
-        - update-alternatives --install /usr/bin/clang clang /usr/bin/clang-9 100
+        - apt-get install -y dialog python3-pip build-essential doxygen graphviz
+        - apt-get install -y software-properties-common libreadline8 libreadline-dev
+        - apt-get install -y clang-10
+        - update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 100
         - python3 -m pip install --upgrade --requirement requirements.txt
 
     - freebsd_instance:
-        image_family: freebsd-12-1
+        image_family: freebsd-13-0
+        cpu: 4
       freebsd_install_script:
         - pkg update -f
         - env ASSUME_ALWAYS_YES=YES pkg bootstrap -f

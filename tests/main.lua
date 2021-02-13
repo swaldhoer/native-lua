@@ -149,7 +149,7 @@ do
   defaultCpath = string.match(output, "\t(.-)$")
 
   -- running with an empty environment
-  -- native Lua: Do not run this test on Travis CI/Azure Pipelines/...
+  -- native Lua: Do not run this test on CI
   if (os.getenv("NATIVE_LUA_CI_BUILD") ~= "TRUE") then
     RUN('env -i lua %s > %s', prog, out)
     local out = getoutput()

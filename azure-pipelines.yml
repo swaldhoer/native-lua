@@ -9,7 +9,6 @@ trigger:
       - .editorconfig
       - .gitattributes
       - .gitignore
-      - .travis.yml
       - .readthedocs.yml
       - docs/environment.yml
       - pyproject.toml
@@ -144,31 +143,23 @@ jobs:
           architecture: "x64"
 
       - script: python -m pip install --upgrade pip
-        displayName: "Upgrad pip and friends"
+        displayName: "Upgrade pip and friends"
       - script: python -m pip install --upgrade --requirement requirements.txt
         displayName: "Install requirements.txt"
 
-      - script: choco install llvm -y --version 10.0.0
-        displayName: Install LLVM
+      - script: |
+          choco install --no-progress llvm -y --version 10.0.0
+          choco install --no-progress doxygen.install -y --version 1.9.1
+          choco install --no-progress graphviz -y --version 2.46.0
+        displayName: Install LLVM/Doxygen/Graphviz
 
       - script: |
-          curl.exe -o $(Agent.TempDirectory)\doxygen-x64.zip https://www.doxygen.nl/files/doxygen-1.8.20.windows.x64.bin.zip
-          curl.exe -o $(Agent.TempDirectory)\graphviz.zip https://graphviz.gitlab.io/_pages/Download/windows/graphviz-2.38.zip
-        displayName: Downloading doxygen and graphviz
+          echo ##vso[task.prependpath]C:\Program Files\LLVM\bin
+          echo ##vso[task.prependpath]C:\Program Files\Graphviz\bin
+          echo ##vso[task.prependpath]C:\Program Files\Doxygen\bin
+          echo %PATH%
+        displayName: Add LLVM to path
 
-      - task: ExtractFiles@1
-        inputs:
-          archiveFilePatterns: "$(Agent.TempDirectory)/*.zip"
-          destinationFolder: "$(Agent.TempDirectory)"
-          cleanDestinationFolder: false
-        displayName: Extracting doxygen and graphviz
-
-      - script: echo "##vso[task.prependpath]$(Agent.TempDirectory)
-        displayName: Add doxygen to path
-      - script: echo "##vso[task.prependpath]$(Agent.TempDirectory)\release\bin
-        displayName: Add graphviz to path
-      - script: echo "##vso[task.prependpath]C:\Program Files\LLVM\bin
-        displayName: Add clang to path
       - script: echo %PATH%
         displayName: echo PATH
 
@@ -192,7 +183,7 @@ jobs:
 
   - job: OSXBuild
     pool:
-      vmImage: "macOS-10.14"
+      vmImage: "macOS-10.15"
     displayName: "MacOSX Build"
     steps:
       - task: UsePythonVersion@0
@@ -322,7 +313,7 @@ jobs:
           architecture: "x64"
 
       - script: python -m pip install --upgrade pip
-        displayName: "Upgrad pip"
+        displayName: "Upgrade pip"
       - script: python -m pip install --upgrade --requirement requirements.txt
         displayName: "Install requirements.txt"
 

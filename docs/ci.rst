@@ -5,9 +5,8 @@ Continuous Integration
 To test the project the continuous integration tools
 
 - `AppVeyor`,
-- `Azure Pipelines`,
-- `Cirrus CI` and
-- `Travis CI`.
+- `Azure Pipelines` and
+- `Cirrus CI`.
 
 are used.
 
@@ -40,11 +39,6 @@ Project Status
 |                    |                       |                                                              |
 |                    |                       |   - gcc (9.2.0)                                              |
 |                    |                       |   - clang (11.0.0)                                           |
-+--------------------+-----------------------+--------------------------------------------------------------+
-| Travis-CI          | |TravisBUILD|         | - Linux (Ubuntu 16.04, Ubuntu 18.04) on AMD64, S390x, ARM64  |
-|                    |                       |                                                              |
-|                    |                       |   - gcc (5.4.0, 7.4.0)                                       |
-|                    |                       |   - clang (7.0.0, 7.0.0)                                     |
 +--------------------+-----------------------+--------------------------------------------------------------+
 | Cirrus-CI          | |CirrusBUILD|         | - Linux (Ubuntu 18.04, Fedora 30, Debian 10) on AMD64        |
 |                    |                       |                                                              |
@@ -88,15 +82,6 @@ Cirrus CI is configured by the ``.cirrus.yml`` file.
    :caption: Cirrus CI configuration
    :language: yaml
 
-Travis CI
-=========
-
-Travis CI is configured by the ``.travis.yml`` file.
-
-.. literalinclude:: ./../.travis.yml
-   :caption: Travis CI configuration
-   :language: yaml
-
 .. |AppVeyorBUILD| image:: https://ci.appveyor.com/api/projects/status/1gtcdi6wslxx3d6u/branch/master?svg=true
    :target: https://ci.appveyor.com/project/swaldhoer/native-lua/branch/master
    :alt: Appveyor build status
@@ -104,10 +89,6 @@ Travis CI is configured by the ``.travis.yml`` file.
 .. |AzurePipelinesBUILD| image:: https://dev.azure.com/stefanwaldhoer/stefanwaldhoer/_apis/build/status/swaldhoer.native-lua?branchName=master
    :target: https://dev.azure.com/stefanwaldhoer/stefanwaldhoer/
    :alt: Azure Pipelines build status
-
-.. |TravisBUILD| image:: https://travis-ci.org/swaldhoer/native-lua.svg?branch=master
-   :target: https://travis-ci.org/swaldhoer/native-lua
-   :alt: Travis CI build status
 
 .. |CirrusBUILD| image:: https://api.cirrus-ci.com/github/swaldhoer/native-lua.svg
    :target: https://cirrus-ci.com/github/swaldhoer/native-lua

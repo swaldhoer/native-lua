@@ -10,7 +10,7 @@ Lua License
 
 `Lua` is distributed under the terms of the `MIT`_ license.
 
-The MIT license is also found at end of file :ref:`lua.h <LUA>`:
+The MIT license is also found at end of file ``lua.h``:
 
 .. literalinclude:: ./../src/lua.h
    :language: c

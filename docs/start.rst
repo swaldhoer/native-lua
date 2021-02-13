@@ -2,8 +2,13 @@
 The ``native Lua`` Project
 ##########################
 
-|version-badge|_ |appveyor-badge|_ |travis-badge|_ |cirrus-badge|_ \
-|azure-badge|_ |readthedocs-badge|_ |license-badge|_ |code-style-black-badge|_
+|version-badge|_ \
+|appveyor-badge|_ \
+|cirrus-badge|_ \
+|azure-badge|_ \
+|readthedocs-badge|_ \
+|license-badge|_ \
+|code-style-black-badge|_
 
 **Lua on the platform you use with the compiler you choose**
 
@@ -91,9 +96,8 @@ The root directory contains the
 - general project documentation (``README.md``, ``CHANGELOG.md``)
 - build script and build toolchain (``wscript``, ``waf``, ``waf.bat``),
 - required Python packages (``requirements.txt``, ``environment.yml``),
-- CI scripts (``.appveyor.yml``, ``.cirrus.yml``, ``.travis.yml``,
-  ``azure-pipelines.yml``, ``readthedocs.yml``),
-- editor configurations (``.vscode``, ``.editorconfig``),
+- CI scripts (``.appveyor.yml``, ``.cirrus.yml``, ``azure-pipelines.yml``,
+  ``readthedocs.yml``),- editor configurations (``.vscode``, ``.editorconfig``),
 - coding and general guidelines (``pyproject.toml``),
 - licensing information (``LICENSE``),
 - and information on the ``native Lua`` project and the lua version
@@ -175,7 +179,6 @@ Continuous Integration
 - Azure Pipelines: Linux (GCC, Clang), MacOS (Clang, GCC), Windows (MSVC, GCC, Clang)
 - AppVeyor: Windows (Cygwin GCC, Cygwin Clang)
 - Cirrus CI: Linux (GCC, Clang), FreeBSD(Clang, GCC)
-- Travis CI: Linux (GCC, Clang)
 - ReadTheDocs.org: Documentation
 
 On Azure Pipelines' Windows build we also run |black|_ and |pylint|_.
@@ -209,9 +212,6 @@ License
 
 .. |appveyor-badge| image:: https://ci.appveyor.com/api/projects/status/1gtcdi6wslxx3d6u/branch/master?svg=true
 .. _appveyor-badge: https://ci.appveyor.com/project/swaldhoer/native-lua/branch/master
-
-.. |travis-badge| image:: https://travis-ci.org/swaldhoer/native-lua.svg?branch=master
-.. _travis-badge: https://travis-ci.org/swaldhoer/native-lua
 
 .. |cirrus-badge| image:: https://api.cirrus-ci.com/github/swaldhoer/native-lua.svg
 .. _cirrus-badge: https://cirrus-ci.com/github/swaldhoer/native-lua

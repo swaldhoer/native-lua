@@ -36,12 +36,18 @@ Changed
 - Rewrote documentation build tools (``scripts/doxygen.py``,
   ``scripts/sphinx.py``)
 - Updated doxygen configuration to doxygen 1.8.20 (``doxygen.conf``)
+- Do not treat Doxygen warnings as errors.
+- Doxygen documentation now opens on separate tab.
+- Lua manual now opens on separate tab.
 
 Removed
 =======
 
 - Removed copy of the *sphinx_rtd_theme* theme
   (``docs/_themes/sphinx_rtd_theme/**``)
+- Removed testing on Travis-CI
+- Removed source documentation as an extra page in the documentation. Instead
+  of that, sources can now be browsed in the Doxygen documentation.
 
 Fixed
 =====

@@ -23,4 +23,3 @@ Welcome to the `native Lua` project documentation.
    ./api.rst
    ./demos.rst
    ./ci.rst
-   ./sources.rst
