@@ -153,10 +153,15 @@ jobs:
           choco install --no-progress graphviz -y --version 2.46.0
         displayName: Install LLVM/Doxygen/Graphviz
 
-      - script: echo "##vso[task.setvariable variable=PATH]$env:PATH;C:\Program Files\LLVM\bin;"
-      - script: echo "##vso[task.setvariable variable=PATH]$env:PATH;C:\Program Files\Graphviz\bin;"
-      - script: echo "##vso[task.setvariable variable=PATH]$env:PATH;C:\Program Files\Doxygen\bin;"
+      - script: |
+          echo "##vso[task.prependpath]C:\Program Files\LLVM\bin"
+          echo "##vso[task.prependpath]C:\Program Files\Graphviz\bin"
+          echo "##vso[task.prependpath]C:\Program Files\Doxygen\bin"
+          echo ${env:PATH}
         displayName: Add LLVM to path
+
+      - script: echo ${env:PATH}
+        displayName: echo PATH
 
       - script: |
           python --version
