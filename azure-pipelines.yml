@@ -150,8 +150,11 @@ jobs:
       - script: choco install --no-progress llvm -y --version 10.0.0
         displayName: Install LLVM
 
+      - script: echo "##vso[task.prependpath];C:\Program Files\LLVM\bin;"
+        displayName: Add lua install path to path
+
       - script: |
-          choco install --no-progress doxygen -y --version 1.9.1
+          choco install --no-progress doxygen.install -y --version 1.9.1
           choco install --no-progress graphviz -y --version 2.46.0
         displayName: Install Doxygen and Graphviz
 

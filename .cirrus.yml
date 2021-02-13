@@ -36,8 +36,10 @@ task:
 
     - container:
         image: ubuntu:focal
+        cpu: 4
       install_script:
         - export RUNLEVEL=1
+        - export DEBIAN_FRONTEND=noninteractive
         - apt-get update
         - apt-get install -y apt-utils lsb-release curl gnupg
         - apt-get update
@@ -48,6 +50,7 @@ task:
 
     - freebsd_instance:
         image_family: freebsd-13-0
+        cpu: 4
       freebsd_install_script:
         - pkg update -f
         - env ASSUME_ALWAYS_YES=YES pkg bootstrap -f
