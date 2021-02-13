@@ -154,9 +154,9 @@ jobs:
         displayName: Install LLVM/Doxygen/Graphviz
 
       - script: |
-          echo "##vso[task.prependpath]C:\Program Files\LLVM\bin"
-          echo "##vso[task.prependpath]C:\Program Files\Graphviz\bin"
-          echo "##vso[task.prependpath]C:\Program Files\Doxygen\bin"
+          echo ##vso[task.prependpath]C:\Program Files\LLVM\bin
+          echo ##vso[task.prependpath]C:\Program Files\Graphviz\bin
+          echo ##vso[task.prependpath]C:\Program Files\Doxygen\bin
           echo %PATH%
         displayName: Add LLVM to path
 
