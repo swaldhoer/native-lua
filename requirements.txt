@@ -4,5 +4,6 @@ setuptools
 Sphinx==3.4.3
 sphinx-copybutton==0.3.1
 sphinx-rtd-theme==0.5.1
-sphinxcontrib-platformpicker==1.1toml
+sphinxcontrib-platformpicker==1.1
+toml
 wheel
