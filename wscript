@@ -609,7 +609,7 @@ def build(bld):
     if bld.cmd.startswith("install"):
         bin_dir = Utils.subst_vars(bld.env.BINDIR, bld.env)
         if not any(
-            [x if x == bin_dir else False for x in os.environ["PATH"].split(os.pathsep)]
+            x if x == bin_dir else False for x in os.environ["PATH"].split(os.pathsep)
         ):
             Logs.warn("lua is not in available in PATH.")
             Logs.warn("Add the following path to PATH: {}".format(bin_dir))
@@ -1118,9 +1118,8 @@ def build_darwin(bld):
         use=["static-lua-library"] + use + use_ltests,
     )
 
-    if bld.env.include_tests and 0:
-        # https://github.com/swaldhoer/native-lua/issues/44
-        build_lib_tests(bld, defines_tests)
+    if bld.env.include_tests:  # https://github.com/swaldhoer/native-lua/issues/44
+        pass  # build_lib_tests(bld, defines_tests)
 
 
 def build_win32(bld):
@@ -1254,9 +1253,8 @@ def build_win32(bld):
             use=["static-lua-library"] + use,
         )
 
-        if bld.env.include_tests and 0:
-            # https://github.com/swaldhoer/native-lua/issues/46
-            build_lib_tests(bld, defines_tests)
+        if bld.env.include_tests:  # https://github.com/swaldhoer/native-lua/issues/46
+            pass  # build_lib_tests(bld, defines_tests)
 
     if bld.env.CC_NAME == "msvc":
         build_win32_msvc()
