@@ -200,6 +200,9 @@ jobs:
 
       - script: |
           set -euxo pipefail
+          export CURL_SSL_BACKEND=secure-transport
+          brew update
+          brew upgrade
           brew install --force gcc coreutils
           brew ls --verbose gcc
           brew unlink gcc

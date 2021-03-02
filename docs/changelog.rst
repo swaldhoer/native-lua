@@ -39,6 +39,7 @@ Changed
 - Do not treat Doxygen warnings as errors.
 - Doxygen documentation now opens on separate tab.
 - Lua manual now opens on separate tab.
+- Fix pylint error.
 
 Removed
 =======
