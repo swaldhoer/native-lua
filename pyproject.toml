@@ -16,6 +16,11 @@ exclude = '''
 )
 '''
 
+[tool.isort]
+profile = "black"
+skip="waf"
+skip_glob=".waf3-*,waf3-*"
+
 [tool.pylint.master]
 
 # A comma-separated list of package or module names from where C extensions may

@@ -1,11 +1,11 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # encoding: utf-8
 
 # SPDX-License-Identifier: MIT
 
 import os
 
-from waflib import Task, TaskGen, Utils, Logs
+from waflib import Logs, Task, TaskGen, Utils
 
 
 class DoxygenTask(Task.Task):

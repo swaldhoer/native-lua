@@ -1,0 +1,15 @@
+{
+  "std": {
+    "opt": "/std:",
+    "val": "c11"
+  },
+  "CFLAGS": [
+    "/nologo",
+    "/O2",
+    "/Wall",
+    "/Qspectre"
+  ],
+  "CMFLAGS": [
+    "/Os"
+  ]
+}

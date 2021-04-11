@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # encoding: utf-8
 
 # SPDX-License-Identifier: MIT
@@ -7,7 +7,7 @@ import os
 
 from waflib import Utils
 from waflib.Task import Task
-from waflib.TaskGen import feature, extension
+from waflib.TaskGen import extension, feature
 
 
 class SphinxTask(Task):

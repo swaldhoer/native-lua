@@ -16,14 +16,14 @@ configured. If e.g., `gcc` was successfully configured, simply run:
 
         .. code-block:: batch
 
-           waf build_gcc
+           waf build
 
     .. platform-choice:: linux
         :title: Linux/Unix-like/macOS
 
         .. code-block:: bash
 
-           $ python3 waf build_gcc
+           $ python3 waf build
 
 
 *************************

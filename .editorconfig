@@ -6,7 +6,6 @@ root = true
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-
 [{*.py,wscript}]
 charset = utf-8
 indent_style = space
@@ -20,7 +19,7 @@ indent_style = space
 charset = utf-8
 indent_style = space
 
-[{*.yml,*.yaml,*.toml}]
+[{*.yml,*.yaml,*.toml,*.json}]
 charset = utf-8
 indent_style = space
 indent_size = 2

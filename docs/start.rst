@@ -48,37 +48,37 @@ Supported Platforms And Compilers
 
 The current release supports the following platform/compiler combinations:
 
-+----------+-----------------------+-------------------------------+
-| Platform | Official Lua Releases | `native Lua` Releases         |
-+==========+=======================+===============================+
-| aix      | gcc                   | xlc*, gcc*, clang*            |
-+----------+-----------------------+-------------------------------+
-| bsd      | gcc                   | see OpenBSD and NetBSD        |
-+----------+-----------------------+-------------------------------+
-| OpenBSD  | see bsd               | gcc, clang                    |
-+----------+-----------------------+-------------------------------+
-| NetBSD   | see bsd               | gcc*, clang*                  |
-+----------+-----------------------+-------------------------------+
-| c89      | gcc                   | all compilers*                |
-+----------+-----------------------+-------------------------------+
-| FreeBSD  | gcc                   | gcc, clang                    |
-+----------+-----------------------+-------------------------------+
-| generic  | gcc                   | gcc (not win32), msvc (win32) |
-+----------+-----------------------+-------------------------------+
-| linux    | gcc                   | gcc, clang, icc*              |
-+----------+-----------------------+-------------------------------+
-| macOS    | gcc                   | gcc, clang                    |
-+----------+-----------------------+-------------------------------+
-| MinGW    | gcc                   | see win32                     |
-+----------+-----------------------+-------------------------------+
-| posix    | gcc                   | TODO                          |
-+----------+-----------------------+-------------------------------+
-| solaris  | gcc                   | gcc*, clang*                  |
-+----------+-----------------------+-------------------------------+
-| win32    | see MinGw             | msvc, gcc, clang              |
-+----------+-----------------------+-------------------------------+
-| cygwin   | no                    | gcc, clang                    |
-+----------+-----------------------+-------------------------------+
++-----------+-----------------------+--------------------------------+
+| Platform  | Official Lua Releases | `native Lua` Releases          |
++===========+=======================+================================+
+| aix       | gcc                   | xlc*, gcc*, clang*             |
++-----------+-----------------------+--------------------------------+
+| bsd       | gcc                   | see OpenBSD and NetBSD         |
++-----------+-----------------------+--------------------------------+
+| Cygwin    | no                    | gcc, clang                     |
++-----------+-----------------------+--------------------------------+
+| OpenBSD   | see bsd               | gcc, clang                     |
++-----------+-----------------------+--------------------------------+
+| NetBSD    | see bsd               | gcc*, clang*                   |
++-----------+-----------------------+--------------------------------+
+| c89       | gcc                   | all compilers*                 |
++-----------+-----------------------+--------------------------------+
+| FreeBSD   | gcc                   | gcc, clang                     |
++-----------+-----------------------+--------------------------------+
+| generic   | gcc                   | gcc (not win32), msvc (win32)  |
++-----------+-----------------------+--------------------------------+
+| Linux     | gcc                   | gcc, clang, icc*               |
++-----------+-----------------------+--------------------------------+
+| macOS     | gcc                   | gcc, clang                     |
++-----------+-----------------------+--------------------------------+
+| MinGW     | gcc                   | see win32                      |
++-----------+-----------------------+--------------------------------+
+| POSIX     | gcc                   | TODO                           |
++-----------+-----------------------+--------------------------------+
+| Solaris   | gcc                   | gcc*, clang*                   |
++-----------+-----------------------+--------------------------------+
+| win32     | see MinGw             | msvc, gcc, clang               |
++-----------+-----------------------+--------------------------------+
 
 \* means not or not fully tested.
 
@@ -97,11 +97,18 @@ The root directory contains the
 - build script and build toolchain (``wscript``, ``waf``, ``waf.bat``),
 - required Python packages (``requirements.txt``, ``environment.yml``),
 - CI scripts (``.appveyor.yml``, ``.cirrus.yml``, ``azure-pipelines.yml``,
-  ``readthedocs.yml``),- editor configurations (``.vscode``, ``.editorconfig``),
+  ``readthedocs.yml``),
+- editor configurations (``.vscode``, ``.editorconfig``),
 - coding and general guidelines (``pyproject.toml``),
 - licensing information (``LICENSE``),
 - and information on the ``native Lua`` project and the lua version
   (``VERSION``).
+
+
+``cfg`` Directory
+=================
+
+Json configuration files that contain the compiler configurations per platform.
 
 ``demos`` Directory
 ===================
@@ -143,7 +150,7 @@ project:
 .. code-block:: bash
 
    $ build/gcc/lua -v
-   Lua 5.4.0  Copyright (C) 1994-2017 Lua.org, PUC-Rio [based on native Lua (0.5.0-devel), https://github.com/swaldhoer/native-lua]
+   Lua 5.4.0  Copyright (C) 1994-2017 Lua.org, PUC-Rio [based on native Lua (0.6.0-devel), https://github.com/swaldhoer/native-lua]
 
 ``tests`` Directory
 ===================

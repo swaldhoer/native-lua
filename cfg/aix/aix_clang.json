@@ -1,0 +1,21 @@
+{
+  "std": {
+    "opt": "-std=",
+    "val": "c99"
+  },
+  "libs": [
+    "m",
+    "dl"
+  ],
+  "CFLAGS": [
+    "-O2",
+    "-Wall",
+    "-Wextra"
+  ],
+  "CMFLAGS": [
+    "-Os"
+  ],
+  "LINKFLAGS": [
+    "-Wl,-brtl,-bexpall"
+  ]
+}

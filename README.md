@@ -36,11 +36,11 @@ of building and testing Lua.
 ## How-To
 
 Building Lua with the `native Lua` project requires Python 3.5 or greater and
-some C compiler. Exemplary Windows build using gcc:
+some C compiler. Exemplary Windows build:
 
 1. ``waf.bat configure``
-1. ``waf.bat build_gcc``
-1. ``waf.bat install_gcc``
+1. ``waf.bat build``
+1. ``waf.bat install``
 
 ![Configure and build Lua on Windows using gcc](docs/_static/basic-cmds.gif)
 
@@ -124,7 +124,7 @@ project:
 
 ```shell
 $ build/gcc/lua -v
-Lua 5.4.0  Copyright (C) 1994-2017 Lua.org, PUC-Rio [based on native Lua (0.5.0-devel), https://github.com/swaldhoer/native-lua]
+Lua 5.4.0  Copyright (C) 1994-2017 Lua.org, PUC-Rio [based on native Lua (0.6.0-devel), https://github.com/swaldhoer/native-lua]
 ```
 
 ### ``tests`` Directory

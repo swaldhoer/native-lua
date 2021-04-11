@@ -1,17 +1,17 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # encoding: utf-8
 
 # SPDX-License-Identifier: MIT
 
 # pylint: disable-msg=R0914
 
-import os
 import argparse
 import logging
-import sys
+import os
 import pathlib
-import subprocess
 import shutil
+import subprocess
+import sys
 
 
 def main():

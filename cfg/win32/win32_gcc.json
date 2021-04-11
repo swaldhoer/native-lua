@@ -1,0 +1,17 @@
+{
+  "std": {
+    "opt": "-std=",
+    "val": "gnu99"
+  },
+  "libs": [
+    "m"
+  ],
+  "CFLAGS": [
+    "-O2",
+    "-Wall",
+    "-Wextra"
+  ],
+  "CMFLAGS": [
+    "-Os"
+  ]
+}
