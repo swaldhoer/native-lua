@@ -165,7 +165,6 @@ def configure(conf):  # pylint: disable=too-many-branches,too-many-locals
     conf.env.generic = conf.options.generic
     conf.msg("Platform", conf.options.generic or plat)
 
-    conf.env.include_tests = conf.options.include_tests
     conf.env.ltests = conf.options.ltests
     conf.load("gnu_dirs")
 
@@ -370,7 +369,7 @@ def build(bld):
     else:
         bld.fatal("currently not supported platform.")
 
-    if bld.env.include_tests:
+    if bld.options.include_tests:
         bld(
             features="subst",
             source=bld.env.test_files,
@@ -429,7 +428,7 @@ def build_generic(bld):
         use=["static-lua-library"] + use + use_ltests,
     )
 
-    if bld.env.include_tests:
+    if bld.options.include_tests:
         build_lib_tests(bld, defines_tests)
 
 
@@ -500,7 +499,7 @@ def build_openbsd(bld):
         use=["static-lua-library"] + use + use_ltests,
     )
 
-    if bld.env.include_tests:
+    if bld.options.include_tests:
         build_lib_tests(bld, defines_tests)
 
 
@@ -561,7 +560,7 @@ def build_netbsd(bld):
         use=["static-lua-library"] + use + use_ltests,
     )
 
-    if bld.env.include_tests:
+    if bld.options.include_tests:
         build_lib_tests(bld, defines_tests)
 
 
@@ -622,7 +621,7 @@ def build_freebsd(bld):
         use=["static-lua-library"] + use + use_ltests,
     )
 
-    if bld.env.include_tests:
+    if bld.options.include_tests:
         build_lib_tests(bld, defines_tests)
 
 
@@ -682,7 +681,7 @@ def build_linux(bld):
         use=["static-lua-library"] + use + use_ltests,
     )
 
-    if bld.env.include_tests:
+    if bld.options.include_tests:
         build_lib_tests(bld, defines_tests)
 
 
@@ -742,7 +741,7 @@ def build_darwin(bld):
         use=["static-lua-library"] + use + use_ltests,
     )
 
-    if bld.env.include_tests:  # https://github.com/swaldhoer/native-lua/issues/44
+    if bld.options.include_tests:  # https://github.com/swaldhoer/native-lua/issues/44
         pass  # build_lib_tests(bld, defines_tests)
 
 
@@ -784,7 +783,7 @@ def build_win32(bld):
             use=["static-lua-library"],
         )
 
-        if bld.env.include_tests:
+        if bld.options.include_tests:
             pass
             # https://github.com/swaldhoer/native-lua/issues/46
 
@@ -831,7 +830,7 @@ def build_win32(bld):
             use=["static-lua-library"] + use,
         )
 
-        if bld.env.include_tests:
+        if bld.options.include_tests:
             pass
             # https://github.com/swaldhoer/native-lua/issues/46
 
@@ -877,7 +876,7 @@ def build_win32(bld):
             use=["static-lua-library"] + use,
         )
 
-        if bld.env.include_tests:  # https://github.com/swaldhoer/native-lua/issues/46
+        if bld.options.include_tests:  # https://github.com/swaldhoer/native-lua/issues/46
             pass  # build_lib_tests(bld, defines_tests)
 
     if bld.env.CC_NAME == "msvc":
@@ -984,7 +983,7 @@ def build_solaris(bld):
         use=["static-lua-library"] + use + use_ltests,
     )
 
-    if bld.env.include_tests:
+    if bld.options.include_tests:
         build_lib_tests(bld, defines_tests)
 
 

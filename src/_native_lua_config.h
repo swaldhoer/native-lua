@@ -15,8 +15,6 @@
 
 #include "waf_build_config.h"
 
-#define NATIVE_LUA_MSG " [" NATIVE_LUA_PRE_MSG " (" NATIVE_LUA_VERSION"), " NATIVE_LUA_REPO"]"
-
 #if defined(_MSC_VER) && defined(_MSC_FULL_VER)
 #pragma warning(disable: 4242 4820 4668 4710 4711 5045)
 /* Disable C5045 (see https://docs.microsoft.com/de-de/cpp/error-messages/compiler-warnings/c5045) */
