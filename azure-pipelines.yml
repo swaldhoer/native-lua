@@ -44,41 +44,53 @@ jobs:
         inputs:
           versionSpec: "3.6"
           architecture: "x64"
-      - displayName: Ubuntu details
-        script: lsb_release -a
-      - displayName: Add install path to $PATH
-        script: echo "##vso[task.prependpath]/opt/lua/bin"
-      - displayName: Verify $PATH
-        script: echo $PATH
-      - displayName: Installing common development tools
-        script: sudo apt-get install -y ${{ variables.install_packages }}
-      - displayName: Installing pip dependencies
-        script: python -m pip install --upgrade pip && python -m pip install --upgrade --requirement requirements.txt
-      - displayName: Install clang
-        condition: eq(variables['CC_LUA_BUILD'], 'clang')
-        script: |
+
+      - script: lsb_release -a
+        displayName: Ubuntu details
+
+      - script: echo "##vso[task.prependpath]/opt/lua/bin"
+        displayName: Add install path to $PATH
+
+      - script: echo $PATH
+        displayName: Verify $PATH
+
+      - script: sudo apt-get install -y ${{ variables.install_packages }}
+        displayName: Installing common development tools
+
+      - script: python -m pip install --upgrade pip && python -m pip install --upgrade --requirement requirements.txt
+        displayName: Installing pip dependencies
+
+      - script: |
           set -euxo pipefail
           wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
           sudo apt-add-repository "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic-10 main"
           sudo apt-get update
           sudo apt-get install -y clang-10 lld-10
           sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 100
-      - displayName: Compiler and Tool versions
-        script: |
+        displayName: Install clang
+        condition: eq(variables['CC_LUA_BUILD'], 'clang')
+
+      - script: |
           python --version
           ${CC_LUA_BUILD} --version
           doxygen --version
           dot -V
           sphinx-build --version
-      - displayName: Documentation build
-        script: python waf configure build-docs clean-docs distclean -v
-      - displayName: Configure, build, install
-        script: python waf configure -v --check-c-compiler=${CC_LUA_BUILD} ${CC_LUA_BUILD_OPTIONS} --prefix=${{ variables.lua_install_prefix }} build install
-      - displayName: Simple test
+        displayName: Compiler and Tool versions
+
+      - script: python waf configure build-docs clean-docs distclean -v
+        displayName: Documentation build
+
+      - script: python waf configure -v --check-c-compiler=${CC_LUA_BUILD} ${CC_LUA_BUILD_OPTIONS} --prefix=${{ variables.lua_install_prefix }} build install
+        displayName: Configure, build, install
+
+      - script: lua -e"_U=true" all.lua
+        displayName: Simple test
         workingDirectory: build/bin/tests
-        script: lua -e"_U=true" all.lua
-      - displayName: Full test
+
+      - script: lua all.lua
+        displayName: Full test
         workingDirectory: build/bin/tests
-        script: lua all.lua
-      - displayName: Uninstall, clean and distclean
-        script: python waf uninstall clean distclean
+
+      - script: python waf uninstall clean distclean
+        displayName: Uninstall, clean and distclean
