@@ -57,6 +57,6 @@ build_script:
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/bin/tests && which lua"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/bin/tests && lua -v"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/bin/tests && lua -e\"_U=true\" all.lua"
-  #- cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/bin/tests && lua all.lua"
+  # - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/bin/tests && lua all.lua"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf build-docs"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf uninstall clean distclean"
