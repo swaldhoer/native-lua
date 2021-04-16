@@ -94,3 +94,92 @@ jobs:
 
       - script: python waf uninstall clean distclean
         displayName: Uninstall, clean and distclean
+
+  - job: macOS
+    displayName: "macOS Build"
+    pool:
+      vmImage: "macOS-10.15"
+    variables:
+      - name: lua_install_prefix
+        value: /opt/lua
+      - name: install_packages
+        value: doxygen graphviz
+    strategy:
+      matrix:
+        gcc_include_tests:
+          CC_LUA_BUILD: gcc
+          CC_LUA_BUILD_OPTIONS: --include-tests
+        gcc_include_tests_ltests:
+          CC_LUA_BUILD: gcc
+          CC_LUA_BUILD_OPTIONS: --include-tests --ltests
+        clang_include_tests:
+          CC_LUA_BUILD: clang
+          CC_LUA_BUILD_OPTIONS: --include-tests
+        clang_include_tests_ltests:
+          CC_LUA_BUILD: clang
+          CC_LUA_BUILD_OPTIONS: --include-tests --ltests
+    steps:
+      - task: UsePythonVersion@0
+        inputs:
+          versionSpec: "3.6"
+
+      - script: echo "##vso[task.prependpath]/opt/lua/bin"
+        displayName: Add install path to $PATH
+
+      - script: brew install ${{ variables.install_packages }}
+        displayName: Installing common development tools
+
+      - script: python -m pip install --upgrade pip && python -m pip install --upgrade --requirement requirements.txt
+        displayName: Installing pip dependencies
+
+      - script: |
+          set -euxo pipefail
+          export CURL_SSL_BACKEND=secure-transport
+          brew update
+          brew upgrade
+          brew install --force gcc coreutils
+          brew ls --verbose gcc
+          brew unlink gcc
+          brew link gcc --dry-run
+          brew link gcc
+          ln -s /usr/local/bin/gcc-10 /usr/local/bin/gcc
+          which gcc
+          greadlink -f `which gcc`
+          echo | gcc -E -Wp,-v -
+          gcc -dM -E - < /dev/null
+        displayName: Install gcc
+        condition: eq(variables['CC_LUA_BUILD'], 'gcc')
+
+      - script: echo "##vso[task.prependpath]/usr/local/Cellar/gcc/10.2.0/bin/"
+        condition: eq(variables['CC_LUA_BUILD'], 'gcc')
+        displayName: Add gcc to path
+
+      - script: echo $PATH
+        condition: eq(variables['CC_LUA_BUILD'], 'gcc')
+        displayName: echo PATH
+
+
+      - script: |
+          python --version
+          ${CC_LUA_BUILD} --version
+          doxygen --version
+          dot -V
+          sphinx-build --version
+        displayName: Compiler and Tool versions
+
+      - script: python waf configure build-docs clean-docs distclean -v
+        displayName: Documentation build
+
+      - script: python waf configure -v --check-c-compiler=${CC_LUA_BUILD} ${CC_LUA_BUILD_OPTIONS} --prefix=${{ variables.lua_install_prefix }} build install
+        displayName: Configure, build, install
+
+      - script: lua -e"_U=true" all.lua
+        displayName: Simple test
+        workingDirectory: build/bin/tests
+
+      # - script: lua all.lua
+      #   displayName: Full test
+      #   workingDirectory: build/bin/tests
+
+      - script: python waf uninstall clean distclean
+        displayName: Uninstall, clean and distclean
