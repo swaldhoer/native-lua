@@ -51,8 +51,8 @@ install:
   - cmd: set PATH=%PATH%;%userprofile%\AppData\Local\Programs\lua\bin
 
 build_script:
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf configure -v --check-c-compiler=$CC_LUA_BUILD $CC_LUA_BUILD_OPTIONS"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf build -v"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf configure -v --check-c-compiler=$CC_LUA_BUILD"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf build -v $CC_LUA_BUILD_OPTIONS"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf install"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/bin/tests && which lua"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/bin/tests && lua -v"
