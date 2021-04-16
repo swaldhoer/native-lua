@@ -11,9 +11,6 @@
   "CMFLAGS": [
     "-Os"
   ],
-  "LINKFLAGS": [
-    "-Wl,-export-dynamic"
-  ],
   "libs": [
     "m",
     "readline"
