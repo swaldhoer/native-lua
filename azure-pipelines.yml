@@ -170,7 +170,7 @@ jobs:
       - script: python waf configure build-docs clean-docs distclean -v
         displayName: Documentation build
 
-      - script: sudo python waf configure -v --check-c-compiler=${CC_LUA_BUILD} ${CC_LUA_BUILD_OPTIONS} --prefix=${{ variables.lua_install_prefix }} build
+      - script: sudo python waf configure -v --check-c-compiler=${CC_LUA_BUILD} ${CC_LUA_BUILD_OPTIONS} --prefix=${{ variables.lua_install_prefix }} build install
         displayName: Configure, build, install
 
       - script: lua -e"_U=true" all.lua
