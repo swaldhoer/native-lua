@@ -3,7 +3,7 @@
 
 # SPDX-License-Identifier: MIT
 
-from waflib import Context, Utils
+from waflib import Context
 
 
 def configure(conf):
