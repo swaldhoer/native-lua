@@ -14,7 +14,7 @@ trigger:
 
 variables:
   NATIVE_LUA_CI_BUILD: "TRUE"
-  TOOL_VERSIONS: -t doxygen -t graphviz -t sphinx -t black -t pylint -t isort
+  TOOL_VERSIONS: "-t doxygen -t graphviz -t sphinx -t black -t pylint -t isort"
 
 jobs:
   - job: Linux
@@ -144,7 +144,12 @@ jobs:
       - script: echo %PATH%
         displayName: Show %PATH%
 
-      - script: python scripts\versions.py -t ${CC_LUA_BUILD} ${TOOL_VERSIONS}
+      - script: |
+          if %CC_LUA_BUILD%==msvc (
+            call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64s
+          )
+          echo scripts\versions.py -t $(CC_LUA_BUILD) $(TOOL_VERSIONS)
+          python scripts\versions.py -t $(CC_LUA_BUILD) $(TOOL_VERSIONS)
         displayName: Compiler and Tools versions
 
       - script: python waf configure build-docs clean-docs distclean -v
@@ -280,7 +285,7 @@ jobs:
           pylint --rcfile=pyproject.toml docs\conf.py
           pylint --rcfile=pyproject.toml scripts\dot.py
           pylint --rcfile=pyproject.toml scripts\doxygen.py
-          pylint --rcfile=pyproject.toml scripts\patch_msvc.py
+          pylint --rcfile=pyproject.toml scripts\msvc_patch.py
           pylint --rcfile=pyproject.toml scripts\semver.py
           pylint --rcfile=pyproject.toml scripts\sphinx.py
           pylint --rcfile=pyproject.toml scripts\versions.py
