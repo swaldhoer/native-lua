@@ -146,7 +146,7 @@ jobs:
 
       - script: |
           if %CC_LUA_BUILD%==msvc (
-            call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64s
+            call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
           )
           echo scripts\versions.py -t $(CC_LUA_BUILD) $(TOOL_VERSIONS)
           python scripts\versions.py -t $(CC_LUA_BUILD) $(TOOL_VERSIONS)
