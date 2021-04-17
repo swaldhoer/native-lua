@@ -122,7 +122,7 @@ def rst_hook(self, node):  # pylint: disable=unused-argument
 
 def configure(conf):
     conf.find_program("sphinx-build", var="SPHINX_BUILD")
-    cmd = Utils.subst_vars("${SPHINX_BUILD} --version", conf.env).split()
+    cmd = [conf.env.SPHINX_BUILD[0], "--version"]
     try:
         conf.env.SPHINX_BUILD_VERSION = conf.cmd_and_log(cmd).strip().split(" ")[1]
     except IndexError:

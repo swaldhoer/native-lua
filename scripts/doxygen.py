@@ -56,10 +56,9 @@ def process_doxy(self):
 
 def configure(conf):
     conf.find_program("doxygen", var="DOXYGEN")
+    cmd = [conf.env.DOXYGEN[0], "--version"]
     try:
-        conf.env.DOXYGEN_VERSION = conf.cmd_and_log(
-            Utils.subst_vars("${DOXYGEN} --version", conf.env).split()
-        ).strip()
+        conf.env.DOXYGEN_VERSION = conf.cmd_and_log(cmd).strip()
     except IndexError:
         conf.env.DOXYGEN_VERSION = "unknown"
 
