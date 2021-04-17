@@ -97,7 +97,7 @@ jobs:
       vmImage: "windows-2019"
     variables:
       - name: lua_install_prefix
-        value: /opt/lua
+        value: "%LOCALAPPDATA%\\Programs\\lua"
     strategy:
       matrix:
         msvc_include_tests:
