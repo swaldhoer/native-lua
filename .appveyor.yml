@@ -34,7 +34,13 @@ init:
 
 install:
   - cmd: curl.exe -fsSL -o setup-x86_64.exe http://www.cygwin.com/setup-x86_64.exe
-  - cmd: setup-x86_64.exe --no-desktop --no-shortcuts --no-startmenu --quiet-mode --packages alternatives,wget,python37,python37-devel,python37-pip,doxygen,graphviz,llvm,clang
+  - cmd: "
+    if %CC_LUA_BUILD%==clang (
+      setup-x86_64.exe --no-desktop --no-shortcuts --no-startmenu --quiet-mode --packages alternatives,wget,python37,python37-devel,python37-pip,doxygen,graphviz,llvm,clang
+    ) else (
+      setup-x86_64.exe --no-desktop --no-shortcuts --no-startmenu --quiet-mode --packages alternatives,wget,python37,python37-devel,python37-pip,doxygen,graphviz
+    )
+    "
   - cmd: C:\cygwin64\bin\bash.exe -l -c "unlink /usr/bin/python3"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "/usr/sbin/update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 0 --slave /usr/bin/pip3 pip3 /usr/bin/pip3.6"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "/usr/sbin/update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.7 10 --slave /usr/bin/pip3 pip3 /usr/bin/pip3.7"
@@ -43,20 +49,20 @@ install:
   - cmd: C:\cygwin64\bin\bash.exe -l -c "/usr/sbin/update-alternatives --set python /usr/bin/python3"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "pip3 install --upgrade pip"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "export C_INCLUDE_PATH=/usr/include/python3.7m && pip3 install --upgrade --requirement /cygdrive/c/projects/native-lua/requirements.txt"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 --version"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "doxygen --version"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "dot -V"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "clang --version"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "gcc --version"
   - cmd: set PATH=%PATH%;%userprofile%\AppData\Local\Programs\lua\bin
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "echo cd /cygdrive/c/projects/native-lua >> ~/.profile"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "echo cd /cygdrive/c/projects/native-lua >> ~/.bash_profile"
+
+before_build:
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 scripts/versions.py -t ${CC_LUA_BUILD} -t doxygen -t graphviz"
 
 build_script:
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf configure -v --check-c-compiler=$CC_LUA_BUILD"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf build -v $CC_LUA_BUILD_OPTIONS"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf install"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/bin/tests && which lua"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/bin/tests && lua -v"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/bin/tests && lua -e\"_U=true\" all.lua"
-  # - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/bin/tests && lua all.lua"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf build-docs"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf uninstall clean distclean"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 waf configure -v --check-c-compiler=$CC_LUA_BUILD"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 waf build -v $CC_LUA_BUILD_OPTIONS"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 waf install"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd build/bin/tests && which lua"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd build/bin/tests && lua -v"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd build/bin/tests && lua -e\"_U=true\" all.lua"
+  # - cmd: C:\cygwin64\bin\bash.exe -l -c "cd build/bin/tests && lua all.lua"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 waf build-docs"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 waf uninstall clean distclean"

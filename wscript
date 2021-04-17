@@ -7,8 +7,14 @@ import os
 import re
 
 from waflib import Logs, Utils
-from waflib.Build import BuildContext, CleanContext, ListContext, StepContext
-from waflib.Build import InstallContext, UninstallContext
+from waflib.Build import (
+    BuildContext,
+    CleanContext,
+    InstallContext,
+    ListContext,
+    StepContext,
+    UninstallContext,
+)
 
 VERSION = "0.6.0-devel"
 APPNAME = "lua"
@@ -21,7 +27,14 @@ REPO_URL = "https://www.github.com/swaldhoer/native-lua"
 
 for x in ["bin", "docs"]:
     if x == "bin":
-        for y in (BuildContext, CleanContext, ListContext, StepContext, InstallContext, UninstallContext):
+        for y in (
+            BuildContext,
+            CleanContext,
+            ListContext,
+            StepContext,
+            InstallContext,
+            UninstallContext,
+        ):
             NAME = y.__name__.replace("Context", "").lower()
 
             class Tmp2(y):
@@ -37,6 +50,7 @@ for x in ["bin", "docs"]:
                 __doc__ = y.__doc__ + f" ({x})"
                 cmd = NAME + "-" + x
                 variant = x
+
 
 if Utils.unversioned_sys_platform().lower() == "win32":
     os.environ["PREFIX"] = os.path.join(
@@ -875,7 +889,8 @@ def build_win32(bld):
             use=["static-lua-library"] + use,
         )
 
-        if bld.options.include_tests:  # https://github.com/swaldhoer/native-lua/issues/46
+        if bld.options.include_tests:
+            # https://github.com/swaldhoer/native-lua/issues/46
             pass  # build_lib_tests(bld, defines_tests)
 
     if bld.env.CC_NAME == "msvc":
