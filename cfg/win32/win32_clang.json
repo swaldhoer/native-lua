@@ -10,5 +10,11 @@
   ],
   "CMFLAGS": [
     "-Os"
-  ]
+  ],
+  "cstlib_PATTERN": "%s.lib",
+  "LINKFLAGS": [],
+  "STLIB_MARKER": "",
+  "SHLIB_MARKER": "",
+  "IMPLIB_ST": "-IMPLIB:%s",
+  "implib_PATTERN": "%s.dll"
 }

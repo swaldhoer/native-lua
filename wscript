@@ -216,8 +216,8 @@ def configure(conf):  # pylint: disable=too-many-branches,too-many-locals
     cc_config_file = os.path.join("cfg", plat, f"{plat}_{conf.env.CC_NAME}.json")
     cc_config = conf.path.find_node(cc_config_file).read_json()
     for i, val in cc_config.items():
-        if i.isupper():
-            conf.env[i.upper()] = val
+        if i.isupper() or "_PATTERN" in i:
+            conf.env[i] = val
     # add the build directory to includes as it stores the configuration file
     conf.env.append_unique("INCLUDES", [conf.path.get_bld().abspath()])
 
