@@ -82,7 +82,7 @@ task:
     - python3 scripts/versions.py -t ${CC_LUA_BUILD} -t doxygen -t graphviz -t sphinx
   build_script:
     - python3 waf configure -v --check-c-compiler=${CC_LUA_BUILD} build-docs clean-docs distclean
-    - python3 configure -v --check-c-compiler=${CC_LUA_BUILD} ${CC_LUA_BUILD_OPTIONS} build install
+    - python3 waf configure -v --check-c-compiler=${CC_LUA_BUILD} ${CC_LUA_BUILD_OPTIONS} build install
   test_script:
     - cd build/bin && lua -e"_U=true" all.lua
   clean_script:
