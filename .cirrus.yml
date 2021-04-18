@@ -68,22 +68,35 @@ task:
         if [ "$CC_LUA_BUILD" == "clang" ]; then
           dnf -y install clang
         fi
-    # - container:
-    #     image: ubuntu:focal
-    #     cpu: 4
-    #   install_script:
-    #     - export RUNLEVEL=1
-    #     # - export DEBIAN_FRONTEND=noninteractive
-    #     # - apt-get update
-    #     # - apt-get install -y apt-utils lsb-release curl gnupg
-    #     # - apt-get update
-    #     # - apt-get install -y dialog python3-pip build-essential doxygen graphviz
-    #     # - apt-get install -y software-properties-common libreadline8 libreadline-dev
-    #     # - apt-get install -y clang-10
-    #     # - update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 100
-    #     - python3 -m pip install --upgrade pip
-    #     - python3 -m pip install --upgrade --requirement requirements.txt
-
+    - container:
+        image: ubuntu:focal
+        cpu: 4
+      matrix:
+        - env:
+            CC_LUA_BUILD: gcc
+            CC_LUA_BUILD_OPTIONS: --include-tests
+        - env:
+            CC_LUA_BUILD: gcc
+            CC_LUA_BUILD_OPTIONS: --include-tests --ltests
+        - env:
+            CC_LUA_BUILD: clang
+            CC_LUA_BUILD_OPTIONS: --include-tests
+        - env:
+            CC_LUA_BUILD: clang
+            CC_LUA_BUILD_OPTIONS: --include-tests --ltests
+      common_install_script:
+        - export RUNLEVEL=1
+        - export DEBIAN_FRONTEND=noninteractive
+        - apt-get update
+        - apt-get install -y apt-utils lsb-release curl gnupg dialog python3-pip build-essential doxygen graphviz software-properties-common libreadline8 libreadline-dev
+        - python3 -m pip install --upgrade pip
+        - python3 -m pip install --upgrade --requirement requirements.txt
+      clang_install_script: |
+        export RUNLEVEL=1
+        if [ "$CC_LUA_BUILD" == "clang" ]; then
+          apt-get install -y clang-10
+          update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 100
+        fi
     # - freebsd_instance:
     #     image_family: freebsd-13-0
     #     cpu: 4
