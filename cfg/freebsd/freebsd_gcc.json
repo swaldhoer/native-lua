@@ -14,7 +14,7 @@
     "-Wall",
     "-Wextra"
   ],
-  "CMFLAGS": [
+  "CMCFLAGS": [
     "-Os"
   ],
   "LINKFLAGS": [
