@@ -1,4 +1,8 @@
 {
+  "std": {
+    "opt": "-std=",
+    "val": "gnu99"
+  },
   "libs": [
     "m",
     "dl",
