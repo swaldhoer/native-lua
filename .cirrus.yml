@@ -18,7 +18,6 @@ task:
         - env:
             CC_LUA_BUILD: clang
             CC_LUA_BUILD_OPTIONS: --include-tests --ltests
-
       common_install_script:
         - export RUNLEVEL=1
         - apt-get update
@@ -38,16 +37,37 @@ task:
           apt-get install -y clang-11 lld-11
           update-alternatives --install /usr/bin/clang clang /usr/bin/clang-11 100
         fi
-    # - container:
-    #     image: fedora:33
-    #   install_script:
-    #     - export RUNLEVEL=1
-    #     # - dnf -y update
-    #     # - dnf -y install redhat-lsb-core gcc clang python3-pip doxygen graphviz readline readline-devel
-    #     # - lsb_release -a
-    #     - python3 -m pip install --upgrade pip
-    #     - python3 -m pip install --upgrade --requirement requirements.txt
-
+    - container:
+        image: fedora:33
+      matrix:
+        - env:
+            CC_LUA_BUILD: gcc
+            CC_LUA_BUILD_OPTIONS: --include-tests
+        - env:
+            CC_LUA_BUILD: gcc
+            CC_LUA_BUILD_OPTIONS: --include-tests --ltests
+        - env:
+            CC_LUA_BUILD: clang
+            CC_LUA_BUILD_OPTIONS: --include-tests
+        - env:
+            CC_LUA_BUILD: clang
+            CC_LUA_BUILD_OPTIONS: --include-tests --ltests
+      common_install_script:
+        - export RUNLEVEL=1
+        - dnf -y update
+        - dnf -y install redhat-lsb-core python3-pip doxygen graphviz readline readline-devel
+        - python3 -m pip install --upgrade pip
+        - python3 -m pip install --upgrade --requirement requirements.txt
+      gcc_install_script: |
+        export RUNLEVEL=1
+        if [ "$CC_LUA_BUILD" == "gcc" ]; then
+          dnf -y install gcc
+        fi
+      clang_install_script: |
+        export RUNLEVEL=1
+        if [ "$CC_LUA_BUILD" == "clang" ]; then
+          dnf -y install clang
+        fi
     # - container:
     #     image: ubuntu:focal
     #     cpu: 4
