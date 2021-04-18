@@ -19,13 +19,13 @@ task:
             CC_LUA_BUILD: clang
             CC_LUA_BUILD_OPTIONS: --include-tests --ltests
 
-      install_script_common:
+      common_install_script:
         - export RUNLEVEL=1
         - apt-get update
         - apt-get install -y dialog apt-utils lsb-release curl gnupg build-essential doxygen graphviz python3-pip software-properties-common libreadline7 libreadline-dev
         - python3 -m pip install --upgrade pip
         - python3 -m pip install --upgrade --requirement requirements.txt
-      install_script_clang: |
+      clang_install_script: |
         export RUNLEVEL=1
         if [ "$CC_LUA_BUILD" == "clang" ]; then
           curl -o llvm-snapshot.gpg.key https://apt.llvm.org/llvm-snapshot.gpg.key
