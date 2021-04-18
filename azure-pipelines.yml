@@ -166,9 +166,9 @@ jobs:
         displayName: Simple test
         workingDirectory: build/bin/tests
 
-      - script: lua all.lua
-        displayName: Full test
-        workingDirectory: build/bin/tests
+      # - script: lua all.lua
+      #   displayName: Full test
+      #   workingDirectory: build/bin/tests
 
       - script: python waf uninstall clean distclean
         displayName: Uninstall, clean and distclean
