@@ -191,7 +191,6 @@ def configure(conf):  # pylint: disable=too-many-branches,too-many-locals
         else:
             Logs.warn("C89 does not guarantee 64-bit integers for Lua.")
             Logs.warn("Adding define: LUA_USE_C89")  # TODO
-    conf.msg("C standard", conf.options.c_standard)
 
     conf.env.WAF_CONFIG_H_PRELUDE = (
         conf.path.find_node(os.path.join("cfg", "prelude.h.template"))

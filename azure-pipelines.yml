@@ -271,11 +271,7 @@ jobs:
       - script: python -m pip install --upgrade pip && python -m pip install --upgrade --requirement requirements.txt
         displayName: Installing pip dependencies
 
-      - script: |
-          python --version
-          black --version
-          isort --version
-          pylint --version
+      - script: python scripts/versions.py -t black -t pylint -t isort
         displayName: Static Program Analysis Tools versions
 
       - script: python waf --help
