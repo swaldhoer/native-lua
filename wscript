@@ -176,11 +176,8 @@ def configure(conf):  # pylint: disable=too-many-branches,too-many-locals
     conf.msg("native Lua version", VERSION)
     conf.msg("Lua version", conf.env.lua_src_version)
     conf.msg("Lua tests version", conf.env.lua_tests_version)
-    conf.msg("Using ltests", conf.options.ltests)
     conf.env.generic = conf.options.generic
     conf.msg("Platform", conf.options.generic or plat)
-
-    conf.env.ltests = conf.options.ltests
     conf.load("gnu_dirs")
 
     min_c = "#include<stdio.h>\nint main() {\n    return 0;\n}\n"
@@ -403,7 +400,7 @@ def build_generic(bld):
         defines_c89 = ["LUA_USE_C89"]
         defines_tests += defines_c89
         defines += defines_c89
-    if bld.env.ltests:
+    if bld.options.ltests:
         use_ltests += ["LTESTS"]
         cflags += ["-g"]
         defines += ['LUA_USER_H="ltests.h"']
@@ -467,7 +464,7 @@ def build_openbsd(bld):
         defines_c89 = ["LUA_USE_C89"]
         defines_tests += defines_c89
         defines += defines_c89
-    if bld.env.ltests:
+    if bld.options.ltests:
         use_ltests += ["LTESTS"]
         cflags += ["-g"]
         defines += ['LUA_USER_H="ltests.h"']
@@ -528,7 +525,7 @@ def build_netbsd(bld):
         defines_c89 = ["LUA_USE_C89"]
         defines_tests += defines_c89
         defines += defines_c89
-    if bld.env.ltests:
+    if bld.options.ltests:
         use_ltests += ["LTESTS"]
         cflags += ["-g"]
         defines += ['LUA_USER_H="ltests.h"']
@@ -589,7 +586,7 @@ def build_freebsd(bld):
         defines_c89 = ["LUA_USE_C89"]
         defines_tests += defines_c89
         defines += defines_c89
-    if bld.env.ltests:
+    if bld.options.ltests:
         use_ltests += ["LTESTS"]
         cflags += ["-g"]
         defines += ['LUA_USER_H="ltests.h"']
@@ -650,7 +647,7 @@ def build_linux(bld):
         defines_c89 = ["LUA_USE_C89"]
         defines_tests += defines_c89
         defines += defines_c89
-    if bld.env.ltests:
+    if bld.options.ltests:
         use_ltests += ["LTESTS"]
         cflags += ["-g"]
         defines += ['LUA_USER_H="ltests.h"']
@@ -710,7 +707,7 @@ def build_darwin(bld):
         defines_c89 = ["LUA_USE_C89"]
         defines_tests += defines_c89
         defines += defines_c89
-    if bld.env.ltests:
+    if bld.options.ltests:
         use_ltests += ["LTESTS"]
         cflags += ["-g"]
         defines += ['LUA_USER_H="ltests.h"']
@@ -953,7 +950,7 @@ def build_solaris(bld):
         defines_c89 = ["LUA_USE_C89"]
         defines_tests += defines_c89
         defines += defines_c89
-    if bld.env.ltests:
+    if bld.options.ltests:
         use_ltests += ["LTESTS"]
         cflags += ["-g"]
         defines += ['LUA_USER_H="ltests.h"']
