@@ -97,19 +97,36 @@ task:
           apt-get install -y clang-10
           update-alternatives --install /usr/bin/clang clang /usr/bin/clang-10 100
         fi
-    # - freebsd_instance:
-    #     image_family: freebsd-13-0
-    #     cpu: 4
-    #   freebsd_install_script:
-    #     - pkg update -f
-    #     # - env ASSUME_ALWAYS_YES=YES pkg bootstrap -f
-    #     # - env ASSUME_ALWAYS_YES=YES pkg upgrade pkg
-    #     # - env ASSUME_ALWAYS_YES=YES pkg install lang/gcc bash doxygen
-    #     - python3 -m ensurepip --default-pip
-    #     - python3 -m pip install --upgrade pip
-    #     - python3 -m pip install --upgrade --requirement requirements.txt
-    #   freebsd_setup_script:
-    #     - chsh -s /usr/local/bin/bash
+    - freebsd_instance:
+        image_family: freebsd-13-0
+        cpu: 4
+      matrix:
+        - env:
+            CC_LUA_BUILD: gcc
+            CC_LUA_BUILD_OPTIONS: --include-tests
+        - env:
+            CC_LUA_BUILD: gcc
+            CC_LUA_BUILD_OPTIONS: --include-tests --ltests
+        - env:
+            CC_LUA_BUILD: clang
+            CC_LUA_BUILD_OPTIONS: --include-tests
+        - env:
+            CC_LUA_BUILD: clang
+            CC_LUA_BUILD_OPTIONS: --include-tests --ltests
+      common_install_script:
+        - pkg update -f
+        - env ASSUME_ALWAYS_YES=YES pkg bootstrap -f
+        - env ASSUME_ALWAYS_YES=YES pkg upgrade pkg
+        - env ASSUME_ALWAYS_YES=YES pkg install bash doxygen
+        - python3 -m ensurepip --default-pip
+        - python3 -m pip install --upgrade pip
+        - python3 -m pip install --upgrade --requirement requirements.txt
+      gcc_install_script: |
+        if [ "$CC_LUA_BUILD" == "gcc" ]; then
+          env ASSUME_ALWAYS_YES=YES pkg install lang/gcc
+        fi
+      freebsd_setup_script:
+        - chsh -s /usr/local/bin/bash
 
   version_script:
     - python3 scripts/versions.py -t ${CC_LUA_BUILD} -t doxygen -t graphviz -t sphinx
