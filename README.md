@@ -35,7 +35,7 @@ of building and testing Lua.
 
 ## How-To
 
-Building Lua with the `native Lua` project requires Python 3.5 or greater and
+Building Lua with the `native Lua` project requires Python 3.6 or greater and
 some C compiler. Exemplary Windows build:
 
 1. ``waf.bat configure``

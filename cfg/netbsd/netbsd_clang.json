@@ -1,13 +1,8 @@
 {
   "std": {
     "opt": "-std=",
-    "val": "gnu99"
+    "val": "c99"
   },
-  "libs": [
-    "m",
-    "dl",
-    "edit"
-  ],
   "CFLAGS": [
     "-O2",
     "-Wall",
@@ -18,5 +13,8 @@
   ],
   "LINKFLAGS": [
     "-Wl,-export-dynamic"
+  ],
+  "libs": [
+    "m"
   ]
 }

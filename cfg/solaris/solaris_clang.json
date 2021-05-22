@@ -1,4 +1,8 @@
 {
+  "std": {
+    "opt": "-std=",
+    "val": "c99"
+  },
   "CFLAGS": [
     "-O2",
     "-Wall",
