@@ -176,7 +176,6 @@ def configure(conf):  # pylint: disable=too-many-branches,too-many-locals
     conf.msg("native Lua version", VERSION)
     conf.msg("Lua version", conf.env.lua_src_version)
     conf.msg("Lua tests version", conf.env.lua_tests_version)
-    conf.msg("Using ltests", conf.options.ltests)
     conf.env.generic = conf.options.generic
     conf.msg("Platform", conf.options.generic or plat)
 
