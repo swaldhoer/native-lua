@@ -6,8 +6,9 @@
 import argparse
 import re
 import shutil
-import subprocess
 import sys
+
+from subprocess import Popen, PIPE
 
 RE_VERSION = r"((\d+)\.(\d+)\.(\d+))"
 VERSIONS = {
@@ -44,9 +45,8 @@ def main():
             err = True
             print(f"Could not find program '{VERSIONS[tool]['cmd'][0]}'.")
             continue
-        proc = subprocess.Popen(
-            VERSIONS[tool]["cmd"], stdout=subprocess.PIPE, stderr=subprocess.PIPE
-        )
+        # pylint: disable=consider-using-with
+        proc = Popen(VERSIONS[tool]["cmd"], stdout=PIPE, stderr=PIPE)
         stdout, stderr = proc.communicate()
         stdout, stderr = stdout.decode("utf-8"), stderr.decode("utf-8")
         version, m = "", False
