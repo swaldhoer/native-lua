@@ -9,7 +9,6 @@ import os
 import re
 
 import jsonschema
-
 from waflib import Logs, Utils
 from waflib.Build import (
     BuildContext,
