@@ -1,37 +1,37 @@
 {
-  Logs.info("Generic build uses msvc on win32")
-  try:  # msvc
-      set_new_basic_env("msvc")
-      conf.load("compiler_c")
-      conf.env.CFLAGS = [
-          "/nologo",
-          conf.env.c_standard,
-          "/O2",
-          "/Wall",
-          "/Qspectre",
-      ]
-      conf.env.CMCFLAGS = ["/Os"]
-      conf.check_cc(fragment=min_c, execute=True)
-      platform_compilers.append(conf.env.env_name)
-      conf.msg("Manifest", conf.env.MSVC_MANIFEST)
-  except BaseException:
-      failed_platform_compilers.append(conf.env.env_name)
-
-      try:
-      # generic build only for gcc
-      Logs.info(
-          "Generic build on {} with gcc".format(
-              Utils.unversioned_sys_platform()
-          )
-      )
-      set_new_basic_env("gcc")
-      conf.load("compiler_c")
-      conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-      conf.env.CMCFLAGS = ["-Os"]
-      conf.check_cc(fragment=min_c, execute=True)
-      check_libs("m")
-      platform_compilers.append(conf.env.env_name)
-  except BaseException:
-      failed_platform_compilers.append(conf.env.env_name)
-
+  "win32": {
+    "std": {
+      "opt": "/std:",
+      "val": "c11"
+    },
+    "CFLAGS": [
+      "/nologo",
+      "/O2",
+      "/Wall",
+      "/Qspectre"
+    ],
+    "CMCFLAGS": [
+      "/Os"
+    ],
+    "LINKFLAGS": [],
+    "libs": []
+  },
+  "unix-like": {
+    "std": {
+      "opt": "-std=",
+      "val": "gnu99"
+    },
+    "CFLAGS": [
+      "-O2",
+      "-Wall",
+      "-Wextra"
+    ],
+    "CMCFLAGS": [
+      "-Os"
+    ],
+    "LINKFLAGS": [],
+    "libs": [
+      "m"
+    ]
+  }
 }

@@ -8,6 +8,8 @@
 import os
 import re
 
+import jsonschema
+
 from waflib import Logs, Utils
 from waflib.Build import (
     BuildContext,
@@ -25,6 +27,17 @@ out = "build"  # pylint: disable=invalid-name
 
 
 REPO_URL = "https://www.github.com/swaldhoer/native-lua"
+
+
+def validate_json_schema(data: dict, schema=dict) -> bool:
+    valid = False
+    try:
+        jsonschema.validate(instance=data, schema=schema)
+    except jsonschema.exceptions.ValidationError as err:
+        pass
+    else:
+        valid = True
+    return valid
 
 
 for x in ["bin", "docs"]:
@@ -95,13 +108,7 @@ def options(opt):
     opt.add_option(
         "--c-std",
         dest="c_standard",
-        default="c99",
-        choices=["c89", "c99"],
-        help="Specify C-standard to be used. 'c99' is default. 'c99' will "
-        "be replaced by 'gnu99' for gcc, xlc and icc. 'c99' will be "
-        "replaced by 'c++14' for msvc. 'c89' is passed verbatim for "
-        "gcc, xlc, icc and clang. 'c89' will be replaced by 'c++14' "
-        "for msvc.",
+        help="Overwrite default C standard, e.g., '-std=gnu99' for gcc.",
     )
     opt.add_option(
         "--ltests",
@@ -205,13 +212,33 @@ def configure(conf):  # pylint: disable=too-many-branches,too-many-locals
     if conf.options.generic:
         pass  # TODO
 
+    schema_compiler_setup = conf.path.find_node(
+        os.path.join("cfg", "compiler-cfg.schema.json")
+    ).read_json()
+    cfgs = conf.path.ant_glob(
+        "cfg/**/*.json",
+        excl=["**/*.schema.json", "cfg/generic.json", "cfg/platforms.json"],
+    )
+    Logs.debug(", ".join(i.relpath() for i in cfgs))
+    for i in cfgs:
+        valid = validate_json_schema(i.read_json(), schema_compiler_setup)
+        if not valid:
+            Logs.warn(f"{i.relpath()} is not a valid compiler setup.")
+    generic_build = conf.path.find_node(os.path.join("cfg", "generic.json")).read_json()
+    for k, v in generic_build.items():
+        validate_json_schema(v, schema_compiler_setup)
+
     conf.load("compiler_c")
-    conf.load("msvc_patch", tooldir="scripts")  # make msvc include paths absolute
+    if Utils.is_win32 and conf.env.CC_NAME.lower() == "msvc":
+        # make msvc include paths absolute
+        conf.load("msvc_patch", tooldir="scripts")
 
     # load platform-compiler configuration
     cc_config_file = os.path.join("cfg", plat, f"{plat}_{conf.env.CC_NAME}.json")
     cc_config = conf.path.find_node(cc_config_file).read_json()
     for i, val in cc_config.items():
+        if not val:  # if a setting is empty do not overwrite default values
+            continue
         if i.isupper() or "_PATTERN" in i:
             conf.env[i] = val
     # add the build directory to includes as it stores the configuration file

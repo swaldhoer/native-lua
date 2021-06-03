@@ -3,10 +3,6 @@
     "opt": "-std=",
     "val": "c99"
   },
-  "libs": [
-    "m",
-    "dl"
-  ],
   "CFLAGS": [
     "-O2",
     "-Wall",
@@ -17,5 +13,9 @@
   ],
   "LINKFLAGS": [
     "-Wl,-brtl,-bexpall"
+  ],
+  "libs": [
+    "m",
+    "dl"
   ]
 }

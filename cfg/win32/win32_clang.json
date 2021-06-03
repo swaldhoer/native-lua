@@ -11,8 +11,9 @@
   "CMCFLAGS": [
     "-Os"
   ],
-  "cstlib_PATTERN": "%s.lib",
   "LINKFLAGS": [],
+  "libs": [],
+  "cstlib_PATTERN": "%s.lib",
   "STLIB_MARKER": "",
   "SHLIB_MARKER": "",
   "IMPLIB_ST": "-IMPLIB:%s",

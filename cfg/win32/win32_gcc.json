@@ -3,9 +3,6 @@
     "opt": "-std=",
     "val": "gnu99"
   },
-  "libs": [
-    "m"
-  ],
   "CFLAGS": [
     "-O2",
     "-Wall",
@@ -13,5 +10,9 @@
   ],
   "CMCFLAGS": [
     "-Os"
+  ],
+  "LINKFLAGS": [],
+  "libs": [
+    "m"
   ]
 }

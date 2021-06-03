@@ -19,3 +19,7 @@ def make_msvc_and_win_paths_absolute(self):
         else:
             incpaths_fixed.append(inc_path)
     self.env.INCPATHS = incpaths_fixed
+
+
+def configure(conf):
+    conf.msg("Use absolute include paths", True)

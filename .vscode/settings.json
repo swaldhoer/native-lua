@@ -35,5 +35,9 @@
   "editor.rulers": [
     79
   ],
-  "restructuredtext.confPath": "${workspaceFolder}/docs"
+  "restructuredtext.confPath": "${workspaceFolder}/docs",
+  "python.analysis.extraPaths": [
+    "${workspaceFolder}/.waf3-2.0.20-36f5354d605298f6a89c09e0c7ef6c1d",
+    "${workspaceFolder}/waf3-2.0.20-36f5354d605298f6a89c09e0c7ef6c1d"
+  ]
 }

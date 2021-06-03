@@ -11,5 +11,7 @@
   ],
   "CMCFLAGS": [
     "/Os"
-  ]
+  ],
+  "LINKFLAGS": [],
+  "libs": []
 }
