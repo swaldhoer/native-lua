@@ -1,5 +1,6 @@
 black==21.5b1
 isort==5.8.0
+jsonschema
 pylint==2.8.2
 setuptools
 Sphinx==4.0.2
