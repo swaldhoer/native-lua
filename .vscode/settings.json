@@ -9,6 +9,7 @@
   "files.associations": {
     "wscript": "python",
     "*.h": "c",
+    "*.h.template": "c",
     "VERSION": "json"
   },
   "python.linting.enabled": true,
