@@ -735,6 +735,9 @@ def build_win32(bld):
 
 def build_cygwin(bld):
     use_ltests = []
+    if bld.options.ltests:
+        use_ltests += ["LTESTS"]
+        bld.objects(source=bld.env.ltests_sources, name="LTESTS")
     bld.objects(
         source=bld.env.compiler_module_sources,
         target="cm_objects",
