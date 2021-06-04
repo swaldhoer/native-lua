@@ -385,11 +385,11 @@ def build(bld):
     bld.env.tests_basepath = "tests"
     bld.env.ltests_dir = os.path.join(bld.env.tests_basepath, "ltests")
     # tests can currently not be built on Windows
-    if bld.options.ltests and not Utils.is_win32:
+    if bld.options.ltests:
         if bld.env.CC_NAME.lower() != "msvc":
             bld.env.append_unique("CFLAGS", "-g")
         bld.define("LUA_USER_H", "ltests.h", quote=True)
-        bld.env.append_unique("INCLUDES_LTESTS", bld.env.ltests_dir)
+        bld.env.append_unique("INCLUDES", bld.env.ltests_dir)
     bld.env.ltests_sources = os.path.join(bld.env.ltests_dir, "ltests.c")
     test_files = bld.path.ant_glob(bld.env.tests_basepath + "/**/*.lua")
     bld.env.test_files = [t.path_from(bld.path) for t in test_files]
@@ -438,18 +438,9 @@ def build_generic(bld):
     use_ltests = []
     if bld.options.ltests:
         use_ltests += ["LTESTS"]
-        bld.objects(
-            source=bld.env.ltests_sources,
-            name="LTESTS",
-            include=bld.env.INCLUDES_LTESTS,
-        )
+        bld.objects(source=bld.env.ltests_sources, name="LTESTS")
 
-    bld.stlib(
-        source=bld.env.sources,
-        target="lua",
-        use=use_ltests,
-        name=LUA_LIBRARY_ST,
-    )
+    bld.stlib(source=bld.env.sources, target="lua", use=use_ltests, name=LUA_LIBRARY_ST)
     bld.program(
         source=bld.env.source_interpreter,
         target="lua",
@@ -473,11 +464,7 @@ def build_openbsd(bld):
     use_ltests = []
     if bld.options.ltests:
         use_ltests += ["LTESTS"]
-        bld.objects(
-            source=bld.env.ltests_sources,
-            name="LTESTS",
-            include=bld.env.INCLUDES_LTESTS,
-        )
+        bld.objects(source=bld.env.ltests_sources, name="LTESTS")
 
     bld.objects(
         source=bld.env.compiler_module_sources,
@@ -509,11 +496,7 @@ def build_netbsd(bld):
     use_ltests = []
     if bld.options.ltests:
         use_ltests += ["LTESTS"]
-        bld.objects(
-            source=bld.env.ltests_sources,
-            name="LTESTS",
-            include=bld.env.INCLUDES_LTESTS,
-        )
+        bld.objects(source=bld.env.ltests_sources, name="LTESTS")
 
     bld.objects(
         source=bld.env.compiler_module_sources,
@@ -545,11 +528,7 @@ def build_freebsd(bld):
     use_ltests = []
     if bld.options.ltests:
         use_ltests += ["LTESTS"]
-        bld.objects(
-            source=bld.env.ltests_sources,
-            name="LTESTS",
-            include=bld.env.INCLUDES_LTESTS,
-        )
+        bld.objects(source=bld.env.ltests_sources, name="LTESTS")
 
     bld.objects(
         source=bld.env.compiler_module_sources,
@@ -581,11 +560,7 @@ def build_linux(bld):
     use_ltests = []
     if bld.options.ltests:
         use_ltests += ["LTESTS"]
-        bld.objects(
-            source=bld.env.ltests_sources,
-            name="LTESTS",
-            include=bld.env.INCLUDES_LTESTS,
-        )
+        bld.objects(source=bld.env.ltests_sources, name="LTESTS")
     bld.objects(
         source=bld.env.compiler_module_sources,
         target="cm_objects",
@@ -616,11 +591,7 @@ def build_darwin(bld):
     use_ltests = []
     if bld.options.ltests:
         use_ltests += ["LTESTS"]
-        bld.objects(
-            source=bld.env.ltests_sources,
-            name="LTESTS",
-            include=bld.env.INCLUDES_LTESTS,
-        )
+        bld.objects(source=bld.env.ltests_sources, name="LTESTS")
     bld.objects(
         source=bld.env.compiler_module_sources,
         target="cm_objects",
@@ -798,11 +769,7 @@ def build_solaris(bld):
     use_ltests = []
     if bld.options.ltests:
         use_ltests += ["LTESTS"]
-        bld.objects(
-            source=bld.env.ltests_sources,
-            name="LTESTS",
-            include=bld.env.INCLUDES_LTESTS,
-        )
+        bld.objects(source=bld.env.ltests_sources, name="LTESTS")
     bld.objects(
         source=bld.env.compiler_module_sources,
         target="cm_objects",
