@@ -239,7 +239,6 @@ jobs:
       - script: python scripts/versions.py -t ${CC_LUA_BUILD} ${TOOL_VERSIONS}
         displayName: Compiler and Tools versions
 
-
       - script: python waf configure build-docs clean-docs distclean -v
         displayName: Documentation build
 
@@ -283,6 +282,7 @@ jobs:
       - script: |
           pylint --rcfile=pyproject.toml wscript
           pylint --rcfile=pyproject.toml docs\conf.py
+          pylint --rcfile=pyproject.toml docs\wscript
           pylint --rcfile=pyproject.toml scripts\dot.py
           pylint --rcfile=pyproject.toml scripts\doxygen.py
           pylint --rcfile=pyproject.toml scripts\msvc_patch.py

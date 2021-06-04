@@ -8,6 +8,12 @@
     "-Wall",
     "-Wextra"
   ],
+  "DEFINES": [
+    "LUA_COMPAT_5_2",
+    "LUA_USE_POSIX",
+    "LUA_USE_DLOPEN",
+    "_REENTRANT"
+  ],
   "CMCFLAGS": [
     "-Os"
   ],

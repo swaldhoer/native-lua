@@ -26,6 +26,10 @@
       "description": "CFLAGS to be passed to the compiler",
       "type": "array"
     },
+    "DEFINES": {
+      "description": "DEFINES to be passed to the compiler",
+      "type": "array"
+    },
     "CMCFLAGS": {
       "description": "Compiler module CFLAGS to be passed to the compiler",
       "type": "array"
@@ -42,6 +46,7 @@
   "required": [
     "std",
     "CFLAGS",
+    "DEFINES",
     "CMCFLAGS",
     "LINKFLAGS",
     "libs"

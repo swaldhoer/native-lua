@@ -10,6 +10,9 @@
       "/Wall",
       "/Qspectre"
     ],
+    "DEFINES": [
+      "LUA_COMPAT_5_2"
+    ],
     "CMCFLAGS": [
       "/Os"
     ],
@@ -25,6 +28,9 @@
       "-O2",
       "-Wall",
       "-Wextra"
+    ],
+    "DEFINES": [
+      "LUA_COMPAT_5_2"
     ],
     "CMCFLAGS": [
       "-Os"

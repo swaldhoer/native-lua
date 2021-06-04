@@ -3,15 +3,14 @@
     "opt": "-std=",
     "val": "c99"
   },
-  "libs": [
-    "m",
-    "dl",
-    "edit"
-  ],
   "CFLAGS": [
     "-O2",
     "-Wall",
     "-Wextra"
+  ],
+  "DEFINES": [
+    "LUA_COMPAT_5_2",
+    "LUA_USE_LINUX"
   ],
   "CMCFLAGS": [
     "-Os"
@@ -24,5 +23,10 @@
   ],
   "LIBPATH": [
     "/usr/local/lib"
+  ],
+  "libs": [
+    "m",
+    "dl",
+    "edit"
   ]
 }

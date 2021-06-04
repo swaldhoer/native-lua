@@ -11,6 +11,10 @@
     "-Wall",
     "-Wextra"
   ],
+  "DEFINES": [
+    "LUA_COMPAT_5_2",
+    "LUA_USE_LINUX"
+  ],
   "CMCFLAGS": [
     "-Os"
   ],
