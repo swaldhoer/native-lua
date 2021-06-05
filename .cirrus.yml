@@ -133,6 +133,6 @@ task:
   build_script:
     - python3 waf configure -v --check-c-compiler=${CC_LUA_BUILD} ${CC_LUA_BUILD_OPTIONS} build install
   test_script:
-    - cd build/bin/tests && lua -e"_U=true" all.lua
+    - cd build/tests && lua -e"_U=true" all.lua
   clean_script:
     - python3 waf uninstall clean distclean
