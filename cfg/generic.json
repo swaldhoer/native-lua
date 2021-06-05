@@ -15,9 +15,7 @@
     ],
     "CMCFLAGS": [
       "/Os"
-    ],
-    "LINKFLAGS": [],
-    "libs": []
+    ]
   },
   "unix-like": {
     "std": {
@@ -35,7 +33,6 @@
     "CMCFLAGS": [
       "-Os"
     ],
-    "LINKFLAGS": [],
     "libs": [
       "m"
     ]

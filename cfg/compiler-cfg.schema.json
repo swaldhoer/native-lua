@@ -47,8 +47,6 @@
     "std",
     "CFLAGS",
     "DEFINES",
-    "CMCFLAGS",
-    "LINKFLAGS",
-    "libs"
+    "CMCFLAGS"
   ]
 }

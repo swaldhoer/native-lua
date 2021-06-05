@@ -25,6 +25,7 @@ APPNAME = "lua"
 REPO_URL = "https://www.github.com/swaldhoer/native-lua"
 
 LUA_LIBRARY_ST = "static-lua-library"
+LUA_LIBRARY_SH = "shared-lua-library"
 
 
 def validate_json_schema(data: dict, schema=dict) -> bool:
@@ -228,8 +229,6 @@ def configure(conf):  # pylint: disable=too-many-branches,too-many-locals
     cc_config_file = os.path.join("cfg", plat, f"{plat}_{conf.env.CC_NAME}.json")
     cc_config = conf.path.find_node(cc_config_file).read_json()
     for i, val in cc_config.items():
-        if not val:  # if a setting is empty do not overwrite default values
-            continue
         if i.isupper() or "_PATTERN" in i:
             conf.env[i] = val
     # add the build directory to includes as it stores the configuration file
@@ -384,9 +383,10 @@ def build(bld):
 
     bld.env.tests_basepath = "tests"
     bld.env.ltests_dir = os.path.join(bld.env.tests_basepath, "ltests")
-    # tests can currently not be built on Windows
     if bld.options.ltests:
-        if bld.env.CC_NAME.lower() != "msvc":
+        if bld.env.CC_NAME.lower() == "msvc":
+            bld.env.append_unique("CFLAGS", ["/Zi", "/FS"])
+        else:
             bld.env.append_unique("CFLAGS", "-g")
         bld.define("LUA_USER_H", "ltests.h", quote=True)
         bld.env.append_unique("INCLUDES", bld.env.ltests_dir)
@@ -465,7 +465,6 @@ def build_openbsd(bld):
     if bld.options.ltests:
         use_ltests += ["LTESTS"]
         bld.objects(source=bld.env.ltests_sources, name="LTESTS")
-
     bld.objects(
         source=bld.env.compiler_module_sources,
         target="cm_objects",
@@ -497,7 +496,6 @@ def build_netbsd(bld):
     if bld.options.ltests:
         use_ltests += ["LTESTS"]
         bld.objects(source=bld.env.ltests_sources, name="LTESTS")
-
     bld.objects(
         source=bld.env.compiler_module_sources,
         target="cm_objects",
@@ -529,7 +527,6 @@ def build_freebsd(bld):
     if bld.options.ltests:
         use_ltests += ["LTESTS"]
         bld.objects(source=bld.env.ltests_sources, name="LTESTS")
-
     bld.objects(
         source=bld.env.compiler_module_sources,
         target="cm_objects",
@@ -621,8 +618,11 @@ def build_darwin(bld):
 def build_win32(bld):
     def build_win32_msvc():
         """Building on win32 with msvc"""
-        bld(
-            features="c",
+        use_ltests = []
+        if bld.options.ltests:
+            use_ltests += ["LTESTS"]
+            bld.objects(source=bld.env.ltests_sources, target="LTESTS")
+        bld.objects(
             source=bld.env.compiler_module_sources,
             target="cm_objects",
             cflags=bld.env.CMCFLAGS,
@@ -630,25 +630,25 @@ def build_win32(bld):
         bld.stlib(
             source=bld.env.sources,
             target="lua",
-            use=["cm_objects"],
+            use=["cm_objects"] + use_ltests,
             name=LUA_LIBRARY_ST,
         )
         bld.shlib(
             source=bld.env.sources,
             target="luadll",
             defines=["LUA_BUILD_AS_DLL"],
-            use=["cm_objects"],
-            name="shared-lua-library",
+            use=["cm_objects"] + use_ltests,
+            name=LUA_LIBRARY_SH,
         )
         bld.program(
             source=bld.env.source_interpreter,
             target="lua",
-            use=["shared-lua-library"],
+            use=[LUA_LIBRARY_SH] + use_ltests,
         )
         bld.program(
             source=bld.env.source_compiler,
             target="luac",
-            use=[LUA_LIBRARY_ST],
+            use=[LUA_LIBRARY_ST] + use_ltests,
         )
 
         if bld.options.include_tests:
@@ -656,8 +656,11 @@ def build_win32(bld):
             # https://github.com/swaldhoer/native-lua/issues/46
 
     def build_win32_gcc():
-        bld(
-            features="c",
+        use_ltests = []
+        if bld.options.ltests:
+            use_ltests += ["LTESTS"]
+            bld.objects(source=bld.env.ltests_sources, name="LTESTS")
+        bld.objects(
             source=bld.env.compiler_module_sources,
             target="cm_objects",
             cflags=bld.env.CMCFLAGS,
@@ -665,25 +668,25 @@ def build_win32(bld):
         bld.stlib(
             source=bld.env.sources,
             target="lua",
-            use=["cm_objects"],
+            use=use_ltests + ["cm_objects"],
             name=LUA_LIBRARY_ST,
         )
         bld.shlib(
             source=bld.env.sources,
             target="luadll",
             defines=["LUA_BUILD_AS_DLL"],
-            use=["cm_objects"],
-            name="shared-lua-library",
+            use=use_ltests + ["cm_objects"],
+            name=LUA_LIBRARY_SH,
         )
         bld.program(
             source=bld.env.source_interpreter,
             target="lua",
-            use=["shared-lua-library"] + bld.env.USE_LIBS,
+            use=[LUA_LIBRARY_SH] + bld.env.USE_LIBS + use_ltests,
         )
         bld.program(
             source=bld.env.source_compiler,
             target="luac",
-            use=[LUA_LIBRARY_ST] + bld.env.USE_LIBS,
+            use=[LUA_LIBRARY_ST] + bld.env.USE_LIBS + use_ltests,
         )
 
         if bld.options.include_tests:
@@ -691,8 +694,11 @@ def build_win32(bld):
             # https://github.com/swaldhoer/native-lua/issues/46
 
     def build_win32_clang():
-        bld(
-            features="c",
+        use_ltests = []
+        if bld.options.ltests:
+            use_ltests += ["ltests"]
+            bld(features="c", source=bld.env.ltests_sources, name="ltests", target="ltests")
+        bld.objects(
             source=bld.env.compiler_module_sources,
             target="cm_objects",
             cflags=bld.env.CMCFLAGS,
@@ -700,20 +706,20 @@ def build_win32(bld):
         bld.stlib(
             source=bld.env.sources,
             target="lua",
-            use=["cm_objects"],
+            use=["cm_objects"] + use_ltests,
             name=LUA_LIBRARY_ST,
         )
         bld.shlib(
             source=bld.env.sources,
             target="luadll",
             defines=["LUA_BUILD_AS_DLL"],
-            use=["cm_objects"],
-            name="shared-lua-library",
+            use=["cm_objects"] + use_ltests,
+            name=LUA_LIBRARY_SH,
         )
         bld.program(
             source=bld.env.source_interpreter,
             target="lua",
-            use=["shared-lua-library"] + bld.env.USE_LIBS,
+            use=[LUA_LIBRARY_SH] + bld.env.USE_LIBS+ ["ltests"],
         )
         bld.program(
             source=bld.env.source_compiler,
@@ -754,12 +760,12 @@ def build_cygwin(bld):
         target="luadll",
         defines=["LUA_BUILD_AS_DLL"],
         use=["cm_objects"],
-        name="shared-lua-library",
+        name=LUA_LIBRARY_SH,
     )
     bld.program(
         source=bld.env.source_interpreter,
         target="lua",
-        use=["shared-lua-library"] + bld.env.USE_LIBS + use_ltests,
+        use=[LUA_LIBRARY_SH] + bld.env.USE_LIBS + use_ltests,
     )
     bld.program(
         source=bld.env.source_compiler,

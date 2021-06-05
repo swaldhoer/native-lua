@@ -15,7 +15,6 @@
   "CMCFLAGS": [
     "-Os"
   ],
-  "LINKFLAGS": [],
   "libs": [
     "m",
     "readline"
