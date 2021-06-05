@@ -201,7 +201,7 @@ def options(opt):
         dest="c_std",
         help=(
             "Overwrite default C standard, e.g., '-std=gnu99' for gcc. "
-            "This option can only be set during configuration.",
+            "This option can only be set during configuration."
         ),
     )
     opt.add_option(

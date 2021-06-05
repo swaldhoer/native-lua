@@ -16,7 +16,7 @@
 #include "waf_build_config.h"
 
 #if defined(_MSC_VER) && defined(_MSC_FULL_VER)
-#pragma warning(disable: 4242 4820 4668 4710 4711 5045)
+#pragma warning(disable: 4061 4245 4242 4244 4310 4668 4702 4710 4711 4774 4820 5045)
 /* Disable C5045 (see https://docs.microsoft.com/de-de/cpp/error-messages/compiler-warnings/c5045) */
 /* we are compiling with /Qspectre */
 #endif
