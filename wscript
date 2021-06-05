@@ -125,6 +125,7 @@ def to_abolute_paths(self):
             incpaths_fixed.append(inc_path)
     self.env.INCPATHS = incpaths_fixed
 
+
 def validate_json_schema(data: dict, schema=dict) -> bool:
     valid = False
     try:
@@ -219,7 +220,6 @@ def configure(conf):  # pylint: disable=too-many-branches,too-many-locals
     version_file_ver = version_info["native Lua"]
     if not VERSION == version_file_ver:
         conf.fatal(base_err_msg.format(VERSION, version_file, version_file_ver))
-
 
     conf.env.lua_src_version = version_info["lua"]
     conf.env.lua_tests_version = version_info["tests"]
