@@ -129,7 +129,7 @@ task:
         - chsh -s /usr/local/bin/bash
 
   version_script:
-    - python3 scripts/versions.py -t ${CC_LUA_BUILD}
+    - python3 versions.py -t ${CC_LUA_BUILD}
   build_script:
     - python3 waf configure -v --check-c-compiler=${CC_LUA_BUILD} ${CC_LUA_BUILD_OPTIONS} build install
   test_script:

@@ -4,18 +4,9 @@
 # SPDX-License-Identifier: MIT
 
 import os
-import re
 
 import jsonschema
 from waflib import Logs, Utils
-from waflib.Build import (
-    BuildContext,
-    CleanContext,
-    InstallContext,
-    ListContext,
-    StepContext,
-    UninstallContext,
-)
 
 PLATFORM = Utils.unversioned_sys_platform().lower()
 
@@ -120,6 +111,19 @@ MAN_FILES = [
     os.path.join("docs", "luac.1"),
 ]
 
+USE_ABSOLUTE_INCPATHS = ["\\Microsoft Visual Studio\\", "\\Windows Kits\\"]
+
+
+@TaskGen.feature("c")
+@TaskGen.after_method("apply_incpaths")
+def to_abolute_paths(self):
+    incpaths_fixed = []
+    for inc_path in self.env.INCPATHS:
+        if any(i in inc_path for i in USE_ABSOLUTE_INCPATHS):
+            incpaths_fixed.append(os.path.abspath(inc_path))
+        else:
+            incpaths_fixed.append(inc_path)
+    self.env.INCPATHS = incpaths_fixed
 
 def validate_json_schema(data: dict, schema=dict) -> bool:
     valid = False
@@ -259,9 +263,6 @@ def configure(conf):  # pylint: disable=too-many-branches,too-many-locals
         validate_json_schema(v, schema_compiler_setup)
 
     conf.load("compiler_c")
-    if Utils.is_win32 and conf.env.CC_NAME.lower() == "msvc":
-        # make msvc include paths absolute
-        conf.load("msvc_patch", tooldir="scripts")
 
     # load platform-compiler configuration
     cc_config_file = os.path.join(

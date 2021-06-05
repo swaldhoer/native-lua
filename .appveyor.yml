@@ -52,7 +52,7 @@ install:
   - cmd: C:\cygwin64\bin\bash.exe -l -c "echo cd /cygdrive/c/projects/native-lua >> ~/.bash_profile"
 
 before_build:
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 scripts/versions.py -t ${CC_LUA_BUILD}"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 versions.py -t ${CC_LUA_BUILD}"
 
 build_script:
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 waf configure -v --check-c-compiler=$CC_LUA_BUILD"

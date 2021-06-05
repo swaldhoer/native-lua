@@ -69,7 +69,7 @@ jobs:
         displayName: Install clang
         condition: eq(variables['CC_LUA_BUILD'], 'clang')
 
-      - script: python scripts/versions.py -t ${CC_LUA_BUILD} ${TOOL_VERSIONS}
+      - script: python versions.py -t ${CC_LUA_BUILD} ${TOOL_VERSIONS}
         displayName: Compiler and Tools versions
 
       - script: python waf configure -v --check-c-compiler=${CC_LUA_BUILD} ${CC_LUA_BUILD_OPTIONS} --prefix=${{ variables.lua_install_prefix }} build install
@@ -140,8 +140,8 @@ jobs:
           if %CC_LUA_BUILD%==msvc (
             call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
           )
-          echo scripts\versions.py -t $(CC_LUA_BUILD) $(TOOL_VERSIONS)
-          python scripts\versions.py -t $(CC_LUA_BUILD) $(TOOL_VERSIONS)
+          echo versions.py -t $(CC_LUA_BUILD) $(TOOL_VERSIONS)
+          python versions.py -t $(CC_LUA_BUILD) $(TOOL_VERSIONS)
         displayName: Compiler and Tools versions
 
       - script: python waf configure -v --check-c-compiler=$(CC_LUA_BUILD) $(CC_LUA_BUILD_OPTIONS) --prefix=${{ variables.lua_install_prefix }} build install
@@ -216,7 +216,7 @@ jobs:
         condition: eq(variables['CC_LUA_BUILD'], 'gcc')
         displayName: echo PATH
 
-      - script: python scripts/versions.py -t ${CC_LUA_BUILD} ${TOOL_VERSIONS}
+      - script: python versions.py -t ${CC_LUA_BUILD} ${TOOL_VERSIONS}
         displayName: Compiler and Tools versions
 
       - script: sudo python waf configure -v --check-c-compiler=${CC_LUA_BUILD} ${CC_LUA_BUILD_OPTIONS} --prefix=${{ variables.lua_install_prefix }} build install
@@ -247,7 +247,7 @@ jobs:
       - script: python -m pip install --upgrade pip && python -m pip install --upgrade --requirement requirements.txt
         displayName: Installing pip dependencies
 
-      - script: python scripts/versions.py -t black -t pylint -t isort
+      - script: python versions.py -t black -t pylint -t isort
         displayName: Static Program Analysis Tools versions
 
       - script: python waf --help
@@ -258,5 +258,5 @@ jobs:
         displayName: Run black
       - script: |
           pylint --rcfile=pyproject.toml wscript
-          pylint --rcfile=pyproject.toml scripts\msvc_patch.py
+          pylint --rcfile=pyproject.toml versions.py
         displayName: Run pylint
