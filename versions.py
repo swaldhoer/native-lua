@@ -7,8 +7,7 @@ import argparse
 import re
 import shutil
 import sys
-
-from subprocess import Popen, PIPE
+from subprocess import PIPE, Popen
 
 RE_VERSION = r"((\d+)\.(\d+)\.(\d+))"
 VERSIONS = {

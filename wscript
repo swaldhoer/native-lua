@@ -6,7 +6,7 @@
 import os
 
 import jsonschema
-from waflib import Logs, Utils
+from waflib import Logs, TaskGen, Utils
 
 PLATFORM = Utils.unversioned_sys_platform().lower()
 
