@@ -1,5 +1,0 @@
-/**
-
-@mainpage native Lua
-
-*/

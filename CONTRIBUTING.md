@@ -1,17 +1,11 @@
-############
-Contributing
-############
+# Contributing
 
-*******
-License
-*******
+## License
 
 By contributing to this repository/project you are licensing your contributions
-under `MIT`_ license.
+under [MIT](https://opensource.org/licenses/MIT) license.
 
-*****************
-Coding Guidelines
-*****************
+## Coding Guidelines
 
 - Limit characters to 79 characters per line
 - Add one empty line at the end of a file (POSIX 3.206 Line)
@@ -41,5 +35,3 @@ Coding Guidelines
      :linenos:
 
      /* SPDX-License-Identifier: MIT */
-
-.. _MIT: https://opensource.org/licenses/MIT

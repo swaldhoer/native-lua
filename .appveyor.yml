@@ -25,9 +25,7 @@ skip_commits:
     - .editorconfig
     - .gitattributes
     - .gitignore
-    - .readthedocs.yml
     - azure-pipelines.yml
-    - docs/environment.yml
 
 init:
   - git config --global core.autocrlf input
@@ -36,9 +34,9 @@ install:
   - cmd: curl.exe -fsSL -o setup-x86_64.exe http://www.cygwin.com/setup-x86_64.exe
   - cmd: "
     if %CC_LUA_BUILD%==clang (
-      setup-x86_64.exe --no-desktop --no-shortcuts --no-startmenu --quiet-mode --packages alternatives,wget,python37,python37-devel,python37-pip,doxygen,graphviz,llvm,clang
+      setup-x86_64.exe --no-desktop --no-shortcuts --no-startmenu --quiet-mode --packages alternatives,wget,python37,python37-devel,python37-pip,llvm,clang
     ) else (
-      setup-x86_64.exe --no-desktop --no-shortcuts --no-startmenu --quiet-mode --packages alternatives,wget,python37,python37-devel,python37-pip,doxygen,graphviz
+      setup-x86_64.exe --no-desktop --no-shortcuts --no-startmenu --quiet-mode --packages alternatives,wget,python37,python37-devel,python37-pip
     )
     "
   - cmd: C:\cygwin64\bin\bash.exe -l -c "unlink /usr/bin/python3"
@@ -54,7 +52,7 @@ install:
   - cmd: C:\cygwin64\bin\bash.exe -l -c "echo cd /cygdrive/c/projects/native-lua >> ~/.bash_profile"
 
 before_build:
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 scripts/versions.py -t ${CC_LUA_BUILD} -t doxygen -t graphviz"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 scripts/versions.py -t ${CC_LUA_BUILD}"
 
 build_script:
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 waf configure -v --check-c-compiler=$CC_LUA_BUILD"
@@ -64,5 +62,4 @@ build_script:
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd build/bin/tests && lua -v"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "cd build/bin/tests && lua -e\"_U=true\" all.lua"
   # - cmd: C:\cygwin64\bin\bash.exe -l -c "cd build/bin/tests && lua all.lua"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 waf build-docs"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 waf uninstall clean distclean"

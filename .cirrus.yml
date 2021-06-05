@@ -21,7 +21,7 @@ task:
       common_install_script:
         - export RUNLEVEL=1
         - apt-get update
-        - apt-get install -y dialog apt-utils lsb-release curl gnupg build-essential doxygen graphviz python3-pip software-properties-common libreadline7 libreadline-dev
+        - apt-get install -y dialog apt-utils lsb-release curl gnupg build-essential python3-pip software-properties-common libreadline7 libreadline-dev
         - python3 -m pip install --upgrade pip
         - python3 -m pip install --upgrade --requirement requirements.txt
       clang_install_script: |
@@ -55,7 +55,7 @@ task:
       common_install_script:
         - export RUNLEVEL=1
         - dnf -y update
-        - dnf -y install redhat-lsb-core python3-pip doxygen graphviz readline readline-devel
+        - dnf -y install redhat-lsb-core python3-pip readline readline-devel
         - python3 -m pip install --upgrade pip
         - python3 -m pip install --upgrade --requirement requirements.txt
       gcc_install_script: |
@@ -88,7 +88,7 @@ task:
         - export RUNLEVEL=1
         - export DEBIAN_FRONTEND=noninteractive
         - apt-get update
-        - apt-get install -y apt-utils lsb-release curl gnupg dialog python3-pip build-essential doxygen graphviz software-properties-common libreadline8 libreadline-dev
+        - apt-get install -y apt-utils lsb-release curl gnupg dialog python3-pip build-essential software-properties-common libreadline8 libreadline-dev
         - python3 -m pip install --upgrade pip
         - python3 -m pip install --upgrade --requirement requirements.txt
       clang_install_script: |
@@ -117,7 +117,7 @@ task:
         - pkg update -f
         - env ASSUME_ALWAYS_YES=YES pkg bootstrap -f
         - env ASSUME_ALWAYS_YES=YES pkg upgrade pkg
-        - env ASSUME_ALWAYS_YES=YES pkg install bash doxygen
+        - env ASSUME_ALWAYS_YES=YES pkg install bash
         - python3 -m ensurepip --default-pip
         - python3 -m pip install --upgrade pip
         - python3 -m pip install --upgrade --requirement requirements.txt
@@ -129,9 +129,8 @@ task:
         - chsh -s /usr/local/bin/bash
 
   version_script:
-    - python3 scripts/versions.py -t ${CC_LUA_BUILD} -t doxygen -t graphviz -t sphinx
+    - python3 scripts/versions.py -t ${CC_LUA_BUILD}
   build_script:
-    - python3 waf configure -v --check-c-compiler=${CC_LUA_BUILD} build-docs clean-docs distclean
     - python3 waf configure -v --check-c-compiler=${CC_LUA_BUILD} ${CC_LUA_BUILD_OPTIONS} build install
   test_script:
     - cd build/bin/tests && lua -e"_U=true" all.lua

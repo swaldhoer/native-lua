@@ -116,8 +116,8 @@ INC_FILES = [
 ]
 
 MAN_FILES = [
-    os.path.join("docs", "_static", "doc", "lua.1"),
-    os.path.join("docs", "_static", "doc", "luac.1"),
+    os.path.join("docs", "lua.1"),
+    os.path.join("docs", "luac.1"),
 ]
 
 
@@ -130,33 +130,6 @@ def validate_json_schema(data: dict, schema=dict) -> bool:
     else:
         valid = True
     return valid
-
-
-for x in ["bin", "docs"]:
-    if x == "bin":
-        for y in (
-            BuildContext,
-            CleanContext,
-            ListContext,
-            StepContext,
-            InstallContext,
-            UninstallContext,
-        ):
-            NAME = y.__name__.replace("Context", "").lower()
-
-            class Tmp2(y):
-                __doc__ = y.__doc__ + f" ({x})"
-                cmd = NAME
-                variant = x
-
-    if x == "docs":
-        for y in (BuildContext, CleanContext):
-            NAME = y.__name__.replace("Context", "").lower()
-
-            class Tmp1(y):
-                __doc__ = y.__doc__ + f" ({x})"
-                cmd = NAME + "-" + x
-                variant = x
 
 
 if PLATFORM == "win32":
@@ -243,33 +216,6 @@ def configure(conf):  # pylint: disable=too-many-branches,too-many-locals
     if not VERSION == version_file_ver:
         conf.fatal(base_err_msg.format(VERSION, version_file, version_file_ver))
 
-    confpy_file = conf.path.find_node(os.path.join("docs", "conf.py"))
-    confpy_txt = confpy_file.read(encoding="utf-8")
-    confpy_file_ver = re.search(r'(version)( = )"(.{0,})"', confpy_txt).group(3)
-    if not VERSION == confpy_file_ver:
-        conf.fatal(base_err_msg.format(VERSION, confpy_file, confpy_file_ver))
-
-    readme_file = conf.path.find_node("README.md")
-    readme_txt = readme_file.read(encoding="utf-8")
-    readme_file_ver = re.search(r"(based on native Lua )\((.{0,})\)", readme_txt).group(
-        2
-    )
-    if not VERSION == readme_file_ver:
-        conf.fatal(base_err_msg.format(VERSION, readme_file, readme_file_ver))
-
-    start_file = conf.path.find_node(os.path.join("docs", "start.rst"))
-    start_txt = start_file.read(encoding="utf-8")
-    start_file_ver = re.search(r"(based on native Lua )\((.{0,})\)", start_txt).group(2)
-    if not VERSION == readme_file_ver:
-        conf.fatal(base_err_msg.format(VERSION, start_file, start_file_ver))
-
-    doxygen_file = conf.path.find_node(os.path.join("docs", "doxygen.conf"))
-    doxygen_txt = doxygen_file.read(encoding="utf-8")
-    doxygen_file_ver = re.search(
-        r'(PROJECT_NUMBER)(         = )"(.{0,})"', doxygen_txt
-    ).group(3)
-    if not VERSION == doxygen_file_ver:
-        conf.fatal(base_err_msg.format(VERSION, doxygen_file, doxygen_file_ver))
 
     conf.env.lua_src_version = version_info["lua"]
     conf.env.lua_tests_version = version_info["tests"]
@@ -377,19 +323,10 @@ def configure(conf):  # pylint: disable=too-many-branches,too-many-locals
     )
     if cc_config.get("libs", []):
         conf.env.USE_LIBS = [i.upper() for i in cc_config["libs"]]
-    # doc tools
-    conf.load("sphinx", tooldir="scripts")
-    conf.load("doxygen", tooldir="scripts")
-
-    # check that the version number follows semantic versioning
-    conf.load("semver", tooldir="scripts")
 
 
 def build(bld):
-    """Wrapper for the compiler specific build"""
-    if bld.variant == "docs":
-        bld(recurse="docs")
-        return
+    """Build lua"""
     # check that the binary will be available in PATH
     if bld.cmd.startswith("install"):
         bin_dir = Utils.subst_vars(bld.env.BINDIR, bld.env)

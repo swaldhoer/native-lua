@@ -8,13 +8,11 @@ trigger:
       - .editorconfig
       - .gitattributes
       - .gitignore
-      - .readthedocs.yml
-      - docs/environment.yml
       - pyproject.toml
 
 variables:
   NATIVE_LUA_CI_BUILD: "TRUE"
-  TOOL_VERSIONS: "-t doxygen -t graphviz -t sphinx -t black -t pylint -t isort"
+  TOOL_VERSIONS: "-t black -t pylint -t isort"
 
 jobs:
   - job: Linux
@@ -25,7 +23,7 @@ jobs:
       - name: lua_install_prefix
         value: /opt/lua
       - name: install_packages
-        value: dialog apt-utils software-properties-common libreadline7 libreadline-dev build-essential doxygen graphviz
+        value: dialog apt-utils software-properties-common libreadline7 libreadline-dev build-essential
     strategy:
       matrix:
         gcc_include_tests:
@@ -73,9 +71,6 @@ jobs:
 
       - script: python scripts/versions.py -t ${CC_LUA_BUILD} ${TOOL_VERSIONS}
         displayName: Compiler and Tools versions
-
-      - script: python waf configure build-docs clean-docs distclean -v
-        displayName: Documentation build
 
       - script: python waf configure -v --check-c-compiler=${CC_LUA_BUILD} ${CC_LUA_BUILD_OPTIONS} --prefix=${{ variables.lua_install_prefix }} build install
         displayName: Configure, build, install
@@ -135,13 +130,6 @@ jobs:
         condition: eq(variables['CC_LUA_BUILD'], 'clang')
 
       - script: |
-          choco install --no-progress doxygen.install -y --version 1.9.1
-          echo ##vso[task.prependpath]C:\Program Files\Doxygen\bin
-          choco install --no-progress graphviz -y --version 2.46.0
-          echo ##vso[task.prependpath]C:\Program Files\Graphviz\bin
-        displayName: Installing common development tools
-
-      - script: |
           echo ##vso[task.prependpath]%LOCALAPPDATA%\Programs\lua\bin
         displayName: Add lua installation to PATH
 
@@ -155,9 +143,6 @@ jobs:
           echo scripts\versions.py -t $(CC_LUA_BUILD) $(TOOL_VERSIONS)
           python scripts\versions.py -t $(CC_LUA_BUILD) $(TOOL_VERSIONS)
         displayName: Compiler and Tools versions
-
-      - script: python waf configure build-docs clean-docs distclean -v
-        displayName: Documentation build
 
       - script: python waf configure -v --check-c-compiler=$(CC_LUA_BUILD) $(CC_LUA_BUILD_OPTIONS) --prefix=${{ variables.lua_install_prefix }} build install
         displayName: Configure, build, install
@@ -180,8 +165,6 @@ jobs:
     variables:
       - name: lua_install_prefix
         value: /opt/lua
-      - name: install_packages
-        value: doxygen graphviz
     strategy:
       matrix:
         gcc_include_tests:
@@ -203,9 +186,6 @@ jobs:
 
       - script: echo "##vso[task.prependpath]/opt/lua/bin"
         displayName: Add install path to $PATH
-
-      - script: brew install ${{ variables.install_packages }}
-        displayName: Installing common development tools
 
       - script: python -m pip install --upgrade pip && python -m pip install --upgrade --requirement requirements.txt
         displayName: Installing pip dependencies
@@ -238,9 +218,6 @@ jobs:
 
       - script: python scripts/versions.py -t ${CC_LUA_BUILD} ${TOOL_VERSIONS}
         displayName: Compiler and Tools versions
-
-      - script: python waf configure build-docs clean-docs distclean -v
-        displayName: Documentation build
 
       - script: sudo python waf configure -v --check-c-compiler=${CC_LUA_BUILD} ${CC_LUA_BUILD_OPTIONS} --prefix=${{ variables.lua_install_prefix }} build install
         displayName: Configure, build, install
@@ -281,12 +258,5 @@ jobs:
         displayName: Run black
       - script: |
           pylint --rcfile=pyproject.toml wscript
-          pylint --rcfile=pyproject.toml docs\conf.py
-          pylint --rcfile=pyproject.toml docs\wscript
-          pylint --rcfile=pyproject.toml scripts\dot.py
-          pylint --rcfile=pyproject.toml scripts\doxygen.py
           pylint --rcfile=pyproject.toml scripts\msvc_patch.py
-          pylint --rcfile=pyproject.toml scripts\semver.py
-          pylint --rcfile=pyproject.toml scripts\sphinx.py
-          pylint --rcfile=pyproject.toml scripts\versions.py
         displayName: Run pylint
