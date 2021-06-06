@@ -6,6 +6,7 @@ task:
   matrix:
     - container:
         image: debian:10
+        cpu: 1
       install_script:
         - export RUNLEVEL=1
         - apt-get update
@@ -27,6 +28,7 @@ task:
 
     - container:
         image: fedora:33
+        cpu: 1
       install_script:
         - export RUNLEVEL=1
         - dnf -y update
