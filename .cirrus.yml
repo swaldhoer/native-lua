@@ -36,7 +36,7 @@ task:
 
     - container:
         image: ubuntu:focal
-        cpu: 4
+        cpu: 1
       install_script:
         - export RUNLEVEL=1
         - export DEBIAN_FRONTEND=noninteractive
@@ -51,7 +51,7 @@ task:
 
     - freebsd_instance:
         image_family: freebsd-13-0
-        cpu: 4
+        cpu: 1
       freebsd_install_script:
         - pkg update -f
         - env ASSUME_ALWAYS_YES=YES pkg bootstrap -f
