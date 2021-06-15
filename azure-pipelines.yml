@@ -98,21 +98,21 @@ jobs:
         msvc_include_tests:
           CC_LUA_BUILD: msvc
           CC_LUA_BUILD_OPTIONS: --include-tests
-        msvc_include_tests_ltests:
-          CC_LUA_BUILD: msvc
-          CC_LUA_BUILD_OPTIONS: --include-tests --ltests
+        # msvc_include_tests_ltests:
+        #   CC_LUA_BUILD: msvc
+        #   CC_LUA_BUILD_OPTIONS: --include-tests --ltests
         gcc_include_tests:
           CC_LUA_BUILD: gcc
           CC_LUA_BUILD_OPTIONS: --include-tests
-        gcc_include_tests_ltests:
-          CC_LUA_BUILD: gcc
-          CC_LUA_BUILD_OPTIONS: --include-tests --ltests
+        # gcc_include_tests_ltests:
+        #   CC_LUA_BUILD: gcc
+        #   CC_LUA_BUILD_OPTIONS: --include-tests --ltests
         clang_include_tests:
           CC_LUA_BUILD: clang
           CC_LUA_BUILD_OPTIONS: --include-tests
-        clang_include_tests_ltests:
-          CC_LUA_BUILD: clang
-          CC_LUA_BUILD_OPTIONS: --include-tests --ltests
+        # clang_include_tests_ltests:
+        #   CC_LUA_BUILD: clang
+        #   CC_LUA_BUILD_OPTIONS: --include-tests --ltests
     steps:
       - task: UsePythonVersion@0
         inputs:

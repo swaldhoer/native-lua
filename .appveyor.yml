@@ -6,12 +6,12 @@ environment:
   matrix:
     - CC_LUA_BUILD: gcc
       CC_LUA_BUILD_OPTIONS: --include-tests
-    - CC_LUA_BUILD: gcc
-      CC_LUA_BUILD_OPTIONS: --include-tests --ltests
+    # - CC_LUA_BUILD: gcc
+    #   CC_LUA_BUILD_OPTIONS: --include-tests --ltests
     - CC_LUA_BUILD: clang
       CC_LUA_BUILD_OPTIONS: --include-tests
-    - CC_LUA_BUILD: clang
-      CC_LUA_BUILD_OPTIONS: --include-tests --ltests
+    # - CC_LUA_BUILD: clang
+    #   CC_LUA_BUILD_OPTIONS: --include-tests --ltests
 
 cache:
   - C:\cygwin64\var\cache
