@@ -4,12 +4,11 @@
       "${workspaceFolder}/build",
       "${workspaceFolder}/src",
       "${workspaceFolder}/tests/ltests"
-    ],
-    "myCompilerPath": "/usr/local/bin/gcc-7"
+    ]
   },
   "configurations": [
     {
-      "name": "Mac",
+      "name": "ma",
       "intelliSenseMode": "${default}",
       "includePath": [
         "${includePaths}"
@@ -51,7 +50,6 @@
       "includePath": [
         "${includePaths}"
       ],
-      "compilerPath": "/usr/bin/gcc",
       "defines": [
         "LUA_USER_H=\"ltests.h\""
       ],
