@@ -2,6 +2,17 @@ version: 5.4.0.{build}
 
 image: Visual Studio 2019
 
+environment:
+  matrix:
+    - CC_LUA_BUILD: gcc
+      CC_LUA_BUILD_OPTIONS: --include-tests
+    # - CC_LUA_BUILD: gcc
+    #   CC_LUA_BUILD_OPTIONS: --include-tests --ltests
+    - CC_LUA_BUILD: clang
+      CC_LUA_BUILD_OPTIONS: --include-tests
+    # - CC_LUA_BUILD: clang
+    #   CC_LUA_BUILD_OPTIONS: --include-tests --ltests
+
 cache:
   - C:\cygwin64\var\cache
   - C:\cygwin64\home\appveyor\.cache\pip
@@ -14,64 +25,39 @@ skip_commits:
     - .editorconfig
     - .gitattributes
     - .gitignore
-    - .readthedocs.yml
     - azure-pipelines.yml
-    - docs/environment.yml
 
 init:
   - git config --global core.autocrlf input
 
 install:
   - cmd: curl.exe -fsSL -o setup-x86_64.exe http://www.cygwin.com/setup-x86_64.exe
-  - cmd: setup-x86_64.exe --no-desktop --no-shortcuts --no-startmenu --quiet-mode --packages alternatives,wget,python37,python37-devel,python37-pip,doxygen,graphviz,llvm,clang
+  - cmd: "
+    if %CC_LUA_BUILD%==clang (
+      setup-x86_64.exe --no-desktop --no-shortcuts --no-startmenu --quiet-mode --packages alternatives,wget,python37,python37-devel,python37-pip,llvm,clang
+    ) else (
+      setup-x86_64.exe --no-desktop --no-shortcuts --no-startmenu --quiet-mode --packages alternatives,wget,python37,python37-devel,python37-pip
+    )
+    "
   - cmd: C:\cygwin64\bin\bash.exe -l -c "unlink /usr/bin/python3"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "/usr/sbin/update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 0 --slave /usr/bin/pip3 pip3 /usr/bin/pip3.6"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "/usr/sbin/update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.7 10 --slave /usr/bin/pip3 pip3 /usr/bin/pip3.7"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "/usr/sbin/update-alternatives --install /usr/bin/python python /usr/bin/python3 10 --slave /usr/bin/pip pip /usr/bin/pip3"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "/usr/sbin/update-alternatives --set python3 /usr/bin/python3.7"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "/usr/sbin/update-alternatives --set python /usr/bin/python3"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 --version"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "pip3 install --upgrade pip"
   - cmd: C:\cygwin64\bin\bash.exe -l -c "export C_INCLUDE_PATH=/usr/include/python3.7m && pip3 install --upgrade --requirement /cygdrive/c/projects/native-lua/requirements.txt"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "doxygen --version"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "dot -V"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 --version"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "clang --version"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "gcc --version"
   - cmd: set PATH=%PATH%;%userprofile%\AppData\Local\Programs\lua\bin
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "echo cd /cygdrive/c/projects/native-lua >> ~/.profile"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "echo cd /cygdrive/c/projects/native-lua >> ~/.bash_profile"
 
 before_build:
-  # check that the correct python versions are used
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf configure"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 versions.py -t ${CC_LUA_BUILD}"
 
 build_script:
-  # build documentation
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf build_docs"
-  # --include-tests
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf distclean configure --include-tests"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf build_gcc -v"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf install_gcc"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/tests && which lua && lua -v && lua -e\"_U=true\" all.lua"
-  #- cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/tests && which lua && lua -v && lua all.lua"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf uninstall_gcc"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf build_clang"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf install_clang"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/clang/tests && which lua && lua -v && lua -e\"_U=true\" all.lua"
-  #- cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/clang/tests && which lua && lua -v && lua all.lua"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf uninstall_clang"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf distclean"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 scripts/run_test.py -c gcc -c clang --simple-test"
-  # --ltests --include-tests
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf distclean configure --ltests --include-tests"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf build_gcc -v"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf install_gcc"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/tests && which lua && lua -v && lua -e\"_U=true\" all.lua"
-  #- cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/tests && which lua && lua -v && lua all.lua"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf uninstall_gcc"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf build_clang"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf install_clang"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/clang/tests && which lua && lua -v && lua -e\"_U=true\" all.lua"
-  #- cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua/build/gcc/tests && which lua && lua -v && lua all.lua"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf uninstall_clang"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 waf distclean"
-  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd /cygdrive/c/projects/native-lua && python3 scripts/run_test.py -c gcc -c clang --simple-test"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 waf configure -v --check-c-compiler=$CC_LUA_BUILD $CC_LUA_BUILD_OPTIONS build install"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd build/tests && which lua"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd build/tests && lua -v"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "cd build/tests && lua -e\"_U=true\" all.lua"
+  # - cmd: C:\cygwin64\bin\bash.exe -l -c "cd build/tests && lua all.lua"
+  - cmd: C:\cygwin64\bin\bash.exe -l -c "python3 waf uninstall clean distclean"

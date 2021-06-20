@@ -1,375 +1,59 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "build_clang",
-            "type": "shell",
-            "group": "build",
-            "presentation": {
-                "reveal": "always",
-                "panel": "shared"
-            },
-            "command": "python3",
-            "windows": {
-                "command": "python"
-            },
-            "args": [
-                "waf",
-                "build_clang"
-            ],
-        },
-        {
-            "label": "build_gcc",
-            "type": "shell",
-            "group": "build",
-            "presentation": {
-                "reveal": "always",
-                "panel": "shared"
-            },
-            "command": "python3",
-            "windows": {
-                "command": "python",
-            },
-            "args": [
-                "waf",
-                "build_gcc"
-            ]
-        },
-        {
-            "label": "build_msvc",
-            "type": "shell",
-            "group": "build",
-            "presentation": {
-                "reveal": "always",
-                "panel": "shared"
-            },
-            "command": "echo",
-            "args": [
-                "build_msvc not supported on this platform."
-            ],
-            "windows": {
-                "command": "python",
-                "args": [
-                    "waf",
-                    "build_msvc"
-                ],
-            },
-        },
-        {
-            "label": "clean",
-            "type": "shell",
-            "group": "build",
-            "presentation": {
-                "reveal": "always",
-                "panel": "shared"
-            },
-            "command": "python3",
-            "windows": {
-                "command": "python",
-            },
-            "args": [
-                "waf",
-                "clean"
-            ]
-        },
-        {
-            "label": "clean_clang",
-            "type": "shell",
-            "group": "build",
-            "command": "python3",
-            "windows": {
-                "command": "python",
-            },
-            "args": [
-                "waf",
-                "clean_clang"
-            ]
-        },
-        {
-            "label": "clean_gcc",
-            "type": "shell",
-            "group": "build",
-            "command": "python3",
-            "windows": {
-                "command": "python",
-            },
-            "args": [
-                "waf",
-                "clean_gcc"
-            ]
-        },
-        {
-            "label": "clean_msvc",
-            "type": "shell",
-            "group": "build",
-            "command": "echo",
-            "args": [
-                "clean_msvc not supported on this platform."
-            ],
-            "windows": {
-                "command": "python",
-                "args": [
-                    "waf",
-                    "clean_msvc"
-                ],
-            },
-        },
-        {
-            "label": "configure",
-            "type": "shell",
-            "group": "build",
-            "command": "python3",
-            "windows": {
-                "command": "python",
-            },
-            "args": [
-                "waf",
-                "configure"
-            ]
-        },
-        {
-            "label": "dist",
-            "type": "shell",
-            "group": "build",
-            "command": "python3",
-            "windows": {
-                "command": "python",
-            },
-            "args": [
-                "waf",
-                "dist"
-            ]
-        },
-        {
-            "label": "distcheck",
-            "type": "shell",
-            "group": "build",
-            "command": "python3",
-            "windows": {
-                "command": "python",
-            },
-            "args": [
-                "waf",
-                "distcheck"
-            ]
-        },
-        {
-            "label": "distclean",
-            "type": "shell",
-            "group": "build",
-            "command": "python3",
-            "windows": {
-                "command": "python",
-            },
-            "args": [
-                "waf",
-                "distclean"
-            ]
-        },
-        {
-            "label": "install_clang",
-            "type": "shell",
-            "group": "build",
-            "presentation": {
-                "reveal": "always",
-                "panel": "shared"
-            },
-            "command": "python3",
-            "windows": {
-                "command": "python",
-            },
-            "args": [
-                "waf",
-                "install_clang"
-            ]
-        },
-        {
-            "label": "install_gcc",
-            "type": "shell",
-            "group": "build",
-            "presentation": {
-                "reveal": "always",
-                "panel": "shared"
-            },
-            "command": "python3",
-            "windows": {
-                "command": "python",
-            },
-            "args": [
-                "waf",
-                "install_gcc"
-            ]
-        },
-        {
-            "label": "install_msvc",
-            "type": "shell",
-            "group": "build",
-            "command": "echo",
-            "args": [
-                "install_msvc not supported on this platform."
-            ],
-            "windows": {
-                "command": "python",
-                "args": [
-                    "waf",
-                    "install_msvc"
-                ],
-            },
-        },
-        {
-            "label": "list_clang",
-            "type": "shell",
-            "group": "build",
-            "presentation": {
-                "reveal": "always",
-                "panel": "shared"
-            },
-            "command": "python3",
-            "windows": {
-                "command": "python",
-            },
-            "args": [
-                "waf",
-                "list_clang"
-            ]
-        },
-        {
-            "label": "list_gcc",
-            "type": "shell",
-            "group": "build",
-            "presentation": {
-                "reveal": "always",
-                "panel": "shared"
-            },
-            "command": "python3",
-            "windows": {
-                "command": "python",
-            },
-            "args": [
-                "waf",
-                "list_gcc"
-            ],
-        },
-        {
-            "label": "list_msvc",
-            "type": "shell",
-            "group": "build",
-            "command": "echo",
-            "args": [
-                "list_msvc not supported on this platform."
-            ],
-            "windows": {
-                "command": "python",
-                "args": [
-                    "waf",
-                    "list_msvc"
-                ],
-            },
-        },
-        {
-            "label": "uninstall_clang",
-            "type": "shell",
-            "group": "build",
-            "presentation": {
-                "reveal": "always",
-                "panel": "shared"
-            },
-            "command": [
-                "./waf"
-            ],
-            "args": [
-                "uninstall_clang"
-            ],
-            "windows": {
-                "command": "python",
-                "args": [
-                    "waf",
-                    "uninstall_clang"
-                ],
-            },
-        },
-        {
-            "label": "uninstall_gcc",
-            "type": "shell",
-            "group": "build",
-            "presentation": {
-                "reveal": "always",
-                "panel": "shared"
-            },
-            "command": [
-                "./waf"
-            ],
-            "args": [
-                "uninstall_gcc"
-            ],
-            "windows": {
-                "command": "python",
-                "args": [
-                    "waf",
-                    "uninstall_gcc"
-                ],
-            },
-        },
-        {
-            "label": "uninstall_msvc",
-            "type": "shell",
-            "group": "build",
-            "command": "echo",
-            "args": [
-                "uninstall_msvc not supported on this platform."
-            ],
-            "windows": {
-                "command": "python",
-                "args": [
-                    "waf",
-                    "uninstall_msvc"
-                ],
-            },
-        },
-        {
-            "label": "build_docs",
-            "type": "shell",
-            "group": "build",
-            "presentation": {
-                "reveal": "always",
-                "panel": "shared"
-            },
-            "command": [
-                "./waf"
-            ],
-            "args": [
-                "build_docs"
-            ],
-            "windows": {
-                "command": "python",
-                "args": [
-                    "waf",
-                    "build_docs"
-                ],
-            },
-        },
-        {
-            "label": "clean_docs",
-            "type": "shell",
-            "group": "build",
-            "presentation": {
-                "reveal": "always",
-                "panel": "shared"
-            },
-            "command": [
-                "./waf"
-            ],
-            "args": [
-                "clean_docs"
-            ],
-            "windows": {
-                "command": "python",
-                "args": [
-                    "waf",
-                    "clean_docs"
-                ],
-            },
-        },
-    ],
-    "problemMatcher": []
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build",
+      "type": "shell",
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "command": "python3",
+      "windows": {
+        "command": "python"
+      },
+      "args": [
+        "waf",
+        "build"
+      ],
+    },
+    {
+      "label": "build --include-tests --ltests",
+      "type": "shell",
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "command": "python3",
+      "windows": {
+        "command": "python"
+      },
+      "args": [
+        "waf",
+        "build",
+        "--include-tests",
+        "--ltests"
+      ],
+    },
+    {
+      "label": "configure",
+      "type": "shell",
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "command": "python3",
+      "windows": {
+        "command": "python"
+      },
+      "args": [
+        "waf",
+        "configure"
+      ],
+    },
+  ],
+  "problemMatcher": []
 }

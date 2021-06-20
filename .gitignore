@@ -1,7 +1,6 @@
 # directories
 /build/
 /_build/
-/docs/_build/
 /.vs/
 /.vscode/
 /waf-*/
@@ -9,7 +8,6 @@
 /waf3-*/
 /.waf3-*/
 __pycache__/
-/doxygen/
 
 # files
 *.user

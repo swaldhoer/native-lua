@@ -11,6 +11,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "lua.h" /* native Lua */
+
 /* test Lua with compatibility code */
 #define LUA_COMPAT_MATHLIB
 #define LUA_COMPAT_LT_LE

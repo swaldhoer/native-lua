@@ -1,0 +1,19 @@
+{
+  "std": {
+    "opt": "/std:",
+    "val": "c11"
+  },
+  "CFLAGS": [
+    "/nologo",
+    "/O2",
+    "/Wall",
+    "/Qspectre"
+  ],
+  "DEFINES": [
+    "LUA_COMPAT_5_2",
+    "_WIN32"
+  ],
+  "CMCFLAGS": [
+    "/Os"
+  ]
+}

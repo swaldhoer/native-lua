@@ -1,0 +1,32 @@
+{
+  "std": {
+    "opt": "-std=",
+    "val": "c99"
+  },
+  "CFLAGS": [
+    "-O2",
+    "-Wall",
+    "-Wextra"
+  ],
+  "DEFINES": [
+    "LUA_COMPAT_5_2",
+    "LUA_USE_LINUX"
+  ],
+  "CMCFLAGS": [
+    "-Os"
+  ],
+  "LINKFLAGS": [
+    "-Wl,-export-dynamic"
+  ],
+  "INCLUDES": [
+    "/usr/include/edit"
+  ],
+  "LIBPATH": [
+    "/usr/local/lib"
+  ],
+  "libs": [
+    "m",
+    "dl",
+    "edit"
+  ]
+}

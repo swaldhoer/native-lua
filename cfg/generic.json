@@ -1,0 +1,40 @@
+{
+  "win32": {
+    "std": {
+      "opt": "/std:",
+      "val": "c11"
+    },
+    "CFLAGS": [
+      "/nologo",
+      "/O2",
+      "/Wall",
+      "/Qspectre"
+    ],
+    "DEFINES": [
+      "LUA_COMPAT_5_2"
+    ],
+    "CMCFLAGS": [
+      "/Os"
+    ]
+  },
+  "unix-like": {
+    "std": {
+      "opt": "-std=",
+      "val": "gnu99"
+    },
+    "CFLAGS": [
+      "-O2",
+      "-Wall",
+      "-Wextra"
+    ],
+    "DEFINES": [
+      "LUA_COMPAT_5_2"
+    ],
+    "CMCFLAGS": [
+      "-Os"
+    ],
+    "libs": [
+      "m"
+    ]
+  }
+}

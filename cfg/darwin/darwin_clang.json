@@ -1,0 +1,22 @@
+{
+  "std": {
+    "opt": "-std=",
+    "val": "c99"
+  },
+  "CFLAGS": [
+    "-O2",
+    "-Wall",
+    "-Wextra"
+  ],
+  "DEFINES": [
+    "LUA_COMPAT_5_2",
+    "LUA_USE_MACOSX"
+  ],
+  "CMCFLAGS": [
+    "-Os"
+  ],
+  "libs": [
+    "m",
+    "readline"
+  ]
+}

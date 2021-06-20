@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Product",
+  "description": "Compiler setup to compile Lua as part of native Lua",
+  "type": "object",
+  "properties": {
+    "std": {
+      "description": "The C standard for all source files",
+      "type": "object",
+      "properties": {
+        "opt": {
+          "description": "The argument to set the compiler C standard",
+          "type": "string"
+        },
+        "val": {
+          "description": "The value of the C standard",
+          "type": "string"
+        }
+      },
+      "required": [
+        "opt",
+        "val"
+      ]
+    },
+    "CFLAGS": {
+      "description": "CFLAGS to be passed to the compiler",
+      "type": "array"
+    },
+    "DEFINES": {
+      "description": "DEFINES to be passed to the compiler",
+      "type": "array"
+    },
+    "CMCFLAGS": {
+      "description": "Compiler module CFLAGS to be passed to the compiler",
+      "type": "array"
+    },
+    "LINKFLAGS": {
+      "description": "LINKFLAGS to be passed to the compiler/linker",
+      "type": "array"
+    },
+    "libs": {
+      "description": "Additional libraries to be passed to the compiler/linker",
+      "type": "array"
+    }
+  },
+  "required": [
+    "std",
+    "CFLAGS",
+    "DEFINES",
+    "CMCFLAGS"
+  ]
+}

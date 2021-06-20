@@ -1,0 +1,4 @@
+#define NATIVE_LUA_PRE_MSG "based on native Lua"
+#define NATIVE_LUA_VERSION "{{ VERSION }}"
+#define NATIVE_LUA_REPO "{{ REPO_URL }}"
+#define NATIVE_LUA_MSG " [" NATIVE_LUA_PRE_MSG " (" NATIVE_LUA_VERSION "), " NATIVE_LUA_REPO"]"

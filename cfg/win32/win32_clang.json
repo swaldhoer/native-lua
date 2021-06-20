@@ -1,0 +1,25 @@
+{
+  "std": {
+    "opt": "-std=",
+    "val": "c99"
+  },
+  "CFLAGS": [
+    "-O2",
+    "-Wall",
+    "-Wextra"
+  ],
+  "DEFINES": [
+    "LUA_COMPAT_5_2",
+    "_WIN32"
+  ],
+  "CMCFLAGS": [
+    "-Os"
+  ],
+  "LINKFLAGS": [],
+  "libs": [],
+  "cstlib_PATTERN": "%s.lib",
+  "STLIB_MARKER": "",
+  "SHLIB_MARKER": "",
+  "IMPLIB_ST": "-IMPLIB:%s",
+  "implib_PATTERN": "%s.dll"
+}

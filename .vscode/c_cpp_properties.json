@@ -1,0 +1,66 @@
+{
+  "env": {
+    "includePaths": [
+      "${workspaceFolder}/build",
+      "${workspaceFolder}/src",
+      "${workspaceFolder}/tests/ltests"
+    ]
+  },
+  "configurations": [
+    {
+      "name": "ma",
+      "intelliSenseMode": "${default}",
+      "includePath": [
+        "${includePaths}"
+      ],
+      "compilerPath": "/usr/bin/clang",
+      "defines": [
+        "LUA_USER_H=\"ltests.h\""
+      ],
+      "cStandard": "c11",
+      "browse": {
+        "path": [
+          "${includePaths}"
+        ],
+        "limitSymbolsToIncludedHeaders": true
+      }
+    },
+    {
+      "name": "Linux",
+      "intelliSenseMode": "${default}",
+      "includePath": [
+        "${includePaths}"
+      ],
+      "compilerPath": "/usr/bin/gcc",
+      "defines": [
+        "LUA_USE_LINUX",
+        "LUA_USER_H=\"ltests.h\""
+      ],
+      "cStandard": "c11",
+      "browse": {
+        "path": [
+          "${includePaths}"
+        ],
+        "limitSymbolsToIncludedHeaders": true
+      }
+    },
+    {
+      "name": "Win32",
+      "intelliSenseMode": "${default}",
+      "includePath": [
+        "${includePaths}"
+      ],
+      "defines": [
+        "LUA_USER_H=\"ltests.h\""
+      ],
+      "cStandard": "c11",
+      "browse": {
+        "path": [
+          "${includePaths}"
+        ],
+        "limitSymbolsToIncludedHeaders": true
+      }
+    }
+  ],
+  "version": 4
+}

@@ -1,0 +1,51 @@
+{
+  "default": {
+    "unix-like": [
+      "gcc",
+      "clang"
+    ],
+    "win32": [
+      "msvc"
+    ]
+  },
+  "known-platforms": {
+    "aix": [
+      "xlc",
+      "gcc",
+      "clang"
+    ],
+    "cygwin": [
+      "gcc",
+      "clang"
+    ],
+    "darwin": [
+      "clang",
+      "gcc"
+    ],
+    "freebsd": [
+      "clang",
+      "gcc"
+    ],
+    "linux": [
+      "gcc",
+      "clang",
+      "icc"
+    ],
+    "netbsd": [
+      "clang",
+      "gcc"
+    ],
+    "openbsd": [
+      "clang",
+      "gcc"
+    ],
+    "solaris": [
+      "gcc"
+    ],
+    "win32": [
+      "msvc",
+      "gcc",
+      "clang"
+    ]
+  }
+}

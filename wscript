@@ -1,33 +1,122 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # encoding: utf-8
 
 # SPDX-License-Identifier: MIT
 
-# pylint: disable=unused-variable
-
 import os
-import re
-import json
 
-from waflib import Logs, Utils, Options, Context, TaskGen
-from waflib.Tools.compiler_c import c_compiler
-from waflib.Build import BuildContext, CleanContext, ListContext, StepContext
-from waflib.Build import InstallContext, UninstallContext
+import jsonschema
+from waflib import Logs, TaskGen, Utils
 
+PLATFORM = Utils.unversioned_sys_platform().lower()
 
-VERSION = "0.5.0-devel"
+VERSION = "0.6.0-devel"
 APPNAME = "lua"
-top = "."  # pylint: disable=invalid-name
-out = "build"  # pylint: disable=invalid-name
 
-Context.Context.line_just = 45
+REPO_URL = "https://www.github.com/swaldhoer/native-lua"
+
+LUA_LIBRARY_ST = "static-lua-library"
+LUA_LIBRARY_SH = "shared-lua-library"
+LUA_LTESTS = "LTESTS"
+
+SRC_BASE_PATH = "src"
+SRC = [
+    os.path.join(SRC_BASE_PATH, "lapi.c"),
+    os.path.join(SRC_BASE_PATH, "ldo.c"),
+    os.path.join(SRC_BASE_PATH, "lctype.c"),
+    os.path.join(SRC_BASE_PATH, "ldebug.c"),
+    os.path.join(SRC_BASE_PATH, "ldump.c"),
+    os.path.join(SRC_BASE_PATH, "lfunc.c"),
+    os.path.join(SRC_BASE_PATH, "lgc.c"),
+    os.path.join(SRC_BASE_PATH, "lmem.c"),
+    os.path.join(SRC_BASE_PATH, "lobject.c"),
+    os.path.join(SRC_BASE_PATH, "lopcodes.c"),
+    os.path.join(SRC_BASE_PATH, "lstate.c"),
+    os.path.join(SRC_BASE_PATH, "lstring.c"),
+    os.path.join(SRC_BASE_PATH, "ltable.c"),
+    os.path.join(SRC_BASE_PATH, "ltm.c"),
+    os.path.join(SRC_BASE_PATH, "lundump.c"),
+    os.path.join(SRC_BASE_PATH, "lvm.c"),
+    os.path.join(SRC_BASE_PATH, "lzio.c"),
+    os.path.join(SRC_BASE_PATH, "lauxlib.c"),
+    os.path.join(SRC_BASE_PATH, "lbaselib.c"),
+    os.path.join(SRC_BASE_PATH, "lcorolib.c"),
+    os.path.join(SRC_BASE_PATH, "ldblib.c"),
+    os.path.join(SRC_BASE_PATH, "liolib.c"),
+    os.path.join(SRC_BASE_PATH, "lmathlib.c"),
+    os.path.join(SRC_BASE_PATH, "loslib.c"),
+    os.path.join(SRC_BASE_PATH, "lstrlib.c"),
+    os.path.join(SRC_BASE_PATH, "ltablib.c"),
+    os.path.join(SRC_BASE_PATH, "lutf8lib.c"),
+    os.path.join(SRC_BASE_PATH, "loadlib.c"),
+    os.path.join(SRC_BASE_PATH, "linit.c"),
+]
+SRC_CM = [
+    os.path.join(SRC_BASE_PATH, "lcode.c"),
+    os.path.join(SRC_BASE_PATH, "llex.c"),
+    os.path.join(SRC_BASE_PATH, "lparser.c"),
+]
+SRC_INTR = os.path.join(SRC_BASE_PATH, "lua.c")
+SRC_COMP = os.path.join(SRC_BASE_PATH, "luac.c")
+
+TESTS_BASE_PATH = "tests"
+LTESTS_DIR = os.path.join(TESTS_BASE_PATH, "ltests")
+LTESTS_SRC = os.path.join(LTESTS_DIR, "ltests.c")
+TEST_FILES = [
+    os.path.join(TESTS_BASE_PATH, "all.lua"),
+    os.path.join(TESTS_BASE_PATH, "api.lua"),
+    os.path.join(TESTS_BASE_PATH, "attrib.lua"),
+    os.path.join(TESTS_BASE_PATH, "big.lua"),
+    os.path.join(TESTS_BASE_PATH, "bitwise.lua"),
+    os.path.join(TESTS_BASE_PATH, "bwcoercion.lua"),
+    os.path.join(TESTS_BASE_PATH, "calls.lua"),
+    os.path.join(TESTS_BASE_PATH, "closure.lua"),
+    os.path.join(TESTS_BASE_PATH, "code.lua"),
+    os.path.join(TESTS_BASE_PATH, "constructs.lua"),
+    os.path.join(TESTS_BASE_PATH, "coroutine.lua"),
+    os.path.join(TESTS_BASE_PATH, "cstack.lua"),
+    os.path.join(TESTS_BASE_PATH, "db.lua"),
+    os.path.join(TESTS_BASE_PATH, "errors.lua"),
+    os.path.join(TESTS_BASE_PATH, "events.lua"),
+    os.path.join(TESTS_BASE_PATH, "files.lua"),
+    os.path.join(TESTS_BASE_PATH, "gc.lua"),
+    os.path.join(TESTS_BASE_PATH, "gengc.lua"),
+    os.path.join(TESTS_BASE_PATH, "goto.lua"),
+    os.path.join(TESTS_BASE_PATH, "heavy.lua"),
+    os.path.join(TESTS_BASE_PATH, "literals.lua"),
+    os.path.join(TESTS_BASE_PATH, "locals.lua"),
+    os.path.join(TESTS_BASE_PATH, "main.lua"),
+    os.path.join(TESTS_BASE_PATH, "math.lua"),
+    os.path.join(TESTS_BASE_PATH, "nextvar.lua"),
+    os.path.join(TESTS_BASE_PATH, "pm.lua"),
+    os.path.join(TESTS_BASE_PATH, "sort.lua"),
+    os.path.join(TESTS_BASE_PATH, "strings.lua"),
+    os.path.join(TESTS_BASE_PATH, "tpack.lua"),
+    os.path.join(TESTS_BASE_PATH, "utf8.lua"),
+    os.path.join(TESTS_BASE_PATH, "vararg.lua"),
+    os.path.join(TESTS_BASE_PATH, "verybig.lua"),
+]
+TEST_LIBS_DIR = os.path.join(TESTS_BASE_PATH, "libs")
+
+INC_FILES = [
+    os.path.join(SRC_BASE_PATH, "lua.h"),
+    os.path.join(SRC_BASE_PATH, "luaconf.h"),
+    os.path.join(SRC_BASE_PATH, "lualib.h"),
+    os.path.join(SRC_BASE_PATH, "lauxlib.h"),
+    os.path.join(SRC_BASE_PATH, "lua.hpp"),
+]
+
+MAN_FILES = [
+    os.path.join("docs", "lua.1"),
+    os.path.join("docs", "luac.1"),
+]
 
 USE_ABSOLUTE_INCPATHS = ["\\Microsoft Visual Studio\\", "\\Windows Kits\\"]
 
 
 @TaskGen.feature("c")
 @TaskGen.after_method("apply_incpaths")
-def make_msvc_and_win_paths_absolute(self):
+def to_abolute_paths(self):
     incpaths_fixed = []
     for inc_path in self.env.INCPATHS:
         if any(i in inc_path for i in USE_ABSOLUTE_INCPATHS):
@@ -37,35 +126,18 @@ def make_msvc_and_win_paths_absolute(self):
     self.env.INCPATHS = incpaths_fixed
 
 
-host_os = Utils.unversioned_sys_platform()  # pylint: disable=invalid-name
-plat_comp = c_compiler["default"]  # pylint: disable=invalid-name
-if c_compiler.get(host_os):
-    plat_comp = c_compiler[host_os]  # pylint: disable=invalid-name
-else:
-    # add host compilers to compiler list. We need to do this, in order that we
-    # use c_compiler[host_os] everywhere we need it.
-    c_compiler[host_os] = plat_comp
-
-for x in plat_comp + ["docs"]:
-    for y in (BuildContext, CleanContext):
-        NAME = y.__name__.replace("Context", "").lower()
-
-        class Tmp1(y):
-            __doc__ = y.__doc__ + " ({})".format(x)
-            cmd = NAME + "_" + x
-            variant = x
-
-    if x != "docs":
-        for y in (ListContext, StepContext, InstallContext, UninstallContext):
-            NAME = y.__name__.replace("Context", "").lower()
-
-            class Tmp2(y):
-                __doc__ = y.__doc__ + " ({})".format(x)
-                cmd = NAME + "_" + x
-                variant = x
+def validate_json_schema(data: dict, schema=dict) -> bool:
+    valid = False
+    try:
+        jsonschema.validate(instance=data, schema=schema)
+    except jsonschema.exceptions.ValidationError:
+        pass
+    else:
+        valid = True
+    return valid
 
 
-if host_os == "win32":
+if PLATFORM == "win32":
     os.environ["PREFIX"] = os.path.join(
         os.environ.get("LOCALAPPDATA"), "Programs", "lua"
     )
@@ -88,7 +160,6 @@ def options(opt):
     opt.parser.remove_option("--infodir")
     opt.parser.remove_option("--psdir")
     opt.parser.remove_option("--localedir")
-    opt_gr = opt.get_option_group("Installation directories")
     opt.add_option(
         "--confcache",
         dest="confcache",
@@ -105,14 +176,11 @@ def options(opt):
     )
     opt.add_option(
         "--c-std",
-        dest="c_standard",
-        default="c99",
-        choices=["c89", "c99"],
-        help="Specify C-standard to be used. 'c99' is default. 'c99' will "
-        "be replaced by 'gnu99' for gcc, xlc and icc. 'c99' will be "
-        "replaced by 'c++14' for msvc. 'c89' is passed verbatim for "
-        "gcc, xlc, icc and clang. 'c89' will be replaced by 'c++14' "
-        "for msvc.",
+        dest="c_std",
+        help=(
+            "Overwrite default C standard, e.g., '-std=gnu99' for gcc. "
+            "This option can only be set during configuration."
+        ),
     )
     opt.add_option(
         "--ltests",
@@ -126,7 +194,7 @@ def options(opt):
         dest="generic",
         default=False,
         action="store_true",
-        help="Build generic on the host platform. This is not supported on win32.",
+        help="Build with a generic setup for host platform.",
     )
 
 
@@ -134,31 +202,13 @@ def configure(conf):  # pylint: disable=too-many-branches,too-many-locals
     """Basic configuration of the project based on the operating system and
     the available compilers.
     """
-
-    conf.msg("Prefix", conf.env.PREFIX)
+    conf.env.VERSION = VERSION
+    conf.env.APPNAME = APPNAME
+    conf.msg("Project", f"{conf.env.APPNAME}-{conf.env.VERSION}")
     conf.load("python")
-    conf.check_python_version((3, 5))
-    conf.env.define_key.remove("PYTHONDIR")
-    conf.env.define_key.remove("PYTHONARCHDIR")
-
-    conf.load("sphinx", tooldir="scripts")
-    conf.load("doxygen", tooldir="scripts")
-
-    # check that all version numbers match and the the version number adheres
-    # to Semantic Versioning 2.0.0
-    # https://semver.org/spec/v2.0.0.html#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
-    sem_ver_re = re.compile(
-        r"^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*"
-        r"[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))"
-        r"*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$"
-    )
-
-    is_sem_ver = re.match(sem_ver_re, VERSION)
-    if not is_sem_ver:
-        conf.fatal(
-            "Version information does not follow sematic versioning 2.0.0 ({})\n"
-            "See https://semver.org/spec/v2.0.0.html for details.".format(VERSION)
-        )
+    conf.check_python_version((3, 6))
+    conf.undefine("PYTHONDIR")
+    conf.undefine("PYTHONARCHDIR")
 
     base_err_msg = (
         "wscript's VERSION attribute ({}) and version information in file {} "
@@ -166,460 +216,132 @@ def configure(conf):  # pylint: disable=too-many-branches,too-many-locals
     )
 
     version_file = conf.path.find_node("VERSION")
-    version_info = json.loads(version_file.read(encoding="utf-8"))
+    version_info = version_file.read_json()
     version_file_ver = version_info["native Lua"]
     if not VERSION == version_file_ver:
         conf.fatal(base_err_msg.format(VERSION, version_file, version_file_ver))
-
-    confpy_file = conf.path.find_node("docs/conf.py")
-    confpy_txt = confpy_file.read(encoding="utf-8")
-    confpy_file_ver = re.search(r'(version)( = )"(.{0,})"', confpy_txt).group(3)
-    if not VERSION == confpy_file_ver:
-        conf.fatal(base_err_msg.format(VERSION, confpy_file, confpy_file_ver))
-
-    readme_file = conf.path.find_node("README.md")
-    readme_txt = readme_file.read(encoding="utf-8")
-    readme_file_ver = re.search(r"(based on native Lua )\((.{0,})\)", readme_txt).group(
-        2
-    )
-    if not VERSION == readme_file_ver:
-        conf.fatal(base_err_msg.format(VERSION, readme_file, readme_file_ver))
-
-    start_file = conf.path.find_node("docs/start.rst")
-    start_txt = start_file.read(encoding="utf-8")
-    start_file_ver = re.search(r"(based on native Lua )\((.{0,})\)", start_txt).group(2)
-    if not VERSION == readme_file_ver:
-        conf.fatal(base_err_msg.format(VERSION, readme_file, readme_file_ver))
-
-    doxygen_file = conf.path.find_node("docs/doxygen.conf")
-    doxygen_txt = doxygen_file.read(encoding="utf-8")
-    doxygen_file_ver = re.search(
-        r'(PROJECT_NUMBER)(         = )"(.{0,})"', doxygen_txt
-    ).group(3)
-    if not VERSION == doxygen_file_ver:
-        conf.fatal(base_err_msg.format(VERSION, doxygen_file, doxygen_file_ver))
 
     conf.env.lua_src_version = version_info["lua"]
     conf.env.lua_tests_version = version_info["tests"]
     conf.msg("native Lua version", VERSION)
     conf.msg("Lua version", conf.env.lua_src_version)
     conf.msg("Lua tests version", conf.env.lua_tests_version)
-    conf.msg("Including tests", conf.options.include_tests)
-    conf.msg("Using ltests", conf.options.ltests)
     conf.env.generic = conf.options.generic
-    conf.msg("Generic", conf.env.generic)
-
-    def get_c_standard(env_name, c_std):
-        """Define C standard for each compiler"""
-        c_std_string = None
-        if env_name in ("gcc", "xlc", "icc"):
-            pref = "-std="
-            if c_std == "c89":
-                c_std_string = "{}c89".format(pref)
-            if c_std == "c99":
-                c_std_string = "{}gnu99".format(pref)
-        elif env_name == "clang":
-            c_std_string = "-std={}".format(c_std)
-        elif env_name == "msvc":
-            c_std_string = "/std:c++14"
-        return c_std_string or (conf.fatal("Could not set C-standard"))
-
-    def set_new_basic_env(env_name):
-        """Create a new environment based on the base environment"""
-        conf.setenv("")
-        tmp_env = conf.env.derive()
-        tmp_env.detach()
-        conf.setenv(env_name, tmp_env)
-        conf.env.env_name = env_name
-        c_compiler[host_os] = [conf.env.env_name]
-        conf.env.c_standard = get_c_standard(conf.env.env_name, conf.env.c_standard)
-        conf.path.get_bld().make_node(env_name).mkdir()
-
-    def check_libs(*libs):
-        for lib in libs:
-            conf.check(lib=lib, uselib_store=lib.upper())
-
-    conf.setenv("")
-    conf.env.host_os = host_os
-    conf.env.c_standard = conf.options.c_standard
-    conf.env.include_tests = conf.options.include_tests
-    conf.env.ltests = conf.options.ltests
+    conf.msg("Platform", conf.options.generic or PLATFORM)
     conf.load("gnu_dirs")
+
+    conf.env.WAF_CONFIG_H_PRELUDE = (
+        conf.path.find_node(os.path.join("cfg", "prelude.h.template"))
+        .read()
+        .replace("{{ VERSION }}", VERSION)
+        .replace("{{ REPO_URL }}", REPO_URL)
+    )
+    conf.write_config_header(configfile="waf_build_config.h")
+    platform_configs = conf.path.find_node(
+        os.path.join("cfg", "platforms.json")
+    ).read_json()
+    is_known = platform_configs["known-platforms"].get(PLATFORM, False)
+    if not is_known:
+        pass  # TODO
+    if conf.options.generic:
+        pass  # TODO
+
+    schema_compiler_setup = conf.path.find_node(
+        os.path.join("cfg", "compiler-cfg.schema.json")
+    ).read_json()
+    cfgs = conf.path.ant_glob(
+        "cfg/**/*.json",
+        excl=["**/*.schema.json", "cfg/generic.json", "cfg/platforms.json"],
+    )
+    Logs.debug(", ".join(i.relpath() for i in cfgs))
+    for i in cfgs:
+        valid = validate_json_schema(i.read_json(), schema_compiler_setup)
+        if not valid:
+            Logs.warn(f"{i.relpath()} is not a valid compiler setup.")
+    generic_build = conf.path.find_node(os.path.join("cfg", "generic.json")).read_json()
+    for _, v in generic_build.items():
+        validate_json_schema(v, schema_compiler_setup)
+
+    conf.load("compiler_c")
+
+    # load platform-compiler configuration
+    cc_config_file = os.path.join(
+        "cfg", PLATFORM, f"{PLATFORM}_{conf.env.CC_NAME}.json"
+    )
+    cc_config = conf.path.find_node(cc_config_file).read_json()
+    for i, val in cc_config.items():
+        if i.isupper() or "_PATTERN" in i:
+            conf.env[i] = val
+    # add the build directory to includes as it stores the configuration file
+    conf.env.append_unique("INCLUDES", [conf.path.get_bld().abspath()])
+
+    # validate C standard setting
+    conf.env.C_STD = cc_config["std"]["opt"] + cc_config["std"]["val"]
+    if conf.options.c_std:  # setting might be overwritten on commandline
+        conf.env.C_STD = conf.options.c_std
+    conf.env.append_unique("CFLAGS", [conf.env.C_STD])
+    if "89" in conf.env.C_STD:
+        if PLATFORM == "win32" and conf.env.CC_NAME.lower() == "msvc":
+            Logs.warn("This will NOT effect msvc-builds on win32.")
+        else:
+            Logs.warn(
+                "C89 does not guarantee 64-bit integers for Lua.Adding define: LUA_USE_C89"
+            )
+            Logs.warn("Adding define: LUA_USE_C89")
+            conf.define("LUA_USE_C89", 1)  # TODO check for waf update
 
     min_c = "#include<stdio.h>\nint main() {\n    return 0;\n}\n"
 
-    if conf.options.c_standard == "c89":
-        Logs.warn("C89 does not guarantee 64-bit integers for Lua.")
-        Logs.warn("Adding define: LUA_USE_C89")  # TODO
-        if host_os == "win32":
-            Logs.warn("This will NOT effect msvc-builds on win32.")
-    conf.msg("C standard", conf.options.c_standard)
+    lib_tests = []
+    for lib in cc_config.get("libs", []):
+        lib_tests.append(
+            {
+                "lib": lib,
+                "uselib_store": lib.upper(),
+                "msg": f"Checking for library '{lib}'",
+            }
+        )
 
-    conf.env.WAF_CONFIG_H_PRELUDE = (
-        '#define NATIVE_LUA_PRE_MSG "based on native Lua"\n'
-        '#define NATIVE_LUA_VERSION "{}"\n'.format(VERSION) + ""
-        '#define NATIVE_LUA_REPO "https://github.com/swaldhoer/native-lua"\n'
-        '#define NATIVE_LUA_MSG " [" NATIVE_LUA_PRE_MSG " (" NATIVE_LUA_VERSION"), " NATIVE_LUA_REPO"]"'
+    conf.multicheck(
+        {"fragment": min_c, "execute": True, "msg": "Minimal C program"},
+        {
+            "fragment": min_c,
+            "execute": True,
+            "cflags": conf.env.C_STD,
+            "msg": f"Checking c-standard '{conf.env.C_STD}'",
+        },
+        *lib_tests,
+        {
+            "fragment": min_c,
+            "execute": True,
+            "cflags": conf.env.C_STD,
+            "use": [i.upper() for i in cc_config.get("libs", [])],
+            "msg": "Checking for all libraries",
+        },
+        msg="Validating compiler setup",
+        mandatory=True,
+        run_all_tests=True,
     )
-    platform_compilers = []
-    failed_platform_compilers = []
-    conf.write_config_header(configfile="waf_build_config.h")
-    if conf.options.generic:
-        if host_os == "win32":
-            Logs.info("Generic build uses msvc on win32")
-            try:  # msvc
-                set_new_basic_env("msvc")
-                conf.load("compiler_c")
-                conf.env.CFLAGS = [
-                    "/nologo",
-                    conf.env.c_standard,
-                    "/O2",
-                    "/Wall",
-                    "/Qspectre",
-                ]
-                conf.env.CMCFLAGS = ["/Os"]
-                conf.check_cc(fragment=min_c, execute=True)
-                platform_compilers.append(conf.env.env_name)
-                conf.msg("Manifest", conf.env.MSVC_MANIFEST)
-            except BaseException:
-                failed_platform_compilers.append(conf.env.env_name)
-        else:
-            try:
-                # generic build only for gcc
-                Logs.info(
-                    "Generic build on {} with gcc".format(
-                        Utils.unversioned_sys_platform()
-                    )
-                )
-                set_new_basic_env("gcc")
-                conf.load("compiler_c")
-                conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-                conf.env.CMCFLAGS = ["-Os"]
-                conf.check_cc(fragment=min_c, execute=True)
-                check_libs("m")
-                platform_compilers.append(conf.env.env_name)
-            except BaseException:
-                failed_platform_compilers.append(conf.env.env_name)
-    elif host_os == "aix":
-        try:  # xlc
-            set_new_basic_env("xlc")
-            conf.load("compiler_c")
-            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            conf.env.CMCFLAGS = ["-Os"]
-            conf.env.LINKFLAGS = ["-Wl,-brtl,-bexpall"]
-            conf.check_cc(fragment=min_c, execute=True)
-            check_libs("m", "dl")
-            platform_compilers.append(conf.env.env_name)
-        except BaseException:
-            failed_platform_compilers.append(conf.env.env_name)
-        try:  # gcc
-            # when compling with gcc, the xlc linker must still be used
-            set_new_basic_env("gcc")
-            conf.env.LINK_CC = "xlc"
-            conf.load("compiler_c")
-            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            conf.env.CMCFLAGS = ["-Os"]
-            conf.env.LINKFLAGS = ["-Wl,-brtl,-bexpall"]
-            conf.check_cc(fragment=min_c, execute=True)
-            check_libs("m", "dl")
-            platform_compilers.append(conf.env.env_name)
-        except BaseException:
-            failed_platform_compilers.append(conf.env.env_name)
-        try:  # clang
-            set_new_basic_env("gcc")
-            conf.load("compiler_c")
-            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            conf.env.CMCFLAGS = ["-Os"]
-            conf.env.LINKFLAGS = ["-Wl,-brtl,-bexpall"]
-            conf.check_cc(fragment=min_c, execute=True)
-            check_libs("m", "dl")
-            platform_compilers.append(conf.env.env_name)
-        except BaseException:
-            failed_platform_compilers.append(conf.env.env_name)
-    elif host_os == "openbsd":
-        try:  # gcc
-            set_new_basic_env("gcc")
-            conf.load("compiler_c")
-            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            conf.env.CMCFLAGS = ["-Os"]
-            conf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
-            conf.check_cc(fragment=min_c, execute=True)
-            check_libs("m")
-            platform_compilers.append(conf.env.env_name)
-        except BaseException:
-            failed_platform_compilers.append(conf.env.env_name)
-        try:  # clang
-            set_new_basic_env("clang")
-            conf.load("compiler_c")
-            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            conf.env.CMCFLAGS = ["-Os"]
-            conf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
-            conf.check_cc(fragment=min_c, execute=True)
-            check_libs("m")
-            platform_compilers.append(conf.env.env_name)
-        except BaseException:
-            failed_platform_compilers.append(conf.env.env_name)
-    elif host_os == "netbsd":
-        try:  # gcc
-            set_new_basic_env("gcc")
-            conf.load("compiler_c")
-            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            conf.env.CMCFLAGS = ["-Os"]
-            conf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
-            conf.check_cc(fragment=min_c, execute=True)
-            check_libs("m")
-            platform_compilers.append(conf.env.env_name)
-        except BaseException:
-            failed_platform_compilers.append(conf.env.env_name)
-        try:  # clang
-            set_new_basic_env("clang")
-            conf.load("compiler_c")
-            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            conf.env.CMCFLAGS = ["-Os"]
-            conf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
-            conf.check_cc(fragment=min_c, execute=True)
-            check_libs("m")
-            platform_compilers.append(conf.env.env_name)
-        except BaseException:
-            failed_platform_compilers.append(conf.env.env_name)
-    elif host_os == "freebsd":
-        try:  # gcc
-            set_new_basic_env("gcc")
-            conf.load("compiler_c")
-            conf.env.CC_VERSION_MAJOR = conf.env.CC_VERSION[0]
-            rpath = "/usr/local/lib/gcc" + conf.env.CC_VERSION_MAJOR
-            if not os.path.isdir(rpath):
-                Logs.warn(
-                    "Could not validate rpath, as path {} "
-                    "does not exist".format(rpath)
-                )
-            else:
-                conf.env.append_unique("RPATH", rpath)
-                conf.msg("RPATH", conf.env.RPATH[0])
-            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            conf.env.CMCFLAGS = ["-Os"]
-            conf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
-            conf.check_cc(fragment=min_c, execute=True)
-            check_libs("m", "dl", "edit")
-            platform_compilers.append(conf.env.env_name)
-        except BaseException:
-            failed_platform_compilers.append(conf.env.env_name)
-        try:  # clang
-            set_new_basic_env("clang")
-            conf.load("compiler_c")
-            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            conf.env.CMCFLAGS = ["-Os"]
-            conf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
-            conf.check_cc(fragment=min_c, execute=True)
-            conf.env.append_unique("INCLUDES", "/usr/include/edit")
-            conf.env.append_unique("LIBPATH", "/usr/local/lib")
-            check_libs("m", "dl", "edit")
-            platform_compilers.append(conf.env.env_name)
-        except BaseException:
-            failed_platform_compilers.append(conf.env.env_name)
-    elif host_os == "linux":
-        try:  # gcc
-            set_new_basic_env("gcc")
-            conf.load("compiler_c")
-            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            conf.env.CMCFLAGS = ["-Os"]
-            conf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
-            conf.check_cc(fragment=min_c, execute=True)
-            check_libs("m", "dl", "readline")
-            platform_compilers.append(conf.env.env_name)
-        except BaseException:
-            failed_platform_compilers.append(conf.env.env_name)
-        try:  # clang
-            set_new_basic_env("clang")
-            conf.load("compiler_c")
-            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            conf.env.CMCFLAGS = ["-Os"]
-            conf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
-            conf.check_cc(fragment=min_c, execute=True)
-            check_libs("m", "dl", "readline")
-            platform_compilers.append(conf.env.env_name)
-        except BaseException:
-            failed_platform_compilers.append(conf.env.env_name)
-        try:  # icc
-            set_new_basic_env("icc")
-            conf.load("compiler_c")
-            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            conf.env.CMCFLAGS = ["-Os"]
-            conf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
-            conf.check_cc(fragment=min_c, execute=True)
-            check_libs("m", "dl", "readline")
-            platform_compilers.append(conf.env.env_name)
-        except BaseException:
-            failed_platform_compilers.append(conf.env.env_name)
-    elif host_os == "darwin":
-        try:  # gcc
-            set_new_basic_env("gcc")
-            conf.load("compiler_c")
-            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            conf.env.CMCFLAGS = ["-Os"]
-            conf.check_cc(fragment=min_c, execute=True)
-            check_libs("m", "readline")
-            platform_compilers.append(conf.env.env_name)
-        except BaseException:
-            failed_platform_compilers.append(conf.env.env_name)
-        try:  # clang
-            set_new_basic_env("clang")
-            conf.load("compiler_c")
-            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            conf.env.CMCFLAGS = ["-Os"]
-            conf.check_cc(fragment=min_c, execute=True)
-            check_libs("m", "readline")
-            platform_compilers.append(conf.env.env_name)
-        except BaseException:
-            failed_platform_compilers.append(conf.env.env_name)
-    elif host_os == "win32":
-        try:  # msvc
-            set_new_basic_env("msvc")
-            conf.load("compiler_c")
-            conf.env.CFLAGS = [
-                "/nologo",
-                conf.env.c_standard,
-                "/O2",
-                "/Wall",
-                "/Qspectre",
-            ]
-            conf.env.CMCFLAGS = ["/Os"]
-            conf.check_cc(fragment=min_c, execute=True)
-            platform_compilers.append(conf.env.env_name)
-            conf.msg("Manifest", conf.env.MSVC_MANIFEST)
-        except BaseException:
-            failed_platform_compilers.append(conf.env.env_name)
-        try:  # gcc
-            set_new_basic_env("gcc")
-            conf.load("compiler_c")
-            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            conf.env.CMCFLAGS = ["-Os"]
-            conf.check_cc(fragment=min_c, execute=True)
-            check_libs("m")
-            platform_compilers.append(conf.env.env_name)
-        except BaseException:
-            failed_platform_compilers.append(conf.env.env_name)
-        try:  # clang
-            set_new_basic_env("clang")
-            conf.load("compiler_c")
-            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            conf.env.CMCFLAGS = ["-Os"]
-            # these vars fix the luac build
-            conf.env.cstlib_PATTERN = "%s.lib"
-            conf.env.LINKFLAGS = []
-            conf.env.STLIB_MARKER = ""
-            conf.env.SHLIB_MARKER = ""
-            # these vars fix the lua build
-            conf.env.IMPLIB_ST = "-IMPLIB:%s"
-            conf.env.implib_PATTERN = "%s.dll"
-            conf.check_cc(fragment=min_c, execute=True)
-            platform_compilers.append(conf.env.env_name)
-        except BaseException:
-            failed_platform_compilers.append(conf.env.env_name)
-    elif host_os == "cygwin":
-        try:  # gcc
-            set_new_basic_env("gcc")
-            conf.load("compiler_c")
-            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            conf.env.CMCFLAGS = ["-Os"]
-            conf.env.LINKFLAGS = ["-Wl,--export-all-symbols"]
-            conf.check_cc(fragment=min_c, execute=True)
-            check_libs("m")
-            platform_compilers.append(conf.env.env_name)
-        except BaseException:
-            failed_platform_compilers.append(conf.env.env_name)
-        try:  # clang
-            set_new_basic_env("clang")
-            conf.load("compiler_c")
-            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            conf.env.CMCFLAGS = ["-Os"]
-            conf.env.LINKFLAGS = ["-Wl,--export-all-symbols"]
-            conf.check_cc(fragment=min_c, execute=True)
-            check_libs("m")
-            platform_compilers.append(conf.env.env_name)
-        except BaseException:
-            failed_platform_compilers.append(conf.env.env_name)
-    elif host_os == "solaris":
-        try:  # gcc
-            set_new_basic_env("gcc")
-            conf.load("compiler_c")
-            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            conf.env.CMCFLAGS = ["-Os"]
-            conf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
-            conf.check_cc(fragment=min_c, execute=True)
-            check_libs("m", "dl")
-            platform_compilers.append(conf.env.env_name)
-        except BaseException:
-            failed_platform_compilers.append(conf.env.env_name)
-        try:  # gcc
-            set_new_basic_env("clang")
-            conf.load("compiler_c")
-            conf.env.CFLAGS = [conf.env.c_standard, "-O2", "-Wall", "-Wextra"]
-            conf.env.CMCFLAGS = ["-Os"]
-            conf.env.LINKFLAGS = ["-Wl,-export-dynamic"]
-            conf.check_cc(fragment=min_c, execute=True)
-            check_libs("m", "dl")
-            platform_compilers.append(conf.env.env_name)
-        except BaseException:
-            failed_platform_compilers.append(conf.env.env_name)
-    else:
-        Logs.warn("Building generic for platform: {}".format(host_os))
-
-    if not platform_compilers:
-        conf.fatal(
-            "Could not configure a single C compiler (tried: {}).\
-            ".format(
-                failed_platform_compilers
-            )
-        )
-    if failed_platform_compilers:
-        Logs.warn(
-            "Could not configure the following compilers: {}".format(
-                ", ".join(failed_platform_compilers)
-            )
-        )
-
-    c_compiler[host_os] = platform_compilers
-    conf.msg("Configured compilers", ", ".join(c_compiler[host_os]))
+    if cc_config.get("libs", []):
+        conf.env.USE_LIBS = [i.upper() for i in cc_config["libs"]]
 
 
 def build(bld):
-    """Wrapper for the compiler specific build"""
-
-    # check correct build commands
-    if not bld.variant:
-        if bld.cmd == "clean":
-            Logs.warn("Cleaning for all platforms")
-            Options.commands = ["clean_{}".format(t_cc) for t_cc in c_compiler[host_os]]
-            Options.commands.append("clean_doc")
-            return
-
-    if bld.cmd == "build":
-        bld.fatal(
-            "Use a build variant: {}".format(
-                " ".join("build_" + t_cc for t_cc in c_compiler[host_os] + ["docs"])
-            )
-        )
-
-    bld.clean_files = bld.bldnode.ant_glob(
-        "**", excl=".lock* config.log c4che/* build.log", quiet=True, generator=True
-    )
-
-    # check that the binary is available in PATH
+    """Build lua"""
+    # check that the binary will be available in PATH
     if bld.cmd.startswith("install"):
         bin_dir = Utils.subst_vars(bld.env.BINDIR, bld.env)
-        if not any(
-            x if x == bin_dir else False for x in os.environ["PATH"].split(os.pathsep)
-        ):
-            Logs.warn("lua is not in available in PATH.")
-            Logs.warn("Add the following path to PATH: {}".format(bin_dir))
+        paths = os.environ["PATH"].split(os.pathsep)
+        if not any(x if x == bin_dir else False for x in paths):
+            Logs.warn(f"lua is not in available in PATH (add {bin_dir}).")
 
     # setup install files
+    for i in INC_FILES:
+        bld.install_files("${INCLUDEDIR}", bld.path.find_node(i))
     if Utils.is_win32:
-        if bld.variant == "gcc":
-            # the DLL produced by gcc is already installed to ${BINDIR}
-            pass
-        if bld.variant == "msvc":
+        if bld.env.CC_NAME == "gcc":
+            pass  # the DLL produced by gcc is already installed to ${BINDIR}
+        if bld.env.CC_NAME == "msvc":
             bininst = bld.path.get_bld().ant_glob("*.dll **/*.manifest", quiet=True)
             libinst = []
             if bld.env.MSVC_MANIFEST:
@@ -627,754 +349,65 @@ def build(bld):
                 libinst += bld.path.get_bld().ant_glob("**/*dll.manifest", quiet=True)
             bld.install_files("${BINDIR}", bininst)
             bld.install_files("${LIBDIR}", libinst)
+    else:  # man files do not make sense on win32
+        for i in MAN_FILES:
+            bld.install_files("${MANDIR}/man1", bld.path.find_node(i))
+
+    # application build
+    bld.env.append_unique("INCLUDES", SRC_BASE_PATH)
+    if bld.options.ltests:
+        if bld.env.CC_NAME.lower() == "msvc":
+            bld.env.append_unique("CFLAGS", ["/Zi", "/FS"])
+        else:  # all other compilers should understand -g
+            bld.env.append_unique("CFLAGS", "-g")
+        bld.define("LUA_USER_H", "ltests.h", quote=True)
+        bld.env.append_unique("INCLUDES", LTESTS_DIR)
+    library_tests = [
+        (os.path.join(TEST_LIBS_DIR, "lib1.c"), "1"),
+        (os.path.join(TEST_LIBS_DIR, "lib11.c"), "11"),
+        (os.path.join(TEST_LIBS_DIR, "lib2.c"), "2"),
+        (os.path.join(TEST_LIBS_DIR, "lib22.c"), "2-v2"),
+        (os.path.join(TEST_LIBS_DIR, "lib21.c"), "21"),
+    ]
+
+    if bld.options.include_tests:
+        bld(features="subst", source=TEST_FILES, target=TEST_FILES, is_copy=True)
+        bld.path.find_or_declare(os.path.join(TEST_LIBS_DIR, "P1")).mkdir()
+
+        if PLATFORM not in ["cygwin", "darwin", "win32"]:
+            for src, tgt in library_tests:
+                outfile = os.path.join(TESTS_BASE_PATH, "libs", tgt)
+                bld.shlib(source=src, target=outfile, includes=SRC_BASE_PATH)
+
+    if bld.options.ltests:
+        bld.objects(source=LTESTS_SRC, name=LUA_LTESTS)
+
+    if bld.options.generic:
+        bld.fatal("TODO")
+
+    bld.objects(source=SRC_CM, cflags=bld.env.CMCFLAGS, target="cm")
+    bld.stlib(source=SRC, target="lua", use=["cm", LUA_LTESTS], name=LUA_LIBRARY_ST)
+    use = [LUA_LIBRARY_ST] + bld.env.USE_LIBS
+    bld.program(source=SRC_COMP, target="luac", use=use)
+    if PLATFORM in ["cygwin", "win32"]:
+        bld.shlib(
+            source=SRC,
+            target="luadll",
+            defines="LUA_BUILD_AS_DLL",
+            use=["cm", LUA_LTESTS],
+            name=LUA_LIBRARY_SH,
+        )
+        use_intr = [LUA_LIBRARY_SH] + bld.env.USE_LIBS
+        bld.program(source=SRC_INTR, target="lua", use=use_intr)
+    elif PLATFORM in [
+        "aix",
+        "darwin",
+        "netbsd",
+        "openbsd",
+        "freebsd",
+        "linux",
+        "solaris",
+    ]:
+        bld.program(source=SRC_INTR, target="lua", use=use)
     else:
-        # man files do not make sense on win32
-        bld.install_files(
-            "${MANDIR}/man1",
-            [
-                bld.path.find_node(os.path.join("docs", "_static", "doc", "lua.1")),
-                bld.path.find_node(os.path.join("docs", "_static", "doc", "luac.1")),
-            ],
-        )
-
-    include_files = [
-        bld.path.find_node(os.path.join("src", "lua.h")),
-        bld.path.find_node(os.path.join("src", "luaconf.h")),
-        bld.path.find_node(os.path.join("src", "lualib.h")),
-        bld.path.find_node(os.path.join("src", "lauxlib.h")),
-        bld.path.find_node(os.path.join("src", "lua.hpp")),
-    ]
-    for incfile in include_files:
-        bld.install_files("${INCLUDEDIR}", incfile)
-
-    # actual binary and documentation builds
-    bld.env.append_unique("INCLUDES", bld.path.get_bld().parent.abspath())
-
-    bld.env.src_basepath = "src"
-    bld.env.sources = " ".join(
-        [
-            os.path.join(bld.env.src_basepath, "lapi.c"),
-            os.path.join(bld.env.src_basepath, "ldo.c"),
-            os.path.join(bld.env.src_basepath, "lctype.c"),
-            os.path.join(bld.env.src_basepath, "ldebug.c"),
-            os.path.join(bld.env.src_basepath, "ldump.c"),
-            os.path.join(bld.env.src_basepath, "lfunc.c"),
-            os.path.join(bld.env.src_basepath, "lgc.c"),
-            os.path.join(bld.env.src_basepath, "lmem.c"),
-            os.path.join(bld.env.src_basepath, "lobject.c"),
-            os.path.join(bld.env.src_basepath, "lopcodes.c"),
-            os.path.join(bld.env.src_basepath, "lstate.c"),
-            os.path.join(bld.env.src_basepath, "lstring.c"),
-            os.path.join(bld.env.src_basepath, "ltable.c"),
-            os.path.join(bld.env.src_basepath, "ltm.c"),
-            os.path.join(bld.env.src_basepath, "lundump.c"),
-            os.path.join(bld.env.src_basepath, "lvm.c"),
-            os.path.join(bld.env.src_basepath, "lzio.c"),
-            os.path.join(bld.env.src_basepath, "lauxlib.c"),
-            os.path.join(bld.env.src_basepath, "lbaselib.c"),
-            os.path.join(bld.env.src_basepath, "lcorolib.c"),
-            os.path.join(bld.env.src_basepath, "ldblib.c"),
-            os.path.join(bld.env.src_basepath, "liolib.c"),
-            os.path.join(bld.env.src_basepath, "lmathlib.c"),
-            os.path.join(bld.env.src_basepath, "loslib.c"),
-            os.path.join(bld.env.src_basepath, "lstrlib.c"),
-            os.path.join(bld.env.src_basepath, "ltablib.c"),
-            os.path.join(bld.env.src_basepath, "lutf8lib.c"),
-            os.path.join(bld.env.src_basepath, "loadlib.c"),
-            os.path.join(bld.env.src_basepath, "linit.c"),
-        ]
-    )
-    bld.env.compiler_module_sources = [
-        os.path.join(bld.env.src_basepath, "lcode.c"),
-        os.path.join(bld.env.src_basepath, "llex.c"),
-        os.path.join(bld.env.src_basepath, "lparser.c"),
-    ]
-    bld.env.source_interpreter = os.path.join(bld.env.src_basepath, "lua.c")
-    bld.env.source_compiler = os.path.join(bld.env.src_basepath, "luac.c")
-
-    bld.env.tests_basepath = "tests"
-    bld.env.ltests_dir = os.path.join(bld.env.tests_basepath, "ltests")
-    bld.env.ltests_sources = os.path.join(bld.env.ltests_dir, "ltests.c")
-    test_files = bld.path.ant_glob(bld.env.tests_basepath + "/**/*.lua")
-    bld.env.test_files = [t.path_from(bld.path) for t in test_files]
-    bld.env.libs_path = os.path.join(bld.env.tests_basepath, "libs")
-    bld.env.library_test = [
-        (os.path.join(bld.env.libs_path, "lib1.c"), "1"),
-        (os.path.join(bld.env.libs_path, "lib11.c"), "11"),
-        (os.path.join(bld.env.libs_path, "lib2.c"), "2"),
-        (os.path.join(bld.env.libs_path, "lib22.c"), "2-v2"),
-        (os.path.join(bld.env.libs_path, "lib21.c"), "21"),
-    ]
-    if bld.variant == "docs":
-        source = [
-            bld.path.find_node("docs/changelog.rst"),
-            bld.path.find_node("docs/api.rst"),
-            bld.path.find_node("docs/build.rst"),
-            bld.path.find_node("docs/ci.rst"),
-            bld.path.find_node("docs/contributing.rst"),
-            bld.path.find_node("docs/demos.rst"),
-            bld.path.find_node("docs/install.rst"),
-            bld.path.find_node("docs/license.rst"),
-            bld.path.find_node("docs/manual.rst"),
-            bld.path.find_node("docs/start.rst"),
-            bld.path.find_node("docs/test.rst"),
-            bld.path.find_node("docs/index.rst"),
-        ]
-        bld(features="sphinx", source=source, confpy="docs/conf.py", buildername="html")
-        bld(features="doxygen", conf="docs/doxygen.conf")
-    else:
-        if bld.env.generic:
-            build_generic(bld)
-        elif bld.env.host_os == "aix":
-            build_aix(bld)
-        elif bld.env.host_os == "openbsd":
-            build_openbsd(bld)
-        elif bld.env.host_os == "netbsd":
-            build_netbsd(bld)
-        elif bld.env.host_os == "freebsd":
-            build_freebsd(bld)
-        elif bld.env.host_os == "linux":
-            build_linux(bld)
-        elif bld.env.host_os == "darwin":
-            build_darwin(bld)
-        elif bld.env.host_os == "win32":
-            build_win32(bld)
-        elif bld.env.host_os == "cygwin":
-            build_cygwin(bld)
-        elif bld.env.host_os == "solaris":
-            build_solaris(bld)
-        else:
-            bld.fatal("currently not supported platform")
-
-        if bld.env.include_tests:
-            bld(
-                features="subst",
-                source=bld.env.test_files,
-                target=bld.env.test_files,
-                is_copy=True,
-            )
-
-
-def build_generic(bld):
-    use = ["M"]
-    use_ltests = []
-    defines = ["LUA_COMPAT_5_2"]
-    defines_tests = []
-    cflags = []
-    includes = []
-    if bld.env.c_standard.endswith("89"):
-        defines_c89 = ["LUA_USE_C89"]
-        defines_tests += defines_c89
-        defines += defines_c89
-    if bld.env.ltests:
-        use_ltests += ["LTESTS"]
-        cflags += ["-g"]
-        defines += ['LUA_USER_H="ltests.h"']
-        includes += [bld.env.ltests_dir]
-        bld.objects(
-            source=bld.env.ltests_sources,
-            defines=defines,
-            cflags=cflags,
-            includes=[bld.env.ltests_dir, bld.env.src_basepath],
-            name="LTESTS",
-        )
-
-    bld.stlib(
-        source=bld.env.sources,
-        target="lua",
-        defines=defines,
-        cflags=cflags,
-        use=use_ltests,
-        includes=includes,
-        name="static-lua-library",
-    )
-    bld.program(
-        source=bld.env.source_interpreter,
-        target="lua",
-        defines=defines,
-        cflags=cflags,
-        includes=includes,
-        use=["static-lua-library"] + use + use_ltests,
-    )
-    bld.program(
-        source=bld.env.source_compiler,
-        target="luac",
-        defines=defines,
-        cflags=cflags,
-        includes=includes,
-        use=["static-lua-library"] + use + use_ltests,
-    )
-
-    if bld.env.include_tests:
-        build_lib_tests(bld, defines_tests)
-
-
-def build_aix(bld):
-    use = ["M", "DL"]
-    use_ltests = []
-    defines = ["LUA_COMPAT_5_2", "LUA_USE_POSIX", "LUA_USE_DLOPEN"]
-    defines_tests = []
-    cflags = []
-    includes = []
-    bld.fatal("TODO")
-
-
-def build_openbsd(bld):
-    use = ["M"]
-    use_ltests = []
-    defines = ["LUA_COMPAT_5_2", "LUA_USE_POSIX", "LUA_USE_DLOPEN"]
-    defines_tests = []
-    cflags = []
-    includes = []
-    if bld.env.c_standard.endswith("89"):
-        defines_c89 = ["LUA_USE_C89"]
-        defines_tests += defines_c89
-        defines += defines_c89
-    if bld.env.ltests:
-        use_ltests += ["LTESTS"]
-        cflags += ["-g"]
-        defines += ['LUA_USER_H="ltests.h"']
-        includes += [bld.env.ltests_dir]
-        bld.objects(
-            source=bld.env.ltests_sources,
-            defines=defines,
-            cflags=cflags,
-            includes=[bld.env.ltests_dir, bld.env.src_basepath],
-            name="LTESTS",
-        )
-
-    bld.objects(
-        source=bld.env.compiler_module_sources,
-        target="cm_objects",
-        defines=defines,
-        cflags=bld.env.CMCFLAGS,
-        includes=includes,
-    )
-    bld.stlib(
-        source=bld.env.sources,
-        target="lua",
-        defines=defines,
-        cflags=cflags,
-        use=use_ltests + ["cm_objects"],
-        includes=includes,
-        name="static-lua-library",
-    )
-    bld.program(
-        source=bld.env.source_interpreter,
-        target="lua",
-        defines=defines,
-        cflags=cflags,
-        includes=includes,
-        use=["static-lua-library"] + use + use_ltests,
-    )
-    bld.program(
-        source=bld.env.source_compiler,
-        target="luac",
-        defines=defines,
-        cflags=cflags,
-        includes=includes,
-        use=["static-lua-library"] + use + use_ltests,
-    )
-
-    if bld.env.include_tests:
-        build_lib_tests(bld, defines_tests)
-
-
-def build_netbsd(bld):
-    use = ["M"]
-    use_ltests = []
-    defines = ["LUA_COMPAT_5_2", "LUA_USE_POSIX", "LUA_USE_DLOPEN"]
-    defines_tests = []
-    cflags = []
-    includes = []
-    if bld.env.c_standard.endswith("89"):
-        defines_c89 = ["LUA_USE_C89"]
-        defines_tests += defines_c89
-        defines += defines_c89
-    if bld.env.ltests:
-        use_ltests += ["LTESTS"]
-        cflags += ["-g"]
-        defines += ['LUA_USER_H="ltests.h"']
-        includes += [bld.env.ltests_dir]
-        bld.objects(
-            source=bld.env.ltests_sources,
-            defines=defines,
-            cflags=cflags,
-            includes=[bld.env.ltests_dir, bld.env.src_basepath],
-            name="LTESTS",
-        )
-
-    bld.objects(
-        source=bld.env.compiler_module_sources,
-        target="cm_objects",
-        defines=defines,
-        cflags=bld.env.CMCFLAGS,
-        includes=includes,
-    )
-    bld.stlib(
-        source=bld.env.sources,
-        target="lua",
-        defines=defines,
-        cflags=cflags,
-        use=use_ltests + ["cm_objects"],
-        includes=includes,
-        name="static-lua-library",
-    )
-    bld.program(
-        source=bld.env.source_interpreter,
-        target="lua",
-        defines=defines,
-        cflags=cflags,
-        includes=includes,
-        use=["static-lua-library"] + use + use_ltests,
-    )
-    bld.program(
-        source=bld.env.source_compiler,
-        target="luac",
-        defines=defines,
-        cflags=cflags,
-        includes=includes,
-        use=["static-lua-library"] + use + use_ltests,
-    )
-
-    if bld.env.include_tests:
-        build_lib_tests(bld, defines_tests)
-
-
-def build_freebsd(bld):
-    use = ["M", "DL", "EDIT"]
-    use_ltests = []
-    defines = ["LUA_COMPAT_5_2", "LUA_USE_LINUX"]
-    defines_tests = []
-    cflags = []
-    includes = []
-    if bld.env.c_standard.endswith("89"):
-        defines_c89 = ["LUA_USE_C89"]
-        defines_tests += defines_c89
-        defines += defines_c89
-    if bld.env.ltests:
-        use_ltests += ["LTESTS"]
-        cflags += ["-g"]
-        defines += ['LUA_USER_H="ltests.h"']
-        includes += [bld.env.ltests_dir]
-        bld.objects(
-            source=bld.env.ltests_sources,
-            defines=defines,
-            cflags=cflags,
-            includes=[bld.env.ltests_dir, bld.env.src_basepath],
-            name="LTESTS",
-        )
-
-    bld.objects(
-        source=bld.env.compiler_module_sources,
-        target="cm_objects",
-        defines=defines,
-        cflags=bld.env.CMCFLAGS,
-        includes=includes,
-    )
-    bld.stlib(
-        source=bld.env.sources,
-        target="lua",
-        defines=defines,
-        cflags=cflags,
-        use=use_ltests + ["cm_objects"],
-        includes=includes,
-        name="static-lua-library",
-    )
-    bld.program(
-        source=bld.env.source_interpreter,
-        target="lua",
-        defines=defines,
-        cflags=cflags,
-        includes=includes,
-        use=["static-lua-library"] + use + use_ltests,
-    )
-    bld.program(
-        source=bld.env.source_compiler,
-        target="luac",
-        defines=defines,
-        cflags=cflags,
-        includes=includes,
-        use=["static-lua-library"] + use + use_ltests,
-    )
-
-    if bld.env.include_tests:
-        build_lib_tests(bld, defines_tests)
-
-
-def build_linux(bld):
-    use = ["M", "DL", "READLINE"]
-    use_ltests = []
-    defines = ["LUA_COMPAT_5_2", "LUA_USE_LINUX"]
-    defines_tests = []
-    cflags = []
-    includes = []
-    if bld.env.c_standard.endswith("89"):
-        defines_c89 = ["LUA_USE_C89"]
-        defines_tests += defines_c89
-        defines += defines_c89
-    if bld.env.ltests:
-        use_ltests += ["LTESTS"]
-        cflags += ["-g"]
-        defines += ['LUA_USER_H="ltests.h"']
-        includes += [bld.env.ltests_dir]
-        bld.objects(
-            source=bld.env.ltests_sources,
-            defines=defines,
-            cflags=cflags,
-            includes=[bld.env.ltests_dir, bld.env.src_basepath],
-            name="LTESTS",
-        )
-    bld.objects(
-        source=bld.env.compiler_module_sources,
-        target="cm_objects",
-        defines=defines,
-        cflags=bld.env.CMCFLAGS,
-        includes=includes,
-    )
-    bld.stlib(
-        source=bld.env.sources,
-        target="lua",
-        defines=defines,
-        cflags=cflags,
-        use=use_ltests + ["cm_objects"],
-        includes=includes,
-        name="static-lua-library",
-    )
-    bld.program(
-        source=bld.env.source_interpreter,
-        target="lua",
-        defines=defines,
-        cflags=cflags,
-        includes=includes,
-        use=["static-lua-library"] + use + use_ltests,
-    )
-    bld.program(
-        source=bld.env.source_compiler,
-        target="luac",
-        defines=defines,
-        cflags=cflags,
-        includes=includes,
-        use=["static-lua-library"] + use + use_ltests,
-    )
-
-    if bld.env.include_tests:
-        build_lib_tests(bld, defines_tests)
-
-
-def build_darwin(bld):
-    use = ["M", "READLINE"]
-    use_ltests = []
-    defines = ["LUA_COMPAT_5_2", "LUA_USE_MACOSX"]
-    defines_tests = []
-    cflags = []
-    includes = []
-    if bld.env.c_standard.endswith("89"):
-        defines_c89 = ["LUA_USE_C89"]
-        defines_tests += defines_c89
-        defines += defines_c89
-    if bld.env.ltests:
-        use_ltests += ["LTESTS"]
-        cflags += ["-g"]
-        defines += ['LUA_USER_H="ltests.h"']
-        includes += [bld.env.ltests_dir]
-        bld.objects(
-            source=bld.env.ltests_sources,
-            defines=defines,
-            cflags=cflags,
-            includes=[bld.env.ltests_dir, bld.env.src_basepath],
-            name="LTESTS",
-        )
-    bld.objects(
-        source=bld.env.compiler_module_sources,
-        target="cm_objects",
-        defines=defines,
-        cflags=bld.env.CMCFLAGS,
-        includes=includes,
-    )
-    bld.stlib(
-        source=bld.env.sources,
-        target="lua",
-        defines=defines,
-        cflags=cflags,
-        use=use_ltests + ["cm_objects"],
-        includes=includes,
-        name="static-lua-library",
-    )
-    bld.program(
-        source=bld.env.source_interpreter,
-        target="lua",
-        defines=defines,
-        cflags=cflags,
-        includes=includes,
-        use=["static-lua-library"] + use + use_ltests,
-    )
-    bld.program(
-        source=bld.env.source_compiler,
-        target="luac",
-        defines=defines,
-        cflags=cflags,
-        includes=includes,
-        use=["static-lua-library"] + use + use_ltests,
-    )
-
-    if bld.env.include_tests:  # https://github.com/swaldhoer/native-lua/issues/44
-        pass  # build_lib_tests(bld, defines_tests)
-
-
-def build_win32(bld):
-    def build_win32_msvc():
-        """Building on win32 with msvc"""
-        defines = ["LUA_COMPAT_5_2", "_WIN32"]
-        bld(
-            features="c",
-            source=bld.env.compiler_module_sources,
-            target="cm_objects",
-            defines=defines,
-            cflags=bld.env.CMCFLAGS,
-        )
-        bld.stlib(
-            source=bld.env.sources,
-            target="lua",
-            defines=defines,
-            use=["cm_objects"],
-            name="static-lua-library",
-        )
-        bld.shlib(
-            source=bld.env.sources,
-            target="luadll",
-            defines=defines + ["LUA_BUILD_AS_DLL"],
-            use=["cm_objects"],
-            name="shared-lua-library",
-        )
-        bld.program(
-            source=bld.env.source_interpreter,
-            target="lua",
-            defines=defines,
-            use=["shared-lua-library"],
-        )
-        bld.program(
-            source=bld.env.source_compiler,
-            target="luac",
-            defines=defines,
-            use=["static-lua-library"],
-        )
-
-        if bld.env.include_tests:
-            pass
-            # https://github.com/swaldhoer/native-lua/issues/46
-
-    def build_win32_gcc():
-        use = ["M"]
-        use_ltests = []
-        defines = ["LUA_COMPAT_5_2", "_WIN32"]
-        defines_tests = []
-        cflags = []
-        includes = []
-
-        bld(
-            features="c",
-            source=bld.env.compiler_module_sources,
-            target="cm_objects",
-            defines=defines,
-            cflags=cflags + bld.env.CMCFLAGS,
-            use=use_ltests,
-            includes=includes,
-        )
-        bld.stlib(
-            source=bld.env.sources,
-            target="lua",
-            defines=defines,
-            use=["cm_objects"],
-            name="static-lua-library",
-        )
-        bld.shlib(
-            source=bld.env.sources,
-            target="luadll",
-            defines=defines + ["LUA_BUILD_AS_DLL"],
-            use=["cm_objects"],
-            name="shared-lua-library",
-        )
-        bld.program(
-            source=bld.env.source_interpreter,
-            target="lua",
-            use=["shared-lua-library"] + use,
-        )
-        bld.program(
-            source=bld.env.source_compiler,
-            target="luac",
-            defines=defines,
-            use=["static-lua-library"] + use,
-        )
-
-        if bld.env.include_tests:
-            pass
-            # https://github.com/swaldhoer/native-lua/issues/46
-
-    def build_win32_clang():
-        use = ["M"]
-        use_ltests = []
-        defines = ["LUA_COMPAT_5_2", "_WIN32"]
-        defines_tests = []
-        cflags = []
-        includes = []
-        bld(
-            features="c",
-            source=bld.env.compiler_module_sources,
-            target="cm_objects",
-            defines=defines,
-            cflags=cflags + bld.env.CMCFLAGS,
-            use=use_ltests,
-            includes=includes,
-        )
-        bld.stlib(
-            source=bld.env.sources,
-            target="lua",
-            defines=defines,
-            use=["cm_objects"],
-            name="static-lua-library",
-        )
-        bld.shlib(
-            source=bld.env.sources,
-            target="luadll",
-            defines=defines + ["LUA_BUILD_AS_DLL"],
-            use=["cm_objects"],
-            name="shared-lua-library",
-        )
-        bld.program(
-            source=bld.env.source_interpreter,
-            target="lua",
-            use=["shared-lua-library"] + use,
-        )
-        bld.program(
-            source=bld.env.source_compiler,
-            target="luac",
-            defines=defines,
-            use=["static-lua-library"] + use,
-        )
-
-        if bld.env.include_tests:  # https://github.com/swaldhoer/native-lua/issues/46
-            pass  # build_lib_tests(bld, defines_tests)
-
-    if bld.env.CC_NAME == "msvc":
-        build_win32_msvc()
-    elif bld.env.CC_NAME == "gcc":
-        build_win32_gcc()
-    elif bld.env.CC_NAME == "clang":
-        build_win32_clang()
-
-
-def build_cygwin(bld):
-    use = ["M"]
-    use_ltests = []
-    defines = ["LUA_COMPAT_5_2", "LUA_USE_LINUX"]
-    defines_tests = []
-    cflags = []
-    includes = []
-    bld.objects(
-        source=bld.env.compiler_module_sources,
-        target="cm_objects",
-        defines=defines,
-        cflags=bld.env.CMCFLAGS,
-    )
-    bld.stlib(
-        source=bld.env.sources,
-        target="lua",
-        defines=defines,
-        use=["cm_objects"],
-        name="static-lua-library",
-    )
-    bld.shlib(
-        source=bld.env.sources,
-        target="luadll",
-        defines=defines + ["LUA_BUILD_AS_DLL"],
-        use=["cm_objects"],
-        name="shared-lua-library",
-    )
-    bld.program(
-        source=bld.env.source_interpreter,
-        target="lua",
-        use=["shared-lua-library"] + use,
-    )
-    bld.program(
-        source=bld.env.source_compiler,
-        target="luac",
-        defines=defines,
-        use=["static-lua-library"] + use,
-    )
-
-
-def build_solaris(bld):
-    use = ["M", "DL"]
-    use_ltests = []
-    defines = ["LUA_COMPAT_5_2", "LUA_USE_POSIX", "LUA_USE_DLOPEN", "_REENTRANT"]
-    defines_tests = []
-    cflags = []
-    includes = []
-    if bld.env.c_standard.endswith("89"):
-        defines_c89 = ["LUA_USE_C89"]
-        defines_tests += defines_c89
-        defines += defines_c89
-    if bld.env.ltests:
-        use_ltests += ["LTESTS"]
-        cflags += ["-g"]
-        defines += ['LUA_USER_H="ltests.h"']
-        includes += [bld.env.ltests_dir]
-        bld.objects(
-            source=bld.env.ltests_sources,
-            defines=defines,
-            cflags=cflags,
-            includes=[bld.env.ltests_dir, bld.env.src_basepath],
-            name="LTESTS",
-        )
-    bld.objects(
-        source=bld.env.compiler_module_sources,
-        target="cm_objects",
-        defines=defines,
-        cflags=bld.env.CMCFLAGS,
-        includes=includes,
-    )
-    bld.stlib(
-        source=bld.env.sources,
-        target="lua",
-        defines=defines,
-        cflags=cflags,
-        use=use_ltests + ["cm_objects"],
-        includes=includes,
-        name="static-lua-library",
-    )
-    bld.program(
-        source=bld.env.source_interpreter,
-        target="lua",
-        defines=defines,
-        cflags=cflags,
-        includes=includes,
-        use=["static-lua-library"] + use + use_ltests,
-    )
-    bld.program(
-        source=bld.env.source_compiler,
-        target="luac",
-        defines=defines,
-        cflags=cflags,
-        includes=includes,
-        use=["static-lua-library"] + use + use_ltests,
-    )
-
-    if bld.env.include_tests:
-        build_lib_tests(bld, defines_tests)
-
-
-def build_lib_tests(bld, defines_tests):
-    bld.path.get_bld().make_node(
-        os.path.join(bld.env.tests_basepath, "libs", "P1")
-    ).mkdir()
-    for src, tgt in bld.env.library_test:
-        outfile = os.path.join(bld.env.tests_basepath, "libs", tgt)
-        bld.shlib(
-            source=src,
-            target=outfile,
-            defines=defines_tests,
-            includes=os.path.abspath(
-                os.path.join(bld.path.abspath(), bld.env.src_basepath)
-            ),
-        )
+        bld.fatal("Platform currently not supported. Try the generic build option.")

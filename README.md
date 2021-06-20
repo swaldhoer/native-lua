@@ -4,7 +4,6 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/1gtcdi6wslxx3d6u?svg=true)](https://ci.appveyor.com/project/swaldhoer/native-lua)
 [![Build Status](https://api.cirrus-ci.com/github/swaldhoer/native-lua.svg)](https://cirrus-ci.com/github/swaldhoer/native-lua)
 [![Build Status](https://dev.azure.com/stefanwaldhoer/native-lua/_apis/build/status/swaldhoer.native-lua?branchName=master)](https://dev.azure.com/stefanwaldhoer/native-lua/_build/latest?definitionId=1&branchName=master)
-[![Documentation Status](https://readthedocs.org/projects/native-lua/badge/?version=latest)](https://native-lua.readthedocs.io/en/latest/?badge=latest)
 ![GitHub](https://img.shields.io/github/license/swaldhoer/native-lua)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
@@ -35,14 +34,12 @@ of building and testing Lua.
 
 ## How-To
 
-Building Lua with the `native Lua` project requires Python 3.5 or greater and
-some C compiler. Exemplary Windows build using gcc:
+Building Lua with the `native Lua` project requires Python 3.6 or greater and
+some C compiler. Exemplary Windows build:
 
-1. ``waf.bat configure``
-1. ``waf.bat build_gcc``
-1. ``waf.bat install_gcc``
-
-![Configure and build Lua on Windows using gcc](docs/_static/basic-cmds.gif)
+1. ``python waf configure``
+1. ``python waf build``
+1. ``python waf install``
 
 ## Supported Platforms And Compilers
 
@@ -78,8 +75,7 @@ The root directory contains the
 - general project documentation (``README.md``, ``CHANGELOG.md``)
 - build script and build toolchain (``wscript``, ``waf``, ``waf.bat``),
 - required Python packages (``requirements.txt``, ``environment.yml``),
-- CI scripts (``.appveyor.yml``, ``.cirrus.yml``, ``azure-pipelines.yml``,
-  ``readthedocs.yml``),
+- CI scripts (``.appveyor.yml``, ``.cirrus.yml``, ``azure-pipelines.yml``),
 - editor configurations (``.vscode``, ``.editorconfig``),
 - coding and general guidelines (``pyproject.toml``),
 - licensing information (``LICENSE``),
@@ -93,16 +89,7 @@ use libraries that do not come with the Lua interpreter.
 
 ### ``docs`` Directory
 
-This directory contains the `native Lua` project documentation as well as the
-official Lua documentation. The official Lua documentation is found in
-``_static/doc``. This documentation is also linked into the project
-documentation. The main documentation files ``index.rst``, ``conf.py`` and
-``doxygen.conf`` are found here. Contribution guidelines are found in
-``contributing.rst``.
-
-`native Lua` uses the
-[ReadTheDocs Sphinx theme](https://github.com/readthedocs/sphinx_rtd_theme) as
-layout theme for the documentation.
+This directory contains the `man` page files for unix-like systems.
 
 ### ``src`` Directory
 
@@ -124,7 +111,7 @@ project:
 
 ```shell
 $ build/gcc/lua -v
-Lua 5.4.0  Copyright (C) 1994-2017 Lua.org, PUC-Rio [based on native Lua (0.5.0-devel), https://github.com/swaldhoer/native-lua]
+Lua 5.4.0  Copyright (C) 1994-2017 Lua.org, PUC-Rio [based on native Lua (0.6.0-devel), https://github.com/swaldhoer/native-lua]
 ```
 
 ### ``tests`` Directory
@@ -147,8 +134,8 @@ Test files for the build toolchain have been added in ``tests/build``.
 
 ## Documentation
 
-Built versions of the documentation are found on
-[native-lua.readthedocs.io](https://native-lua.readthedocs.io/en/latest/).
+The `native Lua` project is document in this `README.md` and in the build
+script (`wscript`).
 
 ## License
 
