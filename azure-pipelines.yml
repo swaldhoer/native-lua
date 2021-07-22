@@ -195,7 +195,7 @@ jobs:
           export CURL_SSL_BACKEND=secure-transport
           brew update
           brew upgrade
-          brew install --force gcc coreutils
+          brew install --force gcc@10 coreutils
           brew ls --verbose gcc
           brew unlink gcc
           brew link gcc --dry-run
@@ -207,10 +207,6 @@ jobs:
           gcc -dM -E - < /dev/null
         displayName: Install gcc
         condition: eq(variables['CC_LUA_BUILD'], 'gcc')
-
-      - script: echo "##vso[task.prependpath]/usr/local/Cellar/gcc/10.2.0/bin/"
-        condition: eq(variables['CC_LUA_BUILD'], 'gcc')
-        displayName: Add gcc to path
 
       - script: echo $PATH
         condition: eq(variables['CC_LUA_BUILD'], 'gcc')
