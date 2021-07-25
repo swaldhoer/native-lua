@@ -1,7 +1,7 @@
 black==21.7b0
 isort==5.9.2
 jsonschema
-pylint==2.9.3
+pylint==2.9.5
 setuptools
 toml
 wheel
