@@ -1,4 +1,4 @@
-black==21.9b0
+black==22.10.0
 isort==5.9.3
 jsonschema
 pylint==2.11.1
